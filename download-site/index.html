@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>코토다망 최장 단어 탐색기 다운로드</title>
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #0f1115;
+    --card: #171a21;
+    --text: #e8eaed;
+    --muted: #9aa0a6;
+    --accent: #6ea8fe;
+    --border: #2a2e37;
+  }
+  @media (prefers-color-scheme: light) {
+    :root {
+      --bg: #f5f6f8;
+      --card: #ffffff;
+      --text: #1b1f24;
+      --muted: #5f6368;
+      --accent: #1a56db;
+      --border: #e2e4e9;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, "Segoe UI", "Malgun Gothic", sans-serif;
+    display: flex;
+    justify-content: center;
+    padding: 48px 16px;
+  }
+  main {
+    width: 100%;
+    max-width: 560px;
+  }
+  h1 {
+    font-size: 1.6rem;
+    margin-bottom: 4px;
+  }
+  p.lead {
+    color: var(--muted);
+    margin-top: 0;
+  }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+    margin-top: 24px;
+  }
+  .version {
+    font-size: 0.9rem;
+    color: var(--muted);
+  }
+  .download-btn {
+    display: block;
+    text-align: center;
+    margin-top: 16px;
+    padding: 14px 20px;
+    background: var(--accent);
+    color: #fff;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 600;
+  }
+  .download-btn[aria-disabled="true"] {
+    pointer-events: none;
+    opacity: 0.5;
+  }
+  .notice {
+    margin-top: 24px;
+    font-size: 0.9rem;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+  .notice b { color: var(--text); }
+  .error {
+    color: #e5484d;
+  }
+</style>
+</head>
+<body>
+<main>
+  <h1>코토다망 최장 단어 탐색기</h1>
+  <p class="lead">덱과 손패로 가능한 최장 단어를 탐색하는 Windows 도구</p>
+
+  <div class="card">
+    <div class="version" id="version">버전 확인 중...</div>
+    <a class="download-btn" id="downloadBtn" href="#" aria-disabled="true">다운로드 준비 중</a>
+  </div>
+
+  <div class="notice">
+    <b>Windows SmartScreen 경고가 뜨나요?</b><br />
+    코드 서명 인증서 없이 배포하고 있어 최초 실행 시 "Windows에서 PC를 보호했습니다" 경고가 뜰 수 있습니다.
+    <b>추가 정보 → 실행</b>을 누르면 정상 실행됩니다. 이후 자동 업데이트가 받는 새 버전도 같은 경고가 뜰 수 있습니다.
+  </div>
+</main>
+
+<script>
+  const MANIFEST_URL = "https://raw.githubusercontent.com/sksmsaidkeu/Kotodaman_Simulator/main/latest.json";
+
+  fetch(MANIFEST_URL, { cache: "no-store" })
+    .then((res) => {
+      if (!res.ok) throw new Error("latest.json fetch failed: " + res.status);
+      return res.json();
+    })
+    .then((data) => {
+      document.getElementById("version").textContent = "최신 버전: v" + data.version;
+      const btn = document.getElementById("downloadBtn");
+      btn.href = data.setupUrl;
+      btn.removeAttribute("aria-disabled");
+      btn.textContent = "Windows용 다운로드 (Setup.exe)";
+    })
+    .catch((err) => {
+      document.getElementById("version").innerHTML =
+        '<span class="error">버전 정보를 불러오지 못했습니다. 잠시 후 다시 시도해 주세요.</span>';
+      console.error(err);
+    });
+</script>
+</body>
+</html>
