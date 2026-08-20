@@ -148,4 +148,18 @@ ZIP과 데이터/앱 델타 ZIP       연결. 서버 로직 없음.        앱 �
 
 ---
 
+## 8. 구현 진행 상황 (2026-08-20)
+
+§6 결정 사항을 실제로 구현하고, 파이프라인 전체를 실행해 검증했다.
+
+- **git/GitHub 저장소 신설·연결 완료** — 공개 저장소 `sksmsaidkeu/Kotodaman_Simulator`, `main` 브랜치에 소스 푸시 완료. `.gitignore`로 `bin/`·`obj/`·`Publish/`·`Releases/`·`Data/CharacterImages/`(70MB, PRD 방침대로 Release 자산으로만 배포) 제외.
+- **Velopack 코드 통합 완료** — `Velopack 1.2.0` NuGet 추가, WPF 자동 `Main()` 생성을 끄고(`App.xaml` 빌드 액션 `ApplicationDefinition`→`Page`, `StartupObject` 지정) `App.xaml.cs`에 커스텀 `Main()`으로 `VelopackApp.Build().Run()`을 최우선 실행. `OnStartup`에서 `MainWindow.Show()` 직후 백그라운드로 `UpdateManager`(GithubSource, 공개 저장소라 토큰 불필요) 체크 → 다운로드 → `ApplyUpdatesAndRestart` 흐름 추가. 실패해도 앱 사용에는 지장 없도록 전부 try/catch로 감쌈.
+- **릴리스 스크립트 작성 완료** — `publish_velopack_release.ps1`/`.bat`: 데이터 baseline 검증 → self-contained win-x64 publish → `vpk pack`(패키지 id `KotodamanWordFinder`, 채널 `win`, `--noPortable`) → `vpk upload github --publish`(토큰은 `gh auth token`으로 획득) → `latest.json` 생성(버전·태그·릴리스 URL·Setup.exe 다운로드 URL·SHA256·발행시각) → 커밋·푸시까지 자동.
+- **파이프라인 실전 검증 완료(draft)** — 위 스크립트와 같은 단계를 `--publish` 없이 실제로 실행해 GitHub에 draft 릴리스(태그 `v1.25.1`, 제목 "코토테스터 v1.25.1")를 만들었다. `nupkg`·`Setup.exe`·`RELEASES`·`releases.win.json` 4개 자산 업로드 확인, `gh release view`로 한글 제목이 정상 저장된 것도 확인(콘솔 출력 깨짐은 로컬 터미널 인코딩 문제일 뿐 실제 데이터는 정상). Draft 상태라 아직 비공개.
+- **이번 세션에 새로 발견·수정한 버그**: `publish_velopack_release.ps1`에 한글 문자열(`--packTitle` 등)이 있는데 UTF-8 BOM이 없으면 Windows PowerShell 5.1이 시스템 코드페이지(CP949로 추정)로 잘못 해석해 따옴표가 깨지고 파싱이 실패했다. 실제 `powershell.exe -File` 실행 경로로 재현한 뒤 UTF-8 BOM을 추가해 수정. (참고로 기존 `create_data_update.ps1` 등은 한글을 포함하고도 BOM 없이 정상 파싱됨 — 오역 시 우연히 따옴표 문자가 생기는지 여부에 좌우되는 것으로 보이며, 일반화하려면 한글 포함 `.ps1`은 항상 BOM을 붙이는 편이 안전하다.)
+
+**다음 단계**: FR-1 다운로드 사이트(Vercel) — 정적 페이지 코드까지는 이번 세션에 준비, 실제 Vercel 배포는 사용자가 계정 연결 후 직접. 이후 draft 릴리스를 언제 `--publish`할지는 다운로드 사이트 준비 상태를 보고 사용자가 결정.
+
+---
+
 *이 문서는 실제 코드·빌드·실행 결과를 근거로 작성했다. §5의 수치와 버그는 이번 세션에서 직접 재현·수정·재검증했고, 추정치로 남겨둔 항목(코드 서명 비용, GitHub 무료 한도 등)은 실행 전 별도 확인이 필요하다.*
