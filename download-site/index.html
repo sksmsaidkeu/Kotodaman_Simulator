@@ -110,6 +110,9 @@
       return res.json();
     })
     .then((data) => {
+      if (!data || !data.version || !data.setupUrl) {
+        throw new Error("latest.json is missing required fields");
+      }
       document.getElementById("version").textContent = "최신 버전: v" + data.version;
       const btn = document.getElementById("downloadBtn");
       btn.href = data.setupUrl;

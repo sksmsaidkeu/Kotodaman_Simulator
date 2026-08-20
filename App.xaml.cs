@@ -164,8 +164,13 @@ public partial class App : Application
 
             AppLog.Info($"앱 업데이트 발견 · {updateInfo.TargetFullRelease.Version} · 다운로드를 시작합니다.");
             await manager.DownloadUpdatesAsync(updateInfo);
-            AppLog.Info("앱 업데이트 다운로드 완료 · 재시작하여 적용합니다.");
-            manager.ApplyUpdatesAndRestart(updateInfo);
+            AppLog.Info("앱 업데이트 다운로드 완료 · 정상 종료 후 적용합니다.");
+
+            // ApplyUpdatesAndRestart는 프로세스를 즉시 종료시켜 Window.Closing(설정 저장 등)을 건너뛴다.
+            // WaitExitThenApplyUpdates로 적용을 예약해두고, Shutdown()으로 정상 종료 경로를 태워야
+            // MainWindow_Closing의 SaveSettingsImmediatelySafely가 실행된다.
+            manager.WaitExitThenApplyUpdates(updateInfo.TargetFullRelease);
+            Application.Current.Dispatcher.Invoke(() => Application.Current.Shutdown());
         }
         catch (Exception exception)
         {

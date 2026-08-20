@@ -18,8 +18,8 @@ function Wait-ForClose {
 }
 
 function Get-ToolPath([string]$Name) {
-    $cmd = Get-Command "$Name.exe" -ErrorAction SilentlyContinue
-    if ($null -eq $cmd) { $cmd = Get-Command $Name -ErrorAction SilentlyContinue }
+    $cmd = Get-Command "$Name.exe" -ErrorAction SilentlyContinue | Select-Object -First 1
+    if ($null -eq $cmd) { $cmd = Get-Command $Name -ErrorAction SilentlyContinue | Select-Object -First 1 }
     if ($null -eq $cmd) { throw ("{0} was not found on PATH." -f $Name) }
     return $cmd.Path
 }
@@ -126,27 +126,47 @@ try {
     & $VpkPath @UploadArguments
     if ($LASTEXITCODE -ne 0) { throw ("vpk upload github failed with exit code {0}." -f $LASTEXITCODE) }
 
-    Write-Host ''
-    Write-Host '[5/6] Writing latest.json manifest...' -ForegroundColor Yellow
-    $SetupSha256 = (Get-FileHash -LiteralPath $SetupExePath -Algorithm SHA256).Hash.ToLowerInvariant()
-    $LatestJson = [ordered]@{
-        version      = $AppVersion
-        releaseTag   = $Tag
-        releaseUrl   = "$RepoUrl/releases/tag/$Tag"
-        setupUrl     = "$RepoUrl/releases/download/$Tag/$SetupExeName"
-        setupSha256  = $SetupSha256
-        publishedAt  = (Get-Date).ToUniversalTime().ToString('o')
-    }
-    ($LatestJson | ConvertTo-Json -Depth 4) | Set-Content -LiteralPath $LatestJsonPath -Encoding UTF8
-    Write-Host ("latest.json written: {0}" -f $LatestJsonPath) -ForegroundColor Green
+    # 이 지점부터는 릴리스가 이미 공개된 상태다. 아래에서 실패하면 일반 오류 메시지가 아니라
+    # "릴리스는 떴는데 latest.json만 못 올렸다"는 걸 명확히 알려야 사용자가 헷갈리지 않는다.
+    try {
+        Write-Host ''
+        Write-Host '[5/6] Writing latest.json manifest...' -ForegroundColor Yellow
+        $SetupSha256 = (Get-FileHash -LiteralPath $SetupExePath -Algorithm SHA256).Hash.ToLowerInvariant()
+        $LatestJson = [ordered]@{
+            version      = $AppVersion
+            releaseTag   = $Tag
+            releaseUrl   = "$RepoUrl/releases/tag/$Tag"
+            setupUrl     = "$RepoUrl/releases/download/$Tag/$SetupExeName"
+            setupSha256  = $SetupSha256
+            publishedAt  = (Get-Date).ToUniversalTime().ToString('o')
+        }
+        ($LatestJson | ConvertTo-Json -Depth 4) | Set-Content -LiteralPath $LatestJsonPath -Encoding UTF8
+        Write-Host ("latest.json written: {0}" -f $LatestJsonPath) -ForegroundColor Green
 
-    Write-Host ''
-    Write-Host '[6/6] Committing and pushing latest.json...' -ForegroundColor Yellow
-    $GitPath = Get-ToolPath 'git'
-    & $GitPath -C $ProjectRoot add 'latest.json'
-    & $GitPath -C $ProjectRoot commit -m ("release: v{0}" -f $AppVersion)
-    if ($LASTEXITCODE -ne 0) { throw 'git commit for latest.json failed.' }
-    & $GitPath -C $ProjectRoot push origin main
+        Write-Host ''
+        Write-Host '[6/6] Committing and pushing latest.json...' -ForegroundColor Yellow
+        $GitPath = Get-ToolPath 'git'
+        & $GitPath -C $ProjectRoot add 'latest.json'
+        if ($LASTEXITCODE -ne 0) { throw 'git add latest.json failed.' }
+        & $GitPath -C $ProjectRoot commit -m ("release: v{0}" -f $AppVersion)
+        if ($LASTEXITCODE -ne 0) { throw 'git commit for latest.json failed.' }
+        & $GitPath -C $ProjectRoot push origin main
+        if ($LASTEXITCODE -ne 0) { throw 'git push for latest.json failed.' }
+    }
+    catch {
+        Write-Host ''
+        Write-Host '=============================================' -ForegroundColor Red
+        Write-Host (" GitHub release {0} is already LIVE, but latest.json was not updated." -f $Tag) -ForegroundColor Red
+        Write-Host '=============================================' -ForegroundColor Red
+        Write-Host $_.Exception.Message -ForegroundColor Red
+        Write-Host ''
+        Write-Host 'The download site will keep showing the previous version until you fix this manually:' -ForegroundColor Yellow
+        Write-Host ("  1. Check {0} was written correctly." -f $LatestJsonPath)
+        Write-Host '  2. git add latest.json && git commit -m "release: fix latest.json" && git push origin main'
+        Write-Host ''
+        Wait-ForClose
+        exit 1
+    }
     if ($LASTEXITCODE -ne 0) { throw 'git push for latest.json failed.' }
 
     Write-Host ''
