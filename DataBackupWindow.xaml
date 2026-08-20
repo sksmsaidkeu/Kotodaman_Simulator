@@ -1,0 +1,190 @@
+<Window x:Class="KotodamanWordFinder.DataBackupWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="데이터 백업 / 복원"
+        Width="860"
+        Height="650"
+        MinWidth="720"
+        MinHeight="520"
+        WindowStartupLocation="CenterOwner"
+        Background="#0F141C"
+        Foreground="#F4F7FB">
+    <Window.Resources>
+        <Style TargetType="Button">
+            <Setter Property="Foreground" Value="#F4F7FB"/>
+            <Setter Property="Background" Value="#263448"/>
+            <Setter Property="BorderBrush" Value="#435470"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="14,9"/>
+            <Setter Property="Margin" Value="0,0,8,0"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Cursor" Value="Hand"/>
+        </Style>
+        <Style TargetType="ListBoxItem">
+            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Margin" Value="0,0,0,8"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="#F4F7FB"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid Margin="22">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0">
+            <TextBlock Text="데이터 전체 백업 / 복원"
+                       FontSize="25"
+                       FontWeight="Bold"
+                       Foreground="#66D9EF"/>
+            <TextBlock Margin="0,7,0,0"
+                       TextWrapping="Wrap"
+                       Foreground="#AEB8C8"
+                       FontSize="13"
+                       Text="캐릭터 DB · 캐릭터 이미지 · 덱 · 덱 프리셋 · 단어 데이터 · 사용자 설정을 ZIP 하나로 보관합니다. 복원 직전에는 현재 상태를 자동으로 한 번 더 안전 백업합니다."/>
+        </StackPanel>
+
+        <Border Grid.Row="1"
+                Margin="0,16,0,12"
+                Padding="14,12"
+                Background="#17212D"
+                BorderBrush="#34455C"
+                BorderThickness="1"
+                CornerRadius="10">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel>
+                    <TextBlock Text="백업 저장 위치"
+                               FontWeight="SemiBold"/>
+                    <TextBlock x:Name="BackupDirectoryText"
+                               Margin="0,4,0,0"
+                               Foreground="#8FA0B4"
+                               TextWrapping="Wrap"/>
+                </StackPanel>
+                <Button Grid.Column="1"
+                        Content="폴더 열기"
+                        Margin="12,0,0,0"
+                        Click="OpenBackupFolderButton_Click"/>
+            </Grid>
+        </Border>
+
+        <Border Grid.Row="2"
+                Padding="12"
+                Background="#111A24"
+                BorderBrush="#34455C"
+                BorderThickness="1"
+                CornerRadius="10">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <Grid Margin="2,0,2,10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="백업 목록"
+                               FontSize="17"
+                               FontWeight="Bold"/>
+                    <TextBlock x:Name="BackupCountText"
+                               Grid.Column="1"
+                               Foreground="#66D9EF"
+                               VerticalAlignment="Center"/>
+                </Grid>
+
+                <ListBox x:Name="BackupListBox"
+                         Grid.Row="1"
+                         Background="Transparent"
+                         BorderThickness="0"
+                         ScrollViewer.VerticalScrollBarVisibility="Auto">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Border Padding="14,11"
+                                    Background="#1B2735"
+                                    BorderBrush="#3A4D67"
+                                    BorderThickness="1"
+                                    CornerRadius="8">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding FileName}"
+                                                   FontWeight="SemiBold"
+                                                   TextTrimming="CharacterEllipsis"/>
+                                        <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                                            <TextBlock Text="{Binding KindText}"
+                                                       Foreground="#FFD08A"
+                                                       Margin="0,0,12,0"/>
+                                            <TextBlock Text="{Binding CreatedText}"
+                                                       Foreground="#8FA0B4"
+                                                       Margin="0,0,12,0"/>
+                                            <TextBlock Text="{Binding SizeText}"
+                                                       Foreground="#8FA0B4"/>
+                                        </StackPanel>
+                                    </StackPanel>
+                                    <TextBlock Grid.Column="1"
+                                               Margin="12,0,0,0"
+                                               VerticalAlignment="Center"
+                                               Foreground="#66D9EF"
+                                               Text="선택"/>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </Grid>
+        </Border>
+
+        <TextBlock x:Name="StatusText"
+                   Grid.Row="3"
+                   Margin="2,12,2,12"
+                   TextWrapping="Wrap"
+                   Foreground="#AEB8C8"
+                   Text="새 백업을 만들거나 기존 백업을 선택해 복원할 수 있습니다."/>
+
+        <Grid Grid.Row="4">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <WrapPanel>
+                <Button x:Name="CreateBackupButton"
+                        Content="새 백업 만들기"
+                        Background="#167C8C"
+                        BorderBrush="#29A5B5"
+                        Click="CreateBackupButton_Click"/>
+                <Button x:Name="RestoreBackupButton"
+                        Content="선택 백업 복원"
+                        Background="#305C9E"
+                        BorderBrush="#4E85D8"
+                        Click="RestoreBackupButton_Click"/>
+                <Button x:Name="DeleteBackupButton"
+                        Content="선택 백업 삭제"
+                        Background="#69313A"
+                        BorderBrush="#8C4652"
+                        Click="DeleteBackupButton_Click"/>
+                <Button Content="목록 새로고침"
+                        Click="RefreshButton_Click"/>
+            </WrapPanel>
+
+            <Button Grid.Column="1"
+                    Content="닫기"
+                    Margin="8,0,0,0"
+                    Click="CloseButton_Click"/>
+        </Grid>
+    </Grid>
+</Window>

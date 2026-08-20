@@ -1,0 +1,235 @@
+<Window x:Class="KotodamanWordFinder.CharacterFormEditorWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="동일 이름 모드시프트 형태 편집"
+        Width="920"
+        Height="620"
+        MinWidth="800"
+        MinHeight="520"
+        WindowStartupLocation="CenterOwner"
+        Background="#10131A"
+        Foreground="#F4F7FB"
+        FontFamily="Malgun Gothic"
+        FontSize="13">
+    <Window.Resources>
+        <Style TargetType="TextBox">
+            <Setter Property="MinHeight" Value="38"/>
+            <Setter Property="Padding" Value="9,6"/>
+            <Setter Property="Background" Value="#222A37"/>
+            <Setter Property="Foreground" Value="#F4F7FB"/>
+            <Setter Property="CaretBrush" Value="#F4F7FB"/>
+            <Setter Property="BorderBrush" Value="#3A4658"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+        <Style TargetType="Button">
+            <Setter Property="Background" Value="#2A3342"/>
+            <Setter Property="Foreground" Value="#F4F7FB"/>
+            <Setter Property="BorderBrush" Value="#46546A"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="12,8"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="Border"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="7"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Border" Property="Background" Value="#344154"/>
+                                <Setter TargetName="Border" Property="BorderBrush" Value="#66D9EF"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style TargetType="ListBoxItem">
+            <Setter Property="Foreground" Value="#F4F7FB"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Margin" Value="0,0,0,6"/>
+            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListBoxItem">
+                        <Border x:Name="ItemBorder"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="#334154"
+                                BorderThickness="1"
+                                CornerRadius="7"
+                                Padding="10,8">
+                            <ContentPresenter/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="ItemBorder" Property="Background" Value="#263443"/>
+                                <Setter TargetName="ItemBorder" Property="BorderBrush" Value="#52718A"/>
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="ItemBorder" Property="Background" Value="#26475B"/>
+                                <Setter TargetName="ItemBorder" Property="BorderBrush" Value="#66D9EF"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Grid Margin="16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0" Margin="0,0,0,12">
+            <TextBlock x:Name="HeaderText" FontSize="20" FontWeight="Bold"/>
+            <TextBlock Margin="0,5,0,0"
+                       Foreground="#AEB8C8"
+                       TextWrapping="Wrap"
+                       Text="기본 형태는 캐릭터 상세 편집의 기존 이름·문자·이미지를 사용합니다. 여기에는 이름이 같은 모드시프트 형태만 추가하세요."/>
+        </StackPanel>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="300"/>
+                <ColumnDefinition Width="14"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Border Grid.Column="0" Background="#171C26" BorderBrush="#2A3342" BorderThickness="1" CornerRadius="10" Padding="12">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="추가 형태" FontSize="16" FontWeight="Bold" Margin="0,0,0,10"/>
+                    <ListBox x:Name="FormListBox" Grid.Row="1" SelectionChanged="FormListBox_SelectionChanged">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Grid MinHeight="54">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="48"/>
+                                        <ColumnDefinition Width="10"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Border Width="46"
+                                            Height="46"
+                                            Background="#151B25"
+                                            BorderBrush="#3A4658"
+                                            BorderThickness="1"
+                                            CornerRadius="7"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            ClipToBounds="True">
+                                        <Grid>
+                                            <Image Source="{Binding Thumbnail}"
+                                                   Visibility="{Binding ThumbnailVisibility}"
+                                                   Stretch="Uniform"
+                                                   HorizontalAlignment="Center"
+                                                   VerticalAlignment="Center"/>
+                                            <TextBlock Text="이미지&#x0a;없음"
+                                                       Visibility="{Binding PlaceholderVisibility}"
+                                                       Foreground="#718096"
+                                                       FontSize="8"
+                                                       TextAlignment="Center"
+                                                       HorizontalAlignment="Center"
+                                                       VerticalAlignment="Center"/>
+                                        </Grid>
+                                    </Border>
+                                    <StackPanel Grid.Column="2" VerticalAlignment="Center">
+                                        <TextBlock Text="{Binding Name}" FontWeight="SemiBold" FontSize="14" TextTrimming="CharacterEllipsis"/>
+                                        <TextBlock Text="{Binding LettersText}" Foreground="#AEB8C8" FontSize="11" Margin="0,4,0,0" TextTrimming="CharacterEllipsis"/>
+                                    </StackPanel>
+                                </Grid>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                    <WrapPanel Grid.Row="2" Margin="0,10,0,0">
+                        <Button Content="새 형태" Margin="0,0,8,0" Click="NewFormButton_Click"/>
+                        <Button Content="선택 삭제" Background="#4A2932" BorderBrush="#75404D" Foreground="#FFD8DF" Click="DeleteFormButton_Click"/>
+                    </WrapPanel>
+                </Grid>
+            </Border>
+
+            <Border Grid.Column="2" Background="#171C26" BorderBrush="#2A3342" BorderThickness="1" CornerRadius="10" Padding="16">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <StackPanel>
+                        <TextBlock Text="형태 이름" Foreground="#AEB8C8" Margin="0,0,0,5"/>
+                        <TextBox x:Name="FormNameTextBox" ToolTip="예: 모드시프트, 통상/변환 후를 구분할 짧은 이름"/>
+
+                        <TextBlock Text="사용 가능 문자" Foreground="#AEB8C8" Margin="0,14,0,5"/>
+                        <TextBox x:Name="FormLettersTextBox" ToolTip="이 형태에서 사용할 수 있는 문자"/>
+
+                        <Grid Margin="0,14,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="10"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel>
+                                <TextBlock Text="형태 속성 (선택)" Foreground="#AEB8C8" Margin="0,0,0,5"/>
+                                <TextBox x:Name="FormAttributeTextBox" ToolTip="火/水/木/光/闇/天/冥/虹. 빈칸이면 기본 형태 속성을 사용합니다."/>
+                            </StackPanel>
+                            <StackPanel Grid.Column="2">
+                                <TextBlock Text="형태 종족 (선택)" Foreground="#AEB8C8" Margin="0,0,0,5"/>
+                                <TextBox x:Name="FormSpeciesTextBox" ToolTip="神/魔/英/龍/獣/霊/物/妖. 빈칸이면 기본 형태 종족을 사용합니다."/>
+                            </StackPanel>
+                        </Grid>
+                        <TextBlock Text="서브 / 변환 속성 (선택)" Foreground="#AEB8C8" Margin="0,10,0,5"/>
+                        <TextBox x:Name="FormSubAttributesTextBox" ToolTip="여러 속성은 공백, /, 쉼표로 구분합니다. 빈칸이면 별도 서브 속성 없음."/>
+
+                        <TextBlock Text="메모" Foreground="#AEB8C8" Margin="0,14,0,5"/>
+                        <TextBox x:Name="FormNoteTextBox" AcceptsReturn="True" Height="66" TextWrapping="Wrap" VerticalContentAlignment="Top"/>
+
+                        <Grid Margin="0,14,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="100"/>
+                                <ColumnDefinition Width="14"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Border Width="100" Height="100" Background="#18202B" BorderBrush="#46546A" BorderThickness="1" CornerRadius="8" ClipToBounds="True">
+                                <Grid>
+                                    <Image x:Name="FormImagePreview" Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Collapsed"/>
+                                    <TextBlock x:Name="FormImagePlaceholder" Text="이미지 없음" Foreground="#7F8999" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Grid>
+                            </Border>
+                            <StackPanel Grid.Column="2" VerticalAlignment="Center">
+                                <TextBlock Text="형태 이미지" FontWeight="SemiBold"/>
+                                <TextBlock x:Name="FormImageFileText" Foreground="#8D98AA" FontSize="11" Margin="0,4,0,8" Text="등록된 이미지 없음" TextTrimming="CharacterEllipsis"/>
+                                <WrapPanel>
+                                    <Button Content="이미지 선택" Margin="0,0,8,0" Click="ChooseImageButton_Click"/>
+                                    <Button Content="이미지 제거" Background="#4A2932" BorderBrush="#75404D" Foreground="#FFD8DF" Click="RemoveImageButton_Click"/>
+                                </WrapPanel>
+                            </StackPanel>
+                        </Grid>
+
+                        <Button x:Name="ApplyFormButton" Content="현재 형태 반영" Margin="0,18,0,0" HorizontalAlignment="Left" Background="#3D78D8" BorderBrush="#4B8BFF" Click="ApplyFormButton_Click"/>
+                        <TextBlock x:Name="EditorStatusText" Margin="0,10,0,0" Foreground="#AEB8C8" TextWrapping="Wrap"/>
+                    </StackPanel>
+                </ScrollViewer>
+            </Border>
+        </Grid>
+
+        <Grid Grid.Row="2" Margin="0,14,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Foreground="#8D98AA" VerticalAlignment="Center" Text="저장하면 손패에서 형태별 이미지와 문자를 선택할 수 있습니다."/>
+            <WrapPanel Grid.Column="1">
+                <Button Content="취소" Margin="0,0,8,0" Click="CancelButton_Click"/>
+                <Button Content="저장하고 닫기" Background="#4B8BFF" BorderBrush="#4B8BFF" Foreground="White" FontWeight="SemiBold" Click="SaveButton_Click"/>
+            </WrapPanel>
+        </Grid>
+    </Grid>
+</Window>

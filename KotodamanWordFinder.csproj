@@ -1,0 +1,100 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
+    <PlatformTarget>x64</PlatformTarget>
+    <Prefer32Bit>false</Prefer32Bit>
+
+    <!-- SDK 버전에 따라 켜지기도 해서 명시적으로 끕니다. 코드에서 BinaryFormatter를 쓰지 않습니다. -->
+    <EnableUnsafeBinaryFormatterSerialization>false</EnableUnsafeBinaryFormatterSerialization>
+
+    <Version>1.25.1</Version>
+    <AssemblyVersion>1.25.1.0</AssemblyVersion>
+    <FileVersion>1.25.1.0</FileVersion>
+    <InformationalVersion>1.25.1</InformationalVersion>
+    <Product>코토다망 최장 단어 탐색기</Product>
+    <Description>코토다망 덱과 손패를 기준으로 가능한 최장 단어를 탐색하는 Windows 도구</Description>
+    <Company>KotodamanWordFinder</Company>
+    <Authors>KotodamanWordFinder</Authors>
+    <ApplicationIcon>Assets\AppIcon.ico</ApplicationIcon>
+
+    <!-- Velopack은 자체 Main()이 필요해 App.xaml의 자동 생성 진입점을 대신 씁니다. -->
+    <StartupObject>KotodamanWordFinder.App</StartupObject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="StbImageSharp" Version="2.30.15" />
+    <PackageReference Include="OpenCvSharp4.Windows" Version="4.10.0.20240616" />
+    <PackageReference Include="OpenCvSharp4" Version="4.10.0.20240616" ExcludeAssets="analyzers" />
+    <PackageReference Include="Velopack" Version="1.2.0" />
+  </ItemGroup>
+
+  <!-- Velopack이 커스텀 Main()을 쓰려면 App.xaml의 자동 Main() 생성을 꺼야 합니다. -->
+  <ItemGroup>
+    <ApplicationDefinition Remove="App.xaml" />
+    <Page Include="App.xaml" />
+  </ItemGroup>
+
+  <!--
+    일반 디버그 빌드에서는 대용량 Data를 bin 아래에 복제하지 않습니다.
+    정식 Publish에서만 기본 사전/이미지를 배포 폴더에 포함합니다.
+  -->
+  <ItemGroup>
+    <None Update="Data\**\*.*">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+    </None>
+    <None Update="Data\**\*.backup">
+      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+    </None>
+    <None Update="Data\**\*.tmp">
+      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+    </None>
+    <None Update="Data\**\*.seed.tmp">
+      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+    </None>
+    <None Update="Images\Characters\**\*.*">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+    </None>
+    <None Update="사용법.txt">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </None>
+    <None Update="apply_data_update.bat">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </None>
+  </ItemGroup>
+
+  <!-- 디버그 빌드 출력 중 불필요한 복제/Windows x86 런타임을 정리합니다. -->
+  <Target Name="TrimUnusedRuntimeFiles" AfterTargets="Build">
+    <RemoveDir Directories="$(OutDir)Data" Condition="Exists('$(OutDir)Data')" />
+    <RemoveDir Directories="$(OutDir)Images" Condition="Exists('$(OutDir)Images')" />
+    <RemoveDir Directories="$(OutDir)runtimes\win-x86" Condition="Exists('$(OutDir)runtimes\win-x86')" />
+    <ItemGroup>
+      <!-- RID 없는 빌드는 runtimes\ 아래, RID 지정(-r win-x64) 빌드는 출력 루트로 평탄화됩니다. -->
+      <UnusedOpenCvVideoIo Include="$(OutDir)runtimes\win-x64\native\opencv_videoio_ffmpeg*.dll" />
+      <UnusedOpenCvVideoIo Include="$(OutDir)opencv_videoio_ffmpeg*.dll" />
+    </ItemGroup>
+    <Delete Files="@(UnusedOpenCvVideoIo)" />
+  </Target>
+
+  <!-- 정식 배포본에서도 사용하지 않는 x86/FFmpeg 파일을 제거합니다. -->
+  <Target Name="TrimUnusedPublishedRuntimeFiles" AfterTargets="Publish">
+    <RemoveDir Directories="$(PublishDir)runtimes\win-x86" Condition="Exists('$(PublishDir)runtimes\win-x86')" />
+    <ItemGroup>
+      <!-- publish는 -r win-x64로 돌아가 네이티브가 루트로 평탄화됩니다. 두 경로를 모두 지웁니다. -->
+      <UnusedPublishedOpenCvVideoIo Include="$(PublishDir)runtimes\win-x64\native\opencv_videoio_ffmpeg*.dll" />
+      <UnusedPublishedOpenCvVideoIo Include="$(PublishDir)opencv_videoio_ffmpeg*.dll" />
+    </ItemGroup>
+    <Delete Files="@(UnusedPublishedOpenCvVideoIo)" />
+  </Target>
+
+</Project>

@@ -1,0 +1,807 @@
+﻿<Window x:Class="KotodamanWordFinder.CharacterWebImportWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="캐릭터 웹 반자동 등록"
+        Width="1080"
+        Height="820"
+        MinWidth="760"
+        MinHeight="560"
+        WindowStartupLocation="CenterOwner"
+        Background="#101820"
+        Foreground="#F4F7FB"
+        FontFamily="Malgun Gothic">
+    <Window.Resources>
+        <Style TargetType="TextBox">
+            <Setter Property="Background" Value="#111A24"/>
+            <Setter Property="Foreground" Value="#F4F7FB"/>
+            <Setter Property="BorderBrush" Value="#315068"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="8,6"/>
+            <Setter Property="CaretBrush" Value="#66D9EF"/>
+        </Style>
+        <Style TargetType="ComboBox">
+            <Setter Property="MinHeight" Value="39"/>
+            <Setter Property="Padding" Value="10,5"/>
+            <Setter Property="Background" Value="#222A37"/>
+            <Setter Property="Foreground" Value="#F4F7FB"/>
+            <Setter Property="BorderBrush" Value="#3A4658"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="SnapsToDevicePixels" Value="True"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ComboBox">
+                        <Grid>
+                            <ToggleButton x:Name="DropDownToggle"
+                                          Focusable="False"
+                                          ClickMode="Press"
+                                          Background="{TemplateBinding Background}"
+                                          Foreground="{TemplateBinding Foreground}"
+                                          BorderBrush="{TemplateBinding BorderBrush}"
+                                          BorderThickness="{TemplateBinding BorderThickness}"
+                                          Padding="{TemplateBinding Padding}"
+                                          HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                          IsChecked="{Binding IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}">
+                                <ToggleButton.Template>
+                                    <ControlTemplate TargetType="ToggleButton">
+                                        <Border x:Name="ToggleBorder"
+                                                Background="{TemplateBinding Background}"
+                                                BorderBrush="{TemplateBinding BorderBrush}"
+                                                BorderThickness="{TemplateBinding BorderThickness}"
+                                                CornerRadius="6"
+                                                SnapsToDevicePixels="True">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="34"/>
+                                                </Grid.ColumnDefinitions>
+                                                <ContentPresenter Grid.Column="0"
+                                                                  Margin="{TemplateBinding Padding}"
+                                                                  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                                  VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                                                  Content="{Binding SelectionBoxItem, RelativeSource={RelativeSource AncestorType=ComboBox}}"
+                                                                  ContentTemplate="{Binding SelectionBoxItemTemplate, RelativeSource={RelativeSource AncestorType=ComboBox}}"
+                                                                  ContentTemplateSelector="{Binding ItemTemplateSelector, RelativeSource={RelativeSource AncestorType=ComboBox}}"
+                                                                  TextElement.Foreground="{TemplateBinding Foreground}"
+                                                                  RecognizesAccessKey="True"/>
+                                                <Border Grid.Column="1"
+                                                        Background="#1B222D"
+                                                        BorderBrush="#3A4658"
+                                                        BorderThickness="1,0,0,0"
+                                                        CornerRadius="0,6,6,0">
+                                                    <Path Width="10"
+                                                          Height="6"
+                                                          HorizontalAlignment="Center"
+                                                          VerticalAlignment="Center"
+                                                          Fill="#C8D1DE"
+                                                          Data="M 0 0 L 10 0 L 5 6 Z"/>
+                                                </Border>
+                                            </Grid>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="ToggleBorder" Property="Background" Value="#293442"/>
+                                                <Setter TargetName="ToggleBorder" Property="BorderBrush" Value="#547086"/>
+                                            </Trigger>
+                                            <Trigger Property="IsChecked" Value="True">
+                                                <Setter TargetName="ToggleBorder" Property="Background" Value="#263746"/>
+                                                <Setter TargetName="ToggleBorder" Property="BorderBrush" Value="#66D9EF"/>
+                                            </Trigger>
+                                            <Trigger Property="IsEnabled" Value="False">
+                                                <Setter TargetName="ToggleBorder" Property="Opacity" Value="0.55"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </ToggleButton.Template>
+                            </ToggleButton>
+
+                            <TextBox x:Name="PART_EditableTextBox"
+                                     Style="{x:Null}"
+                                     Visibility="Hidden"
+                                     Margin="8,2,38,2"
+                                     Padding="3,0"
+                                     Background="#222A37"
+                                     Foreground="#F4F7FB"
+                                     CaretBrush="#F4F7FB"
+                                     BorderThickness="0"
+                                     VerticalContentAlignment="Center"
+                                     HorizontalContentAlignment="Stretch"
+                                     Text="{Binding Text, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+                            <Popup x:Name="PART_Popup"
+                                   AllowsTransparency="True"
+                                   Focusable="False"
+                                   IsOpen="{TemplateBinding IsDropDownOpen}"
+                                   Placement="Bottom"
+                                   PopupAnimation="Fade">
+                                <Border Margin="0,4,0,0"
+                                        MinWidth="{Binding ActualWidth, RelativeSource={RelativeSource TemplatedParent}}"
+                                        MaxHeight="{TemplateBinding MaxDropDownHeight}"
+                                        Background="#171C26"
+                                        BorderBrush="#46546A"
+                                        BorderThickness="1"
+                                        CornerRadius="7"
+                                        Padding="4">
+                                    <ScrollViewer VerticalScrollBarVisibility="Auto"
+                                                  HorizontalScrollBarVisibility="Disabled"
+                                                  CanContentScroll="True">
+                                        <ItemsPresenter KeyboardNavigation.DirectionalNavigation="Contained"/>
+                                    </ScrollViewer>
+                                </Border>
+                            </Popup>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsEditable" Value="True">
+                                <Setter TargetName="PART_EditableTextBox" Property="Visibility" Value="Visible"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="PART_EditableTextBox" Property="Opacity" Value="0.55"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style TargetType="ComboBoxItem">
+            <Setter Property="Background" Value="#222A37"/>
+            <Setter Property="Foreground" Value="#F4F7FB"/>
+            <Setter Property="Padding" Value="10,8"/>
+            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ComboBoxItem">
+                        <Border x:Name="ItemBorder"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="Transparent"
+                                BorderThickness="1"
+                                CornerRadius="5"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsHighlighted" Value="True">
+                                <Setter TargetName="ItemBorder" Property="Background" Value="#29465A"/>
+                                <Setter TargetName="ItemBorder" Property="BorderBrush" Value="#547086"/>
+                                <Setter Property="Foreground" Value="#FFFFFF"/>
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="ItemBorder" Property="Background" Value="#1D4051"/>
+                                <Setter TargetName="ItemBorder" Property="BorderBrush" Value="#66D9EF"/>
+                                <Setter Property="Foreground" Value="#FFFFFF"/>
+                                <Setter Property="FontWeight" Value="SemiBold"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Foreground" Value="#718096"/>
+                                <Setter Property="Opacity" Value="0.8"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="CheckBox">
+            <Setter Property="Foreground" Value="#DCE7F3"/>
+        </Style>
+        <Style x:Key="ImportButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="#22384A"/>
+            <Setter Property="Foreground" Value="#F4F7FB"/>
+            <Setter Property="BorderBrush" Value="#3A657F"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="13,8"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="Root"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="7"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Root" Property="Background" Value="#2D5065"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="Root" Property="Opacity" Value="0.45"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="PrimaryImportButtonStyle"
+               TargetType="Button"
+               BasedOn="{StaticResource ImportButtonStyle}">
+            <Setter Property="Background" Value="#176B78"/>
+            <Setter Property="BorderBrush" Value="#39C5D4"/>
+        </Style>
+    </Window.Resources>
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto"
+                  HorizontalScrollBarVisibility="Disabled">
+    <Grid Margin="18">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel>
+            <TextBlock Text="캐릭터 웹 반자동 등록"
+                       FontSize="22"
+                       FontWeight="Bold"
+                       Foreground="#66D9EF"/>
+            <TextBlock Margin="0,6,0,0"
+                       Foreground="#9FB0C2"
+                       TextWrapping="Wrap"
+                       Text="GameWith 캐릭터 페이지 주소를 붙여 넣으세요. 이름·문자·속성·종족·이미지와 특성에 적힌 그룹 정보를 읽고, 가져온 값은 아래에서 직접 확인/수정할 수 있습니다."/>
+        </StackPanel>
+
+        <StackPanel Grid.Row="1">
+            <Border
+                    Margin="0,14,0,0"
+                    Padding="13"
+                    Background="#172330"
+                    BorderBrush="#315068"
+                    BorderThickness="1"
+                    CornerRadius="10">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel>
+                        <TextBlock Text="캐릭터 페이지 주소"
+                                   Foreground="#B9C5D3"
+                                   Margin="0,0,0,5"/>
+                        <TextBox x:Name="SourceUrlTextBox"
+                                 MinHeight="35"
+                                 ToolTip="GameWith의 개별 캐릭터 페이지 URL"/>
+                        <TextBlock Margin="2,6,0,0"
+                                   Foreground="#7F95AA"
+                                   FontSize="11"
+                                   Text="속성/종족은 GameWith 기본정보에서 자동 인식 · 등급/분류는 직접 선택 · 그룹은 특성 문구에서 자동 추정"/>
+                    </StackPanel>
+                    <Button x:Name="FetchButton"
+                            Grid.Column="1"
+                            Margin="12,0,0,0"
+                            VerticalAlignment="Center"
+                            Content="정보 가져오기"
+                            Style="{StaticResource PrimaryImportButtonStyle}"
+                            Click="FetchButton_Click"/>
+                </Grid>
+            </Border>
+
+            <Expander x:Name="BatchImportExpander"
+                      Margin="0,10,0,0"
+                      Foreground="#66D9EF"
+                      FontWeight="SemiBold"
+                      Header="연속 자동 등록 / 등록 전 검수"
+                      IsExpanded="False">
+                <Border Margin="0,8,0,0"
+                        Padding="13"
+                        Background="#172330"
+                        BorderBrush="#315068"
+                        BorderThickness="1"
+                        CornerRadius="10">
+                    <StackPanel>
+                        <TextBlock Foreground="#9FB0C2"
+                                   FontWeight="Normal"
+                                   TextWrapping="Wrap"
+                                   Text="개별 캐릭터 주소나 콜라보 정리 페이지는 기존 링크 찾기를 사용하세요. GameWith 전 캐릭터 목록에서 평가·오리지널 조건으로 고를 때는 아래 조건 검색을 사용합니다. 가져온 뒤에는 검수표에서 문자·속성·종족·그룹을 확인할 수 있습니다."/>
+
+                        <Border Margin="0,11,0,2"
+                                Padding="11"
+                                Background="#111D28"
+                                BorderBrush="#3D6178"
+                                BorderThickness="1"
+                                CornerRadius="8">
+                            <StackPanel>
+                                <TextBlock Foreground="#B8EAF5"
+                                           FontWeight="SemiBold"
+                                           Text="GameWith 전 캐릭터 조건 검색"/>
+                                <TextBlock Margin="0,3,0,8"
+                                           Foreground="#8398AC"
+                                           FontSize="11"
+                                           FontWeight="Normal"
+                                           TextWrapping="Wrap"
+                                           Text="GameWith 표의 서브/리더 평가를 직접 읽습니다. 오리지널만 선택해도 명시적인 콜라보 근거가 있을 때만 제외합니다. 그룹이 없는 오리지널 캐릭터도 정상 후보로 유지됩니다."/>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="14"/>
+                                        <ColumnDefinition Width="230"/>
+                                        <ColumnDefinition Width="14"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                        <TextBlock Margin="0,0,8,0" VerticalAlignment="Center" Foreground="#B9C5D3" Text="평가"/>
+                                        <CheckBox x:Name="RatedSSSCheckBox" Margin="0,0,10,0" Content="SSS"/>
+                                        <CheckBox x:Name="RatedSSCheckBox" Margin="0,0,10,0" IsChecked="True" Content="SS"/>
+                                        <CheckBox x:Name="RatedSCheckBox" IsChecked="True" Content="S"/>
+                                    </StackPanel>
+                                    <ComboBox x:Name="RatedMatchModeComboBox" Grid.Column="2" SelectedIndex="0">
+                                        <ComboBoxItem Content="서브 또는 리더 중 하나" Tag="Either"/>
+                                        <ComboBoxItem Content="서브 평가만" Tag="SubOnly"/>
+                                        <ComboBoxItem Content="리더 평가만" Tag="LeaderOnly"/>
+                                        <ComboBoxItem Content="서브·리더 모두" Tag="Both"/>
+                                    </ComboBox>
+                                    <StackPanel Grid.Column="4" Orientation="Horizontal" VerticalAlignment="Center">
+                                        <CheckBox x:Name="RatedOriginalOnlyCheckBox" Margin="0,0,14,0" IsChecked="True" Content="오리지널 우선(확정 콜라보만 제외)"/>
+                                        <CheckBox x:Name="RatedExcludeRegisteredCheckBox" IsChecked="True" Content="이미 등록된 이름 제외"/>
+                                    </StackPanel>
+                                    <Button x:Name="RatedDiscoverButton"
+                                            Grid.Column="5"
+                                            Margin="10,0,0,0"
+                                            Content="조건에 맞는 링크 찾기"
+                                            Style="{StaticResource PrimaryImportButtonStyle}"
+                                            Click="RatedDiscoverButton_Click"/>
+                                </Grid>
+                                <CheckBox x:Name="RatedRecentSixStarACheckBox"
+                                          Margin="0,8,0,0"
+                                          IsChecked="True"
+                                          Content="세이유니마 이후 오리지널은 6성 확인 시 A 평가도 포함"
+                                          ToolTip="A 평가 후보는 개별 페이지와 코토다망DB에서 6성·소속 그룹을 다시 확인한 뒤 검수표에 남깁니다."/>
+                                <TextBlock x:Name="RatedSearchStatusText"
+                                           Margin="0,7,0,0"
+                                           Foreground="#7F95AA"
+                                           FontSize="11"
+                                           FontWeight="Normal"
+                                           Text="기본값: GameWith S·SS + 세이유니마 이후 6성 A, 서브/리더 중 하나라도 해당, 오리지널 우선"/>
+                            </StackPanel>
+                        </Border>
+
+                        <TextBlock Margin="0,10,0,5"
+                                   Foreground="#B9C5D3"
+                                   FontWeight="Normal"
+                                   Text="GameWith 개별 / 목록 페이지 주소"/>
+                        <TextBox x:Name="BatchUrlTextBox"
+                                 Height="96"
+                                 AcceptsReturn="True"
+                                 VerticalScrollBarVisibility="Auto"
+                                 HorizontalScrollBarVisibility="Auto"
+                                 TextWrapping="NoWrap"
+                                 ToolTip="개별 캐릭터 URL 여러 개 또는 콜라보 정리 페이지 URL을 입력할 수 있습니다. 전 캐릭터 평가는 위 조건 검색을 사용하세요."/>
+
+                        <Grid Margin="0,9,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Button x:Name="BatchDiscoverButton"
+                                    Content="목록에서 캐릭터 링크 찾기"
+                                    Style="{StaticResource ImportButtonStyle}"
+                                    Click="BatchDiscoverButton_Click"/>
+                            <TextBlock Grid.Column="1"
+                                       Margin="10,0,0,0"
+                                       VerticalAlignment="Center"
+                                       Foreground="#7F95AA"
+                                       FontWeight="Normal"
+                                       FontSize="11"
+                                       TextWrapping="Wrap"
+                                       Text="개별 URL만 넣었다면 이 단계는 건너뛰고 바로 연속 가져오기를 눌러도 됩니다."/>
+                        </Grid>
+
+                        <Grid Margin="0,10,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="220"/>
+                                <ColumnDefinition Width="14"/>
+                                <ColumnDefinition Width="150"/>
+                                <ColumnDefinition Width="14"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel>
+                                <TextBlock Foreground="#B9C5D3"
+                                           FontWeight="Normal"
+                                           Margin="0,0,0,5"
+                                           Text="일괄 등급 / 분류 (오리지널·콜라보 포함)"/>
+                                <ComboBox x:Name="BatchCategoryComboBox"/>
+                            </StackPanel>
+                            <StackPanel Grid.Column="2">
+                                <TextBlock Foreground="#B9C5D3"
+                                           FontWeight="Normal"
+                                           Margin="0,0,0,5"
+                                           Text="요청 간격(ms)"/>
+                                <TextBox x:Name="BatchDelayTextBox"
+                                         Text="1100"
+                                         ToolTip="200~5000ms 사이로 적용됩니다. 대량 등록은 1000ms 이상을 권장합니다."/>
+                            </StackPanel>
+                            <StackPanel Grid.Column="4"
+                                        VerticalAlignment="Bottom">
+                                <CheckBox x:Name="BatchUseImageCheckBox"
+                                          Margin="0,0,0,9"
+                                          IsChecked="True"
+                                          FontWeight="Normal"
+                                          Content="캐릭터 이미지도 함께 가져오기"/>
+                            </StackPanel>
+                        </Grid>
+
+                        <Grid Margin="0,12,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Button x:Name="BatchStartButton"
+                                    Content="연속 가져오기 시작"
+                                    Style="{StaticResource PrimaryImportButtonStyle}"
+                                    Click="BatchStartButton_Click"/>
+                            <Button x:Name="BatchCancelButton"
+                                    Grid.Column="1"
+                                    Margin="8,0,0,0"
+                                    Content="중지"
+                                    Style="{StaticResource ImportButtonStyle}"
+                                    IsEnabled="False"
+                                    Click="BatchCancelButton_Click"/>
+                            <Button x:Name="BatchRetryFailedButton"
+                                    Grid.Column="2"
+                                    Margin="8,0,0,0"
+                                    Content="실패 URL만 다시 입력"
+                                    Style="{StaticResource ImportButtonStyle}"
+                                    IsEnabled="False"
+                                    Click="BatchRetryFailedButton_Click"/>
+                            <Button x:Name="BatchApplyButton"
+                                    Grid.Column="4"
+                                    Margin="10,0,0,0"
+                                    Content="선택 항목을 목록에 등록"
+                                    Style="{StaticResource PrimaryImportButtonStyle}"
+                                    IsEnabled="False"
+                                    Click="BatchApplyButton_Click"/>
+                        </Grid>
+
+                        <Grid Margin="0,12,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <ProgressBar x:Name="BatchProgressBar"
+                                         Height="14"
+                                         Minimum="0"
+                                         Maximum="1"
+                                         Value="0"
+                                         Foreground="#39C5D4"
+                                         Background="#0D141C"/>
+                            <TextBlock x:Name="BatchProgressText"
+                                       Grid.Column="1"
+                                       Margin="10,-3,0,0"
+                                       Foreground="#9FB0C2"
+                                       FontWeight="Normal"
+                                       Text="0 / 0"/>
+                        </Grid>
+
+                        <TextBlock x:Name="BatchSummaryText"
+                                   Margin="0,9,0,0"
+                                   Foreground="#9FB0C2"
+                                   FontWeight="Normal"
+                                   TextWrapping="Wrap"
+                                   Text="주소를 붙여 넣은 뒤 연속 가져오기를 시작하세요."/>
+
+                        <Grid Margin="0,10,0,5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock VerticalAlignment="Center"
+                                       Foreground="#B8EAF5"
+                                       FontWeight="SemiBold"
+                                       Text="등록 전 검수표 · 노란 행은 확인 권장"/>
+                            <Button x:Name="BatchSelectAllButton"
+                                    Grid.Column="1"
+                                    Margin="8,0,0,0"
+                                    Padding="9,5"
+                                    Content="전체 선택"
+                                    Style="{StaticResource ImportButtonStyle}"
+                                    Click="BatchSelectAllButton_Click"/>
+                            <Button x:Name="BatchSelectNoneButton"
+                                    Grid.Column="2"
+                                    Margin="8,0,0,0"
+                                    Padding="9,5"
+                                    Content="전체 해제"
+                                    Style="{StaticResource ImportButtonStyle}"
+                                    Click="BatchSelectNoneButton_Click"/>
+                        </Grid>
+
+                        <DataGrid x:Name="BatchReviewDataGrid"
+                                  Height="235"
+                                  AutoGenerateColumns="False"
+                                  CanUserAddRows="False"
+                                  CanUserDeleteRows="False"
+                                  HeadersVisibility="Column"
+                                  GridLinesVisibility="Horizontal"
+                                  Background="#111A24"
+                                  Foreground="#F4F7FB"
+                                  BorderBrush="#315068"
+                                  RowBackground="#111A24"
+                                  AlternatingRowBackground="#15202B"
+                                  HorizontalGridLinesBrush="#263848"
+                                  VerticalGridLinesBrush="#263848"
+                                  SelectionMode="Extended"
+                                  RowHeight="54"
+                                  ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                                  ScrollViewer.VerticalScrollBarVisibility="Auto">
+                            <DataGrid.Resources>
+                                <Style TargetType="DataGridColumnHeader">
+                                    <Setter Property="Background" Value="#22384A"/>
+                                    <Setter Property="Foreground" Value="#DCE7F3"/>
+                                    <Setter Property="BorderBrush" Value="#315068"/>
+                                    <Setter Property="Padding" Value="7,6"/>
+                                </Style>
+                                <Style TargetType="DataGridCell">
+                                    <Setter Property="Foreground" Value="#F4F7FB"/>
+                                    <Setter Property="BorderBrush" Value="#263848"/>
+                                    <Setter Property="Padding" Value="5,3"/>
+                                </Style>
+                            </DataGrid.Resources>
+                            <DataGrid.RowStyle>
+                                <Style TargetType="DataGridRow">
+                                    <Setter Property="Foreground" Value="#F4F7FB"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding NeedsReview}" Value="True">
+                                            <Setter Property="Background" Value="#4A3B1E"/>
+                                            <Setter Property="Foreground" Value="#FFE6A8"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </DataGrid.RowStyle>
+                            <DataGrid.Columns>
+                                <DataGridCheckBoxColumn Header="등록"
+                                                        Width="52"
+                                                        Binding="{Binding IsSelected, UpdateSourceTrigger=PropertyChanged}"/>
+                                <DataGridCheckBoxColumn Header="★ 주력"
+                                                        Width="68"
+                                                        Binding="{Binding IsFavorite, UpdateSourceTrigger=PropertyChanged}"/>
+                                <DataGridCheckBoxColumn Header="이미지"
+                                                        Width="58"
+                                                        Binding="{Binding UseImage, UpdateSourceTrigger=PropertyChanged}"/>
+                                <DataGridTemplateColumn Header="미리보기" Width="80" IsReadOnly="True">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Border Width="64" Height="48" Background="#0D141C" CornerRadius="4" Margin="2">
+                                                <Image Source="{Binding DownloadedImagePath}" Stretch="Uniform" Margin="2"/>
+                                            </Border>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTextColumn Header="GW 평가"
+                                                    Width="112"
+                                                    IsReadOnly="True"
+                                                    Binding="{Binding GameWithRatingText}"/>
+                                <DataGridTextColumn Header="상태"
+                                                    Width="105"
+                                                    IsReadOnly="True"
+                                                    Binding="{Binding ReviewStatus}"/>
+                                <DataGridTextColumn Header="이름"
+                                                    Width="170"
+                                                    Binding="{Binding Name, UpdateSourceTrigger=PropertyChanged}"/>
+                                <DataGridTextColumn Header="문자"
+                                                    Width="150"
+                                                    Binding="{Binding LettersText, UpdateSourceTrigger=PropertyChanged}"/>
+                                <DataGridTextColumn Header="속성"
+                                                    Width="62"
+                                                    Binding="{Binding Attribute, UpdateSourceTrigger=PropertyChanged}"/>
+                                <DataGridTextColumn Header="서브속성"
+                                                    Width="90"
+                                                    Binding="{Binding SubAttributesText, UpdateSourceTrigger=PropertyChanged}"/>
+                                <DataGridTextColumn Header="종족"
+                                                    Width="62"
+                                                    Binding="{Binding Species, UpdateSourceTrigger=PropertyChanged}"/>
+                                <DataGridTextColumn Header="소속 그룹"
+                                                    Width="170"
+                                                    Binding="{Binding GroupName, UpdateSourceTrigger=PropertyChanged}"/>
+                                <DataGridTextColumn Header="같이 취급되는 그룹"
+                                                    Width="180"
+                                                    Binding="{Binding IncludedGroupsText, UpdateSourceTrigger=PropertyChanged}"/>
+                                <DataGridTextColumn Header="등급/분류"
+                                                    Width="120"
+                                                    Binding="{Binding Category, UpdateSourceTrigger=PropertyChanged}"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+
+                        <TextBox x:Name="BatchLogTextBox"
+                                 Margin="0,8,0,0"
+                                 Height="100"
+                                 IsReadOnly="True"
+                                 AcceptsReturn="True"
+                                 VerticalScrollBarVisibility="Auto"
+                                 TextWrapping="Wrap"
+                                 FontFamily="Consolas"
+                                 FontSize="11"/>
+                    </StackPanel>
+                </Border>
+            </Expander>
+        </StackPanel>
+
+        <ScrollViewer Grid.Row="2"
+                      Margin="0,14,0,0"
+                      VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+                <Border Padding="13"
+                        Background="#172330"
+                        BorderBrush="#315068"
+                        BorderThickness="1"
+                        CornerRadius="10">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="150"/>
+                            <ColumnDefinition Width="16"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Border Width="150"
+                                Height="150"
+                                Background="#0D141C"
+                                BorderBrush="#315068"
+                                BorderThickness="1"
+                                CornerRadius="8">
+                            <Grid>
+                                <TextBlock x:Name="ImagePlaceholderText"
+                                           Text="이미지 없음"
+                                           Foreground="#718096"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Center"/>
+                                <Image x:Name="CharacterImagePreview"
+                                       Margin="6"
+                                       Stretch="Uniform"/>
+                            </Grid>
+                        </Border>
+
+                        <StackPanel Grid.Column="2">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="12"/>
+                                    <ColumnDefinition Width="190"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel>
+                                    <TextBlock Text="캐릭터 이름"
+                                               Foreground="#B9C5D3"
+                                               Margin="0,0,0,5"/>
+                                    <TextBox x:Name="CharacterNameTextBox"/>
+                                </StackPanel>
+                                <StackPanel Grid.Column="2">
+                                    <TextBlock Text="등급 / 분류 (오리지널·콜라보 포함)"
+                                               Foreground="#B9C5D3"
+                                               Margin="0,0,0,5"/>
+                                    <ComboBox x:Name="CategoryComboBox"/>
+                                </StackPanel>
+                            </Grid>
+
+                            <TextBlock Text="사용 가능 문자"
+                                       Foreground="#B9C5D3"
+                                       Margin="0,12,0,5"/>
+                            <TextBox x:Name="LettersTextBox"
+                                     ToolTip="공백, 쉼표, ·로 구분하거나 가나를 연속 입력할 수 있습니다."/>
+
+                            <Grid Margin="0,12,0,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="120"/>
+                                    <ColumnDefinition Width="12"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="12"/>
+                                    <ColumnDefinition Width="120"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel>
+                                    <TextBlock Text="속성"
+                                               Foreground="#B9C5D3"
+                                               Margin="0,0,0,5"/>
+                                    <ComboBox x:Name="AttributeComboBox"/>
+                                </StackPanel>
+                                <StackPanel Grid.Column="2">
+                                    <TextBlock Text="서브 속성"
+                                               Foreground="#B9C5D3"
+                                               Margin="0,0,0,5"/>
+                                    <TextBox x:Name="SubAttributesTextBox"
+                                             ToolTip="듀얼/서브 속성이 있으면 / 또는 공백으로 구분해 입력할 수 있습니다."/>
+                                </StackPanel>
+                                <StackPanel Grid.Column="4">
+                                    <TextBlock Text="종족"
+                                               Foreground="#B9C5D3"
+                                               Margin="0,0,0,5"/>
+                                    <ComboBox x:Name="SpeciesComboBox"/>
+                                </StackPanel>
+                            </Grid>
+
+                            <Grid Margin="0,12,0,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="12"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel>
+                                    <TextBlock Text="소속 그룹"
+                                               Foreground="#B9C5D3"
+                                               Margin="0,0,0,5"/>
+                                    <ComboBox x:Name="GroupComboBox"
+                                              IsEditable="True"
+                                              IsTextSearchEnabled="True"/>
+                                    <TextBlock x:Name="GroupCandidateText"
+                                               Margin="2,5,0,0"
+                                               Foreground="#7F95AA"
+                                               FontSize="11"
+                                               TextWrapping="Wrap"
+                                               Text="인식 후보 없음 · 필요하면 직접 선택"/>
+                                </StackPanel>
+                                <StackPanel Grid.Column="2">
+                                    <TextBlock Text="같이 취급되는 그룹"
+                                               Foreground="#B9C5D3"
+                                               Margin="0,0,0,5"/>
+                                    <TextBox x:Name="IncludedGroupsTextBox"/>
+                                </StackPanel>
+                            </Grid>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+
+                <Border Margin="0,12,0,0"
+                        Padding="13"
+                        Background="#172330"
+                        BorderBrush="#315068"
+                        BorderThickness="1"
+                        CornerRadius="10">
+                    <StackPanel>
+                        <TextBlock Text="가져오기 상태"
+                                   FontWeight="Bold"
+                                   Foreground="#B8EAF5"/>
+                        <TextBlock x:Name="SourceSummaryText"
+                                   Margin="0,7,0,0"
+                                   Foreground="#AEB8C8"
+                                   TextWrapping="Wrap"
+                                   Text="주소를 입력하고 정보를 가져오세요."/>
+                        <CheckBox x:Name="UseImageCheckBox"
+                                  Margin="0,10,0,0"
+                                  IsChecked="True"
+                                  Content="웹 이미지를 다운로드해 캐릭터 이미지로 사용"/>
+                        <TextBlock x:Name="ImageUrlText"
+                                   Margin="20,4,0,0"
+                                   Foreground="#718096"
+                                   FontSize="10"
+                                   TextWrapping="Wrap"/>
+                        <TextBlock x:Name="WarningText"
+                                   Margin="0,10,0,0"
+                                   Foreground="#FFD08A"
+                                   TextWrapping="Wrap"/>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
+
+        <Grid Grid.Row="3" Margin="0,14,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock x:Name="StatusText"
+                       VerticalAlignment="Center"
+                       Foreground="#8FE3B1"
+                       TextWrapping="Wrap"/>
+            <Button Grid.Column="1"
+                    Margin="10,0,0,0"
+                    Content="취소"
+                    Style="{StaticResource ImportButtonStyle}"
+                    Click="CancelButton_Click"/>
+            <Button x:Name="ApplyButton"
+                    Grid.Column="2"
+                    Margin="10,0,0,0"
+                    Content="상세 편집으로 가져오기"
+                    Style="{StaticResource PrimaryImportButtonStyle}"
+                    IsEnabled="False"
+                    Click="ApplyButton_Click"/>
+        </Grid>
+    </Grid>
+    </ScrollViewer>
+</Window>

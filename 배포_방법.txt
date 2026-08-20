@@ -1,0 +1,23 @@
+코토다망 최장 단어 탐색기 v1.25.1 전체 프로그램 배포 방법
+
+1. clean_run.bat으로 기능을 먼저 확인합니다.
+2. 캐릭터·이미지 변경이 있다면 create_data_update.bat으로 패치를 만들고 테스트합니다.
+3. 테스트와 배포 준비가 끝난 데이터만 accept_data_baseline.bat으로 승인합니다.
+4. publish_release.bat을 실행합니다.
+5. 완료 후 Publish 폴더에 생성된 portable.zip만 전달합니다.
+
+publish_release.bat은 다음 작업을 자동 수행합니다.
+- 프로젝트의 Version 값을 읽어 파일명 결정
+- 현재 Data가 승인된 ReleaseTools/Baseline과 같은지 검사
+- Windows x64 자체 포함 배포본 빌드
+- 포터블 ZIP 생성
+- 압축 전 300~400MB 폴더와 bin/obj 자동 삭제
+
+생성 예시
+Publish\KotodamanWordFinder_v1.25.1_win-x64_portable.zip
+
+중요
+- 프로그램 코드나 UI가 바뀌면 새 Publish ZIP을 만들어 다시 배포합니다.
+- 캐릭터와 이미지만 바뀌면 전체 Publish 대신 create_data_update.bat으로 작은 데이터 ZIP을 만들 수 있습니다.
+- 승인되지 않은 Data 변경이 있으면 Publish가 중단됩니다.
+- 자세한 내용은 배포_및_업데이트_방법.txt를 확인하세요.
