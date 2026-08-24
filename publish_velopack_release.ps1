@@ -11,7 +11,10 @@ $ReleasesDir = Join-Path $ProjectRoot 'Releases'
 $ProjectDataDirectory = Join-Path $ProjectRoot 'Data'
 $LatestJsonPath = Join-Path $ProjectRoot 'latest.json'
 
-$PackId = 'KotodamanWordFinder'
+# PackId는 Velopack 설치 경로(%LocalAppData%\<PackId>)를 정한다.
+# AppPaths.ProductName('KotodamanWordFinder')과 절대 같으면 안 된다 —
+# 같으면 설치 관리자가 사용자 데이터 폴더를 설치 대상으로 잡아 덮어쓴다.
+$PackId = 'KotoTester'
 $Channel = 'win'
 $RepoUrl = 'https://github.com/sksmsaidkeu/Kotodaman_Simulator'
 
