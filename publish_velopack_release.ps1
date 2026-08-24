@@ -1,4 +1,7 @@
-﻿$ErrorActionPreference = 'Stop'
+﻿# -Draft: --publish 없이 draft 릴리스만 만들고 latest.json 단계를 건너뛴다.
+param([switch]$Draft)
+
+$ErrorActionPreference = 'Stop'
 Set-StrictMode -Version 2.0
 
 $ProjectRoot = $PSScriptRoot
@@ -119,12 +122,34 @@ try {
         '-o', $ReleasesDir,
         '--repoUrl', $RepoUrl,
         '--token', $GithubToken,
-        '--publish',
         '--releaseName', ("코토다망 최장 단어 탐색기 v{0}" -f $AppVersion),
         '--tag', $Tag
     )
+    if (-not $Draft) { $UploadArguments += '--publish' }
     & $VpkPath @UploadArguments
     if ($LASTEXITCODE -ne 0) { throw ("vpk upload github failed with exit code {0}." -f $LASTEXITCODE) }
+
+    # draft 자산은 익명으로 못 받는다. 여기서 latest.json을 올리면 다운로드 사이트가
+    # 404 링크를 가리키게 되므로 draft 모드에서는 5/6, 6/6을 통째로 건너뛴다.
+    if ($Draft) {
+        Write-Host ''
+        Write-Host '=============================================' -ForegroundColor Yellow
+        Write-Host (" Draft release {0} created (NOT public)." -f $Tag) -ForegroundColor Yellow
+        Write-Host '=============================================' -ForegroundColor Yellow
+        Write-Host 'latest.json was skipped on purpose: draft assets are not downloadable'
+        Write-Host 'anonymously, so pushing it now would point the site at a 404.'
+        Write-Host ''
+        Write-Host ("Setup exe: {0}" -f $SetupExePath)
+        Write-Host ("Releases:  {0}/releases" -f $RepoUrl)
+        Write-Host ''
+        Write-Host 'After verifying the build, publish with:'
+        Write-Host ("  gh release edit {0} --repo sksmsaidkeu/Kotodaman_Simulator --draft=false" -f $Tag)
+        Write-Host 'then write and push latest.json (or re-run this script without -Draft to'
+        Write-Host 'rebuild and re-upload from scratch).'
+        Write-Host ''
+        Wait-ForClose
+        exit 0
+    }
 
     # 이 지점부터는 릴리스가 이미 공개된 상태다. 아래에서 실패하면 일반 오류 메시지가 아니라
     # "릴리스는 떴는데 latest.json만 못 올렸다"는 걸 명확히 알려야 사용자가 헷갈리지 않는다.
