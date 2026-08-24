@@ -321,78 +321,78 @@
                   HorizontalScrollBarVisibility="Disabled"
                   PanningMode="VerticalOnly">
         <StackPanel Margin="20">
-            <Grid Margin="0,0,0,14">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
-
-                <StackPanel>
-                    <TextBlock Text="코토다망 최장 단어 탐색기"
-                               FontSize="27"
-                               FontWeight="Bold"/>
-                    <TextBlock Text="최장 단어를 먼저 찾고, 같은 글자 수에서는 예상 콤보가 높은 후보부터 보여줍니다. 콤보는 이번에 배치하는 캐릭터 문자가 하나 이상 들어간 단어만 계산합니다."
-                               Margin="0,5,0,0"
-                               Foreground="#AEB8C8"
-                               FontSize="13"/>
-                    <TextBlock x:Name="DataStatsText"
-                               Margin="0,5,0,0"
-                               Foreground="#66D9EF"
-                               FontSize="12"
-                               Text="데이터를 불러오는 중..."/>
-                </StackPanel>
-
-                <StackPanel Grid.Column="1" VerticalAlignment="Center">
+            <!-- 헤더는 세로로 쌓는다. 버튼 줄이 제목과 가로 폭을 다투면
+                 좁은 창에서 오른쪽이 잘려 나간다(실제로 그랬다). 자기 줄을 주면
+                 WrapPanel이 전체 폭을 받아 필요할 때 접힌다. -->
+            <StackPanel Margin="0,0,0,14">
+                <DockPanel LastChildFill="True">
                     <!-- 종료: Close()가 MainWindow_Closing을 태워 설정을 저장한다. -->
                     <Button Content="종료"
+                            DockPanel.Dock="Right"
                             Width="54"
                             Height="26"
                             Padding="0"
                             FontSize="12"
-                            Margin="0,0,0,8"
-                            HorizontalAlignment="Right"
+                            Margin="12,0,0,0"
+                            VerticalAlignment="Top"
                             ToolTip="설정을 저장하고 프로그램을 종료합니다."
                             Style="{StaticResource SecondaryButtonStyle}"
                             Click="ExitButton_Click"/>
+                    <TextBlock Text="코토다망 최장 단어 탐색기"
+                               FontSize="27"
+                               FontWeight="Bold"
+                               TextTrimming="CharacterEllipsis"/>
+                </DockPanel>
 
-                    <WrapPanel HorizontalAlignment="Right">
-                        <CheckBox x:Name="AutoSearchCheckBox"
-                                  Content="자동 검색"
-                                  IsChecked="True"
-                                  Margin="0,0,14,0"
-                                  Checked="AutoSearchCheckBox_Changed"
-                                  Unchecked="AutoSearchCheckBox_Changed"/>
-                        <Button Content="백업 / 복원"
-                                Height="44"
-                                Margin="0,0,8,0"
-                                Style="{StaticResource SecondaryButtonStyle}"
-                                Click="BackupRestoreButton_Click"/>
-                        <Button Content="사용자 데이터"
-                                Height="44"
-                                Margin="0,0,8,0"
-                                ToolTip="실제로 수정·저장되는 사용자 데이터 폴더를 엽니다."
-                                Style="{StaticResource SecondaryButtonStyle}"
-                                Click="OpenDataFolderButton_Click"/>
-                        <Button Content="오류 로그"
-                                Height="44"
-                                Margin="0,0,8,0"
-                                ToolTip="프로그램 오류와 실행 기록이 저장되는 로그 폴더를 엽니다."
-                                Style="{StaticResource SecondaryButtonStyle}"
-                                Click="OpenLogFolderButton_Click"/>
-                        <Button Content="다시 읽기"
-                                Height="44"
-                                Margin="0,0,8,0"
-                                Style="{StaticResource SecondaryButtonStyle}"
-                                Click="ReloadDataButton_Click"/>
-                        <Button Content="지금 검색"
-                                Width="112"
-                                Height="44"
-                                IsDefault="True"
-                                Style="{StaticResource PrimaryButtonStyle}"
-                                Click="SearchButton_Click"/>
-                    </WrapPanel>
-                </StackPanel>
-            </Grid>
+                <TextBlock Text="최장 단어를 먼저 찾고, 같은 글자 수에서는 예상 콤보가 높은 후보부터 보여줍니다. 콤보는 이번에 배치하는 캐릭터 문자가 하나 이상 들어간 단어만 계산합니다."
+                           Margin="0,5,0,0"
+                           Foreground="#AEB8C8"
+                           FontSize="13"
+                           TextWrapping="Wrap"/>
+                <TextBlock x:Name="DataStatsText"
+                           Margin="0,5,0,0"
+                           Foreground="#66D9EF"
+                           FontSize="12"
+                           TextWrapping="Wrap"
+                           Text="데이터를 불러오는 중..."/>
+
+                <WrapPanel HorizontalAlignment="Right" Margin="0,10,0,0">
+                    <CheckBox x:Name="AutoSearchCheckBox"
+                              Content="자동 검색"
+                              IsChecked="True"
+                              Margin="0,0,14,0"
+                              Checked="AutoSearchCheckBox_Changed"
+                              Unchecked="AutoSearchCheckBox_Changed"/>
+                    <Button Content="백업 / 복원"
+                            Height="44"
+                            Margin="0,0,8,0"
+                            Style="{StaticResource SecondaryButtonStyle}"
+                            Click="BackupRestoreButton_Click"/>
+                    <Button Content="사용자 데이터"
+                            Height="44"
+                            Margin="0,0,8,0"
+                            ToolTip="실제로 수정·저장되는 사용자 데이터 폴더를 엽니다."
+                            Style="{StaticResource SecondaryButtonStyle}"
+                            Click="OpenDataFolderButton_Click"/>
+                    <Button Content="오류 로그"
+                            Height="44"
+                            Margin="0,0,8,0"
+                            ToolTip="프로그램 오류와 실행 기록이 저장되는 로그 폴더를 엽니다."
+                            Style="{StaticResource SecondaryButtonStyle}"
+                            Click="OpenLogFolderButton_Click"/>
+                    <Button Content="다시 읽기"
+                            Height="44"
+                            Margin="0,0,8,0"
+                            Style="{StaticResource SecondaryButtonStyle}"
+                            Click="ReloadDataButton_Click"/>
+                    <Button Content="지금 검색"
+                            Width="112"
+                            Height="44"
+                            IsDefault="True"
+                            Style="{StaticResource PrimaryButtonStyle}"
+                            Click="SearchButton_Click"/>
+                </WrapPanel>
+            </StackPanel>
 
             <Border Style="{StaticResource SectionBorderStyle}"
                     Margin="0,0,0,12">

@@ -180,6 +180,16 @@ public partial class MainWindow : Window
                 exception);
         }
 
+        // 고해상도 배율/작은 화면에서도 창이 작업 영역 밖으로 잘리지 않게 맞춥니다.
+        // (CharacterWebImportWindow_Loaded와 같은 처리) 생성자에서 잡아야
+        // WindowStartupLocation="CenterScreen"이 조정된 크기로 가운데를 잡습니다.
+        double availableHeight = Math.Max(MinHeight, SystemParameters.WorkArea.Height - 24);
+        double availableWidth = Math.Max(MinWidth, SystemParameters.WorkArea.Width - 24);
+        MaxHeight = availableHeight;
+        MaxWidth = availableWidth;
+        Height = Math.Min(Height, availableHeight);
+        Width = Math.Min(Width, availableWidth);
+
         Closing += MainWindow_Closing;
     }
 
