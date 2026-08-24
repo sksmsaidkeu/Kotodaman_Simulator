@@ -122,7 +122,7 @@ try {
         '-o', $ReleasesDir,
         '--repoUrl', $RepoUrl,
         '--token', $GithubToken,
-        '--releaseName', ("코토다망 최장 단어 탐색기 v{0}" -f $AppVersion),
+        '--releaseName', ("코토테스터 v{0}" -f $AppVersion),
         '--tag', $Tag
     )
     if (-not $Draft) { $UploadArguments += '--publish' }
