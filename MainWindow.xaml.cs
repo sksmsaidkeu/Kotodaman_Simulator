@@ -3692,6 +3692,10 @@ public partial class MainWindow : Window
         }
     }
 
+    // Close()는 MainWindow_Closing을 거치므로 설정 저장이 그대로 실행된다.
+    // Application.Shutdown()이나 Environment.Exit()으로 바꾸면 저장을 건너뛴다.
+    private void ExitButton_Click(object sender, RoutedEventArgs e) => Close();
+
     private void OpenLogFolderButton_Click(object sender, RoutedEventArgs e)
     {
         try

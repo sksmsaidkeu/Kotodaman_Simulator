@@ -342,44 +342,56 @@
                                Text="데이터를 불러오는 중..."/>
                 </StackPanel>
 
-                <WrapPanel Grid.Column="1"
-                           VerticalAlignment="Center"
-                           HorizontalAlignment="Right">
-                    <CheckBox x:Name="AutoSearchCheckBox"
-                              Content="자동 검색"
-                              IsChecked="True"
-                              Margin="0,0,14,0"
-                              Checked="AutoSearchCheckBox_Changed"
-                              Unchecked="AutoSearchCheckBox_Changed"/>
-                    <Button Content="백업 / 복원"
-                            Height="44"
-                            Margin="0,0,8,0"
+                <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                    <!-- 종료: Close()가 MainWindow_Closing을 태워 설정을 저장한다. -->
+                    <Button Content="종료"
+                            Width="54"
+                            Height="26"
+                            Padding="0"
+                            FontSize="12"
+                            Margin="0,0,0,8"
+                            HorizontalAlignment="Right"
+                            ToolTip="설정을 저장하고 프로그램을 종료합니다."
                             Style="{StaticResource SecondaryButtonStyle}"
-                            Click="BackupRestoreButton_Click"/>
-                    <Button Content="사용자 데이터"
-                            Height="44"
-                            Margin="0,0,8,0"
-                            ToolTip="실제로 수정·저장되는 사용자 데이터 폴더를 엽니다."
-                            Style="{StaticResource SecondaryButtonStyle}"
-                            Click="OpenDataFolderButton_Click"/>
-                    <Button Content="오류 로그"
-                            Height="44"
-                            Margin="0,0,8,0"
-                            ToolTip="프로그램 오류와 실행 기록이 저장되는 로그 폴더를 엽니다."
-                            Style="{StaticResource SecondaryButtonStyle}"
-                            Click="OpenLogFolderButton_Click"/>
-                    <Button Content="다시 읽기"
-                            Height="44"
-                            Margin="0,0,8,0"
-                            Style="{StaticResource SecondaryButtonStyle}"
-                            Click="ReloadDataButton_Click"/>
-                    <Button Content="지금 검색"
-                            Width="112"
-                            Height="44"
-                            IsDefault="True"
-                            Style="{StaticResource PrimaryButtonStyle}"
-                            Click="SearchButton_Click"/>
-                </WrapPanel>
+                            Click="ExitButton_Click"/>
+
+                    <WrapPanel HorizontalAlignment="Right">
+                        <CheckBox x:Name="AutoSearchCheckBox"
+                                  Content="자동 검색"
+                                  IsChecked="True"
+                                  Margin="0,0,14,0"
+                                  Checked="AutoSearchCheckBox_Changed"
+                                  Unchecked="AutoSearchCheckBox_Changed"/>
+                        <Button Content="백업 / 복원"
+                                Height="44"
+                                Margin="0,0,8,0"
+                                Style="{StaticResource SecondaryButtonStyle}"
+                                Click="BackupRestoreButton_Click"/>
+                        <Button Content="사용자 데이터"
+                                Height="44"
+                                Margin="0,0,8,0"
+                                ToolTip="실제로 수정·저장되는 사용자 데이터 폴더를 엽니다."
+                                Style="{StaticResource SecondaryButtonStyle}"
+                                Click="OpenDataFolderButton_Click"/>
+                        <Button Content="오류 로그"
+                                Height="44"
+                                Margin="0,0,8,0"
+                                ToolTip="프로그램 오류와 실행 기록이 저장되는 로그 폴더를 엽니다."
+                                Style="{StaticResource SecondaryButtonStyle}"
+                                Click="OpenLogFolderButton_Click"/>
+                        <Button Content="다시 읽기"
+                                Height="44"
+                                Margin="0,0,8,0"
+                                Style="{StaticResource SecondaryButtonStyle}"
+                                Click="ReloadDataButton_Click"/>
+                        <Button Content="지금 검색"
+                                Width="112"
+                                Height="44"
+                                IsDefault="True"
+                                Style="{StaticResource PrimaryButtonStyle}"
+                                Click="SearchButton_Click"/>
+                    </WrapPanel>
+                </StackPanel>
             </Grid>
 
             <Border Style="{StaticResource SectionBorderStyle}"
