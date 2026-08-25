@@ -99,7 +99,6 @@ public partial class DeckEditorWindow : Window
         IReadOnlyList<CharacterEntry> currentDeck)
     {
         InitializeComponent();
-        Title = $"{Title} v{AppPaths.AppVersion}";
 
         SourceInitialized += (_, _) => FitWindowToCurrentWorkArea();
         Closing += DeckEditorWindow_Closing;

@@ -14,7 +14,6 @@ public partial class DataBackupWindow : Window
     public DataBackupWindow(string dataDirectory)
     {
         InitializeComponent();
-        Title = $"{Title} v{AppPaths.AppVersion}";
         _dataDirectory = dataDirectory;
         BackupDirectoryText.Text = DataBackupService.GetBackupDirectory(_dataDirectory);
         RefreshBackupList();

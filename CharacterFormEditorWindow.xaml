@@ -7,7 +7,7 @@
         MinWidth="800"
         MinHeight="520"
         WindowStartupLocation="CenterOwner"
-        Background="{StaticResource Bg.Backdrop}"
+        Style="{StaticResource ModalCardWindowStyle}"
         Foreground="{StaticResource Text.Primary}"
         FontFamily="Malgun Gothic"
         FontSize="13">
@@ -90,10 +90,9 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
+        <!-- 제목은 카드 크롬이 창의 Title 로 그립니다(캐릭터 이름은 생성자가 Title 에 넣습니다). -->
         <StackPanel Grid.Row="0" Margin="0,0,0,12">
-            <TextBlock x:Name="HeaderText" FontSize="20" FontWeight="Bold"/>
-            <TextBlock Margin="0,5,0,0"
-                       Foreground="{StaticResource Text.Secondary}"
+            <TextBlock Foreground="{StaticResource Text.Secondary}"
                        TextWrapping="Wrap"
                        Text="기본 형태는 캐릭터 상세 편집의 기존 이름·문자·이미지를 사용합니다. 여기에는 이름이 같은 모드시프트 형태만 추가하세요."/>
         </StackPanel>

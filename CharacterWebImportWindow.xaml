@@ -7,7 +7,7 @@
         MinWidth="760"
         MinHeight="560"
         WindowStartupLocation="CenterOwner"
-        Background="{StaticResource Bg.Backdrop}"
+        Style="{StaticResource ModalCardWindowStyle}"
         Foreground="{StaticResource Text.Primary}"
         FontFamily="Malgun Gothic">
     <Window.Resources>
@@ -236,13 +236,9 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
+        <!-- 제목은 카드 크롬이 창의 Title 로 그립니다. 여기에는 설명만 둡니다. -->
         <StackPanel>
-            <TextBlock Text="캐릭터 웹 반자동 등록"
-                       FontSize="22"
-                       FontWeight="Bold"
-                       Foreground="{StaticResource Accent.Focus}"/>
-            <TextBlock Margin="0,6,0,0"
-                       Foreground="{StaticResource Text.Secondary}"
+            <TextBlock Foreground="{StaticResource Text.Secondary}"
                        TextWrapping="Wrap"
                        Text="GameWith 캐릭터 페이지 주소를 붙여 넣으세요. 이름·문자·속성·종족·이미지와 특성에 적힌 그룹 정보를 읽고, 가져온 값은 아래에서 직접 확인/수정할 수 있습니다."/>
         </StackPanel>

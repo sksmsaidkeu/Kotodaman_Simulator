@@ -98,6 +98,10 @@
     <SolidColorBrush x:Key="Overlay.Alert"    Color="#E69E2A1E" po:Freeze="True"/>
 
     <!-- ── 반경 / 간격 ────────────────────────────────────────── -->
+    <!-- 모달 창 자체의 반경. 게임 카드가 앱 창 크기에서 이 값일 때 비슷하게 읽힙니다. -->
+    <CornerRadius x:Key="Radius.Modal">28</CornerRadius>
+    <!-- 이중선의 안쪽 선. 바깥 반경에서 인셋(5)만큼 뺀 값이라야 두 선이 평행하게 돕니다. -->
+    <CornerRadius x:Key="Radius.ModalInner">23</CornerRadius>
     <CornerRadius x:Key="Radius.Panel">12</CornerRadius>
     <CornerRadius x:Key="Radius.Card">10</CornerRadius>
     <CornerRadius x:Key="Radius.Button">7</CornerRadius>

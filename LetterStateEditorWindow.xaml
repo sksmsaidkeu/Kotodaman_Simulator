@@ -7,7 +7,7 @@
         MinWidth="760"
         MinHeight="560"
         WindowStartupLocation="CenterOwner"
-        Background="{StaticResource Bg.Backdrop}"
+        Style="{StaticResource ModalCardWindowStyle}"
         Foreground="{StaticResource Text.Primary}"
         FontFamily="Malgun Gothic"
         FontSize="13"
@@ -260,13 +260,9 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
+        <!-- 제목은 카드 크롬이 창의 Title 로 그립니다(캐릭터 이름은 생성자가 Title 에 넣습니다). -->
         <StackPanel Grid.Row="0" Margin="0,0,0,14">
-            <TextBlock x:Name="TitleText"
-                       Text="문자 상태 편집"
-                       FontSize="24"
-                       FontWeight="Bold"/>
-            <TextBlock Margin="0,6,0,0"
-                       Foreground="{StaticResource Text.Secondary}"
+            <TextBlock Foreground="{StaticResource Text.Secondary}"
                        TextWrapping="Wrap"
                        Text="기본 문자는 캐릭터 편집 화면에서 관리합니다. 여기에는 조건 달성이나 변신 후처럼 같은 캐릭터 안에서 바뀌는 문자만 추가하세요. 모드시프트는 별도 캐릭터로 등록합니다."/>
         </StackPanel>

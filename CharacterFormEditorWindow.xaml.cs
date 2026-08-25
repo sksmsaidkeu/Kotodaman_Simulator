@@ -40,7 +40,7 @@ public partial class CharacterFormEditorWindow : Window
             .Select(form => new FormEditItem(CharacterLibraryService.CloneForm(form)))
             .ToList();
 
-        HeaderText.Text = $"{characterName} · 동일 이름 모드시프트";
+        Title = $"{characterName} · 동일 이름 모드시프트";
         RefreshList(_items.FirstOrDefault()?.Form.Id);
         if (_items.Count == 0)
         {

@@ -25,7 +25,7 @@ public partial class LetterStateEditorWindow : Window
     {
         InitializeComponent();
 
-        TitleText.Text = string.IsNullOrWhiteSpace(characterName)
+        Title = string.IsNullOrWhiteSpace(characterName)
             ? "새 캐릭터 · 문자 상태 편집"
             : $"{characterName} · 문자 상태 편집";
         StateKindComboBox.ItemsSource = CharacterLetterStateKinds.All;

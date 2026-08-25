@@ -32,7 +32,6 @@ public partial class CharacterBulkEditorWindow : Window
     public CharacterBulkEditorWindow(IReadOnlyList<CharacterEntry> characters, string dataDirectory)
     {
         InitializeComponent();
-        Title = $"{Title} v{AppPaths.AppVersion}";
         _searchTimer.Tick += SearchTimer_Tick;
         Closed += (_, _) => _searchTimer.Stop();
 

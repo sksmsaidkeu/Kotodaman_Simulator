@@ -3,8 +3,10 @@
   (색의 유일한 출처는 Kotodama.xaml 이고, ReleaseTools/check_theme.sh 가 그 전제를 검사합니다.)
   근거는 PRD_UI.md §2 / §4.
 -->
-<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<ResourceDictionary x:Class="KotodamanWordFinder.Themes.Controls"
+                    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:shell="clr-namespace:System.Windows.Shell;assembly=PresentationFramework">
 
     <!--
       P3 かな 뱃지. 게임은 카드 좌상단의 흰 원 + 갈색 글자 + 탠 링입니다.
@@ -39,6 +41,206 @@
                         <Trigger Property="IsEnabled" Value="False">
                             <Setter TargetName="ChipBorder" Property="Opacity" Value="0.5"/>
                             <Setter Property="Cursor" Value="Arrow"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--
+      P1 크림 카드 모달. 게임의 クエスト / デッキ編成 패널을 창 틀 자체로 옮긴 것입니다.
+      Kotodaman_UI_1.jpg / _2.jpg 의 카드 해부: 큰 반경 + 이중 테두리 + 중앙 제목 +
+      마름모 구분선 + 우상단 X.
+
+      WindowStyle=None 을 쓰는 대가로 네이티브가 주던 것을 여기서 전부 되만듭니다.
+      WindowChrome 이 이동/8방향 리사이즈/더블클릭 최대화/스냅/시스템 메뉴를 돌려주고,
+      Alt+F4 와 창 이름(Title)은 원래대로 남습니다. 최대화가 작업표시줄을 덮지 않게
+      하는 보정만 Controls.xaml.cs 가 WM_GETMINMAXINFO 로 합니다.
+
+      AllowsTransparency 를 켠 이유: 28px 반경과 창 그림자는 창 밖이 투명해야만 나옵니다.
+      이 앱에는 자식 HWND(WebBrowser/WindowsFormsHost)가 없어 그 대가를 피할 이유가 없습니다.
+    -->
+
+    <!-- ⑥ 우상단 X. 게임과 같이 최소화/최대화 버튼은 두지 않습니다(7개 창 모두 모달). -->
+    <Style x:Key="ModalCloseButtonStyle" TargetType="Button">
+        <Setter Property="Width" Value="32"/>
+        <Setter Property="Height" Value="32"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Foreground" Value="{StaticResource Text.Primary}"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <!--
+                      IsHitTestVisibleInChrome 은 WindowChrome 이 히트테스트로 '직접 맞힌'
+                      요소에서만 읽습니다(조상으로 거슬러 올라가지 않습니다). 그래서 Button 이
+                      아니라 실제로 맞는 Border 에 걸고, 글리프는 히트테스트에서 빼둡니다.
+                      이걸 빼면 제목줄 영역이라 X 가 마우스에 아예 반응하지 않습니다.
+                    -->
+                    <Border x:Name="CloseFace"
+                            Background="{TemplateBinding Background}"
+                            BorderThickness="0"
+                            CornerRadius="{StaticResource Radius.Pill}"
+                            shell:WindowChrome.IsHitTestVisibleInChrome="True">
+                        <Path x:Name="CloseGlyph"
+                              Data="M 0,0 L 13,13 M 13,0 L 0,13"
+                              Stroke="{TemplateBinding Foreground}"
+                              StrokeThickness="2.4"
+                              StrokeStartLineCap="Round"
+                              StrokeEndLineCap="Round"
+                              IsHitTestVisible="False"
+                              HorizontalAlignment="Center"
+                              VerticalAlignment="Center"/>
+                    </Border>
+                    <!--
+                      트리거 순서가 곧 우선순위입니다(뒤에 오는 것이 이깁니다).
+                      포커스는 '테두리'로만 표시해 면색 싸움에서 빠집니다 - 예전에 포커스가
+                      뒤에 있어서 눌림의 진한 면을 덮고 흰 획만 남아 X 가 안 보였습니다.
+                    -->
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsKeyboardFocused" Value="True">
+                            <Setter TargetName="CloseFace" Property="BorderBrush" Value="{StaticResource Accent.Focus}"/>
+                            <Setter TargetName="CloseFace" Property="BorderThickness" Value="2"/>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="CloseFace" Property="Background" Value="{StaticResource Alert.Face}"/>
+                            <Setter TargetName="CloseGlyph" Property="Stroke" Value="{StaticResource Alert.Text}"/>
+                        </Trigger>
+                        <!-- 눌림은 면이 진해지므로 획을 흰색으로 뒤집습니다(대비 6.9). -->
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="CloseFace" Property="Background" Value="{StaticResource Alert.Text}"/>
+                            <Setter TargetName="CloseGlyph" Property="Stroke" Value="{StaticResource Text.OnAccent}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="ModalCardWindowStyle" TargetType="Window">
+        <Setter Property="WindowStyle" Value="None"/>
+        <Setter Property="AllowsTransparency" Value="True"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Foreground" Value="{StaticResource Text.Primary}"/>
+        <!-- 최대화가 작업표시줄을 덮지 않게 하는 보정. 이유는 Controls.xaml.cs 참조. -->
+        <EventSetter Event="Loaded" Handler="ModalWindow_Loaded"/>
+        <Setter Property="shell:WindowChrome.WindowChrome">
+            <Setter.Value>
+                <!--
+                  CaptionHeight 는 창 최상단부터 잽니다. 그림자 여백(10) + 제목줄(58) = 68.
+                  ResizeBorderThickness 는 그림자 여백보다 조금 크게 잡아, 눈에 보이는
+                  카드 가장자리를 집어도 크기 조절이 걸리게 합니다.
+                -->
+                <shell:WindowChrome CaptionHeight="68"
+                                    ResizeBorderThickness="14"
+                                    CornerRadius="0"
+                                    GlassFrameThickness="0"
+                                    UseAeroCaptionButtons="False"/>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Window">
+                    <Grid x:Name="WindowRoot" Margin="10">
+                        <!--
+                          카드 면은 Bg.Panel 이 아니라 Bg.Backdrop 입니다. 이 카드가 곧 창 바탕이고,
+                          창 안의 섹션 패널들이 이미 Bg.Panel(한 단계 밝은 면)이라 같은 토큰을 쓰면
+                          섹션이 배경에 묻힙니다. 지금의 면 계층(바탕 < 패널 < 필드)이 그대로 삽니다.
+
+                          그림자는 빈 Border 에만 겁니다. 카드 안쪽 내용까지 효과 파이프라인에
+                          넣으면 수백 행짜리 목록이 갱신마다 비트맵으로 다시 그려집니다.
+                        -->
+                        <Border x:Name="CardShadow"
+                                Background="{StaticResource Bg.Backdrop}"
+                                CornerRadius="{StaticResource Radius.Modal}">
+                            <Border.Effect>
+                                <DropShadowEffect BlurRadius="18" ShadowDepth="3" Direction="270" Opacity="0.32"/>
+                            </Border.Effect>
+                        </Border>
+
+                        <!-- ② 이중선: 바깥 탠 선 + 5px 안쪽 얇은 선 -->
+                        <Border x:Name="CardEdge"
+                                BorderBrush="{StaticResource Line.TanStrong}"
+                                BorderThickness="2"
+                                CornerRadius="{StaticResource Radius.Modal}"/>
+                        <Border x:Name="CardEdgeInner"
+                                Margin="5"
+                                BorderBrush="{StaticResource Line.Tan}"
+                                BorderThickness="1"
+                                CornerRadius="{StaticResource Radius.ModalInner}"/>
+
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="58"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+
+                            <!-- ① 상단 중앙 장식. 게임 카드의 세 잎 장식(가운데 물방울 + 좌우 잎)입니다. -->
+                            <Path x:Name="CardOrnament"
+                                  Grid.Row="0"
+                                  Data="M 13,0 C 15.4,0 16.4,2.6 15.4,6.2 L 13,14 L 10.6,6.2 C 9.6,2.6 10.6,0 13,0 Z M 16.6,0.6 C 20.4,0.8 24.4,4.4 26,10.4 C 22.2,7.6 18.6,4.4 16.6,0.6 Z M 9.4,0.6 C 5.6,0.8 1.6,4.4 0,10.4 C 3.8,7.6 7.4,4.4 9.4,0.6 Z"
+                                  Fill="{StaticResource Line.TanStrong}"
+                                  Width="26" Height="14"
+                                  HorizontalAlignment="Center"
+                                  VerticalAlignment="Top"
+                                  Margin="0,10,0,0"/>
+
+                            <!-- ③ 제목은 창의 Title 을 그대로 읽습니다. 창마다 제목을 두 번 적지 않습니다. -->
+                            <TextBlock Grid.Row="0"
+                                       Text="{TemplateBinding Title}"
+                                       FontSize="16"
+                                       FontWeight="SemiBold"
+                                       Foreground="{StaticResource Text.Primary}"
+                                       TextTrimming="CharacterEllipsis"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Bottom"
+                                       Margin="64,0,64,5"/>
+
+                            <Button Grid.Row="0"
+                                    x:Name="PART_ModalClose"
+                                    Style="{StaticResource ModalCloseButtonStyle}"
+                                    HorizontalAlignment="Right"
+                                    VerticalAlignment="Center"
+                                    Margin="0,4,18,0"
+                                    Click="ModalClose_Click"
+                                    AutomationProperties.Name="닫기"
+                                    ToolTip="닫기"
+                                    shell:WindowChrome.IsHitTestVisibleInChrome="True"/>
+
+                            <!-- ④ 제목 아래 얇은 가로선, 양 끝에 작은 마름모 -->
+                            <Grid Grid.Row="1" Height="9" Margin="30,0,30,0">
+                                <Rectangle Height="1"
+                                           VerticalAlignment="Center"
+                                           Margin="11,0,11,0"
+                                           Fill="{StaticResource Line.Soft}"/>
+                                <Path Data="M 4.5,0 L 9,4.5 L 4.5,9 L 0,4.5 Z"
+                                      Fill="{StaticResource Line.Soft}"
+                                      Width="9" Height="9"
+                                      HorizontalAlignment="Left"
+                                      VerticalAlignment="Center"/>
+                                <Path Data="M 4.5,0 L 9,4.5 L 4.5,9 L 0,4.5 Z"
+                                      Fill="{StaticResource Line.Soft}"
+                                      Width="9" Height="9"
+                                      HorizontalAlignment="Right"
+                                      VerticalAlignment="Center"/>
+                            </Grid>
+
+                            <!-- 기본 Window 템플릿이 주던 어도너 레이어를 되돌려 놓습니다. -->
+                            <AdornerDecorator Grid.Row="2" Margin="8,6,8,10">
+                                <ContentPresenter/>
+                            </AdornerDecorator>
+                        </Grid>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <!-- 최대화하면 카드가 화면을 꽉 채우므로 여백/반경/그림자를 접습니다. -->
+                        <Trigger Property="WindowState" Value="Maximized">
+                            <Setter TargetName="WindowRoot" Property="Margin" Value="0"/>
+                            <Setter TargetName="CardShadow" Property="Effect" Value="{x:Null}"/>
+                            <Setter TargetName="CardShadow" Property="CornerRadius" Value="0"/>
+                            <Setter TargetName="CardEdge" Property="CornerRadius" Value="0"/>
+                            <Setter TargetName="CardEdgeInner" Property="CornerRadius" Value="0"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
