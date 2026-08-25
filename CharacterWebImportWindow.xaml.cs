@@ -1,3 +1,4 @@
+using KotodamanWordFinder.Themes;
 ﻿using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -1148,8 +1149,7 @@ public partial class CharacterWebImportWindow : Window
     private void SetRatedSearchStatus(string message, bool isError)
     {
         RatedSearchStatusText.Text = message;
-        RatedSearchStatusText.Foreground = new SolidColorBrush(
-            (Color)ColorConverter.ConvertFromString(isError ? "#FF8D8D" : "#8FE3B1"));
+        RatedSearchStatusText.Foreground = isError ? Theme.Error : Theme.Success;
     }
 
     private static List<string> ParseBatchUrls(string text)
@@ -1298,15 +1298,13 @@ public partial class CharacterWebImportWindow : Window
     private void SetStatus(string message, bool isError)
     {
         StatusText.Text = message;
-        StatusText.Foreground = new SolidColorBrush(
-            (Color)ColorConverter.ConvertFromString(isError ? "#FF8D8D" : "#8FE3B1"));
+        StatusText.Foreground = isError ? Theme.Error : Theme.Success;
     }
 
     private void SetBatchSummary(string message, bool isError)
     {
         BatchSummaryText.Text = message;
-        BatchSummaryText.Foreground = new SolidColorBrush(
-            (Color)ColorConverter.ConvertFromString(isError ? "#FF8D8D" : "#8FE3B1"));
+        BatchSummaryText.Foreground = isError ? Theme.Error : Theme.Success;
     }
 
     private void AppendWarning(string message)

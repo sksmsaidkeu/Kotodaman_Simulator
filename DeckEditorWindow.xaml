@@ -7,17 +7,17 @@
         MinWidth="960"
         MinHeight="640"
         WindowStartupLocation="CenterOwner"
-        Background="#10131A"
-        Foreground="#F4F7FB"
+        Background="{StaticResource Bg.Backdrop}"
+        Foreground="{StaticResource Text.Primary}"
         FontFamily="Malgun Gothic"
         FontSize="13"
         TextOptions.TextFormattingMode="Display"
         TextOptions.TextRenderingMode="ClearType">
     <Window.Resources>
         <Style x:Key="EditorButtonStyle" TargetType="Button">
-            <Setter Property="Background" Value="#2A3342"/>
-            <Setter Property="Foreground" Value="#F4F7FB"/>
-            <Setter Property="BorderBrush" Value="#46546A"/>
+            <Setter Property="Background" Value="{StaticResource Line.Tan}"/>
+            <Setter Property="Foreground" Value="{StaticResource Text.Primary}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource Accent.PinkSoft}"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="Padding" Value="14,9"/>
             <Setter Property="FontWeight" Value="SemiBold"/>
@@ -84,24 +84,24 @@
         <Style x:Key="PrimaryButtonStyle"
                TargetType="Button"
                BasedOn="{StaticResource EditorButtonStyle}">
-            <Setter Property="Background" Value="#4B8BFF"/>
-            <Setter Property="BorderBrush" Value="#4B8BFF"/>
-            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Background" Value="{StaticResource Accent.Pink}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource Accent.Pink}"/>
+            <Setter Property="Foreground" Value="{StaticResource Text.OnAccent}"/>
         </Style>
         <Style x:Key="DangerButtonStyle"
                TargetType="Button"
                BasedOn="{StaticResource EditorButtonStyle}">
-            <Setter Property="Background" Value="#4A2932"/>
-            <Setter Property="BorderBrush" Value="#75404D"/>
-            <Setter Property="Foreground" Value="#FFD8DF"/>
+            <Setter Property="Background" Value="{StaticResource Rose.Face}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource Rose.Line}"/>
+            <Setter Property="Foreground" Value="{StaticResource Rose.Text}"/>
         </Style>
         <Style TargetType="TextBox">
             <Setter Property="MinHeight" Value="39"/>
             <Setter Property="Padding" Value="9,6"/>
-            <Setter Property="Background" Value="#222A37"/>
-            <Setter Property="Foreground" Value="#F4F7FB"/>
-            <Setter Property="CaretBrush" Value="#F4F7FB"/>
-            <Setter Property="BorderBrush" Value="#3A4658"/>
+            <Setter Property="Background" Value="{StaticResource Chip.Dark}"/>
+            <Setter Property="Foreground" Value="{StaticResource Text.Primary}"/>
+            <Setter Property="CaretBrush" Value="{StaticResource Text.Primary}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource Line.Tan}"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
         </Style>
@@ -109,9 +109,9 @@
         <Style TargetType="ComboBox">
             <Setter Property="MinHeight" Value="39"/>
             <Setter Property="Padding" Value="10,5"/>
-            <Setter Property="Background" Value="#222A37"/>
-            <Setter Property="Foreground" Value="#F4F7FB"/>
-            <Setter Property="BorderBrush" Value="#3A4658"/>
+            <Setter Property="Background" Value="{StaticResource Chip.Dark}"/>
+            <Setter Property="Foreground" Value="{StaticResource Text.Primary}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource Line.Tan}"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
             <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
@@ -155,27 +155,27 @@
                                                                   TextElement.Foreground="{TemplateBinding Foreground}"
                                                                   RecognizesAccessKey="True"/>
                                                 <Border Grid.Column="1"
-                                                        Background="#1B222D"
-                                                        BorderBrush="#3A4658"
+                                                        Background="{StaticResource Bg.PanelInner}"
+                                                        BorderBrush="{StaticResource Line.Tan}"
                                                         BorderThickness="1,0,0,0"
                                                         CornerRadius="0,6,6,0">
                                                     <Path Width="10"
                                                           Height="6"
                                                           HorizontalAlignment="Center"
                                                           VerticalAlignment="Center"
-                                                          Fill="#C8D1DE"
+                                                          Fill="{StaticResource Bg.Ivory}"
                                                           Data="M 0 0 L 10 0 L 5 6 Z"/>
                                                 </Border>
                                             </Grid>
                                         </Border>
                                         <ControlTemplate.Triggers>
                                             <Trigger Property="IsMouseOver" Value="True">
-                                                <Setter TargetName="ToggleBorder" Property="Background" Value="#293442"/>
-                                                <Setter TargetName="ToggleBorder" Property="BorderBrush" Value="#547086"/>
+                                                <Setter TargetName="ToggleBorder" Property="Background" Value="{StaticResource Bg.Ivory}"/>
+                                                <Setter TargetName="ToggleBorder" Property="BorderBrush" Value="{StaticResource Info.Line}"/>
                                             </Trigger>
                                             <Trigger Property="IsChecked" Value="True">
-                                                <Setter TargetName="ToggleBorder" Property="Background" Value="#263746"/>
-                                                <Setter TargetName="ToggleBorder" Property="BorderBrush" Value="#66D9EF"/>
+                                                <Setter TargetName="ToggleBorder" Property="Background" Value="{StaticResource Bg.PanelInner}"/>
+                                                <Setter TargetName="ToggleBorder" Property="BorderBrush" Value="{StaticResource Accent.Focus}"/>
                                             </Trigger>
                                             <Trigger Property="IsEnabled" Value="False">
                                                 <Setter TargetName="ToggleBorder" Property="Opacity" Value="0.55"/>
@@ -190,9 +190,9 @@
                                      Visibility="Hidden"
                                      Margin="8,2,38,2"
                                      Padding="3,0"
-                                     Background="#222A37"
-                                     Foreground="#F4F7FB"
-                                     CaretBrush="#F4F7FB"
+                                     Background="{StaticResource Chip.Dark}"
+                                     Foreground="{StaticResource Text.Primary}"
+                                     CaretBrush="{StaticResource Text.Primary}"
                                      BorderThickness="0"
                                      VerticalContentAlignment="Center"
                                      HorizontalContentAlignment="Stretch"
@@ -207,8 +207,8 @@
                                 <Border Margin="0,4,0,0"
                                         MinWidth="{Binding ActualWidth, RelativeSource={RelativeSource TemplatedParent}}"
                                         MaxHeight="{TemplateBinding MaxDropDownHeight}"
-                                        Background="#171C26"
-                                        BorderBrush="#46546A"
+                                        Background="{StaticResource Bg.Panel}"
+                                        BorderBrush="{StaticResource Accent.PinkSoft}"
                                         BorderThickness="1"
                                         CornerRadius="7"
                                         Padding="4">
@@ -233,8 +233,8 @@
             </Setter>
         </Style>
         <Style TargetType="ComboBoxItem">
-            <Setter Property="Background" Value="#222A37"/>
-            <Setter Property="Foreground" Value="#F4F7FB"/>
+            <Setter Property="Background" Value="{StaticResource Chip.Dark}"/>
+            <Setter Property="Foreground" Value="{StaticResource Text.Primary}"/>
             <Setter Property="Padding" Value="10,8"/>
             <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
@@ -252,18 +252,18 @@
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsHighlighted" Value="True">
-                                <Setter TargetName="ItemBorder" Property="Background" Value="#29465A"/>
-                                <Setter TargetName="ItemBorder" Property="BorderBrush" Value="#547086"/>
-                                <Setter Property="Foreground" Value="#FFFFFF"/>
+                                <Setter TargetName="ItemBorder" Property="Background" Value="{StaticResource Bg.Ivory}"/>
+                                <Setter TargetName="ItemBorder" Property="BorderBrush" Value="{StaticResource Info.Line}"/>
+                                <Setter Property="Foreground" Value="{StaticResource Text.OnAccent}"/>
                             </Trigger>
                             <Trigger Property="IsSelected" Value="True">
-                                <Setter TargetName="ItemBorder" Property="Background" Value="#1D4051"/>
-                                <Setter TargetName="ItemBorder" Property="BorderBrush" Value="#66D9EF"/>
-                                <Setter Property="Foreground" Value="#FFFFFF"/>
+                                <Setter TargetName="ItemBorder" Property="Background" Value="{StaticResource Accent.OrangeDeep}"/>
+                                <Setter TargetName="ItemBorder" Property="BorderBrush" Value="{StaticResource Accent.Focus}"/>
+                                <Setter Property="Foreground" Value="{StaticResource Text.OnAccent}"/>
                                 <Setter Property="FontWeight" Value="SemiBold"/>
                             </Trigger>
                             <Trigger Property="IsEnabled" Value="False">
-                                <Setter Property="Foreground" Value="#718096"/>
+                                <Setter Property="Foreground" Value="{StaticResource Text.Tertiary}"/>
                                 <Setter Property="Opacity" Value="0.8"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
@@ -273,15 +273,15 @@
         </Style>
 
         <Style TargetType="CheckBox">
-            <Setter Property="Foreground" Value="#E6EDF7"/>
+            <Setter Property="Foreground" Value="{StaticResource Text.Primary}"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
             <Setter Property="Cursor" Value="Hand"/>
         </Style>
 
         <Style TargetType="ListBox">
-            <Setter Property="Background" Value="#171C26"/>
-            <Setter Property="Foreground" Value="#F4F7FB"/>
-            <Setter Property="BorderBrush" Value="#303A4A"/>
+            <Setter Property="Background" Value="{StaticResource Bg.Panel}"/>
+            <Setter Property="Foreground" Value="{StaticResource Text.Primary}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource Bg.PanelInner}"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="Padding" Value="4"/>
             <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
@@ -289,10 +289,10 @@
         <Style TargetType="ListBoxItem">
             <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
-            <Setter Property="Foreground" Value="#F4F7FB"/>
+            <Setter Property="Foreground" Value="{StaticResource Text.Primary}"/>
             <Setter Property="Padding" Value="0"/>
             <Setter Property="Margin" Value="0,0,0,6"/>
-            <Setter Property="Background" Value="#202735"/>
+            <Setter Property="Background" Value="{StaticResource Bg.PanelInner}"/>
             <Setter Property="BorderBrush" Value="Transparent"/>
             <Setter Property="Template">
                 <Setter.Value>
@@ -308,14 +308,14 @@
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="SelectionBorder" Property="Background" Value="#263746"/>
-                                <Setter TargetName="SelectionBorder" Property="BorderBrush" Value="#547086"/>
-                                <Setter Property="Foreground" Value="#FFFFFF"/>
+                                <Setter TargetName="SelectionBorder" Property="Background" Value="{StaticResource Bg.PanelInner}"/>
+                                <Setter TargetName="SelectionBorder" Property="BorderBrush" Value="{StaticResource Info.Line}"/>
+                                <Setter Property="Foreground" Value="{StaticResource Text.OnAccent}"/>
                             </Trigger>
                             <Trigger Property="IsSelected" Value="True">
-                                <Setter TargetName="SelectionBorder" Property="Background" Value="#1D4051"/>
-                                <Setter TargetName="SelectionBorder" Property="BorderBrush" Value="#66D9EF"/>
-                                <Setter Property="Foreground" Value="#FFFFFF"/>
+                                <Setter TargetName="SelectionBorder" Property="Background" Value="{StaticResource Accent.OrangeDeep}"/>
+                                <Setter TargetName="SelectionBorder" Property="BorderBrush" Value="{StaticResource Accent.Focus}"/>
+                                <Setter Property="Foreground" Value="{StaticResource Text.OnAccent}"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -337,13 +337,13 @@
                        FontSize="25"
                        FontWeight="Bold"/>
             <TextBlock Margin="0,6,0,0"
-                       Foreground="#AEB8C8"
+                       Foreground="{StaticResource Text.Secondary}"
                        TextWrapping="Wrap"
                        Text="캐릭터는 한 번만 등록하고 현재 덱에는 목록에서 최대 12명을 추가합니다. 등급과 주력(★)·애정(♥) 표시를 지정하면 캐릭터가 많아져도 원하는 캐릭터를 빠르게 찾을 수 있습니다."/>
 
             <Border Margin="0,12,0,0"
-                    Background="#172330"
-                    BorderBrush="#315068"
+                    Background="{StaticResource Bg.PanelInner}"
+                    BorderBrush="{StaticResource Line.TanStrong}"
                     BorderThickness="1"
                     CornerRadius="10"
                     Padding="12">
@@ -361,7 +361,7 @@
                                VerticalAlignment="Center"
                                Margin="0,0,12,0"
                                FontWeight="Bold"
-                               Foreground="#66D9EF"/>
+                               Foreground="{StaticResource Accent.Focus}"/>
                     <ComboBox x:Name="PresetComboBox"
                               Grid.Column="1"
                               MaxDropDownHeight="320"
@@ -400,8 +400,8 @@
             </Grid.ColumnDefinitions>
 
             <Border Grid.Column="0"
-                    Background="#171C26"
-                    BorderBrush="#2A3342"
+                    Background="{StaticResource Bg.Panel}"
+                    BorderBrush="{StaticResource Line.Tan}"
                     BorderThickness="1"
                     CornerRadius="12"
                     Padding="14">
@@ -423,7 +423,7 @@
                                    FontWeight="Bold"/>
                         <TextBlock x:Name="LibraryCountText"
                                    Grid.Column="1"
-                                   Foreground="#66D9EF"
+                                   Foreground="{StaticResource Accent.Focus}"
                                    VerticalAlignment="Center"
                                    Text="0명"/>
                     </Grid>
@@ -461,7 +461,7 @@
                                       Unchecked="LibraryCheckFilter_Changed"/>
                             <CheckBox x:Name="BelovedOnlyCheckBox"
                                       Content="♥ 애정"
-                                      Foreground="#FF9DB8"
+                                      Foreground="{StaticResource Rose.Text}"
                                       Margin="8,0,0,0"
                                       Padding="2,0"
                                       Checked="LibraryCheckFilter_Changed"
@@ -493,7 +493,7 @@
                         <TextBlock x:Name="LibrarySearchHintText"
                                    Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="5"
                                    Margin="2,7,0,0"
-                                   Foreground="#718096"
+                                   Foreground="{StaticResource Text.Tertiary}"
                                    FontSize="10"
                                    Text="예: 仮面ライダー し · 속성/종족도 검색 가능"/>
                         <ComboBox x:Name="SortComboBox"
@@ -542,24 +542,24 @@
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <Border Padding="5"
-                                        Background="#111923"
+                                        Background="{StaticResource Bg.Panel}"
                                         CornerRadius="9"
                                         ToolTip="{Binding LettersText}">
                                     <Border.Style>
                                         <Style TargetType="Border">
-                                            <Setter Property="BorderBrush" Value="#344156"/>
+                                            <Setter Property="BorderBrush" Value="{StaticResource Line.TanStrong}"/>
                                             <Setter Property="BorderThickness" Value="1"/>
                                             <Style.Triggers>
                                                 <DataTrigger Binding="{Binding IsInDeck}" Value="True">
-                                                    <Setter Property="BorderBrush" Value="#43C6D9"/>
+                                                    <Setter Property="BorderBrush" Value="{StaticResource Accent.Focus}"/>
                                                     <Setter Property="BorderThickness" Value="2"/>
-                                                    <Setter Property="Background" Value="#12313A"/>
+                                                    <Setter Property="Background" Value="{StaticResource Info.Face}"/>
                                                 </DataTrigger>
                                                 <!-- 상세 편집 대상으로 클릭한 카드가 목록 안에서도 즉시 보이도록 강조합니다. -->
                                                 <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=ListBoxItem}}" Value="True">
-                                                    <Setter Property="BorderBrush" Value="#FFD166"/>
+                                                    <Setter Property="BorderBrush" Value="{StaticResource Status.Warn}"/>
                                                     <Setter Property="BorderThickness" Value="3"/>
-                                                    <Setter Property="Background" Value="#2A2A22"/>
+                                                    <Setter Property="Background" Value="{StaticResource Bg.PanelInner}"/>
                                                 </DataTrigger>
                                             </Style.Triggers>
                                         </Style>
@@ -577,8 +577,8 @@
                                                 Height="88"
                                                 HorizontalAlignment="Center"
                                                 VerticalAlignment="Center"
-                                                Background="#0C121A"
-                                                BorderBrush="#3B5063"
+                                                Background="{StaticResource Bg.Backdrop}"
+                                                BorderBrush="{StaticResource Line.TanStrong}"
                                                 BorderThickness="1"
                                                 CornerRadius="8"
                                                 ClipToBounds="True">
@@ -590,7 +590,7 @@
                                                        VerticalAlignment="Center"/>
                                                 <TextBlock Text="{Binding PlaceholderText}"
                                                            Visibility="{Binding PlaceholderVisibility}"
-                                                           Foreground="#718096"
+                                                           Foreground="{StaticResource Text.Tertiary}"
                                                            FontSize="9"
                                                            TextAlignment="Center"
                                                            HorizontalAlignment="Center"
@@ -600,10 +600,10 @@
                                                         VerticalAlignment="Top"
                                                         Margin="3"
                                                         Padding="4,1"
-                                                        Background="#D70B1118"
+                                                        Background="{StaticResource Overlay.Scrim}"
                                                         CornerRadius="4">
                                                     <TextBlock Text="{Binding DeckPositionText}"
-                                                               Foreground="#66D9EF"
+                                                               Foreground="{StaticResource Accent.Focus}"
                                                                FontSize="9"
                                                                FontWeight="Bold"/>
                                                 </Border>
@@ -612,13 +612,13 @@
                                                         VerticalAlignment="Top"
                                                         Margin="3"
                                                         Padding="4,1"
-                                                        Background="#D7513E67"
-                                                        BorderBrush="#B995FF"
+                                                        Background="{StaticResource Overlay.Special}"
+                                                        BorderBrush="{StaticResource Special.Line}"
                                                         BorderThickness="1"
                                                         CornerRadius="4"
                                                         ToolTip="2초 길게 눌러 동일명 모드시프트 전환">
                                                     <TextBlock Text="MS"
-                                                               Foreground="#E8D8FF"
+                                                               Foreground="{StaticResource Status.Special}"
                                                                FontSize="9"
                                                                FontWeight="Bold"/>
                                                 </Border>
@@ -626,8 +626,8 @@
                                                         VerticalAlignment="Bottom"
                                                         Margin="3"
                                                         Padding="5,2"
-                                                        Background="#E6A66B16"
-                                                        BorderBrush="#FFD166"
+                                                        Background="{StaticResource Overlay.Gold}"
+                                                        BorderBrush="{StaticResource Status.Warn}"
                                                         BorderThickness="1"
                                                         CornerRadius="4">
                                                     <Border.Style>
@@ -641,7 +641,7 @@
                                                         </Style>
                                                     </Border.Style>
                                                     <TextBlock Text="선택됨"
-                                                               Foreground="#FFF3C4"
+                                                               Foreground="{StaticResource Gold.Text}"
                                                                FontSize="9"
                                                                FontWeight="Bold"/>
                                                 </Border>
@@ -655,12 +655,12 @@
                                                 <ColumnDefinition Width="*"/>
                                             </Grid.ColumnDefinitions>
                                             <TextBlock Text="{Binding FavoriteMark}"
-                                                       Foreground="#FFD166"
+                                                       Foreground="{StaticResource Status.Warn}"
                                                        FontWeight="Bold"
                                                        Margin="0,0,2,0"/>
                                             <TextBlock Grid.Column="1"
                                                        Text="{Binding BelovedMark}"
-                                                       Foreground="#FF7FA6"
+                                                       Foreground="{StaticResource Rose.Text}"
                                                        FontWeight="Bold"
                                                        Margin="0,0,2,0"/>
                                             <TextBlock Grid.Column="2"
@@ -675,7 +675,7 @@
                                                     HorizontalAlignment="Center"
                                                     Margin="0,2,0,2">
                                             <TextBlock Text="{Binding Category}"
-                                                       Foreground="#8FD7E7"
+                                                       Foreground="{StaticResource Status.Info}"
                                                        FontSize="9"
                                                        Margin="0,0,5,0"/>
                                             <ItemsControl ItemsSource="{Binding AttributeSegments}"
@@ -696,7 +696,7 @@
                                                 </ItemsControl.ItemTemplate>
                                             </ItemsControl>
                                             <TextBlock Text="{Binding SpeciesText}"
-                                                       Foreground="#C9C2FF"
+                                                       Foreground="{StaticResource Status.Special}"
                                                        FontSize="9"
                                                        FontWeight="Bold"/>
                                         </StackPanel>
@@ -713,14 +713,14 @@
                                                 <Style TargetType="Button" BasedOn="{StaticResource EditorButtonStyle}">
                                                     <Style.Triggers>
                                                         <DataTrigger Binding="{Binding IsInDeck}" Value="True">
-                                                            <Setter Property="Background" Value="#4A2932"/>
-                                                            <Setter Property="BorderBrush" Value="#75404D"/>
-                                                            <Setter Property="Foreground" Value="#FFD8DF"/>
+                                                            <Setter Property="Background" Value="{StaticResource Rose.Face}"/>
+                                                            <Setter Property="BorderBrush" Value="{StaticResource Rose.Line}"/>
+                                                            <Setter Property="Foreground" Value="{StaticResource Rose.Text}"/>
                                                         </DataTrigger>
                                                         <DataTrigger Binding="{Binding IsInDeck}" Value="False">
-                                                            <Setter Property="Background" Value="#2F6E63"/>
-                                                            <Setter Property="BorderBrush" Value="#4AAE9C"/>
-                                                            <Setter Property="Foreground" Value="#E5FFF9"/>
+                                                            <Setter Property="Background" Value="{StaticResource Success.Face}"/>
+                                                            <Setter Property="BorderBrush" Value="{StaticResource Success.Line}"/>
+                                                            <Setter Property="Foreground" Value="{StaticResource Status.Success}"/>
                                                         </DataTrigger>
                                                     </Style.Triggers>
                                                 </Style>
@@ -775,7 +775,7 @@
                             <TextBlock x:Name="LibraryPageText"
                                        MinWidth="64"
                                        TextAlignment="Center"
-                                       Foreground="#AFC2D1"
+                                       Foreground="{StaticResource Text.Secondary}"
                                        VerticalAlignment="Center"
                                        FontWeight="SemiBold"
                                        Text="1 / 1"/>
@@ -794,8 +794,8 @@
             </Border>
 
             <Border Grid.Column="2"
-                    Background="#171C26"
-                    BorderBrush="#2A3342"
+                    Background="{StaticResource Bg.Panel}"
+                    BorderBrush="{StaticResource Line.Tan}"
                     BorderThickness="1"
                     CornerRadius="12"
                     Padding="14">
@@ -816,7 +816,7 @@
                                    FontWeight="Bold"/>
                         <TextBlock x:Name="DeckCountText"
                                    Grid.Column="1"
-                                   Foreground="#66D9EF"
+                                   Foreground="{StaticResource Accent.Focus}"
                                    VerticalAlignment="Center"
                                    Text="0 / 12명"/>
                     </Grid>
@@ -851,7 +851,7 @@
                                         Height="90"
                                         HorizontalAlignment="Center"
                                         VerticalAlignment="Center"
-                                        Background="#111923"
+                                        Background="{StaticResource Bg.Panel}"
                                         BorderBrush="{Binding BorderBrush}"
                                         BorderThickness="2"
                                         CornerRadius="9"
@@ -866,7 +866,7 @@
                                                VerticalAlignment="Center"/>
                                         <TextBlock Text="{Binding PlaceholderText}"
                                                    Visibility="{Binding PlaceholderVisibility}"
-                                                   Foreground="#718096"
+                                                   Foreground="{StaticResource Text.Tertiary}"
                                                    FontSize="9"
                                                    TextAlignment="Center"
                                                    HorizontalAlignment="Center"
@@ -875,7 +875,7 @@
                                                 VerticalAlignment="Top"
                                                 Margin="4"
                                                 Padding="5,2"
-                                                Background="#D90B1118"
+                                                Background="{StaticResource Overlay.Scrim}"
                                                 CornerRadius="5">
                                             <TextBlock Text="{Binding SlotText}"
                                                        Foreground="{Binding SlotForeground}"
@@ -887,13 +887,13 @@
                                                 VerticalAlignment="Top"
                                                 Margin="4"
                                                 Padding="5,2"
-                                                Background="#D7513E67"
-                                                BorderBrush="#B995FF"
+                                                Background="{StaticResource Overlay.Special}"
+                                                BorderBrush="{StaticResource Special.Line}"
                                                 BorderThickness="1"
                                                 CornerRadius="5"
                                                 ToolTip="{Binding ModeShiftHintText}">
                                             <TextBlock Text="MS"
-                                                       Foreground="#E8D8FF"
+                                                       Foreground="{StaticResource Status.Special}"
                                                        FontWeight="Bold"
                                                        FontSize="9"/>
                                         </Border>
@@ -938,10 +938,10 @@
                   Margin="0,14,0,0"
                   IsExpanded="False"
                   Style="{StaticResource BottomDetailExpanderStyle}"
-                  Foreground="#F4F7FB">
+                  Foreground="{StaticResource Text.Primary}">
             <Expander.Header>
-                <Border Background="#172330"
-                        BorderBrush="#315068"
+                <Border Background="{StaticResource Bg.PanelInner}"
+                        BorderBrush="{StaticResource Line.TanStrong}"
                         BorderThickness="1"
                         CornerRadius="10"
                         Padding="13,10">
@@ -955,15 +955,15 @@
                                 Height="26"
                                 Margin="0,0,10,0"
                                 VerticalAlignment="Center"
-                                Background="#223445"
-                                BorderBrush="#4A7892"
+                                Background="{StaticResource Bg.Ivory}"
+                                BorderBrush="{StaticResource Line.Soft}"
                                 BorderThickness="1"
                                 CornerRadius="13">
                             <TextBlock HorizontalAlignment="Center"
                                        VerticalAlignment="Center"
                                        FontSize="15"
                                        FontWeight="Bold"
-                                       Foreground="#EAF7FB">
+                                       Foreground="{StaticResource Text.Primary}">
                                 <TextBlock.Style>
                                     <Style TargetType="TextBlock">
                                         <Setter Property="Text" Value="↑"/>
@@ -980,14 +980,14 @@
                             <TextBlock Text="캐릭터 상세 편집"
                                        FontSize="16"
                                        FontWeight="Bold"
-                                       Foreground="#66D9EF"/>
+                                       Foreground="{StaticResource Accent.Focus}"/>
                             <TextBlock Text="이름·문자·그룹·미라클·모드시프트·조건부 문자·이미지를 수정할 때만 펼치세요. 접으면 캐릭터 목록과 덱 영역이 넓어집니다."
                                        Margin="0,4,0,0"
-                                       Foreground="#8FA0B4"
+                                       Foreground="{StaticResource Text.Secondary}"
                                        FontSize="11"/>
                         </StackPanel>
                         <TextBlock Grid.Column="2"
-                                   Foreground="#B8EAF5"
+                                   Foreground="{StaticResource Status.Info}"
                                    VerticalAlignment="Center"
                                    Margin="16,0,0,0">
                             <TextBlock.Style>
@@ -1006,8 +1006,8 @@
             </Expander.Header>
 
             <Border Margin="0,10,0,0"
-                    Background="#172330"
-                    BorderBrush="#315068"
+                    Background="{StaticResource Bg.PanelInner}"
+                    BorderBrush="{StaticResource Line.TanStrong}"
                     BorderThickness="1"
                     CornerRadius="10"
                     Padding="14">
@@ -1032,12 +1032,12 @@
 
                     <StackPanel Grid.Column="0">
                         <TextBlock Text="캐릭터 이름"
-                                   Foreground="#AEB8C8"
+                                   Foreground="{StaticResource Text.Secondary}"
                                    Margin="0,0,0,5"/>
                         <TextBox x:Name="CharacterNameTextBox"
                                  ToolTip="예: キュウセイ"/>
                         <TextBlock Text="검색 별칭"
-                                   Foreground="#AEB8C8"
+                                   Foreground="{StaticResource Text.Secondary}"
                                    Margin="0,9,0,5"/>
                         <TextBox x:Name="CharacterSearchAliasesTextBox"
                                  ToolTip="한자 이름을 한글 등 다른 표기로 찾을 때 사용합니다. 여러 별칭은 쉼표 또는 ·로 구분하세요. 예: 카마도 탄지로"/>
@@ -1045,7 +1045,7 @@
 
                     <StackPanel Grid.Column="2">
                         <TextBlock Text="등급 / 분류"
-                                   Foreground="#AEB8C8"
+                                   Foreground="{StaticResource Text.Secondary}"
                                    Margin="0,0,0,5"/>
                         <ComboBox x:Name="CharacterCategoryComboBox"
                                   HorizontalContentAlignment="Stretch"
@@ -1055,14 +1055,14 @@
                                       Content="★ 주력"/>
                             <CheckBox x:Name="CharacterBelovedCheckBox"
                                       Content="♥ 애정"
-                                      Foreground="#FF9DB8"
+                                      Foreground="{StaticResource Rose.Text}"
                                       Margin="12,0,0,0"/>
                         </StackPanel>
                     </StackPanel>
 
                     <StackPanel Grid.Column="4">
                         <TextBlock Text="기본 사용 가능 문자"
-                                   Foreground="#AEB8C8"
+                                   Foreground="{StaticResource Text.Secondary}"
                                    Margin="0,0,0,5"/>
                         <TextBox x:Name="CharacterLettersTextBox"
                                  ToolTip="항상 사용할 수 있는 기본 문자만 입력하세요. 예: き ゅ う 또는 きゅう"/>
@@ -1099,22 +1099,22 @@
                                 <ColumnDefinition Width="1*"/>
                             </Grid.ColumnDefinitions>
                             <StackPanel>
-                                <TextBlock Text="속성" Foreground="#AEB8C8" Margin="0,0,0,5"/>
+                                <TextBlock Text="속성" Foreground="{StaticResource Text.Secondary}" Margin="0,0,0,5"/>
                                 <ComboBox x:Name="CharacterAttributeComboBox"/>
                             </StackPanel>
                             <StackPanel Grid.Column="2">
-                                <TextBlock Text="종족" Foreground="#AEB8C8" Margin="0,0,0,5"/>
+                                <TextBlock Text="종족" Foreground="{StaticResource Text.Secondary}" Margin="0,0,0,5"/>
                                 <ComboBox x:Name="CharacterSpeciesComboBox"/>
                             </StackPanel>
                         </Grid>
                         <TextBlock Text="서브 / 변환 속성"
-                                   Foreground="#AEB8C8"
+                                   Foreground="{StaticResource Text.Secondary}"
                                    Margin="0,0,0,5"/>
                         <TextBox x:Name="CharacterSubAttributesTextBox"
                                  Margin="0,0,0,10"
                                  ToolTip="예: 木 闇. 메인 속성을 제외한 서브 속성 또는 속성 변환 대상을 공백·쉼표·/로 구분하세요."/>
                         <TextBlock Text="소속 그룹 (1개)"
-                                   Foreground="#AEB8C8"
+                                   Foreground="{StaticResource Text.Secondary}"
                                    Margin="0,0,0,5"/>
                         <ComboBox x:Name="CharacterGroupComboBox"
                                   IsEditable="True"
@@ -1122,25 +1122,25 @@
                                   HorizontalContentAlignment="Stretch"
                                   ToolTip="캐릭터의 기본 소속 그룹 하나를 입력하거나 기존 그룹에서 선택하세요."/>
                         <TextBlock Margin="2,5,0,0"
-                                   Foreground="#718096"
+                                   Foreground="{StaticResource Text.Tertiary}"
                                    FontSize="10"
                                    TextWrapping="Wrap"
                                    Text="캐릭터의 실제 소속은 하나만 입력합니다."/>
                         <TextBlock Text="같이 취급되는 그룹 (여러 개 가능)"
-                                   Foreground="#AEB8C8"
+                                   Foreground="{StaticResource Text.Secondary}"
                                    Margin="0,10,0,5"/>
                         <TextBox x:Name="CharacterIncludedGroupsTextBox"
                                  ToolTip="이 소속 그룹의 캐릭터가 그룹 효과상 함께 취급되는 그룹을 쉼표 또는 ·로 구분하세요. 같은 소속 그룹 캐릭터 전체에 공유됩니다."/>
                         <TextBlock Margin="2,5,0,0"
-                                   Foreground="#718096"
+                                   Foreground="{StaticResource Text.Tertiary}"
                                    FontSize="10"
                                    TextWrapping="Wrap"
                                    Text="예: 全の戦律 → 斬・砲・突・重・超・打の戦律. 이 칸은 미라클 부여 대상과 별개입니다."/>
                     </StackPanel>
 
                     <Border Grid.Column="2"
-                            Background="#202B38"
-                            BorderBrush="#51436B"
+                            Background="{StaticResource Bg.PanelInner}"
+                            BorderBrush="{StaticResource Special.Line}"
                             BorderThickness="1"
                             CornerRadius="8"
                             Padding="11">
@@ -1162,7 +1162,7 @@
                                                Margin="7,0,0,0"
                                                VerticalAlignment="Center"
                                                FontWeight="SemiBold"
-                                               Foreground="#D9C2FF"/>
+                                               Foreground="{StaticResource Status.Special}"/>
                                 </StackPanel>
                                 <Grid Margin="0,8,0,0">
                                     <Grid.ColumnDefinitions>
@@ -1171,12 +1171,12 @@
                                         <ColumnDefinition Width="0.75*"/>
                                     </Grid.ColumnDefinitions>
                                     <StackPanel>
-                                        <TextBlock Text="대상 그룹" Foreground="#AEB8C8" Margin="0,0,0,4"/>
+                                        <TextBlock Text="대상 그룹" Foreground="{StaticResource Text.Secondary}" Margin="0,0,0,4"/>
                                         <TextBox x:Name="MiracleTargetGroupsTextBox"
                                                  ToolTip="미라클 리더가 실제로 문자를 부여할 대상 그룹을 쉼표 또는 ·로 구분하세요."/>
                                     </StackPanel>
                                     <StackPanel Grid.Column="2">
-                                        <TextBlock Text="부여 문자" Foreground="#AEB8C8" Margin="0,0,0,4"/>
+                                        <TextBlock Text="부여 문자" Foreground="{StaticResource Text.Secondary}" Margin="0,0,0,4"/>
                                         <TextBox x:Name="MiracleGrantedLettersTextBox"
                                                  ToolTip="리더일 때 대상 그룹에게 추가되는 문자를 입력하세요."/>
                                     </StackPanel>
@@ -1186,7 +1186,7 @@
                                          ToolTip="효과 조건이나 원문 메모 (선택)"/>
                             </StackPanel>
 
-                            <Border Grid.Column="1" Width="1" Margin="6,0" Background="#51436B"/>
+                            <Border Grid.Column="1" Width="1" Margin="6,0" Background="{StaticResource Special.Line}"/>
 
                             <StackPanel Grid.Column="2">
                                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
@@ -1199,7 +1199,7 @@
                                                Margin="7,0,0,0"
                                                VerticalAlignment="Center"
                                                FontWeight="SemiBold"
-                                               Foreground="#8FE3B1"/>
+                                               Foreground="{StaticResource Status.Success}"/>
                                 </StackPanel>
                                 <Grid Margin="0,8,0,0">
                                     <Grid.ColumnDefinitions>
@@ -1210,18 +1210,18 @@
                                         <ColumnDefinition Width="0.8*"/>
                                     </Grid.ColumnDefinitions>
                                     <StackPanel>
-                                        <TextBlock Text="조건 그룹" Foreground="#AEB8C8" Margin="0,0,0,4"/>
+                                        <TextBlock Text="조건 그룹" Foreground="{StaticResource Text.Secondary}" Margin="0,0,0,4"/>
                                         <TextBox x:Name="DeckGroupConditionGroupsTextBox"
                                                  ToolTip="덱에서 인원수를 셀 그룹입니다. 여러 그룹이면 쉼표 또는 ·로 구분하세요."/>
                                     </StackPanel>
                                     <StackPanel Grid.Column="2">
-                                        <TextBlock Text="최소 인원" Foreground="#AEB8C8" Margin="0,0,0,4"/>
+                                        <TextBlock Text="최소 인원" Foreground="{StaticResource Text.Secondary}" Margin="0,0,0,4"/>
                                         <TextBox x:Name="DeckGroupConditionMinimumCountTextBox"
                                                  Text="2"
                                                  ToolTip="이 그룹 캐릭터가 덱에 몇 명 이상 있어야 발동하는지 입력하세요."/>
                                     </StackPanel>
                                     <StackPanel Grid.Column="4">
-                                        <TextBlock Text="추가 문자" Foreground="#AEB8C8" Margin="0,0,0,4"/>
+                                        <TextBlock Text="추가 문자" Foreground="{StaticResource Text.Secondary}" Margin="0,0,0,4"/>
                                         <TextBox x:Name="DeckGroupConditionGrantedLettersTextBox"
                                                  ToolTip="조건 달성 시 이 캐릭터 자신에게 추가되는 문자를 입력하세요."/>
                                     </StackPanel>
@@ -1250,7 +1250,7 @@
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
                             <TextBlock Text="이름이 다른 모드시프트 연결"
-                                       Foreground="#AEB8C8"
+                                       Foreground="{StaticResource Text.Secondary}"
                                        VerticalAlignment="Center"/>
                             <Button x:Name="ToggleRelatedFormEditorButton"
                                     Grid.Column="1"
@@ -1261,7 +1261,7 @@
                         </Grid>
                         <TextBlock x:Name="RelatedFormsSummaryText"
                                    Margin="2,0,0,0"
-                                   Foreground="#8D98AA"
+                                   Foreground="{StaticResource Text.Secondary}"
                                    FontSize="11"
                                    TextWrapping="Wrap"
                                    Text="연결된 이름 다른 모드시프트 없음"/>
@@ -1295,16 +1295,16 @@
 
                     <StackPanel Grid.Column="2">
                         <TextBlock Text="조건부 / 변신 문자"
-                                   Foreground="#AEB8C8"
+                                   Foreground="{StaticResource Text.Secondary}"
                                    Margin="0,0,0,5"/>
-                        <Border Background="#202B38"
-                                BorderBrush="#3A5266"
+                        <Border Background="{StaticResource Bg.PanelInner}"
+                                BorderBrush="{StaticResource Line.TanStrong}"
                                 BorderThickness="1"
                                 CornerRadius="7"
                                 Padding="10,8">
                             <TextBlock x:Name="CharacterStateSummaryText"
                                        Text="추가 문자 상태 없음"
-                                       Foreground="#BFD2DF"
+                                       Foreground="{StaticResource Text.Primary}"
                                        TextWrapping="Wrap"/>
                         </Border>
                     </StackPanel>
@@ -1323,18 +1323,18 @@
                         <ColumnDefinition Width="14"/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
-                    <Border Background="#202B38"
-                            BorderBrush="#3A5266"
+                    <Border Background="{StaticResource Bg.PanelInner}"
+                            BorderBrush="{StaticResource Line.TanStrong}"
                             BorderThickness="1"
                             CornerRadius="8"
                             Padding="11">
                         <StackPanel>
                             <TextBlock Text="동일 이름 모드시프트 형태"
                                        FontWeight="SemiBold"
-                                       Foreground="#B8EAF5"/>
+                                       Foreground="{StaticResource Status.Info}"/>
                             <TextBlock x:Name="CharacterFormSummaryText"
                                        Margin="0,5,0,0"
-                                       Foreground="#8D98AA"
+                                       Foreground="{StaticResource Text.Secondary}"
                                        FontSize="11"
                                        TextWrapping="Wrap"
                                        Text="추가 형태 없음 · 기본 형태는 위의 문자와 이미지를 사용"/>
@@ -1358,8 +1358,8 @@
 
                     <Border Width="72"
                             Height="72"
-                            Background="#202735"
-                            BorderBrush="#3A5266"
+                            Background="{StaticResource Bg.PanelInner}"
+                            BorderBrush="{StaticResource Line.TanStrong}"
                             BorderThickness="1"
                             CornerRadius="8"
                             ClipToBounds="True">
@@ -1371,7 +1371,7 @@
                                    Visibility="Collapsed"/>
                             <TextBlock x:Name="CharacterImagePlaceholder"
                                        Text="이미지 없음"
-                                       Foreground="#7F8999"
+                                       Foreground="{StaticResource Text.Tertiary}"
                                        FontSize="11"
                                        TextWrapping="Wrap"
                                        TextAlignment="Center"
@@ -1382,16 +1382,16 @@
 
                     <StackPanel Grid.Column="2" VerticalAlignment="Center">
                         <TextBlock Text="캐릭터 이미지"
-                                   Foreground="#AEB8C8"
+                                   Foreground="{StaticResource Text.Secondary}"
                                    FontWeight="SemiBold"/>
                         <TextBlock x:Name="CharacterImageFileText"
                                    Margin="0,4,0,0"
-                                   Foreground="#8D98AA"
+                                   Foreground="{StaticResource Text.Secondary}"
                                    FontSize="11"
                                    Text="등록된 이미지 없음"
                                    TextTrimming="CharacterEllipsis"/>
                         <TextBlock Margin="0,4,0,0"
-                                   Foreground="#6F7D90"
+                                   Foreground="{StaticResource Text.Tertiary}"
                                    FontSize="10"
                                    Text="PNG/JPG/BMP/GIF/TIFF · 표준 PNG로 변환 저장 · 현재 덱과 손패에만 표시"/>
                     </StackPanel>
@@ -1418,10 +1418,10 @@
 
             <StackPanel Grid.Column="0" VerticalAlignment="Center">
                 <TextBlock x:Name="EditorStatusText"
-                           Foreground="#AEB8C8"
+                           Foreground="{StaticResource Text.Secondary}"
                            Text="덱 1번은 리더입니다. 캐릭터는 소속 그룹 하나를 가지며, 미라클 문자 부여는 해당 캐릭터가 리더일 때만 적용됩니다."/>
                 <TextBlock Margin="0,4,0,0"
-                           Foreground="#7F8999"
+                           Foreground="{StaticResource Text.Tertiary}"
                            FontSize="11"
                            Text="캐릭터 추가/수정과 덱 변경은 짧은 시간 안의 연속 작업을 묶어 자동 저장합니다. 저장 시 characters.json, deck.json, deck_presets.json을 각각 백업한 뒤 기록합니다."/>
             </StackPanel>

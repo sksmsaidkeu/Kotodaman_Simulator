@@ -7,3 +7,5 @@ Releases/
 Data/CharacterImages/
 
 *.user
+
+__pycache__/

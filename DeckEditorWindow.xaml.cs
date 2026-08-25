@@ -1,3 +1,4 @@
+using KotodamanWordFinder.Themes;
 ﻿using System.ComponentModel;
 using System.Globalization;
 using System.IO;
@@ -252,7 +253,7 @@ public partial class DeckEditorWindow : Window
         _selectedPresetId = item.Id;
         PresetNameTextBox.Text = item.Name;
         EditorStatusText.Text = $"'{item.Name}' 프리셋 선택 · 불러오기를 누르면 현재 덱을 교체합니다.";
-        EditorStatusText.Foreground = BrushFromHex("#B8EAF5");
+        EditorStatusText.Foreground = Theme.BlueText;
     }
 
     private void LoadPresetButton_Click(object sender, RoutedEventArgs e)
@@ -280,7 +281,7 @@ public partial class DeckEditorWindow : Window
         EditorStatusText.Text = skippedCount > 0
             ? $"'{preset.Name}' 프리셋을 불러왔습니다 · {_deckIds.Count}명 · 모드시프트 형태 {skippedCount}명 제외"
             : $"'{preset.Name}' 프리셋을 불러왔습니다 · {_deckIds.Count}명";
-        EditorStatusText.Foreground = BrushFromHex("#8FE3B1");
+        EditorStatusText.Foreground = Theme.LevelNumber;
     }
 
     private void SavePresetButton_Click(object sender, RoutedEventArgs e)
@@ -356,7 +357,7 @@ public partial class DeckEditorWindow : Window
         EditorStatusText.Text = isNew
             ? $"'{name}' 프리셋을 새로 만들었습니다. 자동 저장되었습니다."
             : $"'{name}' 프리셋을 현재 덱으로 갱신했습니다. 자동 저장되었습니다.";
-        EditorStatusText.Foreground = BrushFromHex("#8FE3B1");
+        EditorStatusText.Foreground = Theme.LevelNumber;
         AutoSaveCommittedStateSafely();
     }
 
@@ -369,7 +370,7 @@ public partial class DeckEditorWindow : Window
         PresetNameTextBox.Clear();
         PresetNameTextBox.Focus();
         EditorStatusText.Text = "새 프리셋 이름을 입력한 뒤 현재 덱 저장을 누르세요.";
-        EditorStatusText.Foreground = BrushFromHex("#AEB8C8");
+        EditorStatusText.Foreground = Theme.TextSecondary;
     }
 
     private void DeletePresetButton_Click(object sender, RoutedEventArgs e)
@@ -395,7 +396,7 @@ public partial class DeckEditorWindow : Window
         _selectedPresetId = null;
         RefreshPresetList(_presets.FirstOrDefault()?.Id);
         EditorStatusText.Text = $"'{preset.Name}' 프리셋을 삭제했습니다. 자동 저장되었습니다.";
-        EditorStatusText.Foreground = BrushFromHex("#FFD08A");
+        EditorStatusText.Foreground = Theme.Warn;
         AutoSaveCommittedStateSafely();
     }
 
@@ -1140,7 +1141,7 @@ public partial class DeckEditorWindow : Window
 
         string activeName = character.GetActiveFormName();
         EditorStatusText.Text = $"'{character.Name}' 동일명 모드시프트 → {activeName}";
-        EditorStatusText.Foreground = BrushFromHex("#D9C2FF");
+        EditorStatusText.Foreground = Theme.Special;
     }
 
     private bool TryCycleConnectedModeShift(int deckIndex, CharacterEntry current)
@@ -1194,7 +1195,7 @@ public partial class DeckEditorWindow : Window
         if (target is null)
         {
             EditorStatusText.Text = "전환 가능한 연결형 모드시프트가 현재 덱의 다른 칸에 이미 편성되어 있습니다.";
-            EditorStatusText.Foreground = BrushFromHex("#FFD08A");
+            EditorStatusText.Foreground = Theme.Warn;
             return true;
         }
 
@@ -1203,7 +1204,7 @@ public partial class DeckEditorWindow : Window
         RefreshAllLists(target.Id, deckIndex);
         BeginEditing(target.Id, selectLibraryItem: true);
         EditorStatusText.Text = $"덱 {deckIndex + 1}번 연결형 모드시프트 · {current.Name} → {target.Name}";
-        EditorStatusText.Foreground = BrushFromHex("#D9C2FF");
+        EditorStatusText.Foreground = Theme.Special;
         return true;
     }
 
@@ -1296,7 +1297,7 @@ public partial class DeckEditorWindow : Window
         UpdateCharacterButton.IsEnabled = true;
 
         EditorStatusText.Text = $"'{character.Name}' 편집 중 · 수정 버튼을 누르면 자동 저장되고, 창을 닫을 때도 마지막 편집을 저장합니다.";
-        EditorStatusText.Foreground = BrushFromHex("#B8EAF5");
+        EditorStatusText.Foreground = Theme.BlueText;
 
         if (selectLibraryItem)
         {
@@ -1365,7 +1366,7 @@ public partial class DeckEditorWindow : Window
         }
 
         EditorStatusText.Text = $"캐릭터 {changedIds.Length:N0}명을 일괄 수정했습니다. 연속 작업을 묶어 자동 저장합니다.";
-        EditorStatusText.Foreground = BrushFromHex("#8FE3B1");
+        EditorStatusText.Foreground = Theme.LevelNumber;
     }
 
     private void ImportCharacterFromWebButton_Click(object sender, RoutedEventArgs e)
@@ -1436,7 +1437,7 @@ public partial class DeckEditorWindow : Window
             ? $"{preview.SourceSite} + 코토다망DB"
             : preview.SourceSite;
         EditorStatusText.Text = $"'{preview.Name}' 정보를 {sourceNote}에서 가져왔습니다. 내용을 확인한 뒤 '새 캐릭터 추가'를 누르세요.";
-        EditorStatusText.Foreground = BrushFromHex("#8FE3B1");
+        EditorStatusText.Foreground = Theme.LevelNumber;
 
         Dispatcher.BeginInvoke(
             new Action(() =>
@@ -1581,8 +1582,8 @@ public partial class DeckEditorWindow : Window
         EditorStatusText.Text = "연속 자동 등록 완료 · " + string.Join(" · ", details) +
             (addedCount > 0 ? " · 자동 저장되었습니다." : string.Empty);
         EditorStatusText.Foreground = addedCount > 0
-            ? BrushFromHex("#8FE3B1")
-            : BrushFromHex("#FFD08A");
+            ? Theme.LevelNumber
+            : Theme.Warn;
     }
 
     private void ClearEditorForNewCharacter()
@@ -1633,7 +1634,7 @@ public partial class DeckEditorWindow : Window
         UpdateCharacterButton.IsEnabled = false;
         AddCharacterButton.IsEnabled = true;
         EditorStatusText.Text = "새 캐릭터의 이름과 문자를 입력하세요.";
-        EditorStatusText.Foreground = BrushFromHex("#AEB8C8");
+        EditorStatusText.Foreground = Theme.TextSecondary;
     }
 
     private void RefreshRelatedFormCandidates(string? currentCharacterId = null)
@@ -1661,7 +1662,7 @@ public partial class DeckEditorWindow : Window
         if (character is null)
         {
             RelatedFormsSummaryText.Text = "캐릭터를 먼저 추가하거나 선택하세요.";
-            RelatedFormsSummaryText.Foreground = BrushFromHex("#8D98AA");
+            RelatedFormsSummaryText.Foreground = Theme.TextSecondary;
             return;
         }
 
@@ -1669,13 +1670,13 @@ public partial class DeckEditorWindow : Window
         if (related.Length == 0)
         {
             RelatedFormsSummaryText.Text = "연결된 다른 형태 없음";
-            RelatedFormsSummaryText.Foreground = BrushFromHex("#8D98AA");
+            RelatedFormsSummaryText.Foreground = Theme.TextSecondary;
             return;
         }
 
         RelatedFormsSummaryText.Text = "모드시프트: " +
             string.Join(" · ", related.Select(item => item.Name));
-        RelatedFormsSummaryText.Foreground = BrushFromHex("#B8EAF5");
+        RelatedFormsSummaryText.Foreground = Theme.BlueText;
     }
 
     private IEnumerable<CharacterEntry> GetRelatedForms(CharacterEntry character)
@@ -1741,7 +1742,7 @@ public partial class DeckEditorWindow : Window
             string.Equals(currentGroup, targetGroup, StringComparison.OrdinalIgnoreCase))
         {
             EditorStatusText.Text = $"'{current.Name}'과 '{target.Name}'은 이미 모드시프트로 연결되어 있습니다.";
-            EditorStatusText.Foreground = BrushFromHex("#B8EAF5");
+            EditorStatusText.Foreground = Theme.BlueText;
             return;
         }
 
@@ -1787,7 +1788,7 @@ public partial class DeckEditorWindow : Window
         RefreshAllLists(current.Id, selectedDeckIndex);
         BeginEditing(current.Id);
         EditorStatusText.Text = $"'{current.Name}'과 '{target.Name}'을 같은 카드 형태로 연결했습니다. 두 형태는 한 덱에 동시에 넣을 수 없습니다.";
-        EditorStatusText.Foreground = BrushFromHex("#8FE3B1");
+        EditorStatusText.Foreground = Theme.LevelNumber;
     }
 
     private void UnlinkRelatedFormButton_Click(object sender, RoutedEventArgs e)
@@ -1817,7 +1818,7 @@ public partial class DeckEditorWindow : Window
         EditorStatusText.Text = relatedBefore.Length == 0
             ? $"'{current.Name}'의 이전 모드시프트 그룹 정보를 정리했습니다."
             : $"'{current.Name}'을 모드시프트 연결에서 분리했습니다.";
-        EditorStatusText.Foreground = BrushFromHex("#FFD08A");
+        EditorStatusText.Foreground = Theme.Warn;
     }
 
     private void ClearRestrictionGroupWhenOnlyOneMemberRemains(string? restrictionGroupId)
@@ -2017,7 +2018,7 @@ public partial class DeckEditorWindow : Window
         if (showSuccessMessage)
         {
             EditorStatusText.Text = $"'{character.Name}' 정보를 수정했습니다. 덱에도 자동 반영됩니다.";
-            EditorStatusText.Foreground = BrushFromHex("#8FE3B1");
+            EditorStatusText.Foreground = Theme.LevelNumber;
         }
 
         return true;
@@ -2068,7 +2069,7 @@ public partial class DeckEditorWindow : Window
         RefreshPresetList(_selectedPresetId);
         RefreshAllLists();
         EditorStatusText.Text = $"'{character.Name}'을 목록과 덱에서 제거했습니다. 저장된 프리셋에서도 제거했습니다.";
-        EditorStatusText.Foreground = BrushFromHex("#FFD08A");
+        EditorStatusText.Foreground = Theme.Warn;
     }
 
     private void LibraryDeckToggleButton_Click(object sender, RoutedEventArgs e)
@@ -2106,7 +2107,7 @@ public partial class DeckEditorWindow : Window
         EditorStatusText.Text = character is null
             ? "선택한 캐릭터를 현재 덱에서 뺐습니다."
             : $"'{character.Name}'을 현재 덱에서 뺐습니다. 캐릭터 목록에는 남아 있습니다.";
-        EditorStatusText.Foreground = BrushFromHex("#FFD08A");
+        EditorStatusText.Foreground = Theme.Warn;
     }
 
     private void AddSelectedToDeckButton_Click(object sender, RoutedEventArgs e)
@@ -2151,7 +2152,7 @@ public partial class DeckEditorWindow : Window
         _deckIds.Add(character.Id);
         RefreshAllLists(character.Id, _deckIds.Count - 1);
         EditorStatusText.Text = $"'{character.Name}'을 현재 덱 {_deckIds.Count}번에 추가했습니다.";
-        EditorStatusText.Foreground = BrushFromHex("#8FE3B1");
+        EditorStatusText.Foreground = Theme.LevelNumber;
     }
 
     private void RemoveFromDeckButton_Click(object sender, RoutedEventArgs e)
@@ -2172,7 +2173,7 @@ public partial class DeckEditorWindow : Window
         EditorStatusText.Text = character is null
             ? "선택한 캐릭터를 현재 덱에서 뺐습니다."
             : $"'{character.Name}'을 현재 덱에서 뺐습니다. 캐릭터 목록에는 남아 있습니다.";
-        EditorStatusText.Foreground = BrushFromHex("#FFD08A");
+        EditorStatusText.Foreground = Theme.Warn;
     }
 
     private void ImportDeckFromScreenshotButton_Click(object sender, RoutedEventArgs e)
@@ -2206,7 +2207,7 @@ public partial class DeckEditorWindow : Window
         EditorStatusText.Text = skippedCount > 0
             ? $"덱 스크린샷에서 {_deckIds.Count}명을 적용했습니다 · 중복/모드시프트 제한 {skippedCount}명 제외 · 자동 저장되었습니다."
             : $"덱 스크린샷에서 {_deckIds.Count}명을 적용했습니다 · 자동 저장되었습니다.";
-        EditorStatusText.Foreground = BrushFromHex("#8FE3B1");
+        EditorStatusText.Foreground = Theme.LevelNumber;
     }
 
     private void SetLeaderButton_Click(object sender, RoutedEventArgs e)
@@ -2220,7 +2221,7 @@ public partial class DeckEditorWindow : Window
         if (item.Index == 0)
         {
             EditorStatusText.Text = $"'{item.Name}'은 이미 현재 덱의 리더입니다.";
-            EditorStatusText.Foreground = BrushFromHex("#B8EAF5");
+            EditorStatusText.Foreground = Theme.BlueText;
             return;
         }
 
@@ -2229,7 +2230,7 @@ public partial class DeckEditorWindow : Window
         _deckIds.Insert(0, characterId);
         RefreshAllLists(characterId, 0);
         EditorStatusText.Text = $"'{item.Name}'을 덱 1번 리더로 지정했습니다.";
-        EditorStatusText.Foreground = BrushFromHex("#D9C2FF");
+        EditorStatusText.Foreground = Theme.Special;
     }
 
     private void MoveDeckUpButton_Click(object sender, RoutedEventArgs e)
@@ -2278,7 +2279,7 @@ public partial class DeckEditorWindow : Window
         _deckIds.Clear();
         RefreshAllLists(_editingCharacterId);
         EditorStatusText.Text = "현재 덱을 비웠습니다. 캐릭터 목록은 그대로 유지됩니다.";
-        EditorStatusText.Foreground = BrushFromHex("#FFD08A");
+        EditorStatusText.Foreground = Theme.Warn;
     }
 
     private void SaveButton_Click(object sender, RoutedEventArgs e)
@@ -2343,7 +2344,7 @@ public partial class DeckEditorWindow : Window
         }
 
         EditorStatusText.Text = "현재 캐릭터 상세 정보와 덱 상태를 저장했습니다.";
-        EditorStatusText.Foreground = BrushFromHex("#8FE3B1");
+        EditorStatusText.Foreground = Theme.LevelNumber;
         return true;
     }
 
@@ -2403,7 +2404,7 @@ public partial class DeckEditorWindow : Window
             else
             {
                 EditorStatusText.Text = $"자동 저장 실패: {exception.Message}";
-                EditorStatusText.Foreground = BrushFromHex("#FF8C8C");
+                EditorStatusText.Foreground = Theme.Error;
             }
 
             return false;
@@ -2743,7 +2744,7 @@ public partial class DeckEditorWindow : Window
         _removeImageRequested = false;
         UpdateCharacterImagePreview();
         EditorStatusText.Text = "이미지를 선택했습니다. 저장할 때 표준 PNG로 변환해 Data/CharacterImages 폴더에 저장합니다.";
-        EditorStatusText.Foreground = BrushFromHex("#B8EAF5");
+        EditorStatusText.Foreground = Theme.BlueText;
     }
 
     private void RemoveCharacterImageButton_Click(object sender, RoutedEventArgs e)
@@ -2753,7 +2754,7 @@ public partial class DeckEditorWindow : Window
         _editingImageFileName = string.Empty;
         UpdateCharacterImagePreview();
         EditorStatusText.Text = "캐릭터 이미지를 제거하도록 표시했습니다. 수정 버튼 또는 창 닫기 시 자동 반영됩니다.";
-        EditorStatusText.Foreground = BrushFromHex("#FFD08A");
+        EditorStatusText.Foreground = Theme.Warn;
     }
 
     private void UpdateCharacterImagePreview()
@@ -2773,17 +2774,17 @@ public partial class DeckEditorWindow : Window
         if (!string.IsNullOrWhiteSpace(_pendingImageSourcePath))
         {
             CharacterImageFileText.Text = $"선택됨: {Path.GetFileName(_pendingImageSourcePath)}";
-            CharacterImageFileText.Foreground = BrushFromHex("#B8EAF5");
+            CharacterImageFileText.Foreground = Theme.BlueText;
         }
         else if (!string.IsNullOrWhiteSpace(_editingImageFileName) && bitmap is not null)
         {
             CharacterImageFileText.Text = _editingImageFileName;
-            CharacterImageFileText.Foreground = BrushFromHex("#8FE3B1");
+            CharacterImageFileText.Foreground = Theme.LevelNumber;
         }
         else
         {
             CharacterImageFileText.Text = "등록된 이미지 없음";
-            CharacterImageFileText.Foreground = BrushFromHex("#8D98AA");
+            CharacterImageFileText.Foreground = Theme.TextSecondary;
         }
     }
 
@@ -2838,7 +2839,7 @@ public partial class DeckEditorWindow : Window
             .ToList();
         UpdateCharacterStateSummary();
         EditorStatusText.Text = $"문자 상태 {_editingLetterStates.Count}개를 편집했습니다. 캐릭터 수정 버튼을 누르거나 창을 닫으면 자동 반영됩니다.";
-        EditorStatusText.Foreground = BrushFromHex("#8FE3B1");
+        EditorStatusText.Foreground = Theme.LevelNumber;
     }
 
     private void UpdateCharacterStateSummary()
@@ -2846,7 +2847,7 @@ public partial class DeckEditorWindow : Window
         if (_editingLetterStates.Count == 0)
         {
             CharacterStateSummaryText.Text = "추가 문자 상태 없음 · 기본 문자만 사용";
-            CharacterStateSummaryText.Foreground = BrushFromHex("#8D98AA");
+            CharacterStateSummaryText.Foreground = Theme.TextSecondary;
             return;
         }
 
@@ -2854,7 +2855,7 @@ public partial class DeckEditorWindow : Window
             "  /  ",
             _editingLetterStates.Select(state =>
                 $"{state.Name}({CharacterLetterStateKinds.Normalize(state.Kind)} · {string.Join("·", state.Letters)})"));
-        CharacterStateSummaryText.Foreground = BrushFromHex("#B8EAF5");
+        CharacterStateSummaryText.Foreground = Theme.BlueText;
     }
 
     private void EditCharacterFormsButton_Click(object sender, RoutedEventArgs e)
@@ -2889,7 +2890,7 @@ public partial class DeckEditorWindow : Window
         UpdateCharacterFormSummary();
         InvalidateCharacterThumbnail(characterId);
         EditorStatusText.Text = $"동일 이름 모드시프트 형태 {_editingForms.Count}개를 편집했습니다. 캐릭터 수정 버튼을 누르거나 창을 닫으면 자동 반영됩니다.";
-        EditorStatusText.Foreground = BrushFromHex("#8FE3B1");
+        EditorStatusText.Foreground = Theme.LevelNumber;
     }
 
     private void UpdateCharacterFormSummary()
@@ -2897,7 +2898,7 @@ public partial class DeckEditorWindow : Window
         if (_editingForms.Count == 0)
         {
             CharacterFormSummaryText.Text = "추가 형태 없음 · 기본 형태는 위의 문자와 이미지를 사용";
-            CharacterFormSummaryText.Foreground = BrushFromHex("#8D98AA");
+            CharacterFormSummaryText.Foreground = Theme.TextSecondary;
             return;
         }
 
@@ -2913,7 +2914,7 @@ public partial class DeckEditorWindow : Window
                 string meta = string.Join("·", new[] { attributeText, species }.Where(value => value.Length > 0));
                 return $"{form.Name}({string.Join("·", form.Letters)})" + (meta.Length > 0 ? $"[{meta}]" : string.Empty);
             }));
-        CharacterFormSummaryText.Foreground = BrushFromHex("#B8EAF5");
+        CharacterFormSummaryText.Foreground = Theme.BlueText;
     }
 
     private static bool CharacterFormsEqual(
@@ -3566,11 +3567,9 @@ public partial class DeckEditorWindow : Window
     private void SetError(string message)
     {
         EditorStatusText.Text = message;
-        EditorStatusText.Foreground = BrushFromHex("#FF9E9E");
+        EditorStatusText.Foreground = Theme.Error;
     }
 
-    private static SolidColorBrush BrushFromHex(string hex)
-        => new((Color)ColorConverter.ConvertFromString(hex));
 
     private sealed record SearchTokenQuery(
         string Normalized,
@@ -3822,7 +3821,7 @@ public partial class DeckEditorWindow : Window
             var segments = new List<AttributeDisplaySegment>();
             if (attributes.Count == 0)
             {
-                segments.Add(new AttributeDisplaySegment("－", BrushFromHex("#7E8B98")));
+                segments.Add(new AttributeDisplaySegment("－", Theme.TextTertiary));
                 return segments;
             }
 
@@ -3830,23 +3829,13 @@ public partial class DeckEditorWindow : Window
             {
                 if (index > 0)
                 {
-                    segments.Add(new AttributeDisplaySegment("/", BrushFromHex("#7E8B98")));
+                    segments.Add(new AttributeDisplaySegment("/", Theme.TextTertiary));
                 }
 
                 string attribute = attributes[index];
-                string color = attribute switch
-                {
-                    "火" => "#FF6B6B",
-                    "水" => "#63B3FF",
-                    "木" => "#70D98B",
-                    "光" => "#FFE27A",
-                    "闇" => "#B995FF",
-                    "天" => "#8FE9FF",
-                    "冥" => "#C58A5A",
-                    "虹" => "#FF9EDB",
-                    _ => "#FFD08A"
-                };
-                segments.Add(new AttributeDisplaySegment(attribute, BrushFromHex(color)));
+                segments.Add(new AttributeDisplaySegment(
+                    attribute,
+                    DataPalette.Attribute(attribute, Theme.Warn)));
             }
 
             return segments;
@@ -3917,8 +3906,8 @@ public partial class DeckEditorWindow : Window
                           (MetaBadgeText.Length > 0 ? $"\n{MetaBadgeText}" : string.Empty) +
                           formText +
                           (ModeShiftHintText.Length > 0 ? $"\n{ModeShiftHintText}" : string.Empty);
-            BorderBrush = index == 0 ? BrushFromHexStatic("#FFD166") : BrushFromHexStatic("#3B657A");
-            SlotForeground = index == 0 ? BrushFromHexStatic("#FFD166") : BrushFromHexStatic("#66D9EF");
+            BorderBrush = index == 0 ? Theme.Warn : Theme.InfoLine;
+            SlotForeground = index == 0 ? Theme.Warn : Theme.Focus;
         }
 
         public int Index { get; }
@@ -3936,11 +3925,5 @@ public partial class DeckEditorWindow : Window
         public string ModeShiftHintText { get; }
         public string PlaceholderText => "이미지\n없음";
 
-        private static Brush BrushFromHexStatic(string value)
-        {
-            var brush = (SolidColorBrush)new BrushConverter().ConvertFromString(value)!;
-            brush.Freeze();
-            return brush;
-        }
     }
 }

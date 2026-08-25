@@ -1,0 +1,203 @@
+# 단계 0.5b 매핑표. 원본색 -> 토큰. 코드모드가 이 파일을 읽어 치환한다.
+# 원칙: 계열 안에서는 스냅(명도 미세단계는 인접 노출되지 않음), 계열을 넘어서는 스냅 금지.
+# hex	token	근거
+#8FA0B4	Text.Secondary	보조 설명
+#8D98AA	Text.Secondary	관련 형태 요약
+#AFC2D1	Text.Secondary	인식 보조 텍스트
+#9EACBE	Text.Secondary	일괄편집 보조
+#9DA9BA	Text.Secondary	보조
+#D7DEEA	Text.Primary	본문 밝은 톤
+#F0F5FA	Text.Primary	본문 밝은 톤
+#7E8B98	Text.Tertiary	속성 구분자
+#7F8999	Text.Tertiary	보조 라벨
+#718096	Text.Tertiary	판면 한글 미리보기
+#637083	Text.Tertiary	비활성
+#59687B	Text.Tertiary	비활성
+#46566A	Text.Tertiary	비활성 최암부
+#151C26	Bg.Backdrop	최암부 면
+#171E29	Bg.Panel	패널 면
+#17212C	Bg.Panel	패널 면
+#18202B	Bg.Panel	패널 면
+#202735	Bg.PanelInner	카드 면
+#202B38	Bg.PanelInner	카드 면
+#203342	Bg.PanelInner	featured 카드 면
+#233446	Bg.PanelInner	뱃지 면
+#263746	Bg.PanelInner	요약 칩 면
+#263C4A	Bg.PanelInner	칩 면
+#313B49	Bg.PanelInner	진행바 면
+#303A4A	Bg.PanelInner	면
+#3A4658	Line.Tan	기본 테두리
+#303C4F	Line.Tan	기본 테두리
+#334154	Line.Tan	기본 테두리
+#32465A	Line.Tan	기본 테두리
+#5A4F66	Line.Tan	보라 뱃지 테두리(계열 정체성은 면이 담당)
+#526176	Line.Soft	흐린 구분선
+#4B6578	Line.Soft	흐린 구분선
+#493D24	Gold.Face	⚠ 글자 상태 배너 면
+#4A4025	Gold.Face	리더 뱃지 면
+#C9A44C	Gold.Line	⚠ 배너 테두리
+#C8A84B	Gold.Line	리더 뱃지 테두리
+#E0C978	Gold.Text	⚠ 배너 글자
+#FFE099	Status.Warn	주의 텍스트
+#FFE3A3	Status.Warn	주의 텍스트
+#FFD166	Status.Warn	주의 텍스트/테두리
+#FFD27A	Status.Warn	주의 텍스트
+#4A2932	Rose.Face	x 제거 버튼 면
+#5A3440	Rose.Face	선택 강조 면
+#75404D	Rose.Line	x 제거 버튼 테두리
+#FFD8DF	Rose.Text	x 제거 버튼 글자
+#392E52	Special.Face	미라클 리더 배너 면
+#3A3440	Special.Face	모드 시프트 뱃지 면
+#9A7BD4	Special.Line	미라클 리더 테두리
+#A88AE8	Special.Line	모드 시프트 뱃지 테두리
+#E4D4FF	Status.Special	특수 텍스트
+#E6DDF0	Status.Special	특수 텍스트
+#203B35	Success.Face	덱 그룹 효과 배너 면
+#243F35	Success.Face	형태 변경 배너 면
+#4E9B82	Success.Line	덱 그룹 테두리
+#5FAE88	Success.Line	형태 변경 테두리
+#BFF0D3	Status.Success	성공 텍스트
+#BFF5DD	Status.Success	성공 텍스트
+#9FE1BF	Status.Success	성공 텍스트
+#1E3040	Info.Face	일반 검색 안내 배너 면
+#3B7892	Info.Line	안내 배너/featured 카드 테두리
+#547086	Info.Line	일반 제안 칩 테두리
+#3B657A	Info.Line	테두리
+#3E607A	Info.Line	테두리
+#286C86	Info.Line	테두리
+#8FD8E8	Status.Info	안내 텍스트
+#9DDCF3	Status.Info	안내 텍스트
+#9AEAF7	Status.Info	안내 선(Stroke)
+#E8F7FF	Status.Info	안내 텍스트 밝은 톤
+#DFF8FF	Status.Info	안내 텍스트 밝은 톤
+#D7F4FA	Status.Info	안내 텍스트 밝은 톤
+#FF9B9B	Status.Error	오류 텍스트
+#FF8C8C	Status.Error	오류 텍스트
+#080C12	Bg.Backdrop
+#0B1016	Bg.Backdrop
+#0C121A	Bg.Backdrop
+#0D141C	Bg.Backdrop
+#0F141C	Bg.Backdrop
+#0F151D	Bg.Backdrop
+#101820	Bg.Backdrop
+#111923	Bg.Panel
+#111A23	Bg.Panel
+#111A24	Bg.Panel
+#111D28	Bg.Panel
+#121B24	Bg.Panel
+#121E28	Bg.Panel
+#12313A	Info.Face
+#141922	Bg.Panel
+#141D27	Bg.Panel
+#14202A	Bg.Panel
+#151B25	Bg.Panel
+#15202B	Bg.Panel
+#16212C	Bg.Panel
+#167C8C	Info.Face
+#17212D	Bg.PanelInner
+#172330	Bg.PanelInner
+#172532	Bg.PanelInner
+#176B78	Info.Face
+#182530	Bg.PanelInner
+#1B222D	Bg.PanelInner
+#1B2633	Bg.PanelInner
+#1B2733	Bg.PanelInner
+#1B2735	Bg.PanelInner
+#1D5F7A	Info.Face
+#202734	Bg.PanelInner
+#202A37	Bg.PanelInner
+#203241	Bg.Ivory
+#213747	Bg.Ivory
+#223445	Bg.Ivory
+#22384A	Bg.Ivory
+#234456	Info.Face
+#25445A	Bg.Ivory
+#263142	Bg.Ivory
+#263442	Bg.Ivory
+#263443	Bg.Ivory
+#263448	Bg.Ivory
+#263848	Line.Tan
+#26475B	Bg.Ivory
+#293344	Line.Tan
+#293442	Bg.Ivory
+#29465A	Bg.Ivory
+#29A5B5	Accent.Focus
+#2A2A22	Bg.PanelInner
+#2B4050	Bg.Ivory
+#2C2440	Special.Face
+#2D5065	Bg.Ivory
+#2E4353	Line.TanStrong
+#2E4659	Line.TanStrong
+#2E7DD7	Accent.Pink
+#2F6E63	Success.Face
+#30465A	Line.TanStrong
+#305C9E	Accent.Pink
+#31485A	Line.TanStrong
+#315068	Line.TanStrong
+#315A70	Line.TanStrong
+#324052	Bg.Ivory
+#32475A	Line.TanStrong
+#344154	Bg.Ivory
+#344156	Line.TanStrong
+#34455C	Line.TanStrong
+#39C5D4	Accent.Focus
+#3A4D67	Line.TanStrong
+#3A5266	Line.TanStrong
+#3A5368	Line.TanStrong
+#3A657F	Line.TanStrong
+#3B5063	Line.TanStrong
+#3C566B	Line.TanStrong
+#3D6178	Line.TanStrong
+#3D78D8	Accent.Pink
+#41556A	Line.TanStrong
+#435470	Line.TanStrong
+#43C6D9	Accent.Focus
+#49657A	Line.Soft
+#4A3B1E	Gold.Face
+#4A7892	Line.Soft
+#4AAE9C	Success.Line
+#4C6C83	Line.Soft
+#4E85D8	Accent.PinkLine
+#51436B	Special.Line
+#52718A	Line.Soft
+#59A7C7	Info.Line
+#60788C	Text.Tertiary
+#66528C	Special.Line
+#667386	Text.Tertiary
+#69313A	Rose.Face
+#6F7D90	Text.Tertiary
+#7890A4	Text.Tertiary
+#7F95A8	Text.Tertiary
+#7F95AA	Text.Tertiary
+#8398AC	Text.Tertiary
+#8BE8F5	Accent.Focus
+#8C4652	Rose.Line
+#8EA5B6	Text.Secondary
+#8FD7E7	Status.Info
+#91A5B6	Text.Secondary
+#9EB2C4	Text.Secondary
+#9FB0C2	Text.Secondary
+#9FB2C2	Text.Secondary
+#9FC5D8	Status.Info
+#9FE9FF	Status.Info
+#B995FF	Special.Line
+#B9C5D3	Text.Secondary
+#BFD2DF	Text.Primary
+#BFEAF4	Text.Primary
+#C8D1DE	Bg.Ivory
+#C9C2FF	Status.Special
+#CDB7FF	Status.Special
+#CFE7D7	Status.Success
+#D6E7F2	Text.Primary
+#D8B978	Gold.Text
+#DCE7F3	Text.Primary
+#DCE8F0	Text.Primary
+#E5FFF9	Status.Success
+#E6EDF7	Text.Primary
+#E8D8FF	Status.Special
+#E8EDF5	Text.Primary
+#EAF7FB	Text.Primary
+#FF7FA6	Rose.Text
+#FF9DB8	Rose.Text
+#FFE6A8	Gold.Text
+#FFF3C4	Gold.Text

@@ -1,3 +1,4 @@
+using KotodamanWordFinder.Themes;
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Globalization;
@@ -219,7 +220,7 @@ public partial class CharacterBulkEditorWindow : Window
         CharacterDataGrid.Items.Refresh();
         UpdateCountText();
         StatusText.Text = $"현재 표시된 {_view.Cast<object>().Count():N0}명을 체크했습니다.";
-        StatusText.Foreground = BrushFromHex("#8FE3B1");
+        StatusText.Foreground = Theme.LevelNumber;
     }
 
     private void ClearChecksButton_Click(object sender, RoutedEventArgs e)
@@ -232,7 +233,7 @@ public partial class CharacterBulkEditorWindow : Window
         CharacterDataGrid.Items.Refresh();
         UpdateCountText();
         StatusText.Text = "체크를 모두 해제했습니다.";
-        StatusText.Foreground = BrushFromHex("#9EACBE");
+        StatusText.Foreground = Theme.TextSecondary;
     }
 
     private void ApplyBatchButton_Click(object sender, RoutedEventArgs e)
@@ -318,7 +319,7 @@ public partial class CharacterBulkEditorWindow : Window
         _view.Refresh();
         UpdateCountText();
         StatusText.Text = $"체크한 {selected.Length:N0}명의 표 값을 변경했습니다. 아래 '변경 내용 적용'을 누르면 characters.json에 반영됩니다.";
-        StatusText.Foreground = BrushFromHex("#FFD08A");
+        StatusText.Foreground = Theme.Warn;
     }
 
     private void SaveButton_Click(object sender, RoutedEventArgs e)
@@ -405,11 +406,8 @@ public partial class CharacterBulkEditorWindow : Window
     private void SetError(string message)
     {
         StatusText.Text = message;
-        StatusText.Foreground = BrushFromHex("#FF8C8C");
+        StatusText.Foreground = Theme.Error;
     }
-
-    private static System.Windows.Media.Brush BrushFromHex(string hex)
-        => (System.Windows.Media.Brush)new System.Windows.Media.BrushConverter().ConvertFromString(hex)!;
 
     private static List<string> ParseLetters(string text)
     {

@@ -7,39 +7,39 @@
         MinWidth="1080"
         MinHeight="680"
         WindowStartupLocation="CenterOwner"
-        Background="#10131A"
-        Foreground="#F4F7FB"
+        Background="{StaticResource Bg.Backdrop}"
+        Foreground="{StaticResource Text.Primary}"
         FontFamily="Malgun Gothic"
         FontSize="13"
         TextOptions.TextFormattingMode="Display"
         TextOptions.TextRenderingMode="ClearType">
     <Window.Resources>
         <Style x:Key="EditorButtonStyle" TargetType="Button">
-            <Setter Property="Background" Value="#2A3342"/>
-            <Setter Property="Foreground" Value="#F4F7FB"/>
-            <Setter Property="BorderBrush" Value="#46546A"/>
+            <Setter Property="Background" Value="{StaticResource Line.Tan}"/>
+            <Setter Property="Foreground" Value="{StaticResource Text.Primary}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource Accent.PinkSoft}"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="Padding" Value="12,8"/>
             <Setter Property="FontWeight" Value="SemiBold"/>
             <Setter Property="Cursor" Value="Hand"/>
         </Style>
         <Style x:Key="PrimaryButtonStyle" TargetType="Button" BasedOn="{StaticResource EditorButtonStyle}">
-            <Setter Property="Background" Value="#4B8BFF"/>
-            <Setter Property="BorderBrush" Value="#4B8BFF"/>
+            <Setter Property="Background" Value="{StaticResource Accent.Pink}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource Accent.Pink}"/>
         </Style>
         <Style TargetType="TextBox">
-            <Setter Property="Background" Value="#202734"/>
-            <Setter Property="Foreground" Value="#F4F7FB"/>
-            <Setter Property="CaretBrush" Value="#F4F7FB"/>
-            <Setter Property="BorderBrush" Value="#3A4658"/>
+            <Setter Property="Background" Value="{StaticResource Bg.PanelInner}"/>
+            <Setter Property="Foreground" Value="{StaticResource Text.Primary}"/>
+            <Setter Property="CaretBrush" Value="{StaticResource Text.Primary}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource Line.Tan}"/>
             <Setter Property="Padding" Value="8,5"/>
         </Style>
         <Style TargetType="ComboBox">
             <Setter Property="MinHeight" Value="39"/>
             <Setter Property="Padding" Value="10,5"/>
-            <Setter Property="Background" Value="#222A37"/>
-            <Setter Property="Foreground" Value="#F4F7FB"/>
-            <Setter Property="BorderBrush" Value="#3A4658"/>
+            <Setter Property="Background" Value="{StaticResource Chip.Dark}"/>
+            <Setter Property="Foreground" Value="{StaticResource Text.Primary}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource Line.Tan}"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
             <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
@@ -83,27 +83,27 @@
                                                                   TextElement.Foreground="{TemplateBinding Foreground}"
                                                                   RecognizesAccessKey="True"/>
                                                 <Border Grid.Column="1"
-                                                        Background="#1B222D"
-                                                        BorderBrush="#3A4658"
+                                                        Background="{StaticResource Bg.PanelInner}"
+                                                        BorderBrush="{StaticResource Line.Tan}"
                                                         BorderThickness="1,0,0,0"
                                                         CornerRadius="0,6,6,0">
                                                     <Path Width="10"
                                                           Height="6"
                                                           HorizontalAlignment="Center"
                                                           VerticalAlignment="Center"
-                                                          Fill="#C8D1DE"
+                                                          Fill="{StaticResource Bg.Ivory}"
                                                           Data="M 0 0 L 10 0 L 5 6 Z"/>
                                                 </Border>
                                             </Grid>
                                         </Border>
                                         <ControlTemplate.Triggers>
                                             <Trigger Property="IsMouseOver" Value="True">
-                                                <Setter TargetName="ToggleBorder" Property="Background" Value="#293442"/>
-                                                <Setter TargetName="ToggleBorder" Property="BorderBrush" Value="#547086"/>
+                                                <Setter TargetName="ToggleBorder" Property="Background" Value="{StaticResource Bg.Ivory}"/>
+                                                <Setter TargetName="ToggleBorder" Property="BorderBrush" Value="{StaticResource Info.Line}"/>
                                             </Trigger>
                                             <Trigger Property="IsChecked" Value="True">
-                                                <Setter TargetName="ToggleBorder" Property="Background" Value="#263746"/>
-                                                <Setter TargetName="ToggleBorder" Property="BorderBrush" Value="#66D9EF"/>
+                                                <Setter TargetName="ToggleBorder" Property="Background" Value="{StaticResource Bg.PanelInner}"/>
+                                                <Setter TargetName="ToggleBorder" Property="BorderBrush" Value="{StaticResource Accent.Focus}"/>
                                             </Trigger>
                                             <Trigger Property="IsEnabled" Value="False">
                                                 <Setter TargetName="ToggleBorder" Property="Opacity" Value="0.55"/>
@@ -118,9 +118,9 @@
                                      Visibility="Hidden"
                                      Margin="8,2,38,2"
                                      Padding="3,0"
-                                     Background="#222A37"
-                                     Foreground="#F4F7FB"
-                                     CaretBrush="#F4F7FB"
+                                     Background="{StaticResource Chip.Dark}"
+                                     Foreground="{StaticResource Text.Primary}"
+                                     CaretBrush="{StaticResource Text.Primary}"
                                      BorderThickness="0"
                                      VerticalContentAlignment="Center"
                                      HorizontalContentAlignment="Stretch"
@@ -135,8 +135,8 @@
                                 <Border Margin="0,4,0,0"
                                         MinWidth="{Binding ActualWidth, RelativeSource={RelativeSource TemplatedParent}}"
                                         MaxHeight="{TemplateBinding MaxDropDownHeight}"
-                                        Background="#171C26"
-                                        BorderBrush="#46546A"
+                                        Background="{StaticResource Bg.Panel}"
+                                        BorderBrush="{StaticResource Accent.PinkSoft}"
                                         BorderThickness="1"
                                         CornerRadius="7"
                                         Padding="4">
@@ -174,8 +174,8 @@
         </Style>
 
         <Style TargetType="ComboBoxItem">
-            <Setter Property="Background" Value="#222A37"/>
-            <Setter Property="Foreground" Value="#F4F7FB"/>
+            <Setter Property="Background" Value="{StaticResource Chip.Dark}"/>
+            <Setter Property="Foreground" Value="{StaticResource Text.Primary}"/>
             <Setter Property="Padding" Value="10,8"/>
             <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
@@ -193,18 +193,18 @@
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsHighlighted" Value="True">
-                                <Setter TargetName="ItemBorder" Property="Background" Value="#29465A"/>
-                                <Setter TargetName="ItemBorder" Property="BorderBrush" Value="#547086"/>
-                                <Setter Property="Foreground" Value="#FFFFFF"/>
+                                <Setter TargetName="ItemBorder" Property="Background" Value="{StaticResource Bg.Ivory}"/>
+                                <Setter TargetName="ItemBorder" Property="BorderBrush" Value="{StaticResource Info.Line}"/>
+                                <Setter Property="Foreground" Value="{StaticResource Text.OnAccent}"/>
                             </Trigger>
                             <Trigger Property="IsSelected" Value="True">
-                                <Setter TargetName="ItemBorder" Property="Background" Value="#1D4051"/>
-                                <Setter TargetName="ItemBorder" Property="BorderBrush" Value="#66D9EF"/>
-                                <Setter Property="Foreground" Value="#FFFFFF"/>
+                                <Setter TargetName="ItemBorder" Property="Background" Value="{StaticResource Accent.OrangeDeep}"/>
+                                <Setter TargetName="ItemBorder" Property="BorderBrush" Value="{StaticResource Accent.Focus}"/>
+                                <Setter Property="Foreground" Value="{StaticResource Text.OnAccent}"/>
                                 <Setter Property="FontWeight" Value="SemiBold"/>
                             </Trigger>
                             <Trigger Property="IsEnabled" Value="False">
-                                <Setter Property="Foreground" Value="#718096"/>
+                                <Setter Property="Foreground" Value="{StaticResource Text.Tertiary}"/>
                                 <Setter Property="Opacity" Value="0.8"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
@@ -214,7 +214,7 @@
         </Style>
 
         <Style TargetType="CheckBox">
-            <Setter Property="Foreground" Value="#E8EDF5"/>
+            <Setter Property="Foreground" Value="{StaticResource Text.Primary}"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
         </Style>
     </Window.Resources>
@@ -228,8 +228,8 @@
         </Grid.RowDefinitions>
 
         <Border Grid.Row="0"
-                Background="#171C26"
-                BorderBrush="#2A3342"
+                Background="{StaticResource Bg.Panel}"
+                BorderBrush="{StaticResource Line.Tan}"
                 BorderThickness="1"
                 CornerRadius="10"
                 Padding="14"
@@ -244,22 +244,22 @@
                                FontSize="18"
                                FontWeight="Bold"/>
                     <TextBlock Margin="0,4,0,0"
-                               Foreground="#9EACBE"
+                               Foreground="{StaticResource Text.Secondary}"
                                TextWrapping="Wrap"
                                Text="웹 등록 검사기처럼 현재 characters.json의 캐릭터를 표에서 직접 수정합니다. 일러를 보면서 이름·검색 별칭·문자·등급·속성·종족·그룹을 직접 입력·복붙할 수 있으며, 이미지·모드시프트·조건 문자·미라클 설정 자체는 그대로 유지됩니다."/>
                 </StackPanel>
                 <TextBlock x:Name="CountText"
                            Grid.Column="1"
                            VerticalAlignment="Center"
-                           Foreground="#8FE3B1"
+                           Foreground="{StaticResource Status.Success}"
                            FontWeight="SemiBold"
                            Text="0 / 0명"/>
             </Grid>
         </Border>
 
         <Border Grid.Row="1"
-                Background="#171C26"
-                BorderBrush="#2A3342"
+                Background="{StaticResource Bg.Panel}"
+                BorderBrush="{StaticResource Line.Tan}"
                 BorderThickness="1"
                 CornerRadius="10"
                 Padding="12"
@@ -326,26 +326,26 @@
                     <TextBlock Grid.RowSpan="2"
                                Grid.Column="0"
                                VerticalAlignment="Center"
-                               Foreground="#AEB8C8"
+                               Foreground="{StaticResource Text.Secondary}"
                                Text="체크 항목 일괄 변경&#10;(빈칸=유지)"/>
                     <TextBlock Grid.Row="0" Grid.Column="2"
                                Margin="2,0,0,4"
-                               Foreground="#9EACBE"
+                               Foreground="{StaticResource Text.Secondary}"
                                FontSize="11"
                                Text="등급"/>
                     <TextBlock Grid.Row="0" Grid.Column="4"
                                Margin="2,0,0,4"
-                               Foreground="#9EACBE"
+                               Foreground="{StaticResource Text.Secondary}"
                                FontSize="11"
                                Text="속성"/>
                     <TextBlock Grid.Row="0" Grid.Column="6"
                                Margin="2,0,0,4"
-                               Foreground="#9EACBE"
+                               Foreground="{StaticResource Text.Secondary}"
                                FontSize="11"
                                Text="종족"/>
                     <TextBlock Grid.Row="0" Grid.Column="8"
                                Margin="2,0,0,4"
-                               Foreground="#66D9EF"
+                               Foreground="{StaticResource Accent.Focus}"
                                FontSize="11"
                                FontWeight="SemiBold"
                                Text="소속 그룹"/>
@@ -382,8 +382,8 @@
         </Border>
 
         <Border Grid.Row="2"
-                Background="#141922"
-                BorderBrush="#2A3342"
+                Background="{StaticResource Bg.Panel}"
+                BorderBrush="{StaticResource Line.Tan}"
                 BorderThickness="1"
                 CornerRadius="10"
                 Padding="1">
@@ -398,13 +398,13 @@
                       SelectionUnit="FullRow"
                       HeadersVisibility="Column"
                       GridLinesVisibility="Horizontal"
-                      RowBackground="#171C26"
-                      AlternatingRowBackground="#1B222D"
-                      HorizontalGridLinesBrush="#293344"
-                      VerticalGridLinesBrush="#293344"
+                      RowBackground="{StaticResource Bg.Panel}"
+                      AlternatingRowBackground="{StaticResource Bg.PanelInner}"
+                      HorizontalGridLinesBrush="{StaticResource Line.Tan}"
+                      VerticalGridLinesBrush="{StaticResource Line.Tan}"
                       BorderThickness="0"
-                      Background="#141922"
-                      Foreground="#F4F7FB"
+                      Background="{StaticResource Bg.Panel}"
+                      Foreground="{StaticResource Text.Primary}"
                       RowHeight="50"
                       ColumnHeaderHeight="34"
                       EnableRowVirtualization="True"
@@ -416,23 +416,23 @@
                       ScrollViewer.VerticalScrollBarVisibility="Auto">
                 <DataGrid.Resources>
                     <Style TargetType="DataGridColumnHeader">
-                        <Setter Property="Background" Value="#263142"/>
-                        <Setter Property="Foreground" Value="#E8EDF5"/>
-                        <Setter Property="BorderBrush" Value="#3A4658"/>
+                        <Setter Property="Background" Value="{StaticResource Bg.Ivory}"/>
+                        <Setter Property="Foreground" Value="{StaticResource Text.Primary}"/>
+                        <Setter Property="BorderBrush" Value="{StaticResource Line.Tan}"/>
                         <Setter Property="Padding" Value="7,7"/>
                         <Setter Property="FontWeight" Value="SemiBold"/>
                     </Style>
                     <Style TargetType="DataGridCell">
                         <Setter Property="BorderThickness" Value="0"/>
                         <Setter Property="Padding" Value="4,1"/>
-                        <Setter Property="Foreground" Value="#F4F7FB"/>
+                        <Setter Property="Foreground" Value="{StaticResource Text.Primary}"/>
                         <Setter Property="Background" Value="Transparent"/>
                         <Setter Property="VerticalContentAlignment" Value="Center"/>
                     </Style>
                     <Style x:Key="GridInlineTextBoxStyle" TargetType="TextBox">
                         <Setter Property="Background" Value="Transparent"/>
-                        <Setter Property="Foreground" Value="#F4F7FB"/>
-                        <Setter Property="CaretBrush" Value="#F4F7FB"/>
+                        <Setter Property="Foreground" Value="{StaticResource Text.Primary}"/>
+                        <Setter Property="CaretBrush" Value="{StaticResource Text.Primary}"/>
                         <Setter Property="BorderBrush" Value="Transparent"/>
                         <Setter Property="BorderThickness" Value="1"/>
                         <Setter Property="Padding" Value="5,3"/>
@@ -440,22 +440,22 @@
                         <Setter Property="VerticalContentAlignment" Value="Center"/>
                         <Style.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" Value="#202734"/>
-                                <Setter Property="BorderBrush" Value="#3A4658"/>
+                                <Setter Property="Background" Value="{StaticResource Bg.PanelInner}"/>
+                                <Setter Property="BorderBrush" Value="{StaticResource Line.Tan}"/>
                             </Trigger>
                             <Trigger Property="IsKeyboardFocusWithin" Value="True">
-                                <Setter Property="Background" Value="#202A37"/>
-                                <Setter Property="BorderBrush" Value="#66D9EF"/>
+                                <Setter Property="Background" Value="{StaticResource Bg.PanelInner}"/>
+                                <Setter Property="BorderBrush" Value="{StaticResource Accent.Focus}"/>
                             </Trigger>
                         </Style.Triggers>
                     </Style>
                     <Style TargetType="DataGridRow">
-                        <Setter Property="Foreground" Value="#F4F7FB"/>
+                        <Setter Property="Foreground" Value="{StaticResource Text.Primary}"/>
                         <Setter Property="MinHeight" Value="50"/>
                         <Style.Triggers>
                             <Trigger Property="IsSelected" Value="True">
-                                <Setter Property="Background" Value="#234456"/>
-                                <Setter Property="Foreground" Value="#FFFFFF"/>
+                                <Setter Property="Background" Value="{StaticResource Info.Face}"/>
+                                <Setter Property="Foreground" Value="{StaticResource Text.OnAccent}"/>
                             </Trigger>
                         </Style.Triggers>
                     </Style>
@@ -468,8 +468,8 @@
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <Border Width="42" Height="42"
-                                        Background="#0F141C"
-                                        BorderBrush="#3A4658"
+                                        Background="{StaticResource Bg.Backdrop}"
+                                        BorderBrush="{StaticResource Line.Tan}"
                                         BorderThickness="1"
                                         CornerRadius="6"
                                         HorizontalAlignment="Center"
@@ -482,7 +482,7 @@
                                                Visibility="{Binding ThumbnailVisibility}"
                                                SnapsToDevicePixels="True"/>
                                         <TextBlock Text="{Binding PlaceholderText}"
-                                                   Foreground="#667386"
+                                                   Foreground="{StaticResource Text.Tertiary}"
                                                    FontSize="10"
                                                    HorizontalAlignment="Center"
                                                    VerticalAlignment="Center"
@@ -558,7 +558,7 @@
             </Grid.ColumnDefinitions>
             <TextBlock x:Name="StatusText"
                        VerticalAlignment="Center"
-                       Foreground="#9EACBE"
+                       Foreground="{StaticResource Text.Secondary}"
                        Text="표에서 직접 수정하거나 체크 후 위의 일괄 변경을 사용하세요."/>
             <StackPanel Grid.Column="1" Orientation="Horizontal">
                 <Button Content="취소"

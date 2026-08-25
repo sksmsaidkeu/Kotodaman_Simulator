@@ -7,13 +7,13 @@
         MinWidth="720"
         MinHeight="520"
         WindowStartupLocation="CenterOwner"
-        Background="#0F141C"
-        Foreground="#F4F7FB">
+        Background="{StaticResource Bg.Backdrop}"
+        Foreground="{StaticResource Text.Primary}">
     <Window.Resources>
         <Style TargetType="Button">
-            <Setter Property="Foreground" Value="#F4F7FB"/>
-            <Setter Property="Background" Value="#263448"/>
-            <Setter Property="BorderBrush" Value="#435470"/>
+            <Setter Property="Foreground" Value="{StaticResource Text.Primary}"/>
+            <Setter Property="Background" Value="{StaticResource Bg.Ivory}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource Line.TanStrong}"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="Padding" Value="14,9"/>
             <Setter Property="Margin" Value="0,0,8,0"/>
@@ -25,7 +25,7 @@
             <Setter Property="Padding" Value="0"/>
             <Setter Property="Margin" Value="0,0,0,8"/>
             <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="Foreground" Value="#F4F7FB"/>
+            <Setter Property="Foreground" Value="{StaticResource Text.Primary}"/>
         </Style>
     </Window.Resources>
 
@@ -42,10 +42,10 @@
             <TextBlock Text="데이터 전체 백업 / 복원"
                        FontSize="25"
                        FontWeight="Bold"
-                       Foreground="#66D9EF"/>
+                       Foreground="{StaticResource Accent.Focus}"/>
             <TextBlock Margin="0,7,0,0"
                        TextWrapping="Wrap"
-                       Foreground="#AEB8C8"
+                       Foreground="{StaticResource Text.Secondary}"
                        FontSize="13"
                        Text="캐릭터 DB · 캐릭터 이미지 · 덱 · 덱 프리셋 · 단어 데이터 · 사용자 설정을 ZIP 하나로 보관합니다. 복원 직전에는 현재 상태를 자동으로 한 번 더 안전 백업합니다."/>
         </StackPanel>
@@ -53,8 +53,8 @@
         <Border Grid.Row="1"
                 Margin="0,16,0,12"
                 Padding="14,12"
-                Background="#17212D"
-                BorderBrush="#34455C"
+                Background="{StaticResource Bg.PanelInner}"
+                BorderBrush="{StaticResource Line.TanStrong}"
                 BorderThickness="1"
                 CornerRadius="10">
             <Grid>
@@ -67,7 +67,7 @@
                                FontWeight="SemiBold"/>
                     <TextBlock x:Name="BackupDirectoryText"
                                Margin="0,4,0,0"
-                               Foreground="#8FA0B4"
+                               Foreground="{StaticResource Text.Secondary}"
                                TextWrapping="Wrap"/>
                 </StackPanel>
                 <Button Grid.Column="1"
@@ -79,8 +79,8 @@
 
         <Border Grid.Row="2"
                 Padding="12"
-                Background="#111A24"
-                BorderBrush="#34455C"
+                Background="{StaticResource Bg.Panel}"
+                BorderBrush="{StaticResource Line.TanStrong}"
                 BorderThickness="1"
                 CornerRadius="10">
             <Grid>
@@ -99,7 +99,7 @@
                                FontWeight="Bold"/>
                     <TextBlock x:Name="BackupCountText"
                                Grid.Column="1"
-                               Foreground="#66D9EF"
+                               Foreground="{StaticResource Accent.Focus}"
                                VerticalAlignment="Center"/>
                 </Grid>
 
@@ -111,8 +111,8 @@
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <Border Padding="14,11"
-                                    Background="#1B2735"
-                                    BorderBrush="#3A4D67"
+                                    Background="{StaticResource Bg.PanelInner}"
+                                    BorderBrush="{StaticResource Line.TanStrong}"
                                     BorderThickness="1"
                                     CornerRadius="8">
                                 <Grid>
@@ -126,19 +126,19 @@
                                                    TextTrimming="CharacterEllipsis"/>
                                         <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
                                             <TextBlock Text="{Binding KindText}"
-                                                       Foreground="#FFD08A"
+                                                       Foreground="{StaticResource Status.Warn}"
                                                        Margin="0,0,12,0"/>
                                             <TextBlock Text="{Binding CreatedText}"
-                                                       Foreground="#8FA0B4"
+                                                       Foreground="{StaticResource Text.Secondary}"
                                                        Margin="0,0,12,0"/>
                                             <TextBlock Text="{Binding SizeText}"
-                                                       Foreground="#8FA0B4"/>
+                                                       Foreground="{StaticResource Text.Secondary}"/>
                                         </StackPanel>
                                     </StackPanel>
                                     <TextBlock Grid.Column="1"
                                                Margin="12,0,0,0"
                                                VerticalAlignment="Center"
-                                               Foreground="#66D9EF"
+                                               Foreground="{StaticResource Accent.Focus}"
                                                Text="선택"/>
                                 </Grid>
                             </Border>
@@ -152,7 +152,7 @@
                    Grid.Row="3"
                    Margin="2,12,2,12"
                    TextWrapping="Wrap"
-                   Foreground="#AEB8C8"
+                   Foreground="{StaticResource Text.Secondary}"
                    Text="새 백업을 만들거나 기존 백업을 선택해 복원할 수 있습니다."/>
 
         <Grid Grid.Row="4">
@@ -164,18 +164,18 @@
             <WrapPanel>
                 <Button x:Name="CreateBackupButton"
                         Content="새 백업 만들기"
-                        Background="#167C8C"
-                        BorderBrush="#29A5B5"
+                        Background="{StaticResource Info.Face}"
+                        BorderBrush="{StaticResource Accent.Focus}"
                         Click="CreateBackupButton_Click"/>
                 <Button x:Name="RestoreBackupButton"
                         Content="선택 백업 복원"
-                        Background="#305C9E"
-                        BorderBrush="#4E85D8"
+                        Background="{StaticResource Accent.Pink}"
+                        BorderBrush="{StaticResource Accent.PinkLine}"
                         Click="RestoreBackupButton_Click"/>
                 <Button x:Name="DeleteBackupButton"
                         Content="선택 백업 삭제"
-                        Background="#69313A"
-                        BorderBrush="#8C4652"
+                        Background="{StaticResource Rose.Face}"
+                        BorderBrush="{StaticResource Rose.Line}"
                         Click="DeleteBackupButton_Click"/>
                 <Button Content="목록 새로고침"
                         Click="RefreshButton_Click"/>

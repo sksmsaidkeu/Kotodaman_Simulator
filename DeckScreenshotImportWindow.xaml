@@ -7,31 +7,31 @@
         MinWidth="980"
         MinHeight="680"
         WindowStartupLocation="CenterOwner"
-        Background="#0F151D"
-        Foreground="#F4F7FB"
+        Background="{StaticResource Bg.Backdrop}"
+        Foreground="{StaticResource Text.Primary}"
         FontFamily="Segoe UI"
         PreviewKeyDown="Window_PreviewKeyDown">
     <Window.Resources>
         <Style x:Key="PrimaryButtonStyle" TargetType="Button">
-            <Setter Property="Background" Value="#2E7DD7"/>
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="BorderBrush" Value="#4D9AF0"/>
+            <Setter Property="Background" Value="{StaticResource Accent.Pink}"/>
+            <Setter Property="Foreground" Value="{StaticResource Text.OnAccent}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource Accent.PinkLine}"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="Padding" Value="13,8"/>
             <Setter Property="FontWeight" Value="SemiBold"/>
             <Setter Property="Cursor" Value="Hand"/>
         </Style>
         <Style x:Key="SecondaryButtonStyle" TargetType="Button">
-            <Setter Property="Background" Value="#263442"/>
-            <Setter Property="Foreground" Value="#F4F7FB"/>
-            <Setter Property="BorderBrush" Value="#3C566B"/>
+            <Setter Property="Background" Value="{StaticResource Bg.Ivory}"/>
+            <Setter Property="Foreground" Value="{StaticResource Text.Primary}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource Line.TanStrong}"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="Padding" Value="12,8"/>
             <Setter Property="Cursor" Value="Hand"/>
         </Style>
         <Style x:Key="DarkComboBoxItemStyle" TargetType="ComboBoxItem">
-            <Setter Property="Background" Value="#17212C"/>
-            <Setter Property="Foreground" Value="#F4F7FB"/>
+            <Setter Property="Background" Value="{StaticResource Bg.Panel}"/>
+            <Setter Property="Foreground" Value="{StaticResource Text.Primary}"/>
             <Setter Property="Padding" Value="9,6"/>
             <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
             <Setter Property="Template">
@@ -44,12 +44,12 @@
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsHighlighted" Value="True">
-                                <Setter TargetName="ItemBorder" Property="Background" Value="#25445A"/>
-                                <Setter Property="Foreground" Value="White"/>
+                                <Setter TargetName="ItemBorder" Property="Background" Value="{StaticResource Bg.Ivory}"/>
+                                <Setter Property="Foreground" Value="{StaticResource Text.Primary}"/>
                             </Trigger>
                             <Trigger Property="IsSelected" Value="True">
-                                <Setter TargetName="ItemBorder" Property="Background" Value="#1D5F7A"/>
-                                <Setter Property="Foreground" Value="White"/>
+                                <Setter TargetName="ItemBorder" Property="Background" Value="{StaticResource Info.Face}"/>
+                                <Setter Property="Foreground" Value="{StaticResource Text.OnAccent}"/>
                             </Trigger>
                             <Trigger Property="IsEnabled" Value="False">
                                 <Setter Property="Opacity" Value="0.5"/>
@@ -61,9 +61,9 @@
         </Style>
 
         <Style x:Key="DarkChoiceComboBoxStyle" TargetType="ComboBox">
-            <Setter Property="Background" Value="#17212C"/>
-            <Setter Property="Foreground" Value="#F4F7FB"/>
-            <Setter Property="BorderBrush" Value="#3A5368"/>
+            <Setter Property="Background" Value="{StaticResource Bg.Panel}"/>
+            <Setter Property="Foreground" Value="{StaticResource Text.Primary}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource Line.TanStrong}"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="Padding" Value="9,6"/>
             <Setter Property="ItemContainerStyle" Value="{StaticResource DarkComboBoxItemStyle}"/>
@@ -78,8 +78,8 @@
                                 <ToggleButton.Template>
                                     <ControlTemplate TargetType="ToggleButton">
                                         <Border x:Name="ToggleBorder"
-                                                Background="#17212C"
-                                                BorderBrush="#3A5368"
+                                                Background="{StaticResource Bg.Panel}"
+                                                BorderBrush="{StaticResource Line.TanStrong}"
                                                 BorderThickness="1"
                                                 CornerRadius="5"
                                                 Padding="9,6">
@@ -89,20 +89,20 @@
                                                     <ColumnDefinition Width="22"/>
                                                 </Grid.ColumnDefinitions>
                                                 <TextBlock Text="{Binding SelectedItem.DisplayName, RelativeSource={RelativeSource AncestorType=ComboBox}}"
-                                                           Foreground="#F4F7FB"
+                                                           Foreground="{StaticResource Text.Primary}"
                                                            VerticalAlignment="Center"
                                                            TextTrimming="CharacterEllipsis"/>
                                                 <Path Grid.Column="1"
                                                       HorizontalAlignment="Center"
                                                       VerticalAlignment="Center"
-                                                      Fill="#AFC2D1"
+                                                      Fill="{StaticResource Text.Secondary}"
                                                       Data="M 0 0 L 4 4 L 8 0 Z"/>
                                             </Grid>
                                         </Border>
                                         <ControlTemplate.Triggers>
                                             <Trigger Property="IsMouseOver" Value="True">
-                                                <Setter TargetName="ToggleBorder" Property="Background" Value="#203241"/>
-                                                <Setter TargetName="ToggleBorder" Property="BorderBrush" Value="#4C6C83"/>
+                                                <Setter TargetName="ToggleBorder" Property="Background" Value="{StaticResource Bg.Ivory}"/>
+                                                <Setter TargetName="ToggleBorder" Property="BorderBrush" Value="{StaticResource Line.Soft}"/>
                                             </Trigger>
                                         </ControlTemplate.Triggers>
                                     </ControlTemplate>
@@ -118,8 +118,8 @@
                                 <Border MinWidth="{Binding ActualWidth, RelativeSource={RelativeSource TemplatedParent}}"
                                         MaxHeight="360"
                                         Margin="0,3,0,0"
-                                        Background="#121B24"
-                                        BorderBrush="#49657A"
+                                        Background="{StaticResource Bg.Panel}"
+                                        BorderBrush="{StaticResource Line.Soft}"
                                         BorderThickness="1"
                                         CornerRadius="6">
                                     <ScrollViewer VerticalScrollBarVisibility="Auto"
@@ -148,9 +148,9 @@
             <TextBlock Text="덱 스크린샷 자동 불러오기"
                        FontSize="24"
                        FontWeight="Bold"
-                       Foreground="#66D9EF"/>
+                       Foreground="{StaticResource Accent.Focus}"/>
             <TextBlock Margin="0,5,0,0"
-                       Foreground="#9EB2C4"
+                       Foreground="{StaticResource Text.Secondary}"
                        TextWrapping="Wrap"
                        Text="게임의 덱 편성 화면 스크린샷을 선택한 뒤 12칸(4열 × 3행) 영역을 지정하세요. 프로그램이 각 슬롯 그림을 캐릭터 DB 이미지와 비교합니다. 애매한 슬롯은 자동으로 비워 두며, 12칸 확인과 중복 해소가 끝나기 전에는 덱에 적용되지 않습니다."/>
         </StackPanel>
@@ -158,8 +158,8 @@
         <Border Grid.Row="1"
                 Margin="0,0,0,12"
                 Padding="12"
-                Background="#16212C"
-                BorderBrush="#2E4659"
+                Background="{StaticResource Bg.Panel}"
+                BorderBrush="{StaticResource Line.TanStrong}"
                 BorderThickness="1"
                 CornerRadius="10">
             <WrapPanel>
@@ -190,21 +190,21 @@
                           IsChecked="True"
                           Margin="8,7,10,8"
                           VerticalAlignment="Center"
-                          Foreground="#CFE7D7"
+                          Foreground="{StaticResource Status.Success}"
                           ToolTip="검수로 확정한 과거 실제 덱 슬롯 이미지를 다음 인식에 함께 사용합니다."/>
                 <CheckBox x:Name="UseAttributeColorAssistCheckBox"
                           Content="속성색 보조 판정"
                           IsChecked="True"
                           Margin="0,7,10,8"
                           VerticalAlignment="Center"
-                          Foreground="#9FE9FF"
+                          Foreground="{StaticResource Status.Info}"
                           ToolTip="캐릭터 문자 원의 속성색과 DB 속성을 함께 사용해 비슷한 일러스트 후보 순서를 보정합니다. 확신이 낮으면 기존 ORB 결과를 그대로 유지합니다."/>
                 <CheckBox x:Name="LearnVerifiedSamplesCheckBox"
                           Content="검수 결과 학습"
                           IsChecked="True"
                           Margin="0,7,10,8"
                           VerticalAlignment="Center"
-                          Foreground="#CFE7D7"
+                          Foreground="{StaticResource Status.Success}"
                           ToolTip="현재 덱에 적용할 때 확정한 12칸 슬롯 이미지를 캐릭터별 학습 샘플로 저장합니다."/>
                 <Button Content="현재 UI 학습 초기화"
                         Margin="0,0,8,8"
@@ -214,12 +214,12 @@
                 <TextBlock x:Name="LearningStatusText"
                            Margin="8,8,12,8"
                            VerticalAlignment="Center"
-                           Foreground="#8FE3B1"
+                           Foreground="{StaticResource Status.Success}"
                            FontSize="11"
                            Text="학습 프로필 확인 중..."/>
                 <TextBlock x:Name="SelectionInfoText"
                            Margin="8,8,0,0"
-                           Foreground="#AFC2D1"
+                           Foreground="{StaticResource Text.Secondary}"
                            Text="스크린샷을 먼저 선택하세요."/>
             </WrapPanel>
         </Border>
@@ -232,13 +232,13 @@
             </Grid.ColumnDefinitions>
 
             <Border Grid.Column="0"
-                    Background="#080C12"
-                    BorderBrush="#32475A"
+                    Background="{StaticResource Bg.Backdrop}"
+                    BorderBrush="{StaticResource Line.TanStrong}"
                     BorderThickness="1"
                     CornerRadius="10"
                     ClipToBounds="True">
                 <Grid x:Name="PreviewHost"
-                      Background="#080C12"
+                      Background="{StaticResource Bg.Backdrop}"
                       MouseLeftButtonDown="PreviewHost_MouseLeftButtonDown"
                       MouseMove="PreviewHost_MouseMove"
                       MouseLeftButtonUp="PreviewHost_MouseLeftButtonUp">
@@ -252,8 +252,8 @@
                             Margin="10"
                             Padding="8,5"
                             CornerRadius="6"
-                            Background="#CC101821">
-                        <TextBlock Foreground="#D6E7F2"
+                            Background="{StaticResource Overlay.Scrim}">
+                        <TextBlock Foreground="{StaticResource Text.Primary}"
                                    FontSize="11"
                                    Text="마우스로 12칸 전체 영역을 드래그해서 보정할 수 있습니다."/>
                     </Border>
@@ -261,8 +261,8 @@
             </Border>
 
             <Border Grid.Column="2"
-                    Background="#141D27"
-                    BorderBrush="#32475A"
+                    Background="{StaticResource Bg.Panel}"
+                    BorderBrush="{StaticResource Line.TanStrong}"
                     BorderThickness="1"
                     CornerRadius="10"
                     Padding="12">
@@ -283,12 +283,12 @@
                             <TextBlock x:Name="RecognitionSummaryText"
                                        Margin="0,3,0,0"
                                        FontSize="11"
-                                       Foreground="#91A5B6"
+                                       Foreground="{StaticResource Text.Secondary}"
                                        Text="인식 전"/>
                         </StackPanel>
                         <TextBlock Grid.Column="1"
                                    VerticalAlignment="Center"
-                                   Foreground="#D8B978"
+                                   Foreground="{StaticResource Gold.Text}"
                                    FontSize="11"
                                    Text="1번 슬롯 = 리더"/>
                     </Grid>
@@ -301,8 +301,8 @@
                                 <DataTemplate>
                                     <Border Margin="0,0,0,8"
                                             Padding="9"
-                                            Background="#1B2733"
-                                            BorderBrush="#31485A"
+                                            Background="{StaticResource Bg.PanelInner}"
+                                            BorderBrush="{StaticResource Line.TanStrong}"
                                             BorderThickness="1"
                                             CornerRadius="8">
                                         <Grid>
@@ -316,14 +316,14 @@
                                             </Grid.ColumnDefinitions>
                                             <TextBlock Text="{Binding SlotText}"
                                                        FontWeight="Bold"
-                                                       Foreground="#66D9EF"
+                                                       Foreground="{StaticResource Accent.Focus}"
                                                        VerticalAlignment="Center"
                                                        TextAlignment="Center"/>
                                             <Border Grid.Column="1"
                                                     Width="58"
                                                     Height="58"
-                                                    Background="#0B1016"
-                                                    BorderBrush="#41556A"
+                                                    Background="{StaticResource Bg.Backdrop}"
+                                                    BorderBrush="{StaticResource Line.TanStrong}"
                                                     BorderThickness="1"
                                                     CornerRadius="7"
                                                     ClipToBounds="True"
@@ -333,7 +333,7 @@
                                             </Border>
                                             <TextBlock Grid.Column="2"
                                                        Text="→"
-                                                       Foreground="#7890A4"
+                                                       Foreground="{StaticResource Text.Tertiary}"
                                                        FontSize="18"
                                                        VerticalAlignment="Center"
                                                        HorizontalAlignment="Center"/>
@@ -342,15 +342,15 @@
                                                     Height="58"
                                                     HorizontalAlignment="Center"
                                                     VerticalAlignment="Center"
-                                                    Background="#0B1016"
-                                                    BorderBrush="#59A7C7"
+                                                    Background="{StaticResource Bg.Backdrop}"
+                                                    BorderBrush="{StaticResource Info.Line}"
                                                     BorderThickness="1"
                                                     CornerRadius="7"
                                                     ClipToBounds="True"
                                                     ToolTip="현재 선택한 DB 캐릭터 일러스트">
                                                 <Grid>
                                                     <TextBlock Text="DB"
-                                                               Foreground="#60788C"
+                                                               Foreground="{StaticResource Text.Tertiary}"
                                                                FontSize="10"
                                                                HorizontalAlignment="Center"
                                                                VerticalAlignment="Center"/>
@@ -383,7 +383,7 @@
                                                 </Grid>
                                                 <TextBlock Margin="0,5,0,0"
                                                            FontSize="10"
-                                                           Foreground="#8EA5B6"
+                                                           Foreground="{StaticResource Text.Secondary}"
                                                            TextWrapping="Wrap"
                                                            Text="{Binding CandidateSummary}"/>
                                             </StackPanel>
@@ -404,7 +404,7 @@
             </Grid.ColumnDefinitions>
             <TextBlock x:Name="StatusText"
                        VerticalAlignment="Center"
-                       Foreground="#AFC2D1"
+                       Foreground="{StaticResource Text.Secondary}"
                        TextWrapping="Wrap"
                        Text="이미지 비교는 보조 기능입니다. 빈 슬롯이나 중복 캐릭터가 하나라도 남아 있으면 적용 버튼이 덱 변경을 수행하지 않습니다."/>
             <WrapPanel Grid.Column="1" Margin="12,0,0,0">

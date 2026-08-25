@@ -7,24 +7,24 @@
         MinWidth="760"
         MinHeight="560"
         WindowStartupLocation="CenterOwner"
-        Background="#101820"
-        Foreground="#F4F7FB"
+        Background="{StaticResource Bg.Backdrop}"
+        Foreground="{StaticResource Text.Primary}"
         FontFamily="Malgun Gothic">
     <Window.Resources>
         <Style TargetType="TextBox">
-            <Setter Property="Background" Value="#111A24"/>
-            <Setter Property="Foreground" Value="#F4F7FB"/>
-            <Setter Property="BorderBrush" Value="#315068"/>
+            <Setter Property="Background" Value="{StaticResource Bg.Panel}"/>
+            <Setter Property="Foreground" Value="{StaticResource Text.Primary}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource Line.TanStrong}"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="Padding" Value="8,6"/>
-            <Setter Property="CaretBrush" Value="#66D9EF"/>
+            <Setter Property="CaretBrush" Value="{StaticResource Accent.Focus}"/>
         </Style>
         <Style TargetType="ComboBox">
             <Setter Property="MinHeight" Value="39"/>
             <Setter Property="Padding" Value="10,5"/>
-            <Setter Property="Background" Value="#222A37"/>
-            <Setter Property="Foreground" Value="#F4F7FB"/>
-            <Setter Property="BorderBrush" Value="#3A4658"/>
+            <Setter Property="Background" Value="{StaticResource Chip.Dark}"/>
+            <Setter Property="Foreground" Value="{StaticResource Text.Primary}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource Line.Tan}"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
             <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
@@ -68,27 +68,27 @@
                                                                   TextElement.Foreground="{TemplateBinding Foreground}"
                                                                   RecognizesAccessKey="True"/>
                                                 <Border Grid.Column="1"
-                                                        Background="#1B222D"
-                                                        BorderBrush="#3A4658"
+                                                        Background="{StaticResource Bg.PanelInner}"
+                                                        BorderBrush="{StaticResource Line.Tan}"
                                                         BorderThickness="1,0,0,0"
                                                         CornerRadius="0,6,6,0">
                                                     <Path Width="10"
                                                           Height="6"
                                                           HorizontalAlignment="Center"
                                                           VerticalAlignment="Center"
-                                                          Fill="#C8D1DE"
+                                                          Fill="{StaticResource Bg.Ivory}"
                                                           Data="M 0 0 L 10 0 L 5 6 Z"/>
                                                 </Border>
                                             </Grid>
                                         </Border>
                                         <ControlTemplate.Triggers>
                                             <Trigger Property="IsMouseOver" Value="True">
-                                                <Setter TargetName="ToggleBorder" Property="Background" Value="#293442"/>
-                                                <Setter TargetName="ToggleBorder" Property="BorderBrush" Value="#547086"/>
+                                                <Setter TargetName="ToggleBorder" Property="Background" Value="{StaticResource Bg.Ivory}"/>
+                                                <Setter TargetName="ToggleBorder" Property="BorderBrush" Value="{StaticResource Info.Line}"/>
                                             </Trigger>
                                             <Trigger Property="IsChecked" Value="True">
-                                                <Setter TargetName="ToggleBorder" Property="Background" Value="#263746"/>
-                                                <Setter TargetName="ToggleBorder" Property="BorderBrush" Value="#66D9EF"/>
+                                                <Setter TargetName="ToggleBorder" Property="Background" Value="{StaticResource Bg.PanelInner}"/>
+                                                <Setter TargetName="ToggleBorder" Property="BorderBrush" Value="{StaticResource Accent.Focus}"/>
                                             </Trigger>
                                             <Trigger Property="IsEnabled" Value="False">
                                                 <Setter TargetName="ToggleBorder" Property="Opacity" Value="0.55"/>
@@ -103,9 +103,9 @@
                                      Visibility="Hidden"
                                      Margin="8,2,38,2"
                                      Padding="3,0"
-                                     Background="#222A37"
-                                     Foreground="#F4F7FB"
-                                     CaretBrush="#F4F7FB"
+                                     Background="{StaticResource Chip.Dark}"
+                                     Foreground="{StaticResource Text.Primary}"
+                                     CaretBrush="{StaticResource Text.Primary}"
                                      BorderThickness="0"
                                      VerticalContentAlignment="Center"
                                      HorizontalContentAlignment="Stretch"
@@ -120,8 +120,8 @@
                                 <Border Margin="0,4,0,0"
                                         MinWidth="{Binding ActualWidth, RelativeSource={RelativeSource TemplatedParent}}"
                                         MaxHeight="{TemplateBinding MaxDropDownHeight}"
-                                        Background="#171C26"
-                                        BorderBrush="#46546A"
+                                        Background="{StaticResource Bg.Panel}"
+                                        BorderBrush="{StaticResource Accent.PinkSoft}"
                                         BorderThickness="1"
                                         CornerRadius="7"
                                         Padding="4">
@@ -146,8 +146,8 @@
             </Setter>
         </Style>
         <Style TargetType="ComboBoxItem">
-            <Setter Property="Background" Value="#222A37"/>
-            <Setter Property="Foreground" Value="#F4F7FB"/>
+            <Setter Property="Background" Value="{StaticResource Chip.Dark}"/>
+            <Setter Property="Foreground" Value="{StaticResource Text.Primary}"/>
             <Setter Property="Padding" Value="10,8"/>
             <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
@@ -165,18 +165,18 @@
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsHighlighted" Value="True">
-                                <Setter TargetName="ItemBorder" Property="Background" Value="#29465A"/>
-                                <Setter TargetName="ItemBorder" Property="BorderBrush" Value="#547086"/>
-                                <Setter Property="Foreground" Value="#FFFFFF"/>
+                                <Setter TargetName="ItemBorder" Property="Background" Value="{StaticResource Bg.Ivory}"/>
+                                <Setter TargetName="ItemBorder" Property="BorderBrush" Value="{StaticResource Info.Line}"/>
+                                <Setter Property="Foreground" Value="{StaticResource Text.OnAccent}"/>
                             </Trigger>
                             <Trigger Property="IsSelected" Value="True">
-                                <Setter TargetName="ItemBorder" Property="Background" Value="#1D4051"/>
-                                <Setter TargetName="ItemBorder" Property="BorderBrush" Value="#66D9EF"/>
-                                <Setter Property="Foreground" Value="#FFFFFF"/>
+                                <Setter TargetName="ItemBorder" Property="Background" Value="{StaticResource Accent.OrangeDeep}"/>
+                                <Setter TargetName="ItemBorder" Property="BorderBrush" Value="{StaticResource Accent.Focus}"/>
+                                <Setter Property="Foreground" Value="{StaticResource Text.OnAccent}"/>
                                 <Setter Property="FontWeight" Value="SemiBold"/>
                             </Trigger>
                             <Trigger Property="IsEnabled" Value="False">
-                                <Setter Property="Foreground" Value="#718096"/>
+                                <Setter Property="Foreground" Value="{StaticResource Text.Tertiary}"/>
                                 <Setter Property="Opacity" Value="0.8"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
@@ -186,12 +186,12 @@
         </Style>
 
         <Style TargetType="CheckBox">
-            <Setter Property="Foreground" Value="#DCE7F3"/>
+            <Setter Property="Foreground" Value="{StaticResource Text.Primary}"/>
         </Style>
         <Style x:Key="ImportButtonStyle" TargetType="Button">
-            <Setter Property="Background" Value="#22384A"/>
-            <Setter Property="Foreground" Value="#F4F7FB"/>
-            <Setter Property="BorderBrush" Value="#3A657F"/>
+            <Setter Property="Background" Value="{StaticResource Bg.Ivory}"/>
+            <Setter Property="Foreground" Value="{StaticResource Text.Primary}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource Line.TanStrong}"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="Padding" Value="13,8"/>
             <Setter Property="Cursor" Value="Hand"/>
@@ -208,7 +208,7 @@
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="Root" Property="Background" Value="#2D5065"/>
+                                <Setter TargetName="Root" Property="Background" Value="{StaticResource Bg.Ivory}"/>
                             </Trigger>
                             <Trigger Property="IsEnabled" Value="False">
                                 <Setter TargetName="Root" Property="Opacity" Value="0.45"/>
@@ -221,8 +221,8 @@
         <Style x:Key="PrimaryImportButtonStyle"
                TargetType="Button"
                BasedOn="{StaticResource ImportButtonStyle}">
-            <Setter Property="Background" Value="#176B78"/>
-            <Setter Property="BorderBrush" Value="#39C5D4"/>
+            <Setter Property="Background" Value="{StaticResource Info.Face}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource Accent.Focus}"/>
         </Style>
     </Window.Resources>
 
@@ -240,9 +240,9 @@
             <TextBlock Text="캐릭터 웹 반자동 등록"
                        FontSize="22"
                        FontWeight="Bold"
-                       Foreground="#66D9EF"/>
+                       Foreground="{StaticResource Accent.Focus}"/>
             <TextBlock Margin="0,6,0,0"
-                       Foreground="#9FB0C2"
+                       Foreground="{StaticResource Text.Secondary}"
                        TextWrapping="Wrap"
                        Text="GameWith 캐릭터 페이지 주소를 붙여 넣으세요. 이름·문자·속성·종족·이미지와 특성에 적힌 그룹 정보를 읽고, 가져온 값은 아래에서 직접 확인/수정할 수 있습니다."/>
         </StackPanel>
@@ -251,8 +251,8 @@
             <Border
                     Margin="0,14,0,0"
                     Padding="13"
-                    Background="#172330"
-                    BorderBrush="#315068"
+                    Background="{StaticResource Bg.PanelInner}"
+                    BorderBrush="{StaticResource Line.TanStrong}"
                     BorderThickness="1"
                     CornerRadius="10">
                 <Grid>
@@ -262,13 +262,13 @@
                     </Grid.ColumnDefinitions>
                     <StackPanel>
                         <TextBlock Text="캐릭터 페이지 주소"
-                                   Foreground="#B9C5D3"
+                                   Foreground="{StaticResource Text.Secondary}"
                                    Margin="0,0,0,5"/>
                         <TextBox x:Name="SourceUrlTextBox"
                                  MinHeight="35"
                                  ToolTip="GameWith의 개별 캐릭터 페이지 URL"/>
                         <TextBlock Margin="2,6,0,0"
-                                   Foreground="#7F95AA"
+                                   Foreground="{StaticResource Text.Tertiary}"
                                    FontSize="11"
                                    Text="속성/종족은 GameWith 기본정보에서 자동 인식 · 등급/분류는 직접 선택 · 그룹은 특성 문구에서 자동 추정"/>
                     </StackPanel>
@@ -284,34 +284,34 @@
 
             <Expander x:Name="BatchImportExpander"
                       Margin="0,10,0,0"
-                      Foreground="#66D9EF"
+                      Foreground="{StaticResource Accent.Focus}"
                       FontWeight="SemiBold"
                       Header="연속 자동 등록 / 등록 전 검수"
                       IsExpanded="False">
                 <Border Margin="0,8,0,0"
                         Padding="13"
-                        Background="#172330"
-                        BorderBrush="#315068"
+                        Background="{StaticResource Bg.PanelInner}"
+                        BorderBrush="{StaticResource Line.TanStrong}"
                         BorderThickness="1"
                         CornerRadius="10">
                     <StackPanel>
-                        <TextBlock Foreground="#9FB0C2"
+                        <TextBlock Foreground="{StaticResource Text.Secondary}"
                                    FontWeight="Normal"
                                    TextWrapping="Wrap"
                                    Text="개별 캐릭터 주소나 콜라보 정리 페이지는 기존 링크 찾기를 사용하세요. GameWith 전 캐릭터 목록에서 평가·오리지널 조건으로 고를 때는 아래 조건 검색을 사용합니다. 가져온 뒤에는 검수표에서 문자·속성·종족·그룹을 확인할 수 있습니다."/>
 
                         <Border Margin="0,11,0,2"
                                 Padding="11"
-                                Background="#111D28"
-                                BorderBrush="#3D6178"
+                                Background="{StaticResource Bg.Panel}"
+                                BorderBrush="{StaticResource Line.TanStrong}"
                                 BorderThickness="1"
                                 CornerRadius="8">
                             <StackPanel>
-                                <TextBlock Foreground="#B8EAF5"
+                                <TextBlock Foreground="{StaticResource Status.Info}"
                                            FontWeight="SemiBold"
                                            Text="GameWith 전 캐릭터 조건 검색"/>
                                 <TextBlock Margin="0,3,0,8"
-                                           Foreground="#8398AC"
+                                           Foreground="{StaticResource Text.Tertiary}"
                                            FontSize="11"
                                            FontWeight="Normal"
                                            TextWrapping="Wrap"
@@ -326,7 +326,7 @@
                                         <ColumnDefinition Width="Auto"/>
                                     </Grid.ColumnDefinitions>
                                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                        <TextBlock Margin="0,0,8,0" VerticalAlignment="Center" Foreground="#B9C5D3" Text="평가"/>
+                                        <TextBlock Margin="0,0,8,0" VerticalAlignment="Center" Foreground="{StaticResource Text.Secondary}" Text="평가"/>
                                         <CheckBox x:Name="RatedSSSCheckBox" Margin="0,0,10,0" Content="SSS"/>
                                         <CheckBox x:Name="RatedSSCheckBox" Margin="0,0,10,0" IsChecked="True" Content="SS"/>
                                         <CheckBox x:Name="RatedSCheckBox" IsChecked="True" Content="S"/>
@@ -355,7 +355,7 @@
                                           ToolTip="A 평가 후보는 개별 페이지와 코토다망DB에서 6성·소속 그룹을 다시 확인한 뒤 검수표에 남깁니다."/>
                                 <TextBlock x:Name="RatedSearchStatusText"
                                            Margin="0,7,0,0"
-                                           Foreground="#7F95AA"
+                                           Foreground="{StaticResource Text.Tertiary}"
                                            FontSize="11"
                                            FontWeight="Normal"
                                            Text="기본값: GameWith S·SS + 세이유니마 이후 6성 A, 서브/리더 중 하나라도 해당, 오리지널 우선"/>
@@ -363,7 +363,7 @@
                         </Border>
 
                         <TextBlock Margin="0,10,0,5"
-                                   Foreground="#B9C5D3"
+                                   Foreground="{StaticResource Text.Secondary}"
                                    FontWeight="Normal"
                                    Text="GameWith 개별 / 목록 페이지 주소"/>
                         <TextBox x:Name="BatchUrlTextBox"
@@ -386,7 +386,7 @@
                             <TextBlock Grid.Column="1"
                                        Margin="10,0,0,0"
                                        VerticalAlignment="Center"
-                                       Foreground="#7F95AA"
+                                       Foreground="{StaticResource Text.Tertiary}"
                                        FontWeight="Normal"
                                        FontSize="11"
                                        TextWrapping="Wrap"
@@ -402,14 +402,14 @@
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
                             <StackPanel>
-                                <TextBlock Foreground="#B9C5D3"
+                                <TextBlock Foreground="{StaticResource Text.Secondary}"
                                            FontWeight="Normal"
                                            Margin="0,0,0,5"
                                            Text="일괄 등급 / 분류 (오리지널·콜라보 포함)"/>
                                 <ComboBox x:Name="BatchCategoryComboBox"/>
                             </StackPanel>
                             <StackPanel Grid.Column="2">
-                                <TextBlock Foreground="#B9C5D3"
+                                <TextBlock Foreground="{StaticResource Text.Secondary}"
                                            FontWeight="Normal"
                                            Margin="0,0,0,5"
                                            Text="요청 간격(ms)"/>
@@ -472,19 +472,19 @@
                                          Minimum="0"
                                          Maximum="1"
                                          Value="0"
-                                         Foreground="#39C5D4"
-                                         Background="#0D141C"/>
+                                         Foreground="{StaticResource Accent.Focus}"
+                                         Background="{StaticResource Bg.Backdrop}"/>
                             <TextBlock x:Name="BatchProgressText"
                                        Grid.Column="1"
                                        Margin="10,-3,0,0"
-                                       Foreground="#9FB0C2"
+                                       Foreground="{StaticResource Text.Secondary}"
                                        FontWeight="Normal"
                                        Text="0 / 0"/>
                         </Grid>
 
                         <TextBlock x:Name="BatchSummaryText"
                                    Margin="0,9,0,0"
-                                   Foreground="#9FB0C2"
+                                   Foreground="{StaticResource Text.Secondary}"
                                    FontWeight="Normal"
                                    TextWrapping="Wrap"
                                    Text="주소를 붙여 넣은 뒤 연속 가져오기를 시작하세요."/>
@@ -496,7 +496,7 @@
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
                             <TextBlock VerticalAlignment="Center"
-                                       Foreground="#B8EAF5"
+                                       Foreground="{StaticResource Status.Info}"
                                        FontWeight="SemiBold"
                                        Text="등록 전 검수표 · 노란 행은 확인 권장"/>
                             <Button x:Name="BatchSelectAllButton"
@@ -522,37 +522,37 @@
                                   CanUserDeleteRows="False"
                                   HeadersVisibility="Column"
                                   GridLinesVisibility="Horizontal"
-                                  Background="#111A24"
-                                  Foreground="#F4F7FB"
-                                  BorderBrush="#315068"
-                                  RowBackground="#111A24"
-                                  AlternatingRowBackground="#15202B"
-                                  HorizontalGridLinesBrush="#263848"
-                                  VerticalGridLinesBrush="#263848"
+                                  Background="{StaticResource Bg.Panel}"
+                                  Foreground="{StaticResource Text.Primary}"
+                                  BorderBrush="{StaticResource Line.TanStrong}"
+                                  RowBackground="{StaticResource Bg.Panel}"
+                                  AlternatingRowBackground="{StaticResource Bg.Panel}"
+                                  HorizontalGridLinesBrush="{StaticResource Line.Tan}"
+                                  VerticalGridLinesBrush="{StaticResource Line.Tan}"
                                   SelectionMode="Extended"
                                   RowHeight="54"
                                   ScrollViewer.HorizontalScrollBarVisibility="Auto"
                                   ScrollViewer.VerticalScrollBarVisibility="Auto">
                             <DataGrid.Resources>
                                 <Style TargetType="DataGridColumnHeader">
-                                    <Setter Property="Background" Value="#22384A"/>
-                                    <Setter Property="Foreground" Value="#DCE7F3"/>
-                                    <Setter Property="BorderBrush" Value="#315068"/>
+                                    <Setter Property="Background" Value="{StaticResource Bg.Ivory}"/>
+                                    <Setter Property="Foreground" Value="{StaticResource Text.Primary}"/>
+                                    <Setter Property="BorderBrush" Value="{StaticResource Line.TanStrong}"/>
                                     <Setter Property="Padding" Value="7,6"/>
                                 </Style>
                                 <Style TargetType="DataGridCell">
-                                    <Setter Property="Foreground" Value="#F4F7FB"/>
-                                    <Setter Property="BorderBrush" Value="#263848"/>
+                                    <Setter Property="Foreground" Value="{StaticResource Text.Primary}"/>
+                                    <Setter Property="BorderBrush" Value="{StaticResource Line.Tan}"/>
                                     <Setter Property="Padding" Value="5,3"/>
                                 </Style>
                             </DataGrid.Resources>
                             <DataGrid.RowStyle>
                                 <Style TargetType="DataGridRow">
-                                    <Setter Property="Foreground" Value="#F4F7FB"/>
+                                    <Setter Property="Foreground" Value="{StaticResource Text.Primary}"/>
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding NeedsReview}" Value="True">
-                                            <Setter Property="Background" Value="#4A3B1E"/>
-                                            <Setter Property="Foreground" Value="#FFE6A8"/>
+                                            <Setter Property="Background" Value="{StaticResource Gold.Face}"/>
+                                            <Setter Property="Foreground" Value="{StaticResource Gold.Text}"/>
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
@@ -570,7 +570,7 @@
                                 <DataGridTemplateColumn Header="미리보기" Width="80" IsReadOnly="True">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <Border Width="64" Height="48" Background="#0D141C" CornerRadius="4" Margin="2">
+                                            <Border Width="64" Height="48" Background="{StaticResource Bg.Backdrop}" CornerRadius="4" Margin="2">
                                                 <Image Source="{Binding DownloadedImagePath}" Stretch="Uniform" Margin="2"/>
                                             </Border>
                                         </DataTemplate>
@@ -630,8 +630,8 @@
                       VerticalScrollBarVisibility="Auto">
             <StackPanel>
                 <Border Padding="13"
-                        Background="#172330"
-                        BorderBrush="#315068"
+                        Background="{StaticResource Bg.PanelInner}"
+                        BorderBrush="{StaticResource Line.TanStrong}"
                         BorderThickness="1"
                         CornerRadius="10">
                     <Grid>
@@ -643,14 +643,14 @@
 
                         <Border Width="150"
                                 Height="150"
-                                Background="#0D141C"
-                                BorderBrush="#315068"
+                                Background="{StaticResource Bg.Backdrop}"
+                                BorderBrush="{StaticResource Line.TanStrong}"
                                 BorderThickness="1"
                                 CornerRadius="8">
                             <Grid>
                                 <TextBlock x:Name="ImagePlaceholderText"
                                            Text="이미지 없음"
-                                           Foreground="#718096"
+                                           Foreground="{StaticResource Text.Tertiary}"
                                            HorizontalAlignment="Center"
                                            VerticalAlignment="Center"/>
                                 <Image x:Name="CharacterImagePreview"
@@ -668,20 +668,20 @@
                                 </Grid.ColumnDefinitions>
                                 <StackPanel>
                                     <TextBlock Text="캐릭터 이름"
-                                               Foreground="#B9C5D3"
+                                               Foreground="{StaticResource Text.Secondary}"
                                                Margin="0,0,0,5"/>
                                     <TextBox x:Name="CharacterNameTextBox"/>
                                 </StackPanel>
                                 <StackPanel Grid.Column="2">
                                     <TextBlock Text="등급 / 분류 (오리지널·콜라보 포함)"
-                                               Foreground="#B9C5D3"
+                                               Foreground="{StaticResource Text.Secondary}"
                                                Margin="0,0,0,5"/>
                                     <ComboBox x:Name="CategoryComboBox"/>
                                 </StackPanel>
                             </Grid>
 
                             <TextBlock Text="사용 가능 문자"
-                                       Foreground="#B9C5D3"
+                                       Foreground="{StaticResource Text.Secondary}"
                                        Margin="0,12,0,5"/>
                             <TextBox x:Name="LettersTextBox"
                                      ToolTip="공백, 쉼표, ·로 구분하거나 가나를 연속 입력할 수 있습니다."/>
@@ -696,20 +696,20 @@
                                 </Grid.ColumnDefinitions>
                                 <StackPanel>
                                     <TextBlock Text="속성"
-                                               Foreground="#B9C5D3"
+                                               Foreground="{StaticResource Text.Secondary}"
                                                Margin="0,0,0,5"/>
                                     <ComboBox x:Name="AttributeComboBox"/>
                                 </StackPanel>
                                 <StackPanel Grid.Column="2">
                                     <TextBlock Text="서브 속성"
-                                               Foreground="#B9C5D3"
+                                               Foreground="{StaticResource Text.Secondary}"
                                                Margin="0,0,0,5"/>
                                     <TextBox x:Name="SubAttributesTextBox"
                                              ToolTip="듀얼/서브 속성이 있으면 / 또는 공백으로 구분해 입력할 수 있습니다."/>
                                 </StackPanel>
                                 <StackPanel Grid.Column="4">
                                     <TextBlock Text="종족"
-                                               Foreground="#B9C5D3"
+                                               Foreground="{StaticResource Text.Secondary}"
                                                Margin="0,0,0,5"/>
                                     <ComboBox x:Name="SpeciesComboBox"/>
                                 </StackPanel>
@@ -723,21 +723,21 @@
                                 </Grid.ColumnDefinitions>
                                 <StackPanel>
                                     <TextBlock Text="소속 그룹"
-                                               Foreground="#B9C5D3"
+                                               Foreground="{StaticResource Text.Secondary}"
                                                Margin="0,0,0,5"/>
                                     <ComboBox x:Name="GroupComboBox"
                                               IsEditable="True"
                                               IsTextSearchEnabled="True"/>
                                     <TextBlock x:Name="GroupCandidateText"
                                                Margin="2,5,0,0"
-                                               Foreground="#7F95AA"
+                                               Foreground="{StaticResource Text.Tertiary}"
                                                FontSize="11"
                                                TextWrapping="Wrap"
                                                Text="인식 후보 없음 · 필요하면 직접 선택"/>
                                 </StackPanel>
                                 <StackPanel Grid.Column="2">
                                     <TextBlock Text="같이 취급되는 그룹"
-                                               Foreground="#B9C5D3"
+                                               Foreground="{StaticResource Text.Secondary}"
                                                Margin="0,0,0,5"/>
                                     <TextBox x:Name="IncludedGroupsTextBox"/>
                                 </StackPanel>
@@ -748,17 +748,17 @@
 
                 <Border Margin="0,12,0,0"
                         Padding="13"
-                        Background="#172330"
-                        BorderBrush="#315068"
+                        Background="{StaticResource Bg.PanelInner}"
+                        BorderBrush="{StaticResource Line.TanStrong}"
                         BorderThickness="1"
                         CornerRadius="10">
                     <StackPanel>
                         <TextBlock Text="가져오기 상태"
                                    FontWeight="Bold"
-                                   Foreground="#B8EAF5"/>
+                                   Foreground="{StaticResource Status.Info}"/>
                         <TextBlock x:Name="SourceSummaryText"
                                    Margin="0,7,0,0"
-                                   Foreground="#AEB8C8"
+                                   Foreground="{StaticResource Text.Secondary}"
                                    TextWrapping="Wrap"
                                    Text="주소를 입력하고 정보를 가져오세요."/>
                         <CheckBox x:Name="UseImageCheckBox"
@@ -767,12 +767,12 @@
                                   Content="웹 이미지를 다운로드해 캐릭터 이미지로 사용"/>
                         <TextBlock x:Name="ImageUrlText"
                                    Margin="20,4,0,0"
-                                   Foreground="#718096"
+                                   Foreground="{StaticResource Text.Tertiary}"
                                    FontSize="10"
                                    TextWrapping="Wrap"/>
                         <TextBlock x:Name="WarningText"
                                    Margin="0,10,0,0"
-                                   Foreground="#FFD08A"
+                                   Foreground="{StaticResource Status.Warn}"
                                    TextWrapping="Wrap"/>
                     </StackPanel>
                 </Border>
@@ -787,7 +787,7 @@
             </Grid.ColumnDefinitions>
             <TextBlock x:Name="StatusText"
                        VerticalAlignment="Center"
-                       Foreground="#8FE3B1"
+                       Foreground="{StaticResource Status.Success}"
                        TextWrapping="Wrap"/>
             <Button Grid.Column="1"
                     Margin="10,0,0,0"

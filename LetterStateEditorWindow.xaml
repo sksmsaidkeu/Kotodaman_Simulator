@@ -7,47 +7,47 @@
         MinWidth="760"
         MinHeight="560"
         WindowStartupLocation="CenterOwner"
-        Background="#10131A"
-        Foreground="#F4F7FB"
+        Background="{StaticResource Bg.Backdrop}"
+        Foreground="{StaticResource Text.Primary}"
         FontFamily="Malgun Gothic"
         FontSize="13"
         TextOptions.TextFormattingMode="Display"
         TextOptions.TextRenderingMode="ClearType">
     <Window.Resources>
         <Style x:Key="EditorButtonStyle" TargetType="Button">
-            <Setter Property="Background" Value="#2A3342"/>
-            <Setter Property="Foreground" Value="#F4F7FB"/>
-            <Setter Property="BorderBrush" Value="#46546A"/>
+            <Setter Property="Background" Value="{StaticResource Line.Tan}"/>
+            <Setter Property="Foreground" Value="{StaticResource Text.Primary}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource Accent.PinkSoft}"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="Padding" Value="13,8"/>
             <Setter Property="FontWeight" Value="SemiBold"/>
             <Setter Property="Cursor" Value="Hand"/>
         </Style>
         <Style x:Key="PrimaryButtonStyle" TargetType="Button" BasedOn="{StaticResource EditorButtonStyle}">
-            <Setter Property="Background" Value="#4B8BFF"/>
-            <Setter Property="BorderBrush" Value="#4B8BFF"/>
+            <Setter Property="Background" Value="{StaticResource Accent.Pink}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource Accent.Pink}"/>
         </Style>
         <Style x:Key="DangerButtonStyle" TargetType="Button" BasedOn="{StaticResource EditorButtonStyle}">
-            <Setter Property="Background" Value="#4A2932"/>
-            <Setter Property="BorderBrush" Value="#75404D"/>
-            <Setter Property="Foreground" Value="#FFD8DF"/>
+            <Setter Property="Background" Value="{StaticResource Rose.Face}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource Rose.Line}"/>
+            <Setter Property="Foreground" Value="{StaticResource Rose.Text}"/>
         </Style>
         <Style TargetType="TextBox">
             <Setter Property="MinHeight" Value="39"/>
             <Setter Property="Padding" Value="9,6"/>
-            <Setter Property="Background" Value="#222A37"/>
-            <Setter Property="Foreground" Value="#F4F7FB"/>
-            <Setter Property="CaretBrush" Value="#F4F7FB"/>
-            <Setter Property="BorderBrush" Value="#3A4658"/>
+            <Setter Property="Background" Value="{StaticResource Chip.Dark}"/>
+            <Setter Property="Foreground" Value="{StaticResource Text.Primary}"/>
+            <Setter Property="CaretBrush" Value="{StaticResource Text.Primary}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource Line.Tan}"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
         </Style>
         <Style TargetType="ComboBox">
             <Setter Property="MinHeight" Value="39"/>
             <Setter Property="Padding" Value="10,5"/>
-            <Setter Property="Background" Value="#222A37"/>
-            <Setter Property="Foreground" Value="#F4F7FB"/>
-            <Setter Property="BorderBrush" Value="#3A4658"/>
+            <Setter Property="Background" Value="{StaticResource Chip.Dark}"/>
+            <Setter Property="Foreground" Value="{StaticResource Text.Primary}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource Line.Tan}"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
             <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
@@ -91,27 +91,27 @@
                                                                   TextElement.Foreground="{TemplateBinding Foreground}"
                                                                   RecognizesAccessKey="True"/>
                                                 <Border Grid.Column="1"
-                                                        Background="#1B222D"
-                                                        BorderBrush="#3A4658"
+                                                        Background="{StaticResource Bg.PanelInner}"
+                                                        BorderBrush="{StaticResource Line.Tan}"
                                                         BorderThickness="1,0,0,0"
                                                         CornerRadius="0,6,6,0">
                                                     <Path Width="10"
                                                           Height="6"
                                                           HorizontalAlignment="Center"
                                                           VerticalAlignment="Center"
-                                                          Fill="#C8D1DE"
+                                                          Fill="{StaticResource Bg.Ivory}"
                                                           Data="M 0 0 L 10 0 L 5 6 Z"/>
                                                 </Border>
                                             </Grid>
                                         </Border>
                                         <ControlTemplate.Triggers>
                                             <Trigger Property="IsMouseOver" Value="True">
-                                                <Setter TargetName="ToggleBorder" Property="Background" Value="#293442"/>
-                                                <Setter TargetName="ToggleBorder" Property="BorderBrush" Value="#547086"/>
+                                                <Setter TargetName="ToggleBorder" Property="Background" Value="{StaticResource Bg.Ivory}"/>
+                                                <Setter TargetName="ToggleBorder" Property="BorderBrush" Value="{StaticResource Info.Line}"/>
                                             </Trigger>
                                             <Trigger Property="IsChecked" Value="True">
-                                                <Setter TargetName="ToggleBorder" Property="Background" Value="#263746"/>
-                                                <Setter TargetName="ToggleBorder" Property="BorderBrush" Value="#66D9EF"/>
+                                                <Setter TargetName="ToggleBorder" Property="Background" Value="{StaticResource Bg.PanelInner}"/>
+                                                <Setter TargetName="ToggleBorder" Property="BorderBrush" Value="{StaticResource Accent.Focus}"/>
                                             </Trigger>
                                             <Trigger Property="IsEnabled" Value="False">
                                                 <Setter TargetName="ToggleBorder" Property="Opacity" Value="0.55"/>
@@ -126,9 +126,9 @@
                                      Visibility="Hidden"
                                      Margin="8,2,38,2"
                                      Padding="3,0"
-                                     Background="#222A37"
-                                     Foreground="#F4F7FB"
-                                     CaretBrush="#F4F7FB"
+                                     Background="{StaticResource Chip.Dark}"
+                                     Foreground="{StaticResource Text.Primary}"
+                                     CaretBrush="{StaticResource Text.Primary}"
                                      BorderThickness="0"
                                      VerticalContentAlignment="Center"
                                      HorizontalContentAlignment="Stretch"
@@ -143,8 +143,8 @@
                                 <Border Margin="0,4,0,0"
                                         MinWidth="{Binding ActualWidth, RelativeSource={RelativeSource TemplatedParent}}"
                                         MaxHeight="{TemplateBinding MaxDropDownHeight}"
-                                        Background="#171C26"
-                                        BorderBrush="#46546A"
+                                        Background="{StaticResource Bg.Panel}"
+                                        BorderBrush="{StaticResource Accent.PinkSoft}"
                                         BorderThickness="1"
                                         CornerRadius="7"
                                         Padding="4">
@@ -169,8 +169,8 @@
             </Setter>
         </Style>
         <Style TargetType="ComboBoxItem">
-            <Setter Property="Background" Value="#222A37"/>
-            <Setter Property="Foreground" Value="#F4F7FB"/>
+            <Setter Property="Background" Value="{StaticResource Chip.Dark}"/>
+            <Setter Property="Foreground" Value="{StaticResource Text.Primary}"/>
             <Setter Property="Padding" Value="10,8"/>
             <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
@@ -188,18 +188,18 @@
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsHighlighted" Value="True">
-                                <Setter TargetName="ItemBorder" Property="Background" Value="#29465A"/>
-                                <Setter TargetName="ItemBorder" Property="BorderBrush" Value="#547086"/>
-                                <Setter Property="Foreground" Value="#FFFFFF"/>
+                                <Setter TargetName="ItemBorder" Property="Background" Value="{StaticResource Bg.Ivory}"/>
+                                <Setter TargetName="ItemBorder" Property="BorderBrush" Value="{StaticResource Info.Line}"/>
+                                <Setter Property="Foreground" Value="{StaticResource Text.OnAccent}"/>
                             </Trigger>
                             <Trigger Property="IsSelected" Value="True">
-                                <Setter TargetName="ItemBorder" Property="Background" Value="#1D4051"/>
-                                <Setter TargetName="ItemBorder" Property="BorderBrush" Value="#66D9EF"/>
-                                <Setter Property="Foreground" Value="#FFFFFF"/>
+                                <Setter TargetName="ItemBorder" Property="Background" Value="{StaticResource Accent.OrangeDeep}"/>
+                                <Setter TargetName="ItemBorder" Property="BorderBrush" Value="{StaticResource Accent.Focus}"/>
+                                <Setter Property="Foreground" Value="{StaticResource Text.OnAccent}"/>
                                 <Setter Property="FontWeight" Value="SemiBold"/>
                             </Trigger>
                             <Trigger Property="IsEnabled" Value="False">
-                                <Setter Property="Foreground" Value="#718096"/>
+                                <Setter Property="Foreground" Value="{StaticResource Text.Tertiary}"/>
                                 <Setter Property="Opacity" Value="0.8"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
@@ -208,9 +208,9 @@
             </Setter>
         </Style>
         <Style TargetType="ListBox">
-            <Setter Property="Background" Value="#171C26"/>
-            <Setter Property="Foreground" Value="#F4F7FB"/>
-            <Setter Property="BorderBrush" Value="#303A4A"/>
+            <Setter Property="Background" Value="{StaticResource Bg.Panel}"/>
+            <Setter Property="Foreground" Value="{StaticResource Text.Primary}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource Bg.PanelInner}"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="Padding" Value="4"/>
             <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
@@ -218,10 +218,10 @@
         <Style TargetType="ListBoxItem">
             <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
-            <Setter Property="Foreground" Value="#F4F7FB"/>
+            <Setter Property="Foreground" Value="{StaticResource Text.Primary}"/>
             <Setter Property="Padding" Value="0"/>
             <Setter Property="Margin" Value="0,0,0,6"/>
-            <Setter Property="Background" Value="#202735"/>
+            <Setter Property="Background" Value="{StaticResource Bg.PanelInner}"/>
             <Setter Property="BorderBrush" Value="Transparent"/>
             <Setter Property="Template">
                 <Setter.Value>
@@ -237,14 +237,14 @@
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="SelectionBorder" Property="Background" Value="#263746"/>
-                                <Setter TargetName="SelectionBorder" Property="BorderBrush" Value="#547086"/>
-                                <Setter Property="Foreground" Value="#FFFFFF"/>
+                                <Setter TargetName="SelectionBorder" Property="Background" Value="{StaticResource Bg.PanelInner}"/>
+                                <Setter TargetName="SelectionBorder" Property="BorderBrush" Value="{StaticResource Info.Line}"/>
+                                <Setter Property="Foreground" Value="{StaticResource Text.OnAccent}"/>
                             </Trigger>
                             <Trigger Property="IsSelected" Value="True">
-                                <Setter TargetName="SelectionBorder" Property="Background" Value="#1D4051"/>
-                                <Setter TargetName="SelectionBorder" Property="BorderBrush" Value="#66D9EF"/>
-                                <Setter Property="Foreground" Value="#FFFFFF"/>
+                                <Setter TargetName="SelectionBorder" Property="Background" Value="{StaticResource Accent.OrangeDeep}"/>
+                                <Setter TargetName="SelectionBorder" Property="BorderBrush" Value="{StaticResource Accent.Focus}"/>
+                                <Setter Property="Foreground" Value="{StaticResource Text.OnAccent}"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -266,7 +266,7 @@
                        FontSize="24"
                        FontWeight="Bold"/>
             <TextBlock Margin="0,6,0,0"
-                       Foreground="#AEB8C8"
+                       Foreground="{StaticResource Text.Secondary}"
                        TextWrapping="Wrap"
                        Text="기본 문자는 캐릭터 편집 화면에서 관리합니다. 여기에는 조건 달성이나 변신 후처럼 같은 캐릭터 안에서 바뀌는 문자만 추가하세요. 모드시프트는 별도 캐릭터로 등록합니다."/>
         </StackPanel>
@@ -279,8 +279,8 @@
             </Grid.ColumnDefinitions>
 
             <Border Grid.Column="0"
-                    Background="#171C26"
-                    BorderBrush="#2A3342"
+                    Background="{StaticResource Bg.Panel}"
+                    BorderBrush="{StaticResource Line.Tan}"
                     BorderThickness="1"
                     CornerRadius="12"
                     Padding="12">
@@ -300,7 +300,7 @@
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <Border Background="Transparent"
-                                        BorderBrush="#344156"
+                                        BorderBrush="{StaticResource Line.TanStrong}"
                                         BorderThickness="1"
                                         CornerRadius="8"
                                         MinHeight="78"
@@ -316,20 +316,20 @@
                                                        FontSize="15"/>
                                             <TextBlock Grid.Column="1"
                                                        Text="{Binding Kind}"
-                                                       Foreground="#66D9EF"
+                                                       Foreground="{StaticResource Accent.Focus}"
                                                        FontSize="11"/>
                                         </Grid>
                                         <TextBlock Text="{Binding ModeText}"
                                                    Margin="0,4,0,0"
-                                                   Foreground="#FFD08A"
+                                                   Foreground="{StaticResource Status.Warn}"
                                                    FontSize="11"/>
                                         <TextBlock Text="{Binding LettersText}"
                                                    Margin="0,4,0,0"
-                                                   Foreground="#BFD2DF"
+                                                   Foreground="{StaticResource Text.Primary}"
                                                    TextWrapping="Wrap"/>
                                         <TextBlock Text="{Binding Note}"
                                                    Margin="0,4,0,0"
-                                                   Foreground="#8D98AA"
+                                                   Foreground="{StaticResource Text.Secondary}"
                                                    FontSize="11"
                                                    TextWrapping="Wrap"/>
                                     </StackPanel>
@@ -350,8 +350,8 @@
             </Border>
 
             <Border Grid.Column="2"
-                    Background="#171C26"
-                    BorderBrush="#2A3342"
+                    Background="{StaticResource Bg.Panel}"
+                    BorderBrush="{StaticResource Line.Tan}"
                     BorderThickness="1"
                     CornerRadius="12"
                     Padding="14">
@@ -378,27 +378,27 @@
                             <ColumnDefinition Width="170"/>
                         </Grid.ColumnDefinitions>
                         <StackPanel>
-                            <TextBlock Text="상태 이름" Foreground="#AEB8C8" Margin="0,0,0,5"/>
+                            <TextBlock Text="상태 이름" Foreground="{StaticResource Text.Secondary}" Margin="0,0,0,5"/>
                             <TextBox x:Name="StateNameTextBox" ToolTip="예: 워드 브레이커 발동, 변신 후"/>
                         </StackPanel>
                         <StackPanel Grid.Column="2">
-                            <TextBlock Text="상태 종류" Foreground="#AEB8C8" Margin="0,0,0,5"/>
+                            <TextBlock Text="상태 종류" Foreground="{StaticResource Text.Secondary}" Margin="0,0,0,5"/>
                             <ComboBox x:Name="StateKindComboBox" HorizontalContentAlignment="Stretch"/>
                         </StackPanel>
                     </Grid>
 
                     <StackPanel Grid.Row="2" Margin="0,0,0,10">
-                        <TextBlock Text="상태 문자" Foreground="#AEB8C8" Margin="0,0,0,5"/>
+                        <TextBlock Text="상태 문자" Foreground="{StaticResource Text.Secondary}" Margin="0,0,0,5"/>
                         <TextBox x:Name="StateLettersTextBox" ToolTip="예: か る ん 또는 かるん"/>
                     </StackPanel>
 
                     <StackPanel Grid.Row="3" Margin="0,0,0,10">
-                        <TextBlock Text="문자 적용 방식" Foreground="#AEB8C8" Margin="0,0,0,5"/>
+                        <TextBlock Text="문자 적용 방식" Foreground="{StaticResource Text.Secondary}" Margin="0,0,0,5"/>
                         <ComboBox x:Name="StateMergeModeComboBox" HorizontalContentAlignment="Stretch"/>
                     </StackPanel>
 
                     <StackPanel Grid.Row="4" Margin="0,0,0,10">
-                        <TextBlock Text="발동 조건 / 메모" Foreground="#AEB8C8" Margin="0,0,0,5"/>
+                        <TextBlock Text="발동 조건 / 메모" Foreground="{StaticResource Text.Secondary}" Margin="0,0,0,5"/>
                         <TextBox x:Name="StateNoteTextBox"
                                  Height="88"
                                  AcceptsReturn="True"
@@ -422,7 +422,7 @@
                     <TextBlock x:Name="StateStatusText"
                                Grid.Row="6"
                                Margin="0,14,0,0"
-                               Foreground="#AEB8C8"
+                               Foreground="{StaticResource Text.Secondary}"
                                TextWrapping="Wrap"
                                Text="상태 문자는 현재 손패에서 해당 상태를 선택했을 때만 검색에 사용됩니다."/>
                 </Grid>
@@ -436,7 +436,7 @@
             </Grid.ColumnDefinitions>
             <TextBlock x:Name="FooterText"
                        VerticalAlignment="Center"
-                       Foreground="#7F8999"
+                       Foreground="{StaticResource Text.Tertiary}"
                        Text="기본 상태는 항상 존재하므로 이 목록에는 표시되지 않습니다."/>
             <WrapPanel Grid.Column="1">
                 <Button Content="취소"

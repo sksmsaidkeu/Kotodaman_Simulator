@@ -1,3 +1,4 @@
+using KotodamanWordFinder.Themes;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
@@ -463,9 +464,9 @@ public partial class MainWindow : Window
                 Margin = new Thickness(5),
                 FontSize = 30,
                 FontWeight = FontWeights.Bold,
-                Foreground = Brushes.White,
-                Background = BrushFromHex("#222A37"),
-                BorderBrush = BrushFromHex("#3A4658"),
+                Foreground = Theme.TextPrimary,
+                Background = Theme.PanelInner,
+                BorderBrush = Theme.Line,
                 BorderThickness = new Thickness(2),
                 Cursor = Cursors.Hand,
                 ToolTip = $"{index + 1}번 칸"
@@ -493,7 +494,7 @@ public partial class MainWindow : Window
         panel.Children.Add(new TextBlock
         {
             Text = sectionTitle,
-            Foreground = BrushFromHex("#66D9EF"),
+            Foreground = Theme.Focus,
             FontWeight = FontWeights.Bold,
             FontSize = 13,
             Margin = new Thickness(2, 0, 0, 6)
@@ -528,7 +529,7 @@ public partial class MainWindow : Window
         content.Children.Add(new TextBlock
         {
             Text = label,
-            Foreground = BrushFromHex("#8FA0B4"),
+            Foreground = Theme.TextSecondary,
             FontSize = 11,
             FontWeight = FontWeights.SemiBold,
             Margin = new Thickness(4, 0, 0, 3)
@@ -541,8 +542,8 @@ public partial class MainWindow : Window
             MinHeight = 66,
             Margin = new Thickness(0, 0, 8, 8),
             Padding = new Thickness(5, 5, 5, 4),
-            Background = BrushFromHex("#1D2430"),
-            BorderBrush = BrushFromHex("#303C4F"),
+            Background = Theme.Field,
+            BorderBrush = Theme.Line,
             BorderThickness = new Thickness(1),
             CornerRadius = new CornerRadius(8),
             Child = content
@@ -559,11 +560,11 @@ public partial class MainWindow : Window
             Margin = new Thickness(3),
             FontSize = value is null ? 12 : 18,
             FontWeight = FontWeights.SemiBold,
-            Foreground = Brushes.White,
+            Foreground = Theme.TextPrimary,
             Background = value is null
-                ? BrushFromHex("#5A3440")
-                : BrushFromHex("#2A3342"),
-            BorderBrush = BrushFromHex("#46546A"),
+                ? Theme.RoseFace
+                : Theme.Ivory,
+            BorderBrush = Theme.LineStrong,
             BorderThickness = new Thickness(1),
             Cursor = Cursors.Hand
         };
@@ -587,9 +588,9 @@ public partial class MainWindow : Window
                 Height = 78,
                 Margin = new Thickness(4),
                 Padding = new Thickness(7),
-                Foreground = Brushes.White,
-                Background = BrushFromHex("#222A37"),
-                BorderBrush = BrushFromHex("#3A4658"),
+                Foreground = Theme.TextPrimary,
+                Background = Theme.PanelInner,
+                BorderBrush = Theme.Line,
                 BorderThickness = new Thickness(1),
                 HorizontalContentAlignment = HorizontalAlignment.Left,
                 Cursor = Cursors.Hand,
@@ -711,11 +712,11 @@ public partial class MainWindow : Window
 
             bool isActive = index == _activeBoardIndex;
             button.BorderBrush = isActive
-                ? BrushFromHex("#66D9EF")
-                : BrushFromHex("#3A4658");
+                ? Theme.Focus
+                : Theme.Line;
             button.Background = isActive
-                ? BrushFromHex("#263C4A")
-                : BrushFromHex("#222A37");
+                ? Theme.PanelInner
+                : Theme.PanelInner;
         }
 
         ActiveSlotText.Text = $"{_activeBoardIndex + 1}번 칸 선택 중";
@@ -730,8 +731,8 @@ public partial class MainWindow : Window
             Width = size,
             Height = size,
             CornerRadius = new CornerRadius(7),
-            Background = BrushFromHex("#18202B"),
-            BorderBrush = BrushFromHex("#46546A"),
+            Background = Theme.Panel,
+            BorderBrush = Theme.LineStrong,
             BorderThickness = new Thickness(1),
             ClipToBounds = true,
             VerticalAlignment = VerticalAlignment.Center
@@ -760,7 +761,7 @@ public partial class MainWindow : Window
             border.Child = new TextBlock
             {
                 Text = fallback,
-                Foreground = BrushFromHex("#8FA0B4"),
+                Foreground = Theme.TextSecondary,
                 FontSize = Math.Max(15, size * 0.33),
                 FontWeight = FontWeights.Bold,
                 HorizontalAlignment = HorizontalAlignment.Center,
@@ -860,8 +861,8 @@ public partial class MainWindow : Window
             Text = string.Join(" · ", displayCharacter.GetAvailableLetters(selectedStateId)),
             Margin = new Thickness(0, 4, 0, 0),
             Foreground = isSelected
-                ? BrushFromHex("#DFF8FF")
-                : BrushFromHex("#AEB8C8"),
+                ? Theme.Info
+                : Theme.TextSecondary,
             FontSize = 12,
             TextTrimming = TextTrimming.CharacterEllipsis
         });
@@ -871,11 +872,11 @@ public partial class MainWindow : Window
         button.Content = content;
         button.ToolTip = BuildCharacterToolTip(displayCharacter, isLeader);
         button.Background = isSelected
-            ? BrushFromHex("#286C86")
-            : BrushFromHex("#222A37");
+            ? Theme.InfoLine
+            : Theme.PanelInner;
         button.BorderBrush = isSelected
-            ? BrushFromHex("#66D9EF")
-            : BrushFromHex("#3A4658");
+            ? Theme.Focus
+            : Theme.Line;
         button.BorderThickness = new Thickness(isSelected ? 2 : 1);
     }
 
@@ -901,14 +902,14 @@ public partial class MainWindow : Window
                         Text = $"{index + 1}",
                         FontSize = 22,
                         FontWeight = FontWeights.Bold,
-                        Foreground = BrushFromHex("#46566A"),
+                        Foreground = Theme.TextTertiary,
                         HorizontalAlignment = HorizontalAlignment.Center
                     });
                     emptyContent.Children.Add(new TextBlock
                     {
                         Text = "미선택",
                         Margin = new Thickness(0, 3, 0, 0),
-                        Foreground = BrushFromHex("#7F8999"),
+                        Foreground = Theme.TextTertiary,
                         HorizontalAlignment = HorizontalAlignment.Center
                     });
                     emptyContent.Children.Add(new TextBlock
@@ -916,7 +917,7 @@ public partial class MainWindow : Window
                         Text = "덱 캐릭터를 클릭해 손패에 추가",
                         Margin = new Thickness(0, 5, 0, 0),
                         FontSize = 10,
-                        Foreground = BrushFromHex("#59687B"),
+                        Foreground = Theme.TextTertiary,
                         HorizontalAlignment = HorizontalAlignment.Center
                     });
 
@@ -926,9 +927,9 @@ public partial class MainWindow : Window
                         Margin = new Thickness(4),
                         Padding = new Thickness(8),
                         CornerRadius = new CornerRadius(10),
-                        BorderBrush = BrushFromHex("#334154"),
+                        BorderBrush = Theme.Line,
                         BorderThickness = new Thickness(1),
-                        Background = BrushFromHex("#171E29"),
+                        Background = Theme.Panel,
                         Child = emptyContent
                     });
                     continue;
@@ -978,7 +979,7 @@ public partial class MainWindow : Window
                     Height = cardHeight,
                     Margin = new Thickness(4),
                     Padding = new Thickness(9, 8, 9, 8),
-                    Background = BrushFromHex("#202B38"),
+                    Background = Theme.PanelInner,
                     BorderBrush = accentBrush,
                     BorderThickness = new Thickness(2),
                     CornerRadius = new CornerRadius(10),
@@ -1017,7 +1018,7 @@ public partial class MainWindow : Window
                     Padding = new Thickness(1),
                     HorizontalAlignment = HorizontalAlignment.Left,
                     VerticalAlignment = VerticalAlignment.Top,
-                    Background = BrushFromHex("#151C26"),
+                    Background = Theme.Backdrop,
                     BorderBrush = accentBrush,
                     BorderThickness = new Thickness(2),
                     CornerRadius = new CornerRadius(9),
@@ -1042,7 +1043,7 @@ public partial class MainWindow : Window
                     VerticalAlignment = VerticalAlignment.Bottom,
                     HorizontalAlignment = HorizontalAlignment.Left,
                     Foreground = accentBrush,
-                    Background = BrushFromHex("#313B49"),
+                    Background = Theme.PanelInner,
                     BorderThickness = new Thickness(0),
                     Visibility = Visibility.Collapsed,
                     IsHitTestVisible = false
@@ -1053,8 +1054,8 @@ public partial class MainWindow : Window
                 {
                     var msBadge = new Border
                     {
-                        Background = BrushFromHex("#392E52"),
-                        BorderBrush = BrushFromHex("#A88AE8"),
+                        Background = Theme.SpecialFace,
+                        BorderBrush = Theme.SpecialLine,
                         BorderThickness = new Thickness(1),
                         CornerRadius = new CornerRadius(6),
                         Padding = new Thickness(4, 1, 4, 1),
@@ -1067,7 +1068,7 @@ public partial class MainWindow : Window
                             Text = hasConnectedModeShift ? "MS↔" : "MS",
                             FontSize = 9,
                             FontWeight = FontWeights.Bold,
-                            Foreground = BrushFromHex("#E4D4FF")
+                            Foreground = Theme.Special
                         }
                     };
                     imageGrid.Children.Add(msBadge);
@@ -1096,8 +1097,8 @@ public partial class MainWindow : Window
                 };
                 titlePanel.Children.Add(new Border
                 {
-                    Background = index == 0 ? BrushFromHex("#4A4025") : BrushFromHex("#233446"),
-                    BorderBrush = index == 0 ? BrushFromHex("#C8A84B") : BrushFromHex("#3E607A"),
+                    Background = index == 0 ? Theme.GoldFace : Theme.PanelInner,
+                    BorderBrush = index == 0 ? Theme.GoldLine : Theme.InfoLine,
                     BorderThickness = new Thickness(1),
                     CornerRadius = new CornerRadius(5),
                     Padding = new Thickness(5, 1, 5, 1),
@@ -1107,7 +1108,7 @@ public partial class MainWindow : Window
                         Text = index == 0 ? "HAND 1" : $"HAND {index + 1}",
                         FontSize = 9,
                         FontWeight = FontWeights.Bold,
-                        Foreground = index == 0 ? BrushFromHex("#FFE099") : BrushFromHex("#9DDCF3")
+                        Foreground = index == 0 ? Theme.Warn : Theme.Info
                     }
                 });
                 titlePanel.Children.Add(new TextBlock
@@ -1117,7 +1118,7 @@ public partial class MainWindow : Window
                         : $"{character.Name}〔{selectedForm.Name}〕",
                     FontWeight = FontWeights.Bold,
                     FontSize = 12,
-                    Foreground = BrushFromHex("#F0F5FA"),
+                    Foreground = Theme.TextPrimary,
                     TextTrimming = TextTrimming.CharacterEllipsis,
                     VerticalAlignment = VerticalAlignment.Center,
                     MaxWidth = 170
@@ -1133,9 +1134,9 @@ public partial class MainWindow : Window
                     Height = 23,
                     Padding = new Thickness(0),
                     Margin = new Thickness(6, 0, 0, 0),
-                    Background = BrushFromHex("#4A2932"),
-                    Foreground = BrushFromHex("#FFD8DF"),
-                    BorderBrush = BrushFromHex("#75404D"),
+                    Background = Theme.RoseFace,
+                    Foreground = Theme.RoseText,
+                    BorderBrush = Theme.RoseLine,
                     BorderThickness = new Thickness(1),
                     Cursor = Cursors.Hand,
                     ToolTip = "손패에서 해제"
@@ -1153,23 +1154,23 @@ public partial class MainWindow : Window
                 {
                     metaPanel.Children.Add(CreateHandMetaBadge(
                         attribute,
-                        GetAttributeColorHex(attribute),
-                        GetAttributeColorHex(attribute)));
+                        DataPalette.Attribute(attribute, Theme.Focus),
+                        DataPalette.Attribute(attribute, Theme.Focus)));
                 }
                 if (!string.IsNullOrWhiteSpace(activeSpecies))
                 {
                     metaPanel.Children.Add(CreateHandMetaBadge(
                         $"{activeSpecies} 종족",
-                        "#66758B",
-                        "#CBD6E5"));
+                        Theme.LineSoft,
+                        Theme.TextSecondary));
                 }
                 if (displayCharacter.HasActiveMiracleGrant)
                 {
-                    metaPanel.Children.Add(CreateHandMetaBadge("리더 부여", "#9A7BD4", "#E4D4FF"));
+                    metaPanel.Children.Add(CreateHandMetaBadge("리더 부여", Theme.SpecialLine, Theme.Special));
                 }
                 else if (displayCharacter.HasActiveDeckGroupGrant)
                 {
-                    metaPanel.Children.Add(CreateHandMetaBadge("그룹 부여", "#4E9B82", "#BFF5DD"));
+                    metaPanel.Children.Add(CreateHandMetaBadge("그룹 부여", Theme.SuccessLine, Theme.Success));
                 }
                 Grid.SetRow(metaPanel, 1);
                 Grid.SetColumn(metaPanel, 1);
@@ -1221,7 +1222,7 @@ public partial class MainWindow : Window
                         stateComboContainer.Children.Add(new TextBlock
                         {
                             Text = "조건 문자 선택...",
-                            Foreground = BrushFromHex("#AEB8C8"),
+                            Foreground = Theme.TextSecondary,
                             Margin = new Thickness(10, 0, 28, 0),
                             VerticalAlignment = VerticalAlignment.Center,
                             IsHitTestVisible = false,
@@ -1237,9 +1238,9 @@ public partial class MainWindow : Window
                         Margin = new Thickness(6, 0, 0, 0),
                         Padding = new Thickness(7, 2, 7, 2),
                         MinHeight = 27,
-                        Background = BrushFromHex("#3A3440"),
-                        Foreground = BrushFromHex("#E6DDF0"),
-                        BorderBrush = BrushFromHex("#5A4F66"),
+                        Background = Theme.SpecialFace,
+                        Foreground = Theme.Special,
+                        BorderBrush = Theme.Line,
                         BorderThickness = new Thickness(1),
                         Cursor = Cursors.Hand,
                         Visibility = selectedStateOption is null
@@ -1263,22 +1264,22 @@ public partial class MainWindow : Window
                 {
                     Margin = new Thickness(0, 6, 0, 0),
                     Padding = new Thickness(7, 4, 7, 4),
-                    Background = BrushFromHex("#17212C"),
-                    BorderBrush = BrushFromHex("#32465A"),
+                    Background = Theme.Panel,
+                    BorderBrush = Theme.Line,
                     BorderThickness = new Thickness(1),
                     CornerRadius = new CornerRadius(6),
                     Child = new TextBlock
                     {
                         Text = string.Join(" · ", displayCharacter.GetAvailableLetters(effectiveStateId)),
                         Foreground = displayCharacter.HasActiveMiracleGrant
-                            ? BrushFromHex("#D9C2FF")
+                            ? Theme.Special
                             : displayCharacter.HasActiveDeckGroupGrant
-                                ? BrushFromHex("#8FE3B1")
+                                ? Theme.LevelNumber
                                 : selectedStateOption is not null
-                                    ? BrushFromHex("#FFD08A")
+                                    ? Theme.Warn
                                     : selectedForm is not null
-                                        ? BrushFromHex("#8FE3B1")
-                                        : BrushFromHex("#B8EAF5"),
+                                        ? Theme.LevelNumber
+                                        : Theme.BlueText,
                         FontSize = 12,
                         FontWeight = FontWeights.SemiBold,
                         TextTrimming = TextTrimming.CharacterEllipsis
@@ -1299,13 +1300,13 @@ public partial class MainWindow : Window
         }
     }
 
-    private static Border CreateHandMetaBadge(string text, string borderColor, string foregroundColor)
+    private static Border CreateHandMetaBadge(string text, Brush borderColor, Brush foregroundColor)
         => new()
         {
             Margin = new Thickness(0, 0, 5, 2),
             Padding = new Thickness(5, 1, 5, 1),
-            Background = BrushFromHex("#17212C"),
-            BorderBrush = BrushFromHex(borderColor),
+            Background = Theme.Panel,
+            BorderBrush = borderColor,
             BorderThickness = new Thickness(1),
             CornerRadius = new CornerRadius(5),
             Child = new TextBlock
@@ -1313,7 +1314,7 @@ public partial class MainWindow : Window
                 Text = text,
                 FontSize = 9,
                 FontWeight = FontWeights.SemiBold,
-                Foreground = BrushFromHex(foregroundColor)
+                Foreground = foregroundColor
             }
         };
 
@@ -1357,34 +1358,21 @@ public partial class MainWindow : Window
             : DeckDataService.NormalizeSpecies(character.Species);
     }
 
-    private static string GetAttributeColorHex(string attribute)
-        => attribute switch
-        {
-            "火" => "#FF6B6B",
-            "水" => "#63B3FF",
-            "木" => "#70D98B",
-            "光" => "#FFE27A",
-            "闇" => "#B995FF",
-            "天" => "#8FE9FF",
-            "冥" => "#C58A5A",
-            "虹" => "#FF9EDB",
-            _ => "#66D9EF"
-        };
 
     private static Brush CreateAttributeAccentBrush(IReadOnlyList<string> attributes)
     {
         if (attributes.Count == 0)
         {
-            return BrushFromHex("#4B6578");
+            return Theme.LineSoft;
         }
 
-        Color first = (Color)ColorConverter.ConvertFromString(GetAttributeColorHex(attributes[0]));
+        Color first = DataPalette.AttributeColor(attributes[0], Theme.Focus.Color);
         if (attributes.Count == 1)
         {
             return new SolidColorBrush(first);
         }
 
-        Color second = (Color)ColorConverter.ConvertFromString(GetAttributeColorHex(attributes[1]));
+        Color second = DataPalette.AttributeColor(attributes[1], Theme.Focus.Color);
         var brush = new LinearGradientBrush(first, second, 0);
         brush.Freeze();
         return brush;
@@ -2005,7 +1993,7 @@ public partial class MainWindow : Window
             GeneralSuggestionTitleText.Text = "일반 문자 검색 · 판면을 입력하면 손패와 관계없이 자동 검색";
             ShowGeneralSuggestionMessage(
                 "판면 문자를 하나 이상 입력하면 7~4글자 일반 후보가 표로 표시됩니다.",
-                "#9FB2C2");
+                Theme.TextSecondary);
             return;
         }
 
@@ -2033,7 +2021,7 @@ public partial class MainWindow : Window
         {
             ShowGeneralSuggestionMessage(
                 "현재 판면에 이어지는 4~7글자 일반 후보가 없습니다.",
-                "#D8B978");
+                Theme.Warn);
             return;
         }
 
@@ -2084,12 +2072,12 @@ public partial class MainWindow : Window
             : $"일반 문자 검색 · {group.WordLength}글자 {group.Results.Count:N0}개";
     }
 
-    private void ShowGeneralSuggestionMessage(string message, string color)
+    private void ShowGeneralSuggestionMessage(string message, Brush color)
     {
         GeneralSuggestionWordsGrid.ItemsSource = null;
         GeneralSuggestionWordsGrid.Visibility = Visibility.Collapsed;
         GeneralSuggestionEmptyText.Text = message;
-        GeneralSuggestionEmptyText.Foreground = BrushFromHex(color);
+        GeneralSuggestionEmptyText.Foreground = color;
         GeneralSuggestionEmptyText.Visibility = Visibility.Visible;
     }
 
@@ -2132,7 +2120,7 @@ public partial class MainWindow : Window
         HandResultsPanel.Children.Add(new TextBlock
         {
             Text = "손패 캐릭터를 선택하면 이 영역에 현재 손패로 만들 수 있는 후보가 표시됩니다.",
-            Foreground = BrushFromHex("#AEB8C8"),
+            Foreground = Theme.TextSecondary,
             TextWrapping = TextWrapping.Wrap,
             Margin = new Thickness(2, 4, 2, 4)
         });
@@ -2339,7 +2327,7 @@ public partial class MainWindow : Window
         if (leader is null)
         {
             MiracleLeaderStatusText.Text = "현재 덱에 리더가 없습니다.";
-            MiracleLeaderStatusText.Foreground = BrushFromHex("#E0C978");
+            MiracleLeaderStatusText.Foreground = Theme.GoldText;
             MiracleLeaderStatusText.ToolTip = null;
             return;
         }
@@ -2349,7 +2337,7 @@ public partial class MainWindow : Window
         if (!effect.IsConfigured)
         {
             MiracleLeaderStatusText.Text = $"리더: {leader.Name} · 미라클 문자 부여 효과 없음";
-            MiracleLeaderStatusText.Foreground = BrushFromHex("#8FA0B4");
+            MiracleLeaderStatusText.Foreground = Theme.TextSecondary;
             MiracleLeaderStatusText.ToolTip = "덱 1번 캐릭터가 리더입니다.";
             return;
         }
@@ -2363,7 +2351,7 @@ public partial class MainWindow : Window
         {
             MiracleLeaderStatusText.Text =
                 $"리더: {leader.Name} · 미라클 효과 설정됨 · 현재 덱에서 대상 그룹 캐릭터 0명";
-            MiracleLeaderStatusText.Foreground = BrushFromHex("#FFD08A");
+            MiracleLeaderStatusText.Foreground = Theme.Warn;
             MiracleLeaderStatusText.ToolTip =
                 $"대상 그룹: {string.Join(" · ", effect.TargetGroups)}\n" +
                 $"부여 문자: {string.Join(" · ", effect.GrantedLetters)}\n" +
@@ -2373,7 +2361,7 @@ public partial class MainWindow : Window
 
         MiracleLeaderStatusText.Text =
             $"리더: {leader.Name} · 미라클 문자 부여 활성 · 적용 대상 {matchingCharacters.Length}명 · +{string.Join(" · ", effect.GrantedLetters)}";
-        MiracleLeaderStatusText.Foreground = BrushFromHex("#D9C2FF");
+        MiracleLeaderStatusText.Foreground = Theme.Special;
         string targetNames = string.Join(" · ", matchingCharacters.Select(character => character.Name));
         MiracleLeaderStatusText.ToolTip =
             $"대상 그룹: {string.Join(" · ", effect.TargetGroups)}\n" +
@@ -2456,7 +2444,7 @@ public partial class MainWindow : Window
             panel.Children.Add(new TextBlock
             {
                 Text = emptyMessage,
-                Foreground = BrushFromHex("#AEB8C8"),
+                Foreground = Theme.TextSecondary,
                 TextWrapping = TextWrapping.Wrap,
                 Margin = new Thickness(2, 4, 2, 4)
             });
@@ -2467,8 +2455,8 @@ public partial class MainWindow : Window
         {
             panel.Children.Add(new Border
             {
-                Background = BrushFromHex("#1E3040"),
-                BorderBrush = BrushFromHex("#3B7892"),
+                Background = Theme.InfoFace,
+                BorderBrush = Theme.InfoLine,
                 BorderThickness = new Thickness(1),
                 CornerRadius = new CornerRadius(8),
                 Padding = new Thickness(10, 8, 10, 8),
@@ -2476,7 +2464,7 @@ public partial class MainWindow : Window
                 Child = new TextBlock
                 {
                     Text = "손패를 선택하지 않아 현재 판면과 이어지는 일반 단어를 검색합니다. 아래 문자는 단어를 만들기 위해 필요한 글자입니다.",
-                    Foreground = BrushFromHex("#B8EAF5"),
+                    Foreground = Theme.BlueText,
                     TextWrapping = TextWrapping.Wrap
                 }
             });
@@ -2546,7 +2534,7 @@ public partial class MainWindow : Window
             panel.Children.Add(new TextBlock
             {
                 Text = $"현재 조건에서 만들 수 있는 {group.WordLength}글자 단어가 없습니다. 다른 글자 수를 선택해 보세요.",
-                Foreground = BrushFromHex("#E0C978"),
+                Foreground = Theme.GoldText,
                 TextWrapping = TextWrapping.Wrap,
                 Margin = new Thickness(2, 4, 2, 4)
             });
@@ -2603,8 +2591,8 @@ public partial class MainWindow : Window
 
             panel.Children.Add(new Border
             {
-                Background = BrushFromHex("#263746"),
-                BorderBrush = BrushFromHex("#547086"),
+                Background = Theme.PanelInner,
+                BorderBrush = Theme.InfoLine,
                 BorderThickness = new Thickness(1),
                 CornerRadius = new CornerRadius(8),
                 Padding = new Thickness(10, 7, 10, 7),
@@ -2614,7 +2602,7 @@ public partial class MainWindow : Window
                     Text = string.IsNullOrWhiteSpace(letterSummary)
                         ? "추천 문자를 계산할 수 없습니다."
                         : $"자주 필요한 문자 · {letterSummary}",
-                    Foreground = BrushFromHex("#D7F4FA"),
+                    Foreground = Theme.Info,
                     FontWeight = FontWeights.SemiBold,
                     TextWrapping = TextWrapping.Wrap
                 }
@@ -2628,7 +2616,7 @@ public partial class MainWindow : Window
                 : hasCompleteComboData
                     ? $"{group.WordLength}글자 후보 {group.Results.Count}개 · 콤보 높은 순"
                     : $"{group.WordLength}글자 후보 {group.Results.Count}개 · 임시 콤보 높은 순",
-            Foreground = BrushFromHex("#66D9EF"),
+            Foreground = Theme.Focus,
             FontWeight = FontWeights.SemiBold,
             Margin = new Thickness(2, 0, 2, 10),
             TextWrapping = TextWrapping.Wrap
@@ -2663,7 +2651,7 @@ public partial class MainWindow : Window
         panel.Children.Add(new Expander
         {
             Header = $"나머지 {remaining.Length}개 결과 보기",
-            Foreground = BrushFromHex("#D7DEEA"),
+            Foreground = Theme.TextPrimary,
             Margin = new Thickness(2, 4, 2, 0),
             IsExpanded = false,
             Content = remainingPanel
@@ -2789,11 +2777,11 @@ public partial class MainWindow : Window
         var card = new Border
         {
             Background = featured
-                ? BrushFromHex("#203342")
-                : BrushFromHex("#202735"),
+                ? Theme.PanelInner
+                : Theme.PanelInner,
             BorderBrush = featured
-                ? BrushFromHex("#3B7892")
-                : BrushFromHex("#303C4F"),
+                ? Theme.InfoLine
+                : Theme.Line,
             BorderThickness = new Thickness(featured ? 2 : 1),
             CornerRadius = new CornerRadius(9),
             Padding = new Thickness(featured ? 14 : 11),
@@ -2810,7 +2798,7 @@ public partial class MainWindow : Window
             Text = result.Word,
             FontSize = featured ? 25 : 19,
             FontWeight = FontWeights.Bold,
-            Foreground = Brushes.White,
+            Foreground = Theme.TextPrimary,
             TextTrimming = TextTrimming.CharacterEllipsis,
             VerticalAlignment = VerticalAlignment.Center
         });
@@ -2823,20 +2811,20 @@ public partial class MainWindow : Window
         };
         badgePanel.Children.Add(CreateResultBadge(
             $"{result.Cells.Count}글자",
-            "#2B4D66",
-            "#5EA7D1",
+            Theme.InfoFace,
+            Theme.InfoLine,
             featured));
         badgePanel.Children.Add(CreateResultBadge(
             hasCompleteComboData
                 ? $"예상 {result.ComboCount}콤보"
                 : $"임시 {result.ComboCount}콤보",
-            hasCompleteComboData ? "#2C6B55" : "#6B5A2C",
-            hasCompleteComboData ? "#63C99A" : "#D5B85C",
+            hasCompleteComboData ? Theme.SuccessFace : Theme.GoldFace,
+            hasCompleteComboData ? Theme.SuccessLine : Theme.GoldLine,
             featured));
 
         if (showFirstTurnProbability && result.FirstTurnCombinationCount > 0)
         {
-            (string background, string border) = GetProbabilityColors(result.FirstTurnSuccessRate);
+            (Brush background, Brush border) = DataPalette.Probability(result.FirstTurnSuccessRate);
             badgePanel.Children.Add(CreateResultBadge(
                 $"첫 턴 {result.FirstTurnSuccessRate:P1}",
                 background,
@@ -2854,7 +2842,7 @@ public partial class MainWindow : Window
         stack.Children.Add(new TextBlock
         {
             Text = $"{result.Cells.Count}글자 단어 · 판면 {result.StartIndex + 1}~{result.EndIndex + 1}칸에 배치",
-            Foreground = BrushFromHex("#AEB8C8"),
+            Foreground = Theme.TextSecondary,
             Margin = new Thickness(2, 3, 0, 5),
             TextWrapping = TextWrapping.Wrap
         });
@@ -2862,7 +2850,7 @@ public partial class MainWindow : Window
         stack.Children.Add(new Expander
         {
             Header = "전체 7칸 판면 보기",
-            Foreground = BrushFromHex("#B8EAF5"),
+            Foreground = Theme.BlueText,
             Margin = new Thickness(0, 1, 0, 8),
             IsExpanded = false,
             Content = CreateFullBoardPreview(result, featured)
@@ -2877,8 +2865,8 @@ public partial class MainWindow : Window
                 ? $"콤보 구성 · 2글자 {twoLetter} · 3글자 {threeLetter} · 4글자 이상 {longWords}"
                 : $"현재 계산 · 4글자 이상 {longWords}  (2~3글자 데이터 수집 후 정확한 콤보 표시)",
             Foreground = hasCompleteComboData
-                ? BrushFromHex("#9FE1BF")
-                : BrushFromHex("#E0C978"),
+                ? Theme.Success
+                : Theme.GoldText,
             FontSize = featured ? 12 : 11,
             Margin = new Thickness(0, 0, 0, 7),
             TextWrapping = TextWrapping.Wrap
@@ -2904,8 +2892,8 @@ public partial class MainWindow : Window
 
             stack.Children.Add(new Border
             {
-                Background = BrushFromHex("#243F35"),
-                BorderBrush = BrushFromHex("#5FAE88"),
+                Background = Theme.SuccessFace,
+                BorderBrush = Theme.SuccessLine,
                 BorderThickness = new Thickness(1),
                 CornerRadius = new CornerRadius(7),
                 Padding = new Thickness(9, 6, 9, 6),
@@ -2913,7 +2901,7 @@ public partial class MainWindow : Window
                 Child = new TextBlock
                 {
                     Text = formText,
-                    Foreground = BrushFromHex("#BFF0D3"),
+                    Foreground = Theme.Success,
                     TextWrapping = TextWrapping.Wrap,
                     FontSize = featured ? 12 : 11
                 }
@@ -2940,8 +2928,8 @@ public partial class MainWindow : Window
 
             stack.Children.Add(new Border
             {
-                Background = BrushFromHex("#493D24"),
-                BorderBrush = BrushFromHex("#C9A44C"),
+                Background = Theme.GoldFace,
+                BorderBrush = Theme.GoldLine,
                 BorderThickness = new Thickness(1),
                 CornerRadius = new CornerRadius(7),
                 Padding = new Thickness(9, 6, 9, 6),
@@ -2949,7 +2937,7 @@ public partial class MainWindow : Window
                 Child = new TextBlock
                 {
                     Text = warningText,
-                    Foreground = BrushFromHex("#FFE3A3"),
+                    Foreground = Theme.Warn,
                     TextWrapping = TextWrapping.Wrap,
                     FontSize = featured ? 12 : 11
                 }
@@ -2982,8 +2970,8 @@ public partial class MainWindow : Window
 
             stack.Children.Add(new Border
             {
-                Background = BrushFromHex("#392E52"),
-                BorderBrush = BrushFromHex("#9A7BD4"),
+                Background = Theme.SpecialFace,
+                BorderBrush = Theme.SpecialLine,
                 BorderThickness = new Thickness(1),
                 CornerRadius = new CornerRadius(7),
                 Padding = new Thickness(9, 6, 9, 6),
@@ -2991,7 +2979,7 @@ public partial class MainWindow : Window
                 Child = new TextBlock
                 {
                     Text = warningText,
-                    Foreground = BrushFromHex("#E4D4FF"),
+                    Foreground = Theme.Special,
                     TextWrapping = TextWrapping.Wrap,
                     FontSize = featured ? 12 : 11
                 }
@@ -3021,8 +3009,8 @@ public partial class MainWindow : Window
 
             stack.Children.Add(new Border
             {
-                Background = BrushFromHex("#203B35"),
-                BorderBrush = BrushFromHex("#4E9B82"),
+                Background = Theme.SuccessFace,
+                BorderBrush = Theme.SuccessLine,
                 BorderThickness = new Thickness(1),
                 CornerRadius = new CornerRadius(7),
                 Padding = new Thickness(9, 6, 9, 6),
@@ -3030,7 +3018,7 @@ public partial class MainWindow : Window
                 Child = new TextBlock
                 {
                     Text = warningText,
-                    Foreground = BrushFromHex("#BFF5DD"),
+                    Foreground = Theme.Success,
                     TextWrapping = TextWrapping.Wrap,
                     FontSize = featured ? 12 : 11
                 }
@@ -3046,7 +3034,7 @@ public partial class MainWindow : Window
             stack.Children.Add(new TextBlock
             {
                 Text = assignments,
-                Foreground = BrushFromHex("#D7DEEA"),
+                Foreground = Theme.TextPrimary,
                 TextWrapping = TextWrapping.Wrap,
                 LineHeight = 21
             });
@@ -3062,13 +3050,13 @@ public partial class MainWindow : Window
             stack.Children.Add(new Expander
             {
                 Header = $"캐릭터 문자가 포함된 콤보 단어 {result.ComboMatches.Count}개 보기",
-                Foreground = BrushFromHex("#B8EAF5"),
+                Foreground = Theme.BlueText,
                 Margin = new Thickness(0, 9, 0, 0),
                 IsExpanded = false,
                 Content = new TextBlock
                 {
                     Text = comboDetails,
-                    Foreground = BrushFromHex("#D7DEEA"),
+                    Foreground = Theme.TextPrimary,
                     TextWrapping = TextWrapping.Wrap,
                     LineHeight = 20,
                     Margin = new Thickness(0, 6, 0, 0)
@@ -3184,15 +3172,15 @@ public partial class MainWindow : Window
 
     private static Border CreateResultBadge(
         string text,
-        string background,
-        string border,
+        Brush background,
+        Brush border,
         bool featured,
         string? toolTip = null)
     {
         return new Border
         {
-            Background = BrushFromHex(background),
-            BorderBrush = BrushFromHex(border),
+            Background = background,
+            BorderBrush = border,
             BorderThickness = new Thickness(1),
             CornerRadius = new CornerRadius(12),
             Padding = new Thickness(9, 4, 9, 4),
@@ -3201,23 +3189,13 @@ public partial class MainWindow : Window
             Child = new TextBlock
             {
                 Text = text,
-                Foreground = Brushes.White,
+                Foreground = Theme.OnFace(background),
                 FontWeight = FontWeights.Bold,
                 FontSize = featured ? 12 : 10
             }
         };
     }
 
-    private static (string Background, string Border) GetProbabilityColors(double rate)
-    {
-        return rate switch
-        {
-            >= 0.80 => ("#2C6B55", "#63C99A"),
-            >= 0.50 => ("#53632D", "#A8C95A"),
-            >= 0.20 => ("#6B4B2C", "#D69A55"),
-            _ => ("#3A4250", "#687487")
-        };
-    }
 
     private FrameworkElement CreateWordCompositionPreview(SearchResult result, bool featured)
     {
@@ -3229,7 +3207,7 @@ public partial class MainWindow : Window
         container.Children.Add(new TextBlock
         {
             Text = $"단어 구성 · {result.Cells.Count}글자",
-            Foreground = BrushFromHex("#66D9EF"),
+            Foreground = Theme.Focus,
             FontWeight = FontWeights.SemiBold,
             FontSize = featured ? 12 : 11,
             Margin = new Thickness(2, 0, 0, 4)
@@ -3257,7 +3235,7 @@ public partial class MainWindow : Window
                 Text = cell,
                 FontSize = featured ? 25 : 20,
                 FontWeight = FontWeights.Bold,
-                Foreground = Brushes.White,
+                Foreground = Theme.TextPrimary,
                 HorizontalAlignment = HorizontalAlignment.Center
             });
             slot.Children.Add(new TextBlock
@@ -3265,8 +3243,8 @@ public partial class MainWindow : Window
                 Text = isPlaced ? "이번 배치" : "기존 판면",
                 FontSize = featured ? 10 : 9,
                 Foreground = isPlaced
-                    ? BrushFromHex("#E8F7FF")
-                    : BrushFromHex("#AEB8C8"),
+                    ? Theme.OnFace(Theme.Orange)
+                    : Theme.TextSecondary,
                 TextAlignment = TextAlignment.Center,
                 ToolTip = isPlaced
                     ? BuildAssignmentToolTip(boardIndex, assignment!)
@@ -3279,11 +3257,11 @@ public partial class MainWindow : Window
                 Margin = new Thickness(2),
                 Padding = new Thickness(3, 5, 3, 4),
                 Background = isPlaced
-                    ? BrushFromHex("#245E88")
-                    : BrushFromHex("#2A3342"),
+                    ? Theme.Orange
+                    : Theme.Ivory,
                 BorderBrush = isPlaced
-                    ? BrushFromHex("#66D9EF")
-                    : BrushFromHex("#526176"),
+                    ? Theme.Focus
+                    : Theme.LineSoft,
                 BorderThickness = new Thickness(isPlaced ? 2 : 1),
                 CornerRadius = new CornerRadius(7),
                 Child = slot
@@ -3293,8 +3271,8 @@ public partial class MainWindow : Window
         container.Children.Add(wordGrid);
         container.Children.Add(new TextBlock
         {
-            Text = "파랑: 이번에 놓을 문자 · 회색: 이미 있는 판면 문자",
-            Foreground = BrushFromHex("#8FA0B4"),
+            Text = "'이번 배치': 이번에 놓을 문자 · '기존 판면': 이미 있는 판면 문자",
+            Foreground = Theme.TextSecondary,
             FontSize = 10,
             Margin = new Thickness(2, 3, 0, 0)
         });
@@ -3334,10 +3312,10 @@ public partial class MainWindow : Window
                 FontSize = featured ? 24 : 19,
                 FontWeight = FontWeights.Bold,
                 Foreground = isPlaced
-                    ? Brushes.White
+                    ? Theme.TextPrimary
                     : isExisting
-                        ? BrushFromHex("#D7DEEA")
-                        : BrushFromHex("#637083"),
+                        ? Theme.TextPrimary
+                        : Theme.TextTertiary,
                 HorizontalAlignment = HorizontalAlignment.Center
             });
             slotStack.Children.Add(new TextBlock
@@ -3347,8 +3325,8 @@ public partial class MainWindow : Window
                     : isExisting ? "기존 판면" : "빈칸",
                 FontSize = featured ? 10 : 9,
                 Foreground = isPlaced
-                    ? BrushFromHex("#E8F7FF")
-                    : BrushFromHex("#9DA9BA"),
+                    ? Theme.OnFace(Theme.Orange)
+                    : Theme.TextSecondary,
                 TextAlignment = TextAlignment.Center,
                 TextTrimming = TextTrimming.CharacterEllipsis,
                 ToolTip = isPlaced
@@ -3362,15 +3340,15 @@ public partial class MainWindow : Window
                 Margin = new Thickness(2),
                 Padding = new Thickness(3, 5, 3, 4),
                 Background = isPlaced
-                    ? BrushFromHex("#245E88")
+                    ? Theme.Orange
                     : isExisting
-                        ? BrushFromHex("#2A3342")
-                        : BrushFromHex("#171C26"),
+                        ? Theme.Ivory
+                        : Theme.Panel,
                 BorderBrush = isPlaced
-                    ? BrushFromHex("#66D9EF")
+                    ? Theme.Focus
                     : isExisting
-                        ? BrushFromHex("#526176")
-                        : BrushFromHex("#303A4A"),
+                        ? Theme.LineSoft
+                        : Theme.PanelInner,
                 BorderThickness = new Thickness(isPlaced ? 2 : 1),
                 CornerRadius = new CornerRadius(7),
                 Child = slotStack
@@ -3380,8 +3358,8 @@ public partial class MainWindow : Window
         container.Children.Add(board);
         container.Children.Add(new TextBlock
         {
-            Text = "회색: 기존 판면 · 파랑: 이번에 배치할 문자",
-            Foreground = BrushFromHex("#8FA0B4"),
+            Text = "'기존 판면': 이미 있는 문자 · '이번 배치': 이번에 놓을 문자",
+            Foreground = Theme.TextSecondary,
             FontSize = 10,
             Margin = new Thickness(2, 3, 0, 0)
         });
@@ -3406,7 +3384,7 @@ public partial class MainWindow : Window
         HandResultsPanel.Children.Add(new TextBlock
         {
             Text = "판면과 현재 손패를 선택하면 4~7글자 후보를 함께 검색합니다.",
-            Foreground = BrushFromHex("#AEB8C8"),
+            Foreground = Theme.TextSecondary,
             TextWrapping = TextWrapping.Wrap,
             Margin = new Thickness(2, 4, 2, 4)
         });
@@ -3414,7 +3392,7 @@ public partial class MainWindow : Window
         DeckResultsPanel.Children.Add(new TextBlock
         {
             Text = "판면을 기준으로 덱 전체의 4~7글자 후보도 함께 표시됩니다.",
-            Foreground = BrushFromHex("#AEB8C8"),
+            Foreground = Theme.TextSecondary,
             TextWrapping = TextWrapping.Wrap,
             Margin = new Thickness(2, 4, 2, 4)
         });
@@ -3854,8 +3832,8 @@ public partial class MainWindow : Window
                     ? "저장된 덱 프리셋이 없습니다. 덱 편집 화면에서 먼저 만들어 주세요."
                     : "프리셋을 선택한 뒤 '이 덱으로 변경'을 누르세요.";
             MainPresetStatusText.Foreground = exactMatch is not null
-                ? BrushFromHex("#8FE3B1")
-                : BrushFromHex("#8FA0B4");
+                ? Theme.LevelNumber
+                : Theme.TextSecondary;
         }
         finally
         {
@@ -3872,7 +3850,7 @@ public partial class MainWindow : Window
 
         _selectedMainPresetId = item.Id;
         MainPresetStatusText.Text = $"'{item.Name}' 선택 · 버튼을 누르면 현재 덱과 손패 후보가 갱신됩니다.";
-        MainPresetStatusText.Foreground = BrushFromHex("#B8EAF5");
+        MainPresetStatusText.Foreground = Theme.BlueText;
     }
 
     private void ApplyMainPresetButton_Click(object sender, RoutedEventArgs e)
@@ -3888,7 +3866,7 @@ public partial class MainWindow : Window
         if (preset is null)
         {
             MainPresetStatusText.Text = "변경할 덱 프리셋을 먼저 선택하세요.";
-            MainPresetStatusText.Foreground = BrushFromHex("#FF9E9E");
+            MainPresetStatusText.Foreground = Theme.Error;
             return;
         }
 
@@ -3942,7 +3920,7 @@ public partial class MainWindow : Window
                 ? $" · 누락 {missingCount}명 · 모드시프트 중복 제외 {restrictedCount}명"
                 : string.Empty;
             MainPresetStatusText.Text = $"현재 적용 중: {preset.Name}{note}";
-            MainPresetStatusText.Foreground = BrushFromHex("#8FE3B1");
+            MainPresetStatusText.Foreground = Theme.LevelNumber;
             StatusText.Text = $"'{preset.Name}' 프리셋으로 덱 {_deck.Count:N0}명을 변경했습니다.";
         }
         catch (Exception exception)
@@ -4152,7 +4130,7 @@ public partial class MainWindow : Window
         if (string.IsNullOrEmpty(text))
         {
             BoardHangulPreviewText.Text = "빠른 입력에 한글을 입력하면 가나로 자동 변환됩니다.";
-            BoardHangulPreviewText.Foreground = BrushFromHex("#718096");
+            BoardHangulPreviewText.Foreground = Theme.TextTertiary;
             return;
         }
 
@@ -4165,13 +4143,13 @@ public partial class MainWindow : Window
                 : $"입력 결과: {converted}";
             BoardHangulPreviewText.Text =
                 $"{conversionText} · 판면 {cells.Count}/{BoardSize}칸";
-            BoardHangulPreviewText.Foreground = BrushFromHex("#8FD8E8");
+            BoardHangulPreviewText.Foreground = Theme.Info;
         }
         catch (FormatException exception)
         {
             BoardHangulPreviewText.Text =
                 $"입력 확인: {converted} · {exception.Message}";
-            BoardHangulPreviewText.Foreground = BrushFromHex("#FFD08A");
+            BoardHangulPreviewText.Foreground = Theme.Warn;
         }
     }
 
@@ -4342,8 +4320,6 @@ public partial class MainWindow : Window
         SaveSettingsImmediatelySafely();
     }
 
-    private static SolidColorBrush BrushFromHex(string hex)
-        => new((Color)ColorConverter.ConvertFromString(hex));
 
     private sealed class GeneralSuggestionTableRow
     {

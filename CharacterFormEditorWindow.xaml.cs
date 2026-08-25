@@ -1,3 +1,4 @@
+using KotodamanWordFinder.Themes;
 using System.Globalization;
 using System.IO;
 using System.Text;
@@ -111,7 +112,7 @@ public partial class CharacterFormEditorWindow : Window
         UpdateImagePreview(item);
         ApplyFormButton.Content = "현재 형태 수정";
         EditorStatusText.Text = $"'{item.Form.Name}' 편집 중";
-        EditorStatusText.Foreground = BrushFromHex("#B8EAF5");
+        EditorStatusText.Foreground = Theme.BlueText;
     }
 
     private void ClearEditorForNew()
@@ -131,7 +132,7 @@ public partial class CharacterFormEditorWindow : Window
         FormImageFileText.Text = "등록된 이미지 없음";
         ApplyFormButton.Content = "새 형태 추가";
         EditorStatusText.Text = "형태 이름과 문자를 입력하세요.";
-        EditorStatusText.Foreground = BrushFromHex("#AEB8C8");
+        EditorStatusText.Foreground = Theme.TextSecondary;
         FormNameTextBox.Focus();
     }
 
@@ -200,7 +201,7 @@ public partial class CharacterFormEditorWindow : Window
             EditorStatusText.Text = isNew
                 ? $"'{name}' 형태를 추가했습니다. 아래 저장하고 닫기를 눌러 확정하세요."
                 : $"'{name}' 형태를 수정했습니다. 아래 저장하고 닫기를 눌러 확정하세요.";
-            EditorStatusText.Foreground = BrushFromHex("#8FE3B1");
+            EditorStatusText.Foreground = Theme.LevelNumber;
         }
 
         return true;
@@ -377,7 +378,7 @@ public partial class CharacterFormEditorWindow : Window
     private void SetError(string message)
     {
         EditorStatusText.Text = message;
-        EditorStatusText.Foreground = BrushFromHex("#FF9E9E");
+        EditorStatusText.Foreground = Theme.Error;
     }
 
     private static List<string> ParseLetters(string text)
@@ -422,8 +423,6 @@ public partial class CharacterFormEditorWindow : Window
             mainAttribute);
     }
 
-    private static SolidColorBrush BrushFromHex(string hex)
-        => new((Color)ColorConverter.ConvertFromString(hex));
 
     private sealed class FormEditItem
     {

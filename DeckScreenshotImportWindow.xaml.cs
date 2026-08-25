@@ -1,3 +1,4 @@
+using KotodamanWordFinder.Themes;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
@@ -155,7 +156,7 @@ public partial class DeckScreenshotImportWindow : Window
         RecognitionSummaryText.Text = "인식 전";
         GuessGridSelection();
         StatusText.Text = $"{sourceLabel} · {safeBitmap.PixelWidth}×{safeBitmap.PixelHeight} · 자동 영역을 확인하고 필요하면 마우스로 다시 드래그하세요.";
-        StatusText.Foreground = BrushFromHex("#AFC2D1");
+        StatusText.Foreground = Theme.TextSecondary;
     }
 
     private void GuessGridButton_Click(object sender, RoutedEventArgs e)
@@ -322,7 +323,7 @@ public partial class DeckScreenshotImportWindow : Window
             Mouse.OverrideCursor = Cursors.Wait;
             RecognizeButton.IsEnabled = false;
             StatusText.Text = "캐릭터 특징을 병렬 비교하는 중입니다. 첫 인식만 ORB 캐시를 만들며, 다음부터는 더 빨라집니다.";
-            StatusText.Foreground = BrushFromHex("#AFC2D1");
+            StatusText.Foreground = Theme.TextSecondary;
             BitmapSource screenshot = _screenshot;
 
             // CroppedBitmap/PngBitmapEncoder 같은 WPF 이미지 객체는 UI 스레드에서만 만듭니다.
@@ -369,8 +370,8 @@ public partial class DeckScreenshotImportWindow : Window
                 ? "자동 선택이 완료되었습니다. 그래도 12칸을 한 번 확인한 뒤 적용하세요."
                 : "특징점 매칭이 애매한 슬롯만 비워 두었습니다. 추천 3개를 먼저 확인하고, 없으면 드롭다운에서 이름으로 검색하세요.";
             StatusText.Foreground = autoSelectedCount == 12
-                ? BrushFromHex("#8FE3B1")
-                : BrushFromHex("#FFD27A");
+                ? Theme.LevelNumber
+                : Theme.Warn;
         }
         catch (Exception exception)
         {
@@ -634,7 +635,7 @@ public partial class DeckScreenshotImportWindow : Window
         _recognitionService.InvalidateLearnedTemplates();
         UpdateLearningStatus();
         StatusText.Text = "현재 UI 프로필의 학습 데이터를 초기화했습니다.";
-        StatusText.Foreground = BrushFromHex("#AFC2D1");
+        StatusText.Foreground = Theme.TextSecondary;
     }
 
     private void UpdateLearningStatus()
@@ -664,7 +665,7 @@ public partial class DeckScreenshotImportWindow : Window
         {
             Width = Math.Max(1, rect.Width),
             Height = Math.Max(1, rect.Height),
-            Stroke = BrushFromHex("#66D9EF"),
+            Stroke = Theme.Focus,
             StrokeThickness = 2,
             Fill = new SolidColorBrush(Color.FromArgb(28, 102, 217, 239))
         };
@@ -692,7 +693,7 @@ public partial class DeckScreenshotImportWindow : Window
             Y1 = y1,
             X2 = x2,
             Y2 = y2,
-            Stroke = BrushFromHex("#9AEAF7"),
+            Stroke = Theme.Info,
             StrokeThickness = 1,
             StrokeDashArray = new DoubleCollection { 4, 3 }
         });
@@ -774,7 +775,7 @@ public partial class DeckScreenshotImportWindow : Window
     private void SetError(string message)
     {
         StatusText.Text = message;
-        StatusText.Foreground = BrushFromHex("#FF9B9B");
+        StatusText.Foreground = Theme.Error;
     }
 
     private static Point ClampPoint(Point point, Rect rect)
@@ -789,8 +790,6 @@ public partial class DeckScreenshotImportWindow : Window
             Math.Abs(first.X - second.X),
             Math.Abs(first.Y - second.Y));
 
-    private static SolidColorBrush BrushFromHex(string hex)
-        => (SolidColorBrush)new BrushConverter().ConvertFromString(hex)!;
 
     public sealed class CharacterChoice
     {
@@ -870,10 +869,10 @@ public partial class DeckScreenshotImportWindow : Window
         }
 
         public Brush ScoreBrush => IsAutoConfident
-            ? BrushFromHex("#8FE3B1")
+            ? Theme.LevelNumber
             : BestMatchCount >= 7
-                ? BrushFromHex("#FFD27A")
-                : BrushFromHex("#FF9B9B");
+                ? Theme.Warn
+                : Theme.Error;
 
         public void SelectBlank()
         {

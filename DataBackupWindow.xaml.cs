@@ -1,3 +1,4 @@
+using KotodamanWordFinder.Themes;
 using System.Diagnostics;
 using System.IO;
 using System.Windows;
@@ -52,7 +53,7 @@ public partial class DataBackupWindow : Window
                 StatusText.Text =
                     $"백업 완료 · {Path.GetFileName(backupPath)} · " +
                     DataBackupService.FormatByteSize(new FileInfo(backupPath).Length);
-                StatusText.Foreground = BrushFromHex("#8FE3B1");
+                StatusText.Foreground = Theme.LevelNumber;
             });
     }
 
@@ -93,7 +94,7 @@ public partial class DataBackupWindow : Window
                 RestoreCompleted = true;
                 StatusText.Text =
                     $"복원 완료 · 복원 전 상태도 {Path.GetFileName(result.SafetyBackupPath)} 로 안전 백업했습니다.";
-                StatusText.Foreground = BrushFromHex("#8FE3B1");
+                StatusText.Foreground = Theme.LevelNumber;
 
                 MessageBox.Show(
                     "복원이 완료되었습니다.\n현재 창을 닫으면 메인 화면도 복원된 데이터를 다시 읽습니다.",
@@ -134,7 +135,7 @@ public partial class DataBackupWindow : Window
             File.Delete(selected.Path);
             RefreshBackupList();
             StatusText.Text = $"'{selected.FileName}' 백업을 삭제했습니다.";
-            StatusText.Foreground = BrushFromHex("#FFD08A");
+            StatusText.Foreground = Theme.Warn;
         }
         catch (Exception exception)
         {
@@ -171,7 +172,7 @@ public partial class DataBackupWindow : Window
     {
         SetBusy(true);
         StatusText.Text = message;
-        StatusText.Foreground = BrushFromHex("#AEB8C8");
+        StatusText.Foreground = Theme.TextSecondary;
 
         try
         {
@@ -199,7 +200,7 @@ public partial class DataBackupWindow : Window
     private void ShowError(string message)
     {
         StatusText.Text = message;
-        StatusText.Foreground = BrushFromHex("#FF9B9B");
+        StatusText.Foreground = Theme.Error;
 
         MessageBox.Show(
             message,
@@ -208,6 +209,4 @@ public partial class DataBackupWindow : Window
             MessageBoxImage.Error);
     }
 
-    private static System.Windows.Media.SolidColorBrush BrushFromHex(string hex)
-        => new((System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString(hex));
 }

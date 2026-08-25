@@ -1,0 +1,106 @@
+<!--
+  앱 전체의 유일한 색 출처입니다. 다른 .xaml / .xaml.cs 에 #RRGGBB 를 직접 적지 마세요.
+  (ReleaseTools/check_theme.sh 가 이관 완료 파일에 대해 이를 검사합니다.)
+
+  현재 값은 리디자인 이전의 다크 팔레트입니다. 크림 테마 전환은 이 파일의
+  값 27개만 교체하면 되고, 되돌릴 때도 이 파일 하나만 revert 하면 됩니다.
+  자세한 근거는 PRD_UI.md §3 참조.
+-->
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:po="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
+                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                    mc:Ignorable="po">
+
+    <!-- ── 면 ────────────────────────────────────────────────── -->
+    <SolidColorBrush x:Key="Bg.Backdrop"    Color="#E4DED1" po:Freeze="True"/>
+    <SolidColorBrush x:Key="Bg.Panel"       Color="#EFEBE0" po:Freeze="True"/>
+    <SolidColorBrush x:Key="Bg.PanelInner"  Color="#DFDACF" po:Freeze="True"/>
+    <SolidColorBrush x:Key="Bg.Field"       Color="#FFFFFF" po:Freeze="True"/>
+    <SolidColorBrush x:Key="Bg.Ivory"       Color="#F5F3EC" po:Freeze="True"/>
+
+    <!-- ── 선 ────────────────────────────────────────────────── -->
+    <SolidColorBrush x:Key="Line.Tan"       Color="#C9C0AB" po:Freeze="True"/>
+    <SolidColorBrush x:Key="Line.TanStrong" Color="#C0B294" po:Freeze="True"/>
+
+    <!-- ── 글자 ──────────────────────────────────────────────── -->
+    <SolidColorBrush x:Key="Text.Primary"   Color="#4A3B28" po:Freeze="True"/>
+    <SolidColorBrush x:Key="Text.Secondary" Color="#6F614B" po:Freeze="True"/>
+    <SolidColorBrush x:Key="Text.OnAccent"  Color="#FFFFFF" po:Freeze="True"/>
+
+    <!-- ── 강조: 선택 상태의 '면 채움' 전용 (주의색과 역할이 겹치지 않게) ── -->
+    <SolidColorBrush x:Key="Accent.Orange"     Color="#FFA24E" po:Freeze="True"/>
+    <SolidColorBrush x:Key="Accent.OrangeDeep" Color="#F08C1E" po:Freeze="True"/>
+
+    <!-- ── 강조: 주 액션 ──────────────────────────────────────── -->
+    <SolidColorBrush x:Key="Accent.Pink"     Color="#C2306B" po:Freeze="True"/>
+    <SolidColorBrush x:Key="Accent.PinkSoft" Color="#FFB0CE" po:Freeze="True"/>
+    <SolidColorBrush x:Key="Accent.PinkLine" Color="#FFB0CE" po:Freeze="True"/>
+    <SolidColorBrush x:Key="Accent.PinkPale" Color="#FCEDF5" po:Freeze="True"/>
+
+    <!-- ── 강조: 부수 액션 ────────────────────────────────────── -->
+    <SolidColorBrush x:Key="Accent.BlueFace" Color="#E3F1FA" po:Freeze="True"/>
+    <SolidColorBrush x:Key="Accent.BlueLine" Color="#AEDAFF" po:Freeze="True"/>
+    <SolidColorBrush x:Key="Accent.BlueText" Color="#1E4C9A" po:Freeze="True"/>
+
+    <!-- ── 강조: 호버·포커스 링 (현재 49회로 최다 사용) ─────────── -->
+    <SolidColorBrush x:Key="Accent.Focus"    Color="#2E7D91" po:Freeze="True"/>
+
+    <!-- ── 칩 / 레벨 알약 ─────────────────────────────────────── -->
+    <SolidColorBrush x:Key="Chip.Dark"       Color="#DFD8C8" po:Freeze="True"/>
+    <SolidColorBrush x:Key="Level.Navy"      Color="#2B3A4C" po:Freeze="True"/>
+    <SolidColorBrush x:Key="Level.Number"    Color="#7BE39A" po:Freeze="True"/>
+
+    <!-- ── 상태색: 글자색 전용. 면을 채우지 않습니다. ──────────── -->
+    <SolidColorBrush x:Key="Status.Success"  Color="#17663E" po:Freeze="True"/>
+    <SolidColorBrush x:Key="Status.Info"     Color="#1E5F8A" po:Freeze="True"/>
+    <SolidColorBrush x:Key="Status.Warn"     Color="#8A5A00" po:Freeze="True"/>
+    <SolidColorBrush x:Key="Status.Error"    Color="#B32218" po:Freeze="True"/>
+    <SolidColorBrush x:Key="Status.Special"  Color="#5B3FA8" po:Freeze="True"/>
+
+    <!-- ── 보조 텍스트 3단계 중 최암부 ─────────────────────────── -->
+    <SolidColorBrush x:Key="Text.Tertiary"   Color="#8A7C66" po:Freeze="True"/>
+    <SolidColorBrush x:Key="Line.Soft"       Color="#B5AB93" po:Freeze="True"/>
+
+    <!--
+      알림 배너 계열. 각 계열은 면·선·글자 3톤 한 벌이고, 유형끼리 색이
+      섞이면 ⚠/✨/◆/안내 구분이 사라진다. 계열 안에서만 스냅할 것.
+      계열별 대응 근거는 PRD_UI.md §3, 매핑은 Themes/color_map.tsv.
+    -->
+    <!-- 골드 = 경고. 게임의 '선택됨' 주황(Accent.Orange)과 뜻이 다르므로 분리한다. -->
+    <SolidColorBrush x:Key="Gold.Face"       Color="#FBF0DC" po:Freeze="True"/>
+    <SolidColorBrush x:Key="Gold.Line"       Color="#C9A44C" po:Freeze="True"/>
+    <SolidColorBrush x:Key="Gold.Text"       Color="#8A5A00" po:Freeze="True"/>
+
+    <!-- 자주 = 제거·강조. 게임 リーダー/発動可 뱃지와 같은 구조(명암 반전). -->
+    <SolidColorBrush x:Key="Rose.Face"       Color="#FCEDF5" po:Freeze="True"/>
+    <SolidColorBrush x:Key="Rose.Line"       Color="#FFB0CE" po:Freeze="True"/>
+    <SolidColorBrush x:Key="Rose.Text"       Color="#B03A6E" po:Freeze="True"/>
+
+    <!-- 보라 = 미라클 리더·모드 시프트. 글자는 Status.Special. -->
+    <SolidColorBrush x:Key="Special.Face"    Color="#F0E9FA" po:Freeze="True"/>
+    <SolidColorBrush x:Key="Special.Line"    Color="#B49AE0" po:Freeze="True"/>
+
+    <!-- 초록 = 덱 그룹·형태 변경. 게임 크롬에 대응색이 없어 앱 고유다. 글자는 Status.Success. -->
+    <SolidColorBrush x:Key="Success.Face"    Color="#E4F3EC" po:Freeze="True"/>
+    <SolidColorBrush x:Key="Success.Line"    Color="#6FB894" po:Freeze="True"/>
+
+    <!-- 청록 = 안내. 게임 おすすめ編成 버튼과 대응. 글자는 Status.Info. -->
+    <SolidColorBrush x:Key="Info.Face"       Color="#E3F1FA" po:Freeze="True"/>
+    <SolidColorBrush x:Key="Info.Line"       Color="#8FC4E8" po:Freeze="True"/>
+
+    <!--
+      캐릭터 이미지 위에 얹는 반투명 스크림(#AARRGGBB). 게임의 LV 알약·상단 칩처럼
+      일러스트 위에 놓이므로 크림 테마에서도 어두운 채로 둡니다.
+    -->
+    <SolidColorBrush x:Key="Overlay.Scrim"   Color="#D70B1118" po:Freeze="True"/>
+    <SolidColorBrush x:Key="Overlay.Special" Color="#D7513E67" po:Freeze="True"/>
+    <SolidColorBrush x:Key="Overlay.Gold"    Color="#E6A66B16" po:Freeze="True"/>
+
+    <!-- ── 반경 / 간격 ────────────────────────────────────────── -->
+    <CornerRadius x:Key="Radius.Panel">12</CornerRadius>
+    <CornerRadius x:Key="Radius.Card">10</CornerRadius>
+    <CornerRadius x:Key="Radius.Button">7</CornerRadius>
+    <CornerRadius x:Key="Radius.Pill">999</CornerRadius>
+
+</ResourceDictionary>

@@ -1,3 +1,4 @@
+using KotodamanWordFinder.Themes;
 using System.Globalization;
 using System.Text;
 using System.Windows;
@@ -103,7 +104,7 @@ public partial class LetterStateEditorWindow : Window
         StateNoteTextBox.Text = state.Note;
         UpdateStateButton.IsEnabled = true;
         StateStatusText.Text = $"'{state.Name}' 상태를 편집 중입니다.";
-        StateStatusText.Foreground = BrushFromHex("#B8EAF5");
+        StateStatusText.Foreground = Theme.BlueText;
     }
 
     private void ClearEditor()
@@ -120,7 +121,7 @@ public partial class LetterStateEditorWindow : Window
         UpdateStateButton.IsEnabled = false;
         StateNameTextBox.Focus();
         StateStatusText.Text = "새 문자 상태의 이름과 문자를 입력하세요.";
-        StateStatusText.Foreground = BrushFromHex("#AEB8C8");
+        StateStatusText.Foreground = Theme.TextSecondary;
     }
 
     private void NewStateButton_Click(object sender, RoutedEventArgs e)
@@ -159,7 +160,7 @@ public partial class LetterStateEditorWindow : Window
         RefreshStateList(state.Id);
         BeginEditing(state.Id);
         StateStatusText.Text = $"'{state.Name}' 상태를 추가했습니다.";
-        StateStatusText.Foreground = BrushFromHex("#8FE3B1");
+        StateStatusText.Foreground = Theme.LevelNumber;
     }
 
     private void UpdateStateButton_Click(object sender, RoutedEventArgs e)
@@ -197,7 +198,7 @@ public partial class LetterStateEditorWindow : Window
         RefreshStateList(state.Id);
         BeginEditing(state.Id);
         StateStatusText.Text = $"'{state.Name}' 상태를 수정했습니다.";
-        StateStatusText.Foreground = BrushFromHex("#8FE3B1");
+        StateStatusText.Foreground = Theme.LevelNumber;
     }
 
     private void DeleteStateButton_Click(object sender, RoutedEventArgs e)
@@ -223,7 +224,7 @@ public partial class LetterStateEditorWindow : Window
         ClearEditor();
         RefreshStateList();
         StateStatusText.Text = $"'{state.Name}' 상태를 삭제했습니다.";
-        StateStatusText.Foreground = BrushFromHex("#FFD08A");
+        StateStatusText.Foreground = Theme.Warn;
     }
 
     private void SaveButton_Click(object sender, RoutedEventArgs e)
@@ -402,11 +403,9 @@ public partial class LetterStateEditorWindow : Window
     private void SetError(string message)
     {
         StateStatusText.Text = message;
-        StateStatusText.Foreground = BrushFromHex("#FF9E9E");
+        StateStatusText.Foreground = Theme.Error;
     }
 
-    private static SolidColorBrush BrushFromHex(string hex)
-        => new((Color)ColorConverter.ConvertFromString(hex));
 
     public sealed class StateDisplayItem
     {
