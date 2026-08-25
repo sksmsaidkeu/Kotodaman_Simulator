@@ -514,7 +514,7 @@ public partial class MainWindow : Window
             var buttons = new WrapPanel();
             foreach (string letter in row.Letters)
             {
-                buttons.Children.Add(CreateKanaButton(letter, letter, 42));
+                buttons.Children.Add(CreateKanaButton(letter, letter, 38));
             }
 
             rowsPanel.Children.Add(CreateKanaRowCard(row.Label, buttons));
@@ -556,18 +556,16 @@ public partial class MainWindow : Window
         {
             Content = label,
             Width = width,
-            Height = 38,
             Margin = new Thickness(3),
             FontSize = value is null ? 12 : 18,
-            FontWeight = FontWeights.SemiBold,
-            Foreground = Theme.TextPrimary,
-            Background = value is null
-                ? Theme.RoseFace
-                : Theme.Ivory,
-            BorderBrush = Theme.LineStrong,
-            BorderThickness = new Thickness(1),
-            Cursor = Cursors.Hand
+            Style = (Style)Application.Current.Resources["KanaChipStyle"]
         };
+
+        // 빈칸은 글자가 아니라 동작이라 포개색 면으로 구분한다.
+        if (value is null)
+        {
+            button.Background = Theme.RoseFace;
+        }
 
         button.Click += (_, _) => SetActiveBoardCell(value, advance: true);
         return button;

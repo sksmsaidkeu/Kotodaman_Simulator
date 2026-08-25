@@ -49,7 +49,7 @@
                             <Trigger Property="IsMouseOver" Value="True">
                                 <Setter TargetName="ButtonBorder" Property="Background" Value="{StaticResource Bg.Ivory}"/>
                                 <Setter TargetName="ButtonBorder" Property="BorderBrush" Value="{StaticResource Accent.Focus}"/>
-                                <Setter Property="Foreground" Value="{StaticResource Text.OnAccent}"/>
+                                <Setter Property="Foreground" Value="{StaticResource Text.Primary}"/>
                             </Trigger>
                             <Trigger Property="IsPressed" Value="True">
                                 <Setter TargetName="ButtonBorder" Property="Background" Value="{StaticResource Accent.OrangeDeep}"/>
@@ -301,7 +301,7 @@
                             <Trigger Property="IsHighlighted" Value="True">
                                 <Setter TargetName="ItemBorder" Property="Background" Value="{StaticResource Bg.Ivory}"/>
                                 <Setter TargetName="ItemBorder" Property="BorderBrush" Value="{StaticResource Info.Line}"/>
-                                <Setter Property="Foreground" Value="{StaticResource Text.OnAccent}"/>
+                                <Setter Property="Foreground" Value="{StaticResource Text.Primary}"/>
                             </Trigger>
                             <Trigger Property="IsSelected" Value="True">
                                 <Setter TargetName="ItemBorder" Property="Background" Value="{StaticResource Accent.OrangeDeep}"/>
