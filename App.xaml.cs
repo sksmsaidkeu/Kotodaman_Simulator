@@ -162,7 +162,29 @@ public partial class App : Application
                 return;
             }
 
-            AppLog.Info($"앱 업데이트 발견 · {updateInfo.TargetFullRelease.Version} · 다운로드를 시작합니다.");
+            string newVersion = updateInfo.TargetFullRelease.Version.ToString();
+            AppLog.Info($"앱 업데이트 발견 · {newVersion} · 적용할지 사용자에게 묻습니다.");
+
+            // 받기 전에 묻는다. 델타를 받아 적용하는 데 1분쯤 걸리는데(실측 49초), 다 받고 나서
+            // 물으면 이미 그 시간을 뺏은 뒤라 묻는 의미가 없다.
+            MessageBoxResult answer = Application.Current.Dispatcher.Invoke(() =>
+                MessageBox.Show(
+                    Application.Current.MainWindow,
+                    $"새 버전 {newVersion} 이(가) 있습니다. 지금 업데이트할까요?\n\n" +
+                    $"현재 버전은 {AppPaths.AppVersion} 입니다.\n\n" +
+                    "받는 데 1분쯤 걸리고, 끝나면 프로그램이 저절로 다시 시작합니다.\n" +
+                    "'아니오'를 고르면 이번에는 그냥 넘어가고, 다음에 켤 때 다시 물어봅니다.",
+                    "업데이트가 있습니다",
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Question));
+
+            if (answer != MessageBoxResult.Yes)
+            {
+                AppLog.Info($"사용자가 업데이트를 미뤘습니다 · {newVersion}");
+                return;
+            }
+
+            AppLog.Info($"앱 업데이트 다운로드를 시작합니다 · {newVersion}");
             await manager.DownloadUpdatesAsync(updateInfo);
             AppLog.Info("앱 업데이트 다운로드 완료 · 정상 종료 후 적용합니다.");
 
