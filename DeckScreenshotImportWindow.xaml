@@ -288,7 +288,7 @@
                         </StackPanel>
                         <TextBlock Grid.Column="1"
                                    VerticalAlignment="Center"
-                                   Foreground="{StaticResource Gold.Text}"
+                                   Foreground="{StaticResource Alert.Text}"
                                    FontSize="11"
                                    Text="1번 슬롯 = 리더"/>
                     </Grid>

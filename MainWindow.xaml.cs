@@ -710,12 +710,13 @@ public partial class MainWindow : Window
             Button button = _boardButtons[index];
             button.Content = _boardCells[index] ?? "□";
 
+            // 선택 = 주황. 게임과 같은 언어다(PRD_UI §2 P2).
             bool isActive = index == _activeBoardIndex;
             button.BorderBrush = isActive
-                ? Theme.Focus
+                ? Theme.OrangeDeep
                 : Theme.Line;
             button.Background = isActive
-                ? Theme.PanelInner
+                ? Theme.Orange
                 : Theme.PanelInner;
         }
 
@@ -1097,8 +1098,8 @@ public partial class MainWindow : Window
                 };
                 titlePanel.Children.Add(new Border
                 {
-                    Background = index == 0 ? Theme.GoldFace : Theme.PanelInner,
-                    BorderBrush = index == 0 ? Theme.GoldLine : Theme.InfoLine,
+                    Background = index == 0 ? Theme.AlertFace : Theme.PanelInner,
+                    BorderBrush = index == 0 ? Theme.AlertLine : Theme.InfoLine,
                     BorderThickness = new Thickness(1),
                     CornerRadius = new CornerRadius(5),
                     Padding = new Thickness(5, 1, 5, 1),
@@ -2327,7 +2328,7 @@ public partial class MainWindow : Window
         if (leader is null)
         {
             MiracleLeaderStatusText.Text = "현재 덱에 리더가 없습니다.";
-            MiracleLeaderStatusText.Foreground = Theme.GoldText;
+            MiracleLeaderStatusText.Foreground = Theme.AlertText;
             MiracleLeaderStatusText.ToolTip = null;
             return;
         }
@@ -2534,7 +2535,7 @@ public partial class MainWindow : Window
             panel.Children.Add(new TextBlock
             {
                 Text = $"현재 조건에서 만들 수 있는 {group.WordLength}글자 단어가 없습니다. 다른 글자 수를 선택해 보세요.",
-                Foreground = Theme.GoldText,
+                Foreground = Theme.AlertText,
                 TextWrapping = TextWrapping.Wrap,
                 Margin = new Thickness(2, 4, 2, 4)
             });
@@ -2818,8 +2819,8 @@ public partial class MainWindow : Window
             hasCompleteComboData
                 ? $"예상 {result.ComboCount}콤보"
                 : $"임시 {result.ComboCount}콤보",
-            hasCompleteComboData ? Theme.SuccessFace : Theme.GoldFace,
-            hasCompleteComboData ? Theme.SuccessLine : Theme.GoldLine,
+            hasCompleteComboData ? Theme.SuccessFace : Theme.AlertFace,
+            hasCompleteComboData ? Theme.SuccessLine : Theme.AlertLine,
             featured));
 
         if (showFirstTurnProbability && result.FirstTurnCombinationCount > 0)
@@ -2866,7 +2867,7 @@ public partial class MainWindow : Window
                 : $"현재 계산 · 4글자 이상 {longWords}  (2~3글자 데이터 수집 후 정확한 콤보 표시)",
             Foreground = hasCompleteComboData
                 ? Theme.Success
-                : Theme.GoldText,
+                : Theme.AlertText,
             FontSize = featured ? 12 : 11,
             Margin = new Thickness(0, 0, 0, 7),
             TextWrapping = TextWrapping.Wrap
@@ -2928,8 +2929,8 @@ public partial class MainWindow : Window
 
             stack.Children.Add(new Border
             {
-                Background = Theme.GoldFace,
-                BorderBrush = Theme.GoldLine,
+                Background = Theme.AlertFace,
+                BorderBrush = Theme.AlertLine,
                 BorderThickness = new Thickness(1),
                 CornerRadius = new CornerRadius(7),
                 Padding = new Thickness(9, 6, 9, 6),

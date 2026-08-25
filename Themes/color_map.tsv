@@ -33,11 +33,11 @@
 #5A4F66	Line.Tan	보라 뱃지 테두리(계열 정체성은 면이 담당)
 #526176	Line.Soft	흐린 구분선
 #4B6578	Line.Soft	흐린 구분선
-#493D24	Gold.Face	⚠ 글자 상태 배너 면
-#4A4025	Gold.Face	리더 뱃지 면
-#C9A44C	Gold.Line	⚠ 배너 테두리
-#C8A84B	Gold.Line	리더 뱃지 테두리
-#E0C978	Gold.Text	⚠ 배너 글자
+#493D24	Alert.Face	⚠ 글자 상태 배너 면
+#4A4025	Alert.Face	리더 뱃지 면
+#C9A44C	Alert.Line	⚠ 배너 테두리
+#C8A84B	Alert.Line	리더 뱃지 테두리
+#E0C978	Alert.Text	⚠ 배너 글자
 #FFE099	Status.Warn	주의 텍스트
 #FFE3A3	Status.Warn	주의 텍스트
 #FFD166	Status.Warn	주의 텍스트/테두리
@@ -153,7 +153,7 @@
 #435470	Line.TanStrong
 #43C6D9	Accent.Focus
 #49657A	Line.Soft
-#4A3B1E	Gold.Face
+#4A3B1E	Alert.Face
 #4A7892	Line.Soft
 #4AAE9C	Success.Line
 #4C6C83	Line.Soft
@@ -189,7 +189,7 @@
 #CDB7FF	Status.Special
 #CFE7D7	Status.Success
 #D6E7F2	Text.Primary
-#D8B978	Gold.Text
+#D8B978	Alert.Text
 #DCE7F3	Text.Primary
 #DCE8F0	Text.Primary
 #E5FFF9	Status.Success
@@ -199,5 +199,5 @@
 #EAF7FB	Text.Primary
 #FF7FA6	Rose.Text
 #FF9DB8	Rose.Text
-#FFE6A8	Gold.Text
-#FFF3C4	Gold.Text
+#FFE6A8	Alert.Text
+#FFF3C4	Alert.Text

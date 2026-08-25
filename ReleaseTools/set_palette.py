@@ -26,14 +26,14 @@ DARK = {
     "Accent.BlueFace":"#243240", "Accent.BlueLine":"#3E5A70", "Accent.BlueText":"#B8EAF5",
     "Accent.Focus":"#66D9EF",
     "Chip.Dark":"#222A37", "Level.Navy":"#1D2430", "Level.Number":"#8FE3B1",
-    "Status.Success":"#8FE3B1", "Status.Info":"#B8EAF5", "Status.Warn":"#FFD08A",
+    "Status.Success":"#8FE3B1", "Status.Info":"#B8EAF5", "Status.Warn":"#FFC2B0",
     "Status.Error":"#FF9E9E", "Status.Special":"#D9C2FF",
-    "Gold.Face":"#493D24", "Gold.Line":"#C9A44C", "Gold.Text":"#E0C978",
+    "Alert.Face":"#4A2622", "Alert.Line":"#C9564C", "Alert.Text":"#FFB3A8",
     "Rose.Face":"#4A2932", "Rose.Line":"#75404D", "Rose.Text":"#FFD8DF",
     "Special.Face":"#392E52", "Special.Line":"#9A7BD4",
     "Success.Face":"#203B35", "Success.Line":"#4E9B82",
     "Info.Face":"#1E3040", "Info.Line":"#3B7892",
-    "Overlay.Scrim":"#D70B1118", "Overlay.Special":"#D7513E67", "Overlay.Gold":"#E6A66B16",
+    "Overlay.Scrim":"#D70B1118", "Overlay.Special":"#D7513E67", "Overlay.Alert":"#E69E2A1E",
 }
 
 CREAM = {
@@ -56,15 +56,15 @@ CREAM = {
     "Accent.Focus":"#2E7D91",
     # LV 알약은 게임에서도 다크라 그대로 둔다.
     "Chip.Dark":"#DFD8C8", "Level.Navy":"#2B3A4C", "Level.Number":"#7BE39A",
-    "Status.Success":"#17663E", "Status.Info":"#1E5F8A", "Status.Warn":"#8A5A00",
+    "Status.Success":"#17663E", "Status.Info":"#1E5F8A", "Status.Warn":"#C0392B",
     "Status.Error":"#B32218", "Status.Special":"#5B3FA8",
     # 골드 선은 결정에 따라 #C9A44C 유지, 글자만 딥앰버로 반전.
-    "Gold.Face":"#FBF0DC", "Gold.Line":"#C9A44C", "Gold.Text":"#8A5A00",
+    "Alert.Face":"#FCEBE9", "Alert.Line":"#D4574A", "Alert.Text":"#A82B1E",
     "Rose.Face":"#FCEDF5", "Rose.Line":"#FFB0CE", "Rose.Text":"#B03A6E",
     "Special.Face":"#F0E9FA", "Special.Line":"#B49AE0",
     "Success.Face":"#E4F3EC", "Success.Line":"#6FB894",
     "Info.Face":"#E3F1FA",  "Info.Line":"#8FC4E8",
-    "Overlay.Scrim":"#D70B1118", "Overlay.Special":"#D7513E67", "Overlay.Gold":"#E6A66B16",
+    "Overlay.Scrim":"#D70B1118", "Overlay.Special":"#D7513E67", "Overlay.Alert":"#E69E2A1E",
 }
 
 PALETTES = {"dark": DARK, "cream": CREAM}

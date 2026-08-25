@@ -551,8 +551,8 @@
                                     <Setter Property="Foreground" Value="{StaticResource Text.Primary}"/>
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding NeedsReview}" Value="True">
-                                            <Setter Property="Background" Value="{StaticResource Gold.Face}"/>
-                                            <Setter Property="Foreground" Value="{StaticResource Gold.Text}"/>
+                                            <Setter Property="Background" Value="{StaticResource Alert.Face}"/>
+                                            <Setter Property="Foreground" Value="{StaticResource Alert.Text}"/>
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>

@@ -65,11 +65,14 @@
             </Setter>
         </Style>
 
+        <!-- P2 스타디움 pill 탭. 선택 = 주황 면, 미선택 = 흰 면 + 탠 테두리. -->
         <Style x:Key="GeneralLengthToggleStyle" TargetType="ToggleButton">
-            <Setter Property="Foreground" Value="{StaticResource Text.Primary}"/>
-            <Setter Property="Background" Value="{StaticResource Accent.BlueFace}"/>
-            <Setter Property="BorderBrush" Value="{StaticResource Accent.BlueLine}"/>
+            <Setter Property="Foreground" Value="{StaticResource Text.Secondary}"/>
+            <Setter Property="Background" Value="{StaticResource Bg.Field}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource Line.Tan}"/>
             <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Height" Value="34"/>
+            <Setter Property="Padding" Value="20,0"/>
             <Setter Property="Cursor" Value="Hand"/>
             <Setter Property="Template">
                 <Setter.Value>
@@ -79,17 +82,17 @@
                                 BorderBrush="{TemplateBinding BorderBrush}"
                                 BorderThickness="{TemplateBinding BorderThickness}"
                                 Padding="{TemplateBinding Padding}"
-                                CornerRadius="7">
+                                CornerRadius="{StaticResource Radius.Pill}">
                             <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="ToggleBorder" Property="BorderBrush" Value="{StaticResource Accent.Focus}"/>
+                                <Setter TargetName="ToggleBorder" Property="BorderBrush" Value="{StaticResource Line.TanStrong}"/>
                                 <Setter TargetName="ToggleBorder" Property="Background" Value="{StaticResource Bg.Ivory}"/>
                             </Trigger>
                             <Trigger Property="IsChecked" Value="True">
                                 <Setter TargetName="ToggleBorder" Property="Background" Value="{StaticResource Accent.Orange}"/>
-                                <Setter TargetName="ToggleBorder" Property="BorderBrush" Value="{StaticResource Accent.Focus}"/>
+                                <Setter TargetName="ToggleBorder" Property="BorderBrush" Value="{StaticResource Accent.OrangeDeep}"/>
                                 <Setter Property="Foreground" Value="{StaticResource Text.Primary}"/>
                                 <Setter Property="FontWeight" Value="SemiBold"/>
                             </Trigger>
@@ -525,28 +528,24 @@
                                           Tag="7"
                                           IsChecked="True"
                                           Margin="0,0,8,6"
-                                          Padding="12,7"
                                           Style="{StaticResource GeneralLengthToggleStyle}"
                                           Click="GeneralSuggestionLengthToggle_Click"/>
                             <ToggleButton x:Name="GeneralLength6Toggle"
                                           Content="6글자"
                                           Tag="6"
                                           Margin="0,0,8,6"
-                                          Padding="12,7"
                                           Style="{StaticResource GeneralLengthToggleStyle}"
                                           Click="GeneralSuggestionLengthToggle_Click"/>
                             <ToggleButton x:Name="GeneralLength5Toggle"
                                           Content="5글자"
                                           Tag="5"
                                           Margin="0,0,8,6"
-                                          Padding="12,7"
                                           Style="{StaticResource GeneralLengthToggleStyle}"
                                           Click="GeneralSuggestionLengthToggle_Click"/>
                             <ToggleButton x:Name="GeneralLength4Toggle"
                                           Content="4글자"
                                           Tag="4"
                                           Margin="0,0,0,6"
-                                          Padding="12,7"
                                           Style="{StaticResource GeneralLengthToggleStyle}"
                                           Click="GeneralSuggestionLengthToggle_Click"/>
                         </WrapPanel>

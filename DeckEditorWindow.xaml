@@ -626,7 +626,7 @@
                                                         VerticalAlignment="Bottom"
                                                         Margin="3"
                                                         Padding="5,2"
-                                                        Background="{StaticResource Overlay.Gold}"
+                                                        Background="{StaticResource Overlay.Alert}"
                                                         BorderBrush="{StaticResource Status.Warn}"
                                                         BorderThickness="1"
                                                         CornerRadius="4">
@@ -641,7 +641,7 @@
                                                         </Style>
                                                     </Border.Style>
                                                     <TextBlock Text="선택됨"
-                                                               Foreground="{StaticResource Gold.Text}"
+                                                               Foreground="{StaticResource Alert.Text}"
                                                                FontSize="9"
                                                                FontWeight="Bold"/>
                                                 </Border>

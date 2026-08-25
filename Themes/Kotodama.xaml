@@ -54,7 +54,7 @@
     <!-- ── 상태색: 글자색 전용. 면을 채우지 않습니다. ──────────── -->
     <SolidColorBrush x:Key="Status.Success"  Color="#17663E" po:Freeze="True"/>
     <SolidColorBrush x:Key="Status.Info"     Color="#1E5F8A" po:Freeze="True"/>
-    <SolidColorBrush x:Key="Status.Warn"     Color="#8A5A00" po:Freeze="True"/>
+    <SolidColorBrush x:Key="Status.Warn"     Color="#C0392B" po:Freeze="True"/>
     <SolidColorBrush x:Key="Status.Error"    Color="#B32218" po:Freeze="True"/>
     <SolidColorBrush x:Key="Status.Special"  Color="#5B3FA8" po:Freeze="True"/>
 
@@ -67,10 +67,10 @@
       섞이면 ⚠/✨/◆/안내 구분이 사라진다. 계열 안에서만 스냅할 것.
       계열별 대응 근거는 PRD_UI.md §3, 매핑은 Themes/color_map.tsv.
     -->
-    <!-- 골드 = 경고. 게임의 '선택됨' 주황(Accent.Orange)과 뜻이 다르므로 분리한다. -->
-    <SolidColorBrush x:Key="Gold.Face"       Color="#FBF0DC" po:Freeze="True"/>
-    <SolidColorBrush x:Key="Gold.Line"       Color="#C9A44C" po:Freeze="True"/>
-    <SolidColorBrush x:Key="Gold.Text"       Color="#8A5A00" po:Freeze="True"/>
+    <!-- 빨강 = 경고. 게임의 '선택됨' 주황(Accent.Orange)은 선택 전용이라 경고와 색을 나눈다. -->
+    <SolidColorBrush x:Key="Alert.Face"       Color="#FCEBE9" po:Freeze="True"/>
+    <SolidColorBrush x:Key="Alert.Line"       Color="#D4574A" po:Freeze="True"/>
+    <SolidColorBrush x:Key="Alert.Text"       Color="#A82B1E" po:Freeze="True"/>
 
     <!-- 자주 = 제거·강조. 게임 リーダー/発動可 뱃지와 같은 구조(명암 반전). -->
     <SolidColorBrush x:Key="Rose.Face"       Color="#FCEDF5" po:Freeze="True"/>
@@ -95,7 +95,7 @@
     -->
     <SolidColorBrush x:Key="Overlay.Scrim"   Color="#D70B1118" po:Freeze="True"/>
     <SolidColorBrush x:Key="Overlay.Special" Color="#D7513E67" po:Freeze="True"/>
-    <SolidColorBrush x:Key="Overlay.Gold"    Color="#E6A66B16" po:Freeze="True"/>
+    <SolidColorBrush x:Key="Overlay.Alert"    Color="#E69E2A1E" po:Freeze="True"/>
 
     <!-- ── 반경 / 간격 ────────────────────────────────────────── -->
     <CornerRadius x:Key="Radius.Panel">12</CornerRadius>

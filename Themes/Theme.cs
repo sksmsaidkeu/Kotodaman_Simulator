@@ -56,9 +56,9 @@ internal static class Theme
     public static SolidColorBrush TextTertiary => B("Text.Tertiary");
     public static SolidColorBrush LineSoft     => B("Line.Soft");
 
-    public static SolidColorBrush GoldFace     => B("Gold.Face");
-    public static SolidColorBrush GoldLine     => B("Gold.Line");
-    public static SolidColorBrush GoldText     => B("Gold.Text");
+    public static SolidColorBrush AlertFace     => B("Alert.Face");
+    public static SolidColorBrush AlertLine     => B("Alert.Line");
+    public static SolidColorBrush AlertText     => B("Alert.Text");
 
     public static SolidColorBrush RoseFace     => B("Rose.Face");
     public static SolidColorBrush RoseLine     => B("Rose.Line");
@@ -75,7 +75,7 @@ internal static class Theme
 
     public static SolidColorBrush OverlayScrim   => B("Overlay.Scrim");
     public static SolidColorBrush OverlaySpecial => B("Overlay.Special");
-    public static SolidColorBrush OverlayGold    => B("Overlay.Gold");
+    public static SolidColorBrush OverlayAlert    => B("Overlay.Alert");
 
     /// <summary>
     /// 면 색이 실행 중에 정해지는 자리(결과 뱃지 등)의 글자색을 고른다.
