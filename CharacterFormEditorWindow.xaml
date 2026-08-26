@@ -212,7 +212,7 @@
                             </StackPanel>
                         </Grid>
 
-                        <Button x:Name="ApplyFormButton" Content="현재 형태 반영" Margin="0,18,0,0" HorizontalAlignment="Left" Background="{StaticResource Accent.Pink}" BorderBrush="{StaticResource Accent.Pink}" Click="ApplyFormButton_Click"/>
+                        <Button x:Name="ApplyFormButton" Content="현재 형태 반영" Margin="0,18,0,0" HorizontalAlignment="Left" Background="{StaticResource Accent.Pink}" BorderBrush="{StaticResource Accent.Pink}" Foreground="{StaticResource Text.OnAccent}" Click="ApplyFormButton_Click"/>
                         <TextBlock x:Name="EditorStatusText" Margin="0,10,0,0" Foreground="{StaticResource Text.Secondary}" TextWrapping="Wrap"/>
                     </StackPanel>
                 </ScrollViewer>
@@ -226,8 +226,8 @@
             </Grid.ColumnDefinitions>
             <TextBlock Foreground="{StaticResource Text.Secondary}" VerticalAlignment="Center" Text="저장하면 손패에서 형태별 이미지와 문자를 선택할 수 있습니다."/>
             <WrapPanel Grid.Column="1">
-                <Button Content="취소" Margin="0,0,8,0" Click="CancelButton_Click"/>
-                <Button Content="저장하고 닫기" Background="{StaticResource Accent.Pink}" BorderBrush="{StaticResource Accent.Pink}" Foreground="{StaticResource Text.OnAccent}" FontWeight="SemiBold" Click="SaveButton_Click"/>
+                <Button Content="취소" Margin="0,0,10,0" Style="{StaticResource GhostButtonStyle}" Click="CancelButton_Click"/>
+                <Button Content="저장하고 닫기" Style="{StaticResource ActionButtonStyle}" Click="SaveButton_Click"/>
             </WrapPanel>
         </Grid>
     </Grid>

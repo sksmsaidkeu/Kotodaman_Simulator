@@ -324,4 +324,134 @@
         </Setter>
     </Style>
 
+    <!--
+      P5 하단 액션 버튼. 게임 img3 의 ひとりで, img2 의 編成 버튼입니다.
+      원본을 재보면 폭 605 x 높이 152 (1080 폭 기준), 즉 가로세로비 4 에 가까운
+      완전한 스타디움이고 면은 아이보리, 글자는 짙고 굵습니다. 앱은 다이얼로그
+      하단이라 높이를 44 로 잡고 그 비율(44 x 4 = 176)을 MinWidth 로 옮겼습니다.
+
+      Radius.Pill(999)이 아니라 22 를 직접 적은 이유는 StatusChipStyle 과 같습니다 -
+      WPF Border 는 큰 반경을 가로/세로 각각 절반으로 잘라 타원 호를 그려서, 납작한
+      버튼에서는 스타디움이 아니라 눈알이 됩니다. 높이를 고정해야 반경이 정확합니다.
+
+      아이보리 면은 창 바탕(Bg.Backdrop)과 1.21 이라 면만으로는 버튼이 안 보입니다.
+      버튼을 세우는 건 Line.TanStrong 2px 테두리(바탕과 1.56)와 그림자입니다.
+      게임 원본도 같은 구조로 배경에서 떠 있습니다.
+
+      옆에 취소가 있는 것이 게임과 다른 점입니다. 아이보리는 순한 색이라 색만으로는
+      취소를 못 이기므로 위계를 크기/굵기/무게로 세웁니다 - 이쪽은 H44 Bold 14 에
+      2px 테두리와 그림자, 취소(GhostButtonStyle)는 H34 보통 13 에 1px 테두리와
+      투명 면입니다.
+    -->
+    <Style x:Key="ActionButtonStyle" TargetType="Button">
+        <Setter Property="Height" Value="44"/>
+        <Setter Property="MinWidth" Value="176"/>
+        <Setter Property="Padding" Value="26,0"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="Background" Value="{StaticResource Bg.Ivory}"/>
+        <Setter Property="Foreground" Value="{StaticResource Text.Primary}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource Line.TanStrong}"/>
+        <Setter Property="BorderThickness" Value="2"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="ActionFace"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="22"
+                            Padding="{TemplateBinding Padding}">
+                        <Border.Effect>
+                            <DropShadowEffect BlurRadius="8" ShadowDepth="2" Direction="270" Opacity="0.22"/>
+                        </Border.Effect>
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <!--
+                      커스텀 템플릿은 기본 트리거를 지우므로 네 상태를 직접 넣습니다.
+                      뒤에 오는 트리거가 이기므로 비활성이 마지막입니다.
+                      면이 바뀌어도 Text.Primary 가 계속 읽힙니다(호버 10.8, 눌림 5.4).
+                    -->
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsKeyboardFocused" Value="True">
+                            <Setter TargetName="ActionFace" Property="BorderBrush" Value="{StaticResource Accent.Focus}"/>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="ActionFace" Property="Background" Value="{StaticResource Bg.Field}"/>
+                            <Setter TargetName="ActionFace" Property="BorderBrush" Value="{StaticResource Accent.OrangeDeep}"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="ActionFace" Property="Background" Value="{StaticResource Accent.Orange}"/>
+                            <Setter TargetName="ActionFace" Property="BorderBrush" Value="{StaticResource Accent.OrangeDeep}"/>
+                        </Trigger>
+                        <!-- 비활성은 그림자를 걷어 평평하게 만듭니다. 떠 있음 = 누를 수 있음. -->
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="ActionFace" Property="Effect" Value="{x:Null}"/>
+                            <Setter TargetName="ActionFace" Property="BorderBrush" Value="{StaticResource Line.Tan}"/>
+                            <Setter Property="Foreground" Value="{StaticResource Text.Tertiary}"/>
+                            <Setter Property="Cursor" Value="Arrow"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--
+      하단 액션 옆의 취소/닫기. 주 액션과 한 벌이라 같은 파일에 둡니다 -
+      한쪽만 고치면 위계가 무너지므로 두 스타일을 붙여 놓습니다.
+
+      투명 면인 이유: 면을 채우면 아이보리 주 액션과 면적 싸움이 붙습니다.
+      테두리가 Line.Tan 이 아니라 Line.TanStrong 인 건 창 바탕과의 대비 때문입니다
+      (Line.Tan 은 1.35 라 바탕에 녹습니다).
+    -->
+    <Style x:Key="GhostButtonStyle" TargetType="Button">
+        <Setter Property="Height" Value="34"/>
+        <Setter Property="MinWidth" Value="96"/>
+        <Setter Property="Padding" Value="18,0"/>
+        <Setter Property="FontSize" Value="13"/>
+        <Setter Property="FontWeight" Value="Normal"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Foreground" Value="{StaticResource Text.Primary}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource Line.TanStrong}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="GhostFace"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="17"
+                            Padding="{TemplateBinding Padding}">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsKeyboardFocused" Value="True">
+                            <Setter TargetName="GhostFace" Property="BorderBrush" Value="{StaticResource Accent.Focus}"/>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="GhostFace" Property="Background" Value="{StaticResource Bg.Ivory}"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="GhostFace" Property="Background" Value="{StaticResource Bg.PanelInner}"/>
+                        </Trigger>
+                        <!--
+                          채울 면이 없으니 비활성은 글자만 흐려집니다. 테두리까지 Line.Tan 으로
+                          내리면 창 바탕과 1.35 가 되어 버튼 자리 자체가 사라집니다.
+                        -->
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Foreground" Value="{StaticResource Text.Tertiary}"/>
+                            <Setter Property="Cursor" Value="Arrow"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
 </ResourceDictionary>

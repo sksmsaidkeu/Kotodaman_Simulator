@@ -23,10 +23,6 @@
             <Setter Property="FontWeight" Value="SemiBold"/>
             <Setter Property="Cursor" Value="Hand"/>
         </Style>
-        <Style x:Key="PrimaryButtonStyle" TargetType="Button" BasedOn="{StaticResource EditorButtonStyle}">
-            <Setter Property="Background" Value="{StaticResource Accent.Pink}"/>
-            <Setter Property="BorderBrush" Value="{StaticResource Accent.Pink}"/>
-        </Style>
         <Style TargetType="TextBox">
             <Setter Property="Background" Value="{StaticResource Bg.PanelInner}"/>
             <Setter Property="Foreground" Value="{StaticResource Text.Primary}"/>
@@ -559,13 +555,11 @@
                        Text="표에서 직접 수정하거나 체크 후 위의 일괄 변경을 사용하세요."/>
             <StackPanel Grid.Column="1" Orientation="Horizontal">
                 <Button Content="취소"
-                        Width="90"
-                        Margin="0,0,8,0"
-                        Style="{StaticResource EditorButtonStyle}"
+                        Margin="0,0,10,0"
+                        Style="{StaticResource GhostButtonStyle}"
                         Click="CancelButton_Click"/>
                 <Button Content="변경 내용 적용"
-                        Width="140"
-                        Style="{StaticResource PrimaryButtonStyle}"
+                        Style="{StaticResource ActionButtonStyle}"
                         Click="SaveButton_Click"/>
             </StackPanel>
         </Grid>

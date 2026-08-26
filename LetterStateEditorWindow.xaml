@@ -26,6 +26,8 @@
         <Style x:Key="PrimaryButtonStyle" TargetType="Button" BasedOn="{StaticResource EditorButtonStyle}">
             <Setter Property="Background" Value="{StaticResource Accent.Pink}"/>
             <Setter Property="BorderBrush" Value="{StaticResource Accent.Pink}"/>
+            <!-- 글자를 안 적으면 EditorButtonStyle 의 Text.Primary 가 남아 대비 2.02 가 된다. -->
+            <Setter Property="Foreground" Value="{StaticResource Text.OnAccent}"/>
         </Style>
         <Style x:Key="DangerButtonStyle" TargetType="Button" BasedOn="{StaticResource EditorButtonStyle}">
             <Setter Property="Background" Value="{StaticResource Rose.Face}"/>
@@ -436,11 +438,11 @@
                        Text="기본 상태는 항상 존재하므로 이 목록에는 표시되지 않습니다."/>
             <WrapPanel Grid.Column="1">
                 <Button Content="취소"
-                        Margin="0,0,8,0"
-                        Style="{StaticResource EditorButtonStyle}"
+                        Margin="0,0,10,0"
+                        Style="{StaticResource GhostButtonStyle}"
                         IsCancel="True"/>
                 <Button Content="저장하고 돌아가기"
-                        Style="{StaticResource PrimaryButtonStyle}"
+                        Style="{StaticResource ActionButtonStyle}"
                         IsDefault="True"
                         Click="SaveButton_Click"/>
             </WrapPanel>

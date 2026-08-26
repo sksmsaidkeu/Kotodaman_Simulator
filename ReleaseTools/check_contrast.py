@@ -59,6 +59,12 @@ PAIRS = [
     ("Line.TanStrong", "Bg.Backdrop",    1.5, "상태 칩 테두리 · 창 바탕"),
     ("Status.Info",    "Info.Face",      4.5, "상태 칩 · 업데이트 진행"),
     ("Alert.Text",     "Alert.Face",     4.5, "상태 칩 · 업데이트 실패"),
+    # P5 하단 액션 버튼. 아이보리 면은 창 바탕과 1.21 이라 버튼을 세우는 건
+    # 위의 Line.TanStrong/Bg.Backdrop 줄이다. 여기는 상태별 면/글자 짝을 본다.
+    # (호버 면 Bg.Field / 눌림 면 Accent.Orange 는 위에 이미 있다)
+    ("Text.Tertiary",  "Bg.Ivory",       3.0, "액션 버튼 · 비활성 글자"),
+    ("Line.Tan",       "Bg.Ivory",       1.5, "액션 버튼 · 비활성 테두리"),
+    ("Text.Tertiary",  "Bg.Backdrop",    3.0, "취소 버튼 · 비활성 글자"),
 ]
 
 

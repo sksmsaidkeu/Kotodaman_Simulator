@@ -791,13 +791,13 @@
             <Button Grid.Column="1"
                     Margin="10,0,0,0"
                     Content="취소"
-                    Style="{StaticResource ImportButtonStyle}"
+                    Style="{StaticResource GhostButtonStyle}"
                     Click="CancelButton_Click"/>
             <Button x:Name="ApplyButton"
                     Grid.Column="2"
                     Margin="10,0,0,0"
                     Content="상세 편집으로 가져오기"
-                    Style="{StaticResource PrimaryImportButtonStyle}"
+                    Style="{StaticResource ActionButtonStyle}"
                     IsEnabled="False"
                     Click="ApplyButton_Click"/>
         </Grid>

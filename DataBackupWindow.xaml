@@ -167,6 +167,7 @@
                         Content="선택 백업 복원"
                         Background="{StaticResource Accent.Pink}"
                         BorderBrush="{StaticResource Accent.PinkLine}"
+                        Foreground="{StaticResource Text.OnAccent}"
                         Click="RestoreBackupButton_Click"/>
                 <Button x:Name="DeleteBackupButton"
                         Content="선택 백업 삭제"
@@ -180,6 +181,7 @@
             <Button Grid.Column="1"
                     Content="닫기"
                     Margin="8,0,0,0"
+                    Style="{StaticResource GhostButtonStyle}"
                     Click="CloseButton_Click"/>
         </Grid>
     </Grid>

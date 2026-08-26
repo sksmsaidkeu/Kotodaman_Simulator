@@ -1425,11 +1425,11 @@
 
             <WrapPanel Grid.Column="1" HorizontalAlignment="Right">
                 <Button Content="닫기"
-                        Margin="0,0,8,0"
-                        Style="{StaticResource EditorButtonStyle}"
+                        Margin="0,0,10,0"
+                        Style="{StaticResource GhostButtonStyle}"
                         IsCancel="True"/>
                 <Button Content="저장하고 적용"
-                        Style="{StaticResource PrimaryButtonStyle}"
+                        Style="{StaticResource ActionButtonStyle}"
                         IsDefault="True"
                         Click="SaveButton_Click"/>
             </WrapPanel>
