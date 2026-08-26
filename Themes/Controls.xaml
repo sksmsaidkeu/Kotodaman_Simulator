@@ -89,6 +89,42 @@
     </Style>
 
     <!--
+      P7 라벨 뱃지. 게임의 リーダー / 発動可 태그처럼 면·선·글자 3톤 한 벌입니다(img1/img2).
+      이름이나 요약 문장에 섞여 있던 표시를 빼내 여기에 담습니다.
+
+      기본 3톤은 게임 リーダー 태그와 같은 자주 계열이고, 뜻이 다른 뱃지는 호출부가
+      Themes.Controls.LabelBadge() 로 세 톤을 한 번에 갈아끼웁니다. Label 인 이유는
+      StatusChipStyle 과 같습니다 - 면과 글자가 한 컨트롤에 있어야 짝이 흩어지지 않습니다.
+
+      Radius.Pill(999) 대신 높이의 절반(9)을 적은 이유도 같습니다. 큰 반경은 납작한
+      뱃지에서 타원 호가 되어 눈알 모양이 됩니다.
+    -->
+    <Style x:Key="LabelBadgeStyle" TargetType="Label">
+        <Setter Property="Background" Value="{StaticResource Rose.Face}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource Rose.Line}"/>
+        <Setter Property="Foreground" Value="{StaticResource Rose.Text}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Padding" Value="7,0"/>
+        <Setter Property="FontSize" Value="10"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="Height" Value="18"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Label">
+                    <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="9"
+                            Padding="{TemplateBinding Padding}">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--
       P1 크림 카드 모달. 게임의 クエスト / デッキ編成 패널을 창 틀 자체로 옮긴 것입니다.
       Kotodaman_UI_1.jpg / _2.jpg 의 카드 해부: 큰 반경 + 이중 테두리 + 중앙 제목 +
       마름모 구분선 + 우상단 X.

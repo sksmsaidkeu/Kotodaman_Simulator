@@ -25,7 +25,7 @@ DARK = {
     "Accent.PinkPale":"#222A37",
     "Accent.BlueFace":"#243240", "Accent.BlueLine":"#3E5A70", "Accent.BlueText":"#B8EAF5",
     "Accent.Focus":"#66D9EF",
-    "Chip.Dark":"#222A37", "Level.Navy":"#1D2430", "Level.Number":"#8FE3B1",
+    "Chip.Dark":"#222A37",
     "Status.Success":"#8FE3B1", "Status.Info":"#B8EAF5", "Status.Warn":"#FFC2B0",
     "Status.Error":"#FF9E9E", "Status.Special":"#D9C2FF",
     "Alert.Face":"#4A2622", "Alert.Line":"#C9564C", "Alert.Text":"#FFB3A8",
@@ -55,7 +55,7 @@ CREAM = {
     # 포커스 = 현재 시안(#66D9EF)의 크림쪽 자손. 선택/경고/주액션과 색상이 겹치지 않는다.
     "Accent.Focus":"#2E7D91",
     # LV 알약은 게임에서도 다크라 그대로 둔다.
-    "Chip.Dark":"#DFD8C8", "Level.Navy":"#2B3A4C", "Level.Number":"#7BE39A",
+    "Chip.Dark":"#DFD8C8",
     "Status.Success":"#17663E", "Status.Info":"#1E5F8A", "Status.Warn":"#C0392B",
     "Status.Error":"#B32218", "Status.Special":"#5B3FA8",
     # 골드 선은 결정에 따라 #C9A44C 유지, 글자만 딥앰버로 반전.

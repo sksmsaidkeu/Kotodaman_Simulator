@@ -44,8 +44,6 @@ internal static class Theme
     public static SolidColorBrush Focus       => B("Accent.Focus");
 
     public static SolidColorBrush Chip        => B("Chip.Dark");
-    public static SolidColorBrush LevelNavy   => B("Level.Navy");
-    public static SolidColorBrush LevelNumber => B("Level.Number");
 
     public static SolidColorBrush Success     => B("Status.Success");
     public static SolidColorBrush Info        => B("Status.Info");

@@ -201,7 +201,7 @@ public partial class CharacterFormEditorWindow : Window
             EditorStatusText.Text = isNew
                 ? $"'{name}' 형태를 추가했습니다. 아래 저장하고 닫기를 눌러 확정하세요."
                 : $"'{name}' 형태를 수정했습니다. 아래 저장하고 닫기를 눌러 확정하세요.";
-            EditorStatusText.Foreground = Theme.LevelNumber;
+            EditorStatusText.Foreground = Theme.Success;
         }
 
         return true;

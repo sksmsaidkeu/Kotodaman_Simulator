@@ -2,6 +2,7 @@ using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Interop;
+using System.Windows.Media;
 
 namespace KotodamanWordFinder.Themes;
 
@@ -12,6 +13,21 @@ namespace KotodamanWordFinder.Themes;
 public partial class Controls : ResourceDictionary
 {
     public Controls() => InitializeComponent();
+
+    /// <summary>
+    /// P7 라벨 뱃지를 만든다. 면·선·글자를 한 번에 받는 이유는 세 톤이 흩어지면
+    /// 밝은 면에 밝은 글자가 얹히기 때문이다. 모양은 LabelBadgeStyle 이 갖는다.
+    /// </summary>
+    public static Label LabelBadge(string text, Brush face, Brush line, Brush foreground)
+        => new()
+        {
+            Style = (Style)Application.Current.Resources["LabelBadgeStyle"],
+            Content = text,
+            Background = face,
+            BorderBrush = line,
+            Foreground = foreground,
+            Margin = new Thickness(0, 0, 4, 0)
+        };
 
     /// <summary>
     /// 모달 카드 크롬의 우상단 X. WindowStyle=None 이라 네이티브 닫기 버튼이 없으므로

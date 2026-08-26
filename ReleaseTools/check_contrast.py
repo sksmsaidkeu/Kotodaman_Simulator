@@ -36,7 +36,6 @@ PAIRS = [
     ("Status.Special", "Special.Face",   4.5, "✨ 미라클 리더 배너"),
     ("Status.Success", "Success.Face",   4.5, "◆ 덱 그룹 배너"),
     ("Status.Info",    "Info.Face",      4.5, "안내 배너"),
-    ("Level.Number",   "Level.Navy",     4.5, "LV 숫자"),
     ("Text.Primary",   "Rose.Face",      4.5, "글자판 특수키"),
     ("Text.Primary",   "Success.Face",   4.5, "밝은 면 위 본문"),
     ("Text.Primary",   "Info.Face",      4.5, "밝은 면 위 본문"),
@@ -51,6 +50,10 @@ PAIRS = [
     ("Success.Line",   "Success.Face",   1.5, "덱 그룹 배너 테두리"),
     ("Info.Line",      "Info.Face",      1.5, "안내 배너 테두리"),
     ("Accent.Focus",   "Bg.Panel",       3.0, "포커스 링"),
+    # P4 손패 문자 알약. 면은 항상 Bg.Panel 이고 글자만 출처에 따라 갈린다.
+    ("Accent.BlueText","Bg.Panel",       4.5, "문자 알약 · 기본"),
+    # P4 선택된 덱 카드. 테두리는 자기 면이 아니라 뒤 패널과 구분되면 된다.
+    ("Accent.OrangeDeep", "Bg.Panel",    1.5, "선택된 덱 카드 테두리"),
     # P6 상태 칩. 면(Chip.Dark)이 창 바탕과 1.06 이라 알약 모양은 테두리가 세운다.
     # 이 줄이 무너지면 칩이 배경에 녹아 사라진다.
     ("Line.TanStrong", "Bg.Backdrop",    1.5, "상태 칩 테두리 · 창 바탕"),

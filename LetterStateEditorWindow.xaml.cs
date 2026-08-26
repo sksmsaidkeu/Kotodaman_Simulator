@@ -160,7 +160,7 @@ public partial class LetterStateEditorWindow : Window
         RefreshStateList(state.Id);
         BeginEditing(state.Id);
         StateStatusText.Text = $"'{state.Name}' 상태를 추가했습니다.";
-        StateStatusText.Foreground = Theme.LevelNumber;
+        StateStatusText.Foreground = Theme.Success;
     }
 
     private void UpdateStateButton_Click(object sender, RoutedEventArgs e)
@@ -198,7 +198,7 @@ public partial class LetterStateEditorWindow : Window
         RefreshStateList(state.Id);
         BeginEditing(state.Id);
         StateStatusText.Text = $"'{state.Name}' 상태를 수정했습니다.";
-        StateStatusText.Foreground = Theme.LevelNumber;
+        StateStatusText.Foreground = Theme.Success;
     }
 
     private void DeleteStateButton_Click(object sender, RoutedEventArgs e)

@@ -46,10 +46,8 @@
     <!-- ── 강조: 호버·포커스 링 (현재 49회로 최다 사용) ─────────── -->
     <SolidColorBrush x:Key="Accent.Focus"    Color="#2E7D91" po:Freeze="True"/>
 
-    <!-- ── 칩 / 레벨 알약 ─────────────────────────────────────── -->
+    <!-- ── 상단 상태 칩 ───────────────────────────────────────── -->
     <SolidColorBrush x:Key="Chip.Dark"       Color="#DFD8C8" po:Freeze="True"/>
-    <SolidColorBrush x:Key="Level.Navy"      Color="#2B3A4C" po:Freeze="True"/>
-    <SolidColorBrush x:Key="Level.Number"    Color="#7BE39A" po:Freeze="True"/>
 
     <!-- ── 상태색: 글자색 전용. 면을 채우지 않습니다. ──────────── -->
     <SolidColorBrush x:Key="Status.Success"  Color="#17663E" po:Freeze="True"/>

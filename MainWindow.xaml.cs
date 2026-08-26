@@ -870,12 +870,6 @@ public partial class MainWindow : Window
         string formSuffix = selectedForm is null
             ? character.HasAlternateForms ? " · MS" : string.Empty
             : $" · 〔{selectedForm.Name}〕";
-        string miracleSuffix = displayCharacter.HasActiveMiracleGrant
-            ? " · ✨리더 문자"
-            : string.Empty;
-        string deckGroupSuffix = displayCharacter.HasActiveDeckGroupGrant
-            ? " · ◆덱 조건 문자"
-            : string.Empty;
 
         var content = new Grid();
         content.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
@@ -890,20 +884,41 @@ public partial class MainWindow : Window
         {
             VerticalAlignment = VerticalAlignment.Center
         };
-        textPanel.Children.Add(new TextBlock
+
+        // P7: [리더] · ✨리더 문자 · ◆덱 조건 문자 는 이름 뒤에 이어붙어 있어서
+        // 205px 카드에서 거의 항상 잘려 나갔다. 뱃지로 빼서 이름보다 먼저 자리를 잡는다.
+        var titleRow = new DockPanel { LastChildFill = true };
+        if (isLeader)
+        {
+            titleRow.Children.Add(Themes.Controls.LabelBadge(
+                "리더", Theme.RoseFace, Theme.RoseLine, Theme.RoseText));
+        }
+        if (displayCharacter.HasActiveMiracleGrant)
+        {
+            titleRow.Children.Add(Themes.Controls.LabelBadge(
+                "리더 문자", Theme.SpecialFace, Theme.SpecialLine, Theme.Special));
+        }
+        if (displayCharacter.HasActiveDeckGroupGrant)
+        {
+            titleRow.Children.Add(Themes.Controls.LabelBadge(
+                "덱 조건", Theme.SuccessFace, Theme.SuccessLine, Theme.Success));
+        }
+        titleRow.Children.Add(new TextBlock
         {
             Text = isSelected
-                ? $"{selectedIndex + 1}. {(isLeader ? "[리더] " : string.Empty)}{character.Name}{formSuffix}{stateSuffix}{miracleSuffix}{deckGroupSuffix}"
-                : $"{(isLeader ? "[리더] " : string.Empty)}{character.Name}{formSuffix}{miracleSuffix}{deckGroupSuffix}",
+                ? $"{selectedIndex + 1}. {character.Name}{formSuffix}{stateSuffix}"
+                : $"{character.Name}{formSuffix}",
             FontWeight = FontWeights.SemiBold,
+            VerticalAlignment = VerticalAlignment.Center,
             TextTrimming = TextTrimming.CharacterEllipsis
         });
+        textPanel.Children.Add(titleRow);
         textPanel.Children.Add(new TextBlock
         {
             Text = string.Join(" · ", displayCharacter.GetAvailableLetters(selectedStateId)),
             Margin = new Thickness(0, 4, 0, 0),
             Foreground = isSelected
-                ? Theme.Info
+                ? Theme.OnFace(Theme.Orange)
                 : Theme.TextSecondary,
             FontSize = 12,
             TextTrimming = TextTrimming.CharacterEllipsis
@@ -913,11 +928,12 @@ public partial class MainWindow : Window
 
         button.Content = content;
         button.ToolTip = BuildCharacterToolTip(displayCharacter, isLeader);
+        // 선택 = 주황. 길이 탭(P2)·판면 활성 칸(P3)이 이미 쓰는 언어라 여기만 청록이면 어긋난다.
         button.Background = isSelected
-            ? Theme.InfoLine
+            ? Theme.Orange
             : Theme.PanelInner;
         button.BorderBrush = isSelected
-            ? Theme.Focus
+            ? Theme.OrangeDeep
             : Theme.Line;
         button.BorderThickness = new Thickness(isSelected ? 2 : 1);
     }
@@ -1040,7 +1056,9 @@ public partial class MainWindow : Window
                 {
                     grid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
                 }
-                grid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+                // 문자 알약이 들어갈 마지막 줄. 게임 덱 카드의 LV 알약처럼 카드 아래에 붙도록
+                // 남는 높이를 여기가 먹는다(카드 높이는 고정이라 안 그러면 아래가 빈다).
+                grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
 
                 FrameworkElement imageElement = CreateCharacterImageElement(displayCharacter, 68);
                 imageElement.HorizontalAlignment = HorizontalAlignment.Center;
@@ -1137,22 +1155,11 @@ public partial class MainWindow : Window
                     Orientation = Orientation.Horizontal,
                     VerticalAlignment = VerticalAlignment.Center
                 };
-                titlePanel.Children.Add(new Border
-                {
-                    Background = index == 0 ? Theme.AlertFace : Theme.PanelInner,
-                    BorderBrush = index == 0 ? Theme.AlertLine : Theme.InfoLine,
-                    BorderThickness = new Thickness(1),
-                    CornerRadius = new CornerRadius(5),
-                    Padding = new Thickness(5, 1, 5, 1),
-                    Margin = new Thickness(0, 0, 6, 0),
-                    Child = new TextBlock
-                    {
-                        Text = index == 0 ? "HAND 1" : $"HAND {index + 1}",
-                        FontSize = 9,
-                        FontWeight = FontWeights.Bold,
-                        Foreground = index == 0 ? Theme.Warn : Theme.Info
-                    }
-                });
+                // 첫 슬롯만 3톤을 달리해 세운다. 세 톤을 한 호출에 묶어야 면과 글자가 안 흩어진다.
+                string handLabel = $"HAND {index + 1}";
+                titlePanel.Children.Add(index == 0
+                    ? Themes.Controls.LabelBadge(handLabel, Theme.AlertFace, Theme.AlertLine, Theme.AlertText)
+                    : Themes.Controls.LabelBadge(handLabel, Theme.InfoFace, Theme.InfoLine, Theme.Info));
                 titlePanel.Children.Add(new TextBlock
                 {
                     Text = selectedForm is null
@@ -1302,28 +1309,36 @@ public partial class MainWindow : Window
                     grid.Children.Add(statePanel);
                 }
 
+                // P4: 게임 덱 카드의 하단 LV 알약 자리. 앱에 LV 개념이 없으므로 이 카드가
+                // 이미 말하고 있는 '사용 가능 문자'를 그 자리의 알약으로 옮긴다.
+                // 반경은 높이의 절반이라야 스타디움이 된다(Radius.Pill 은 눈알이 된다).
                 var lettersBadge = new Border
                 {
+                    Height = 26,
+                    VerticalAlignment = VerticalAlignment.Bottom,
                     Margin = new Thickness(0, 6, 0, 0),
-                    Padding = new Thickness(7, 4, 7, 4),
+                    Padding = new Thickness(10, 0, 10, 0),
                     Background = Theme.Panel,
                     BorderBrush = Theme.Line,
                     BorderThickness = new Thickness(1),
-                    CornerRadius = new CornerRadius(6),
+                    CornerRadius = new CornerRadius(13),
                     Child = new TextBlock
                     {
                         Text = string.Join(" · ", displayCharacter.GetAvailableLetters(effectiveStateId)),
+                        // 문자를 어디서 얻었는지를 글자색이 말한다. 면은 항상 밝은 Panel 이라
+                        // 어느 갈래든 밝은 면에서 읽히는 어두운 톤이어야 한다.
                         Foreground = displayCharacter.HasActiveMiracleGrant
                             ? Theme.Special
                             : displayCharacter.HasActiveDeckGroupGrant
-                                ? Theme.LevelNumber
+                                ? Theme.Success
                                 : selectedStateOption is not null
                                     ? Theme.Warn
                                     : selectedForm is not null
-                                        ? Theme.LevelNumber
+                                        ? Theme.Success
                                         : Theme.BlueText,
                         FontSize = 12,
                         FontWeight = FontWeights.SemiBold,
+                        VerticalAlignment = VerticalAlignment.Center,
                         TextTrimming = TextTrimming.CharacterEllipsis
                     }
                 };
@@ -3878,7 +3893,7 @@ public partial class MainWindow : Window
                     ? "저장된 덱 프리셋이 없습니다. 덱 편집 화면에서 먼저 만들어 주세요."
                     : "프리셋을 선택한 뒤 '이 덱으로 변경'을 누르세요.";
             MainPresetStatusText.Foreground = exactMatch is not null
-                ? Theme.LevelNumber
+                ? Theme.Success
                 : Theme.TextSecondary;
         }
         finally
@@ -3966,7 +3981,7 @@ public partial class MainWindow : Window
                 ? $" · 누락 {missingCount}명 · 모드시프트 중복 제외 {restrictedCount}명"
                 : string.Empty;
             MainPresetStatusText.Text = $"현재 적용 중: {preset.Name}{note}";
-            MainPresetStatusText.Foreground = Theme.LevelNumber;
+            MainPresetStatusText.Foreground = Theme.Success;
             StatusText.Text = $"'{preset.Name}' 프리셋으로 덱 {_deck.Count:N0}명을 변경했습니다.";
         }
         catch (Exception exception)

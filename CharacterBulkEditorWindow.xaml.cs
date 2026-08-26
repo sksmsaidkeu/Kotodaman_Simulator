@@ -219,7 +219,7 @@ public partial class CharacterBulkEditorWindow : Window
         CharacterDataGrid.Items.Refresh();
         UpdateCountText();
         StatusText.Text = $"현재 표시된 {_view.Cast<object>().Count():N0}명을 체크했습니다.";
-        StatusText.Foreground = Theme.LevelNumber;
+        StatusText.Foreground = Theme.Success;
     }
 
     private void ClearChecksButton_Click(object sender, RoutedEventArgs e)

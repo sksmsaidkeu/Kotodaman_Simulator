@@ -280,7 +280,7 @@ public partial class DeckEditorWindow : Window
         EditorStatusText.Text = skippedCount > 0
             ? $"'{preset.Name}' 프리셋을 불러왔습니다 · {_deckIds.Count}명 · 모드시프트 형태 {skippedCount}명 제외"
             : $"'{preset.Name}' 프리셋을 불러왔습니다 · {_deckIds.Count}명";
-        EditorStatusText.Foreground = Theme.LevelNumber;
+        EditorStatusText.Foreground = Theme.Success;
     }
 
     private void SavePresetButton_Click(object sender, RoutedEventArgs e)
@@ -356,7 +356,7 @@ public partial class DeckEditorWindow : Window
         EditorStatusText.Text = isNew
             ? $"'{name}' 프리셋을 새로 만들었습니다. 자동 저장되었습니다."
             : $"'{name}' 프리셋을 현재 덱으로 갱신했습니다. 자동 저장되었습니다.";
-        EditorStatusText.Foreground = Theme.LevelNumber;
+        EditorStatusText.Foreground = Theme.Success;
         AutoSaveCommittedStateSafely();
     }
 
@@ -1365,7 +1365,7 @@ public partial class DeckEditorWindow : Window
         }
 
         EditorStatusText.Text = $"캐릭터 {changedIds.Length:N0}명을 일괄 수정했습니다. 연속 작업을 묶어 자동 저장합니다.";
-        EditorStatusText.Foreground = Theme.LevelNumber;
+        EditorStatusText.Foreground = Theme.Success;
     }
 
     private void ImportCharacterFromWebButton_Click(object sender, RoutedEventArgs e)
@@ -1436,7 +1436,7 @@ public partial class DeckEditorWindow : Window
             ? $"{preview.SourceSite} + 코토다망DB"
             : preview.SourceSite;
         EditorStatusText.Text = $"'{preview.Name}' 정보를 {sourceNote}에서 가져왔습니다. 내용을 확인한 뒤 '새 캐릭터 추가'를 누르세요.";
-        EditorStatusText.Foreground = Theme.LevelNumber;
+        EditorStatusText.Foreground = Theme.Success;
 
         Dispatcher.BeginInvoke(
             new Action(() =>
@@ -1581,7 +1581,7 @@ public partial class DeckEditorWindow : Window
         EditorStatusText.Text = "연속 자동 등록 완료 · " + string.Join(" · ", details) +
             (addedCount > 0 ? " · 자동 저장되었습니다." : string.Empty);
         EditorStatusText.Foreground = addedCount > 0
-            ? Theme.LevelNumber
+            ? Theme.Success
             : Theme.Warn;
     }
 
@@ -1787,7 +1787,7 @@ public partial class DeckEditorWindow : Window
         RefreshAllLists(current.Id, selectedDeckIndex);
         BeginEditing(current.Id);
         EditorStatusText.Text = $"'{current.Name}'과 '{target.Name}'을 같은 카드 형태로 연결했습니다. 두 형태는 한 덱에 동시에 넣을 수 없습니다.";
-        EditorStatusText.Foreground = Theme.LevelNumber;
+        EditorStatusText.Foreground = Theme.Success;
     }
 
     private void UnlinkRelatedFormButton_Click(object sender, RoutedEventArgs e)
@@ -2017,7 +2017,7 @@ public partial class DeckEditorWindow : Window
         if (showSuccessMessage)
         {
             EditorStatusText.Text = $"'{character.Name}' 정보를 수정했습니다. 덱에도 자동 반영됩니다.";
-            EditorStatusText.Foreground = Theme.LevelNumber;
+            EditorStatusText.Foreground = Theme.Success;
         }
 
         return true;
@@ -2151,7 +2151,7 @@ public partial class DeckEditorWindow : Window
         _deckIds.Add(character.Id);
         RefreshAllLists(character.Id, _deckIds.Count - 1);
         EditorStatusText.Text = $"'{character.Name}'을 현재 덱 {_deckIds.Count}번에 추가했습니다.";
-        EditorStatusText.Foreground = Theme.LevelNumber;
+        EditorStatusText.Foreground = Theme.Success;
     }
 
     private void RemoveFromDeckButton_Click(object sender, RoutedEventArgs e)
@@ -2206,7 +2206,7 @@ public partial class DeckEditorWindow : Window
         EditorStatusText.Text = skippedCount > 0
             ? $"덱 스크린샷에서 {_deckIds.Count}명을 적용했습니다 · 중복/모드시프트 제한 {skippedCount}명 제외 · 자동 저장되었습니다."
             : $"덱 스크린샷에서 {_deckIds.Count}명을 적용했습니다 · 자동 저장되었습니다.";
-        EditorStatusText.Foreground = Theme.LevelNumber;
+        EditorStatusText.Foreground = Theme.Success;
     }
 
     private void SetLeaderButton_Click(object sender, RoutedEventArgs e)
@@ -2343,7 +2343,7 @@ public partial class DeckEditorWindow : Window
         }
 
         EditorStatusText.Text = "현재 캐릭터 상세 정보와 덱 상태를 저장했습니다.";
-        EditorStatusText.Foreground = Theme.LevelNumber;
+        EditorStatusText.Foreground = Theme.Success;
         return true;
     }
 
@@ -2778,7 +2778,7 @@ public partial class DeckEditorWindow : Window
         else if (!string.IsNullOrWhiteSpace(_editingImageFileName) && bitmap is not null)
         {
             CharacterImageFileText.Text = _editingImageFileName;
-            CharacterImageFileText.Foreground = Theme.LevelNumber;
+            CharacterImageFileText.Foreground = Theme.Success;
         }
         else
         {
@@ -2838,7 +2838,7 @@ public partial class DeckEditorWindow : Window
             .ToList();
         UpdateCharacterStateSummary();
         EditorStatusText.Text = $"문자 상태 {_editingLetterStates.Count}개를 편집했습니다. 캐릭터 수정 버튼을 누르거나 창을 닫으면 자동 반영됩니다.";
-        EditorStatusText.Foreground = Theme.LevelNumber;
+        EditorStatusText.Foreground = Theme.Success;
     }
 
     private void UpdateCharacterStateSummary()
@@ -2889,7 +2889,7 @@ public partial class DeckEditorWindow : Window
         UpdateCharacterFormSummary();
         InvalidateCharacterThumbnail(characterId);
         EditorStatusText.Text = $"동일 이름 모드시프트 형태 {_editingForms.Count}개를 편집했습니다. 캐릭터 수정 버튼을 누르거나 창을 닫으면 자동 반영됩니다.";
-        EditorStatusText.Foreground = Theme.LevelNumber;
+        EditorStatusText.Foreground = Theme.Success;
     }
 
     private void UpdateCharacterFormSummary()

@@ -370,7 +370,7 @@ public partial class DeckScreenshotImportWindow : Window
                 ? "자동 선택이 완료되었습니다. 그래도 12칸을 한 번 확인한 뒤 적용하세요."
                 : "특징점 매칭이 애매한 슬롯만 비워 두었습니다. 추천 3개를 먼저 확인하고, 없으면 드롭다운에서 이름으로 검색하세요.";
             StatusText.Foreground = autoSelectedCount == 12
-                ? Theme.LevelNumber
+                ? Theme.Success
                 : Theme.Warn;
         }
         catch (Exception exception)
@@ -869,7 +869,7 @@ public partial class DeckScreenshotImportWindow : Window
         }
 
         public Brush ScoreBrush => IsAutoConfident
-            ? Theme.LevelNumber
+            ? Theme.Success
             : BestMatchCount >= 7
                 ? Theme.Warn
                 : Theme.Error;

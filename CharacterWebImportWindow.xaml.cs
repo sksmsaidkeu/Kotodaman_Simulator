@@ -1,4 +1,5 @@
 using KotodamanWordFinder.Themes;
+using System.Windows.Controls;
 ﻿using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -536,6 +537,8 @@ public partial class CharacterWebImportWindow : Window
         _batchReviewItems.Clear();
         _lastFailedUrls.Clear();
         BatchReviewDataGrid.ItemsSource = null;
+        BatchFailureBadgePanel.Children.Clear();
+        BatchFailureBadgePanel.Visibility = Visibility.Collapsed;
         DeleteTemporaryFile(_downloadedImagePath);
         _downloadedImagePath = string.Empty;
         _fetchedData = null;
@@ -670,8 +673,8 @@ public partial class CharacterWebImportWindow : Window
                         failureCount++;
                         _lastFailedUrls.Add(url);
                         string reason = name.Length == 0
-                            ? "이름을 인식하지 못함"
-                            : "사용 문자를 인식하지 못함";
+                            ? "이름 인식 실패"
+                            : "문자 인식 실패";
                         AddFailureReason(failureReasons, reason);
                         AppendBatchLog($"  실패 · {reason}");
                         continue;
@@ -775,13 +778,11 @@ public partial class CharacterWebImportWindow : Window
             BatchApplyButton.IsEnabled = _batchReviewItems.Count > 0;
             BatchRetryFailedButton.IsEnabled = _lastFailedUrls.Count > 0;
             string prefix = wasCanceled ? "중지됨" : "완료";
-            string reasonSummary = failureReasons.Count > 0
-                ? " · 실패 원인 " + string.Join(", ", failureReasons.OrderByDescending(item => item.Value).Select(item => $"{item.Key} {item.Value}"))
-                : string.Empty;
+            ShowBatchFailureReasons(failureReasons);
             SetBatchSummary(
-                $"{prefix} · 검수 대상 {successCount}개 · 확인 권장 {reviewCount}개 · 중복 {duplicateCount}개 · 명시적 콜라보 제외 {filteredCollaborationCount}개 · 최신 6성 A 조건 제외 {filteredRecentACount}개 · 재시도 복구 {retryRecoveredCount}개 · 표 정보 복구 {ratingFallbackCount}개 · 실패 {failureCount}개{reasonSummary}" +
+                $"{prefix} · 검수 대상 {successCount}개 · 확인 권장 {reviewCount}개 · 중복 {duplicateCount}개 · 명시적 콜라보 제외 {filteredCollaborationCount}개 · 최신 6성 A 조건 제외 {filteredRecentACount}개 · 재시도 복구 {retryRecoveredCount}개 · 표 정보 복구 {ratingFallbackCount}개 · 실패 {failureCount}개" +
                 (_batchReviewItems.Count > 0
-                    ? " · 그룹은 비어 있어도 등록할 수 있습니다. 노란 행만 확인한 뒤 등록하세요."
+                    ? " · 그룹은 비어 있어도 등록할 수 있습니다. 확인 권장으로 표시된 행만 보고 등록하세요."
                     : string.Empty),
                 isError: _batchReviewItems.Count == 0 && failureCount > 0);
         }
@@ -1299,6 +1300,27 @@ public partial class CharacterWebImportWindow : Window
     {
         StatusText.Text = message;
         StatusText.Foreground = isError ? Theme.Error : Theme.Success;
+    }
+
+    /// <summary>
+    /// P7: 실패 원인을 요약 문장에서 빼내 빨강 라벨 뱃지로 세운다.
+    /// 실패한 URL 은 검수표에 행으로 남지 않으므로 여기가 유일하게 보이는 자리다.
+    /// </summary>
+    private void ShowBatchFailureReasons(IReadOnlyDictionary<string, int> reasons)
+    {
+        BatchFailureBadgePanel.Children.Clear();
+        // 빈 WrapPanel 도 Margin 은 차지한다. 실패가 없으면 자리까지 접는다.
+        BatchFailureBadgePanel.Visibility = reasons.Count > 0 ? Visibility.Visible : Visibility.Collapsed;
+        foreach (KeyValuePair<string, int> reason in reasons.OrderByDescending(item => item.Value))
+        {
+            Label badge = Themes.Controls.LabelBadge(
+                $"{reason.Key} {reason.Value}",
+                Theme.AlertFace,
+                Theme.AlertLine,
+                Theme.AlertText);
+            badge.Margin = new Thickness(0, 0, 6, 4);
+            BatchFailureBadgePanel.Children.Add(badge);
+        }
     }
 
     private void SetBatchSummary(string message, bool isError)

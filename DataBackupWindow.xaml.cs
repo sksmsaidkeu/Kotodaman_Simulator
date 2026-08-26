@@ -52,7 +52,7 @@ public partial class DataBackupWindow : Window
                 StatusText.Text =
                     $"백업 완료 · {Path.GetFileName(backupPath)} · " +
                     DataBackupService.FormatByteSize(new FileInfo(backupPath).Length);
-                StatusText.Foreground = Theme.LevelNumber;
+                StatusText.Foreground = Theme.Success;
             });
     }
 
@@ -93,7 +93,7 @@ public partial class DataBackupWindow : Window
                 RestoreCompleted = true;
                 StatusText.Text =
                     $"복원 완료 · 복원 전 상태도 {Path.GetFileName(result.SafetyBackupPath)} 로 안전 백업했습니다.";
-                StatusText.Foreground = Theme.LevelNumber;
+                StatusText.Foreground = Theme.Success;
 
                 MessageBox.Show(
                     "복원이 완료되었습니다.\n현재 창을 닫으면 메인 화면도 복원된 데이터를 다시 읽습니다.",
