@@ -51,6 +51,11 @@ PAIRS = [
     ("Success.Line",   "Success.Face",   1.5, "덱 그룹 배너 테두리"),
     ("Info.Line",      "Info.Face",      1.5, "안내 배너 테두리"),
     ("Accent.Focus",   "Bg.Panel",       3.0, "포커스 링"),
+    # P6 상태 칩. 면(Chip.Dark)이 창 바탕과 1.06 이라 알약 모양은 테두리가 세운다.
+    # 이 줄이 무너지면 칩이 배경에 녹아 사라진다.
+    ("Line.TanStrong", "Bg.Backdrop",    1.5, "상태 칩 테두리 · 창 바탕"),
+    ("Status.Info",    "Info.Face",      4.5, "상태 칩 · 업데이트 진행"),
+    ("Alert.Text",     "Alert.Face",     4.5, "상태 칩 · 업데이트 실패"),
 ]
 
 

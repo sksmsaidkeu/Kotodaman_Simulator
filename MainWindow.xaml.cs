@@ -5,6 +5,7 @@ using System.IO;
 using System.IO.Compression;
 using System.Text;
 using System.Windows;
+using System.Windows.Automation.Peers;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
@@ -138,6 +139,11 @@ public partial class MainWindow : Window
 
         InitializeComponent();
         Title = $"{AppPaths.DisplayName} v{AppPaths.AppVersion}";
+
+        // 앱 업데이트 진행을 헤더 칩으로 흘려보낸다. App 이 이 창의 컨트롤을 직접 만지지 않게
+        // 정적 이벤트 하나만 지나가고, 스레드 정리는 App.ReportUpdateStatus 가 끝낸다.
+        ShowStatusChip(null);
+        App.UpdateStatusChanged += OnUpdateStatusChanged;
         Stopwatch startupWatch = Stopwatch.StartNew();
 
         try
@@ -192,6 +198,43 @@ public partial class MainWindow : Window
         Width = Math.Min(Width, availableWidth);
 
         Closing += MainWindow_Closing;
+    }
+
+    private void OnUpdateStatusChanged(string? text, bool isError) => ShowStatusChip(text, isError);
+
+    /// <summary>
+    /// P6 상단 상태 칩. text 가 null 이면 알릴 업데이트가 없다는 뜻이라 데이터 버전으로 돌아간다.
+    ///
+    /// 면과 글자를 바꾸는 자리를 여기 하나로 몰아둔 이유: 둘이 흩어지면 밝은 면에 흰 글자가
+    /// 얹히는 조합이 생긴다(이 코드베이스에서 6곳 나왔다). 세 톤 전부 check_contrast.py 에 있다.
+    /// 테두리는 알약 모양을 세우는 쪽이라 상태와 무관하게 스타일 값을 쓴다.
+    /// </summary>
+    private void ShowStatusChip(string? text, bool isError = false)
+    {
+        if (text is null)
+        {
+            StatusChip.Content = $"데이터 {AppPaths.UserDataVersion}";
+            StatusChip.ToolTip = "현재 쓰고 있는 캐릭터·단어 데이터 버전입니다.";
+            // 기본 톤은 스타일이 갖고 있다. 값을 여기 다시 적지 않고 지역값만 걷어낸다.
+            StatusChip.ClearValue(BackgroundProperty);
+            StatusChip.ClearValue(ForegroundProperty);
+        }
+        else
+        {
+            StatusChip.Content = text;
+            StatusChip.ToolTip = isError
+                ? "업데이트에 실패했습니다. 헤더의 '오류 로그' 버튼에서 자세한 내용을 볼 수 있습니다."
+                : "프로그램 업데이트 진행 상황입니다.";
+            StatusChip.Background = isError ? Theme.AlertFace : Theme.InfoFace;
+            StatusChip.Foreground = isError ? Theme.AlertText : Theme.Info;
+        }
+
+        // 받는 동안 49초간 숫자만 바뀐다. 화면 낭독기가 그 변화를 놓치지 않게 알린다.
+        if (AutomationPeer.ListenerExists(AutomationEvents.LiveRegionChanged))
+        {
+            UIElementAutomationPeer.CreatePeerForElement(StatusChip)
+                ?.RaiseAutomationEvent(AutomationEvents.LiveRegionChanged);
+        }
     }
 
     private void LoadDataFromDisk()
@@ -3629,6 +3672,9 @@ public partial class MainWindow : Window
             UserSettingsService.InvalidateCache();
             CharacterImageService.ClearThumbnailCache();
             AppPaths.SynchronizeBundledData(forceRestoreMissingBundledCharacters: true);
+            // 복원은 data_manifest.json 까지 되돌리므로 데이터 버전이 바뀔 수 있다.
+            // 다시 읽지 않으면 헤더 칩이 복원 전 버전을 계속 말한다.
+            AppPaths.RefreshUserDataVersion();
 
             _selectedHandCharacterIds.Clear();
             _selectedHandLetterStateIds.Clear();
@@ -3644,6 +3690,7 @@ public partial class MainWindow : Window
             RenderSelectedHandSlots();
             PerformSearch(isAutomatic: false);
 
+            ShowStatusChip(null);
             StatusText.Text =
                 $"백업 복원 완료 · 단어 {_loadedWordCount:N0}개 · 덱 캐릭터 {_deck.Count:N0}명";
         }

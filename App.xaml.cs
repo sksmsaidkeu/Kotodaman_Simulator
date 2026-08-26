@@ -141,9 +141,21 @@ public partial class App : Application
         return true;
     }
 
+    /// <summary>
+    /// 앱 업데이트 진행을 화면에 알립니다. text 가 null 이면 알릴 것이 없다는 뜻입니다.
+    /// App 이 MainWindow 의 컨트롤을 직접 만지지 않도록 이 이벤트 하나만 지납니다.
+    /// </summary>
+    public static event Action<string?, bool>? UpdateStatusChanged;
+
+    // 다운로드 진행 콜백은 UI 스레드가 아닌 곳에서 옵니다(Velopack 은 IProgress 가 아니라 Action<int>).
+    // 구독자가 매번 스레드를 신경 쓰지 않도록 여기서 한 번만 디스패처를 거칩니다.
+    private static void ReportUpdateStatus(string? text, bool isError = false)
+        => Current?.Dispatcher.BeginInvoke(() => UpdateStatusChanged?.Invoke(text, isError));
+
     // 공개 저장소를 소스로 쓰므로 토큰 없이 확인 가능합니다(D-2: 코드서명 미구매, GitHub API 60회/시간은
     // 사용자 개인 IP 기준이라 문제되지 않습니다 - PRD FR-6). 실패해도 앱 사용에는 지장이 없어야 하므로
-    // 조용히 로그만 남기고 넘어갑니다.
+    // 로그를 남기고 넘어가되, 진행 단계는 헤더 상태 칩으로 보여 줍니다 - 예전에는 발견부터 재시작까지
+    // 53초 동안 화면에 아무 표시가 없어서 "업데이트가 안 된다"고 오해할 수밖에 없었습니다.
     private static async Task CheckForAppUpdatesAsync()
     {
         try
@@ -156,14 +168,19 @@ public partial class App : Application
                 return;
             }
 
+            ReportUpdateStatus("업데이트 확인 중");
+
             UpdateInfo? updateInfo = await manager.CheckForUpdatesAsync();
             if (updateInfo == null)
             {
+                // 알릴 것이 없으면 칩은 데이터 버전으로 돌아갑니다.
+                ReportUpdateStatus(null);
                 return;
             }
 
             string newVersion = updateInfo.TargetFullRelease.Version.ToString();
             AppLog.Info($"앱 업데이트 발견 · {newVersion} · 적용할지 사용자에게 묻습니다.");
+            ReportUpdateStatus($"새 버전 {newVersion} 발견");
 
             // 받기 전에 묻는다. 델타를 받아 적용하는 데 1분쯤 걸리는데(실측 49초), 다 받고 나서
             // 물으면 이미 그 시간을 뺏은 뒤라 묻는 의미가 없다.
@@ -181,12 +198,28 @@ public partial class App : Application
             if (answer != MessageBoxResult.Yes)
             {
                 AppLog.Info($"사용자가 업데이트를 미뤘습니다 · {newVersion}");
+                ReportUpdateStatus($"업데이트 {newVersion} 미룸 · 다음에 켤 때 다시 물어봅니다");
                 return;
             }
 
             AppLog.Info($"앱 업데이트 다운로드를 시작합니다 · {newVersion}");
-            await manager.DownloadUpdatesAsync(updateInfo);
+            ReportUpdateStatus("업데이트 받는 중 0%");
+
+            // 여기가 실측 49초짜리 침묵이었던 구간입니다. 진행률을 그대로 칩에 흘립니다.
+            // 같은 값이 여러 번 오므로 바뀔 때만 넘겨 디스패처를 헛돌리지 않습니다.
+            int reportedPercent = -1;
+            await manager.DownloadUpdatesAsync(updateInfo, percent =>
+            {
+                if (percent == reportedPercent)
+                {
+                    return;
+                }
+
+                reportedPercent = percent;
+                ReportUpdateStatus($"업데이트 받는 중 {percent}%");
+            });
             AppLog.Info("앱 업데이트 다운로드 완료 · 정상 종료 후 적용합니다.");
+            ReportUpdateStatus($"업데이트 {newVersion} 적용 · 곧 다시 시작합니다");
 
             // ApplyUpdatesAndRestart는 프로세스를 즉시 종료시켜 Window.Closing(설정 저장 등)을 건너뛴다.
             // WaitExitThenApplyUpdates로 적용을 예약해두고, Shutdown()으로 정상 종료 경로를 태워야
@@ -197,6 +230,7 @@ public partial class App : Application
         catch (Exception exception)
         {
             AppLog.Warning($"앱 자동 업데이트 확인/적용에 실패했습니다: {exception.Message}");
+            ReportUpdateStatus("업데이트 실패 · '오류 로그'에서 확인하세요", isError: true);
         }
     }
 

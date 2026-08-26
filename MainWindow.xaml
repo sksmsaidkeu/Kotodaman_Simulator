@@ -341,6 +341,15 @@
                             ToolTip="설정을 저장하고 프로그램을 종료합니다."
                             Style="{StaticResource SecondaryButtonStyle}"
                             Click="ExitButton_Click"/>
+                    <!-- P6 상태 칩. 평소엔 데이터 버전, 앱 업데이트가 도는 동안엔 그 진행.
+                         헤더는 이미 꽉 차 있으므로 폭을 늘리지 않는다 - 제목이 자기 몫에서
+                         줄어들며(TextTrimming) 자리를 내주고, 아래 줄들은 그대로다. -->
+                    <Label x:Name="StatusChip"
+                           DockPanel.Dock="Right"
+                           Style="{StaticResource StatusChipStyle}"
+                           VerticalAlignment="Top"
+                           Margin="12,0,0,0"
+                           AutomationProperties.LiveSetting="Polite"/>
                     <TextBlock Text="코토다망 최장 단어 탐색기"
                                FontSize="27"
                                FontWeight="Bold"

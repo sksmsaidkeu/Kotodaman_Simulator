@@ -49,6 +49,46 @@
     </Style>
 
     <!--
+      P6 상단 상태 칩. 게임은 배경 사진 위 반투명 다크 알약에 흰 글자(img1 残り8日 / 7,985)인데,
+      크림 팔레트에서 Chip.Dark 는 밝은 값(#DFD8C8)이라 흰 글자가 1.4 로 안 읽힙니다.
+      그래서 게임의 '어두운 면 + 밝은 글자'를 명암만 뒤집어 '밝은 면 + 짙은 글자'로 옮깁니다(7.6).
+
+      면이 창 바탕(#E4DED1)과 1.06 이라 면만으로는 알약 모양이 안 보입니다. 알약을 세우는 건
+      Line.TanStrong 테두리(바탕과 1.56)이고, 그래서 상태가 바뀌어도 테두리는 그대로 둡니다.
+      면과 글자만 한 벌로 갈아끼웁니다(MainWindow.ShowStatusChip 한 곳).
+
+      Label 인 이유: Foreground 를 면과 같은 자리에서 정하려면 컨트롤 하나가 둘 다 가져야 합니다.
+      TextBlock 은 테두리·반경이 없고, Border 는 글자색을 자식이 따로 갖게 되어 짝이 흩어집니다.
+
+      Radius.Pill(999)을 쓰지 않고 높이의 절반(13)을 직접 적은 이유: WPF Border 는 큰 반경을
+      가로/세로 각각 절반으로 잘라 타원 호를 그립니다. 정사각형에 가까운 かな 뱃지에서는 그게
+      곧 원이라 맞지만, 길고 납작한 이 칩에서는 스타디움이 아니라 눈알 모양이 되고 양 끝
+      글자가 곡선에 닿습니다(실제로 그렇게 나왔습니다). 높이를 고정해야 반경이 정확해집니다.
+    -->
+    <Style x:Key="StatusChipStyle" TargetType="Label">
+        <Setter Property="Background" Value="{StaticResource Chip.Dark}"/>
+        <Setter Property="Foreground" Value="{StaticResource Text.Primary}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource Line.TanStrong}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Padding" Value="12,4"/>
+        <Setter Property="FontSize" Value="12"/>
+        <Setter Property="Height" Value="26"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Label">
+                    <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="13"
+                            Padding="{TemplateBinding Padding}">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--
       P1 크림 카드 모달. 게임의 クエスト / デッキ編成 패널을 창 틀 자체로 옮긴 것입니다.
       Kotodaman_UI_1.jpg / _2.jpg 의 카드 해부: 큰 반경 + 이중 테두리 + 중앙 제목 +
       마름모 구분선 + 우상단 X.
