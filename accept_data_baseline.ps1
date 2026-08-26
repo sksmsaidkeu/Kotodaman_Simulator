@@ -1,4 +1,4 @@
-$ErrorActionPreference = 'Stop'
+﻿$ErrorActionPreference = 'Stop'
 Set-StrictMode -Version 2.0
 
 function Get-RelativeSlashPath {
@@ -103,6 +103,26 @@ try {
     Write-Host ("Images: {0}" -f $hashes.Count)
     Write-Host ("Recognition references: {0}" -f $referenceHashes.Count)
     Write-Host 'Future full program releases will apply this data package automatically.' -ForegroundColor Green
+
+    # D-3 (PRD.md): 델타 체인은 Data\BundledUpdates 안의 zip 개수 그 자체다 - 매번 쌓이기만
+    # 하고 지워지는 코드 경로가 없으므로, 5개(=5 데이터 버전)부터는 사람이 직접 판단해
+    # 오래된 델타를 접어야 한다(어떤 FromDataVersion을 더는 안 지원할지는 실사용자 분포에
+    # 달려 있어 자동화하지 않는다).
+    $chainLength = @(Get-ChildItem -LiteralPath $BundledUpdates -Filter '*.zip').Count
+    Write-Host ("Delta chain length: {0} data version(s) since last snapshot" -f $chainLength) -ForegroundColor Cyan
+    if ($chainLength -ge 5) {
+        Write-Host ''
+        Write-Host '=============================================' -ForegroundColor Yellow
+        Write-Host ' D-3 snapshot checkpoint: chain length >= 5' -ForegroundColor Yellow
+        Write-Host '=============================================' -ForegroundColor Yellow
+        Write-Host 'Consider folding the delta chain before the next release:'
+        Write-Host ("  1. List {0} and decide the oldest FromDataVersion still worth" -f $BundledUpdates)
+        Write-Host '     supporting (how far behind are real installs, if known).'
+        Write-Host '  2. Delete the .zip files older than that floor - users below it'
+        Write-Host '     get this DataVersion via a full app reinstall instead.'
+        Write-Host '  3. Commit the pruned Data\BundledUpdates alongside this release.'
+        Write-Host 'Skip this if every existing delta is still needed.'
+    }
 }
 catch {
     Write-Host ''
