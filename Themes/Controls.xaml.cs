@@ -30,6 +30,36 @@ public partial class Controls : ResourceDictionary
         };
 
     /// <summary>
+    /// P8 경고 배너. 6개 창이 공유하는 상태줄 하나(Border+TextBlock)의 배경·테두리·글자색을
+    /// 한 번에 갈아끼운다. isAlert=false(성공/정보)면 지금까지처럼 배너 없이 글자색만 바뀌고,
+    /// isAlert=true(오류/경고)면 Alert.Face/Alert.Line/Alert.Text 세 톤이 전부 세트로 켜진다.
+    /// foreground 는 isAlert=false 일 때만 쓴다 - 경고는 항상 Alert.Text 로 고정해 두 상태가
+    /// 섞이지 않게 한다. 호출부가 배너와 텍스트만 따로 대입하던 것이 P7 뱃지 때와 같은 사고
+    /// (밝은 면에 밝은 글자)를 냈으므로, 세 톤을 반드시 이 함수 하나로만 바꾼다.
+    /// </summary>
+    public static void SetAlertBanner(Border banner, TextBlock text, string message, bool isAlert, Brush? foreground = null)
+    {
+        text.Text = message;
+        if (isAlert)
+        {
+            banner.Background = Theme.AlertFace;
+            banner.BorderBrush = Theme.AlertLine;
+            banner.BorderThickness = new Thickness(1, 3, 1, 1);
+            banner.Padding = new Thickness(12, 8, 12, 8);
+            text.Foreground = Theme.AlertText;
+            return;
+        }
+
+        // 스타일 기본값(투명/두께 0/Padding 0)으로 되돌린다. Brushes.Transparent 를 새로
+        // 대입하지 않는 이유는 내장 브러시 하드코딩이기 때문이다(ReleaseTools/check_theme.sh 대상).
+        banner.ClearValue(Border.BackgroundProperty);
+        banner.ClearValue(Border.BorderBrushProperty);
+        banner.ClearValue(Border.BorderThicknessProperty);
+        banner.ClearValue(Border.PaddingProperty);
+        text.Foreground = foreground ?? Theme.TextPrimary;
+    }
+
+    /// <summary>
     /// 모달 카드 크롬의 우상단 X. WindowStyle=None 이라 네이티브 닫기 버튼이 없으므로
     /// 여기서 대신 닫습니다. 창마다 핸들러를 복사하지 않으려고 딕셔너리에 둡니다.
     /// </summary>

@@ -103,8 +103,7 @@ public partial class LetterStateEditorWindow : Window
             : ReplaceModeText;
         StateNoteTextBox.Text = state.Note;
         UpdateStateButton.IsEnabled = true;
-        StateStatusText.Text = $"'{state.Name}' 상태를 편집 중입니다.";
-        StateStatusText.Foreground = Theme.BlueText;
+        Controls.SetAlertBanner(StateStatusBanner, StateStatusText, $"'{state.Name}' 상태를 편집 중입니다.", false, Theme.BlueText);
     }
 
     private void ClearEditor()
@@ -120,8 +119,7 @@ public partial class LetterStateEditorWindow : Window
         StateNoteTextBox.Clear();
         UpdateStateButton.IsEnabled = false;
         StateNameTextBox.Focus();
-        StateStatusText.Text = "새 문자 상태의 이름과 문자를 입력하세요.";
-        StateStatusText.Foreground = Theme.TextSecondary;
+        Controls.SetAlertBanner(StateStatusBanner, StateStatusText, "새 문자 상태의 이름과 문자를 입력하세요.", false, Theme.TextSecondary);
     }
 
     private void NewStateButton_Click(object sender, RoutedEventArgs e)
@@ -159,8 +157,7 @@ public partial class LetterStateEditorWindow : Window
         _editingStateId = state.Id;
         RefreshStateList(state.Id);
         BeginEditing(state.Id);
-        StateStatusText.Text = $"'{state.Name}' 상태를 추가했습니다.";
-        StateStatusText.Foreground = Theme.Success;
+        Controls.SetAlertBanner(StateStatusBanner, StateStatusText, $"'{state.Name}' 상태를 추가했습니다.", false, Theme.Success);
     }
 
     private void UpdateStateButton_Click(object sender, RoutedEventArgs e)
@@ -197,8 +194,7 @@ public partial class LetterStateEditorWindow : Window
         state.Note = note;
         RefreshStateList(state.Id);
         BeginEditing(state.Id);
-        StateStatusText.Text = $"'{state.Name}' 상태를 수정했습니다.";
-        StateStatusText.Foreground = Theme.Success;
+        Controls.SetAlertBanner(StateStatusBanner, StateStatusText, $"'{state.Name}' 상태를 수정했습니다.", false, Theme.Success);
     }
 
     private void DeleteStateButton_Click(object sender, RoutedEventArgs e)
@@ -223,8 +219,7 @@ public partial class LetterStateEditorWindow : Window
         _states.Remove(state);
         ClearEditor();
         RefreshStateList();
-        StateStatusText.Text = $"'{state.Name}' 상태를 삭제했습니다.";
-        StateStatusText.Foreground = Theme.Warn;
+        Controls.SetAlertBanner(StateStatusBanner, StateStatusText, $"'{state.Name}' 상태를 삭제했습니다.", false, Theme.Warn);
     }
 
     private void SaveButton_Click(object sender, RoutedEventArgs e)
@@ -401,10 +396,7 @@ public partial class LetterStateEditorWindow : Window
                 string.Equals(state.Id, stateId, StringComparison.Ordinal));
 
     private void SetError(string message)
-    {
-        StateStatusText.Text = message;
-        StateStatusText.Foreground = Theme.Error;
-    }
+        => Controls.SetAlertBanner(StateStatusBanner, StateStatusText, message, true);
 
 
     public sealed class StateDisplayItem

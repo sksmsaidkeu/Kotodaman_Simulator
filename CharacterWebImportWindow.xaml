@@ -784,10 +784,11 @@
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-            <TextBlock x:Name="StatusText"
-                       VerticalAlignment="Center"
-                       Foreground="{StaticResource Status.Success}"
-                       TextWrapping="Wrap"/>
+            <Border x:Name="StatusBanner" Style="{StaticResource AlertBannerStyle}" VerticalAlignment="Center">
+                <TextBlock x:Name="StatusText"
+                           Foreground="{StaticResource Status.Success}"
+                           TextWrapping="Wrap"/>
+            </Border>
             <Button Grid.Column="1"
                     Margin="10,0,0,0"
                     Content="취소"

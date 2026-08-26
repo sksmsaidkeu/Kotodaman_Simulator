@@ -1414,9 +1414,11 @@
             </Grid.ColumnDefinitions>
 
             <StackPanel Grid.Column="0" VerticalAlignment="Center">
-                <TextBlock x:Name="EditorStatusText"
-                           Foreground="{StaticResource Text.Secondary}"
-                           Text="덱 1번은 리더입니다. 캐릭터는 소속 그룹 하나를 가지며, 미라클 문자 부여는 해당 캐릭터가 리더일 때만 적용됩니다."/>
+                <Border x:Name="EditorStatusBanner" Style="{StaticResource AlertBannerStyle}">
+                    <TextBlock x:Name="EditorStatusText"
+                               Foreground="{StaticResource Text.Secondary}"
+                               Text="덱 1번은 리더입니다. 캐릭터는 소속 그룹 하나를 가지며, 미라클 문자 부여는 해당 캐릭터가 리더일 때만 적용됩니다."/>
+                </Border>
                 <TextBlock Margin="0,4,0,0"
                            Foreground="{StaticResource Text.Tertiary}"
                            FontSize="11"

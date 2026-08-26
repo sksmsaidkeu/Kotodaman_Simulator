@@ -218,8 +218,7 @@ public partial class CharacterBulkEditorWindow : Window
 
         CharacterDataGrid.Items.Refresh();
         UpdateCountText();
-        StatusText.Text = $"현재 표시된 {_view.Cast<object>().Count():N0}명을 체크했습니다.";
-        StatusText.Foreground = Theme.Success;
+        Controls.SetAlertBanner(StatusBanner, StatusText, $"현재 표시된 {_view.Cast<object>().Count():N0}명을 체크했습니다.", false, Theme.Success);
     }
 
     private void ClearChecksButton_Click(object sender, RoutedEventArgs e)
@@ -231,8 +230,7 @@ public partial class CharacterBulkEditorWindow : Window
 
         CharacterDataGrid.Items.Refresh();
         UpdateCountText();
-        StatusText.Text = "체크를 모두 해제했습니다.";
-        StatusText.Foreground = Theme.TextSecondary;
+        Controls.SetAlertBanner(StatusBanner, StatusText, "체크를 모두 해제했습니다.", false, Theme.TextSecondary);
     }
 
     private void ApplyBatchButton_Click(object sender, RoutedEventArgs e)
@@ -317,8 +315,7 @@ public partial class CharacterBulkEditorWindow : Window
         CharacterDataGrid.Items.Refresh();
         _view.Refresh();
         UpdateCountText();
-        StatusText.Text = $"체크한 {selected.Length:N0}명의 표 값을 변경했습니다. 아래 '변경 내용 적용'을 누르면 characters.json에 반영됩니다.";
-        StatusText.Foreground = Theme.Warn;
+        Controls.SetAlertBanner(StatusBanner, StatusText, $"체크한 {selected.Length:N0}명의 표 값을 변경했습니다. 아래 '변경 내용 적용'을 누르면 characters.json에 반영됩니다.", false, Theme.Warn);
     }
 
     private void SaveButton_Click(object sender, RoutedEventArgs e)
@@ -403,10 +400,7 @@ public partial class CharacterBulkEditorWindow : Window
     }
 
     private void SetError(string message)
-    {
-        StatusText.Text = message;
-        StatusText.Foreground = Theme.Error;
-    }
+        => Controls.SetAlertBanner(StatusBanner, StatusText, message, true);
 
     private static List<string> ParseLetters(string text)
     {

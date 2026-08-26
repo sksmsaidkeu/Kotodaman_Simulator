@@ -111,8 +111,7 @@ public partial class CharacterFormEditorWindow : Window
         _removeImageRequested = item.RemoveImageRequested;
         UpdateImagePreview(item);
         ApplyFormButton.Content = "현재 형태 수정";
-        EditorStatusText.Text = $"'{item.Form.Name}' 편집 중";
-        EditorStatusText.Foreground = Theme.BlueText;
+        Controls.SetAlertBanner(EditorStatusBanner, EditorStatusText, $"'{item.Form.Name}' 편집 중", false, Theme.BlueText);
     }
 
     private void ClearEditorForNew()
@@ -131,8 +130,7 @@ public partial class CharacterFormEditorWindow : Window
         FormImagePlaceholder.Visibility = Visibility.Visible;
         FormImageFileText.Text = "등록된 이미지 없음";
         ApplyFormButton.Content = "새 형태 추가";
-        EditorStatusText.Text = "형태 이름과 문자를 입력하세요.";
-        EditorStatusText.Foreground = Theme.TextSecondary;
+        Controls.SetAlertBanner(EditorStatusBanner, EditorStatusText, "형태 이름과 문자를 입력하세요.", false, Theme.TextSecondary);
         FormNameTextBox.Focus();
     }
 
@@ -198,10 +196,9 @@ public partial class CharacterFormEditorWindow : Window
         RefreshList(target.Form.Id);
         if (showSuccessMessage)
         {
-            EditorStatusText.Text = isNew
+            Controls.SetAlertBanner(EditorStatusBanner, EditorStatusText, isNew
                 ? $"'{name}' 형태를 추가했습니다. 아래 저장하고 닫기를 눌러 확정하세요."
-                : $"'{name}' 형태를 수정했습니다. 아래 저장하고 닫기를 눌러 확정하세요.";
-            EditorStatusText.Foreground = Theme.Success;
+                : $"'{name}' 형태를 수정했습니다. 아래 저장하고 닫기를 눌러 확정하세요.", false, Theme.Success);
         }
 
         return true;
@@ -376,10 +373,7 @@ public partial class CharacterFormEditorWindow : Window
             : _items.FirstOrDefault(item => string.Equals(item.Form.Id, id, StringComparison.Ordinal));
 
     private void SetError(string message)
-    {
-        EditorStatusText.Text = message;
-        EditorStatusText.Foreground = Theme.Error;
-    }
+        => Controls.SetAlertBanner(EditorStatusBanner, EditorStatusText, message, true);
 
     private static List<string> ParseLetters(string text)
     {

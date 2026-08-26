@@ -417,12 +417,15 @@
                                 Click="UpdateStateButton_Click"/>
                     </WrapPanel>
 
-                    <TextBlock x:Name="StateStatusText"
-                               Grid.Row="6"
-                               Margin="0,14,0,0"
-                               Foreground="{StaticResource Text.Secondary}"
-                               TextWrapping="Wrap"
-                               Text="상태 문자는 현재 손패에서 해당 상태를 선택했을 때만 검색에 사용됩니다."/>
+                    <Border x:Name="StateStatusBanner"
+                            Grid.Row="6"
+                            Style="{StaticResource AlertBannerStyle}"
+                            Margin="0,14,0,0">
+                        <TextBlock x:Name="StateStatusText"
+                                   Foreground="{StaticResource Text.Secondary}"
+                                   TextWrapping="Wrap"
+                                   Text="상태 문자는 현재 손패에서 해당 상태를 선택했을 때만 검색에 사용됩니다."/>
+                    </Border>
                 </Grid>
             </Border>
         </Grid>

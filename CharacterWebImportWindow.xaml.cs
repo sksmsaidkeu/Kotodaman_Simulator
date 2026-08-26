@@ -1297,10 +1297,7 @@ public partial class CharacterWebImportWindow : Window
     }
 
     private void SetStatus(string message, bool isError)
-    {
-        StatusText.Text = message;
-        StatusText.Foreground = isError ? Theme.Error : Theme.Success;
-    }
+        => Controls.SetAlertBanner(StatusBanner, StatusText, message, isError, Theme.Success);
 
     /// <summary>
     /// P7: 실패 원인을 요약 문장에서 빼내 빨강 라벨 뱃지로 세운다.
