@@ -137,6 +137,62 @@
             <Setter Property="FontSize" Value="12"/>
         </Style>
 
+        <!--
+          P9 타일 그리드 카드. 게임 img1 夢幻の塔/戯言戦/育成 메뉴 타일(흰 카드 + 탠 테두리,
+          위 아이콘 + 아래 라벨)을 "단어 데이터 관리" 버튼 8개에 옮긴다. 이 섹션 하나에만
+          쓰이는 스타일이라 Controls.xaml(여러 창 공유)이 아니라 여기 로컬로 둔다.
+
+          면·테두리를 트리거로 바꾸지 않는 이유: 바꾸면 그 위 아이콘/라벨 색과 다시
+          짝을 맞춰야 한다(§ P7 때 6곳 사고). 호버/눌림은 테두리 링 색과 Opacity 만
+          건드리고, Foreground/Background 는 항상 TemplateBinding 값 그대로 둔다.
+        -->
+        <Style x:Key="DataTileButtonStyle" TargetType="Button">
+            <Setter Property="Width" Value="140"/>
+            <Setter Property="Height" Value="112"/>
+            <Setter Property="Margin" Value="0,0,10,10"/>
+            <Setter Property="Background" Value="{StaticResource Bg.Field}"/>
+            <Setter Property="Foreground" Value="{StaticResource Text.Primary}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource Line.Tan}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="TileFace"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="{StaticResource Radius.Card}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsKeyboardFocused" Value="True">
+                                <Setter TargetName="TileFace" Property="BorderBrush" Value="{StaticResource Accent.Focus}"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="TileFace" Property="BorderBrush" Value="{StaticResource Accent.Focus}"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="TileFace" Property="Opacity" Value="0.8"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="TileFace" Property="Opacity" Value="0.5"/>
+                                <Setter Property="Cursor" Value="Arrow"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- 8개 중 '4~6글자 순차 보충' 하나만 강조(주 액션 위계 유지). 자주 계열 3톤 한 벌. -->
+        <Style x:Key="DataTilePrimaryButtonStyle" TargetType="Button" BasedOn="{StaticResource DataTileButtonStyle}">
+            <Setter Property="Background" Value="{StaticResource Rose.Face}"/>
+            <Setter Property="Foreground" Value="{StaticResource Rose.Text}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource Rose.Line}"/>
+            <Setter Property="BorderThickness" Value="2"/>
+        </Style>
+
         <Style TargetType="TextBox">
             <Setter Property="MinHeight" Value="40"/>
             <Setter Property="Padding" Value="10,7"/>
@@ -841,50 +897,173 @@
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
 
-                        <WrapPanel Grid.Row="0"
-                                   HorizontalAlignment="Left"
-                                   VerticalAlignment="Center">
-                            <Button Content="GACCAG 사이트 열기"
-                                    Margin="0,0,8,8"
-                                    Style="{StaticResource SecondaryButtonStyle}"
-                                    Click="OpenGaccagSiteButton_Click"/>
+                        <!-- P9 타일 그리드. 8칸 고정폭 타일이라 UniformGrid 4열이 그대로 격자를 이룬다. -->
+                        <UniformGrid Grid.Row="0"
+                                     Columns="4"
+                                     HorizontalAlignment="Left">
+                            <Button Style="{StaticResource DataTileButtonStyle}"
+                                    Click="OpenGaccagSiteButton_Click"
+                                    AutomationProperties.Name="GACCAG 사이트 열기">
+                                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                                    <Grid Width="30" Height="30">
+                                        <Ellipse Width="20" Height="20"
+                                                 HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                 Stroke="{StaticResource Text.Primary}"
+                                                 StrokeThickness="1.8"/>
+                                        <Path Data="M8,19 L19,8 M10,8 L19,8 L19,17"
+                                              Stretch="None"
+                                              HorizontalAlignment="Center" VerticalAlignment="Center"
+                                              Stroke="{StaticResource Text.Primary}"
+                                              StrokeThickness="1.8"
+                                              StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"/>
+                                    </Grid>
+                                    <TextBlock Text="GACCAG 사이트 열기"
+                                               Margin="0,8,0,0" FontSize="12"
+                                               TextWrapping="Wrap" TextAlignment="Center"
+                                               Width="118" HorizontalAlignment="Center"/>
+                                </StackPanel>
+                            </Button>
+
                             <Button x:Name="CancelGaccagUpdateButton"
-                                    Content="업데이트 중단"
-                                    Margin="0,0,8,8"
+                                    Style="{StaticResource DataTileButtonStyle}"
                                     Visibility="Collapsed"
-                                    Style="{StaticResource SecondaryButtonStyle}"
-                                    Click="CancelGaccagUpdateButton_Click"/>
+                                    Click="CancelGaccagUpdateButton_Click"
+                                    AutomationProperties.Name="업데이트 중단">
+                                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                                    <Grid Width="30" Height="30">
+                                        <Rectangle Width="16" Height="16" RadiusX="2" RadiusY="2"
+                                                   HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                   Fill="{StaticResource Alert.Text}"/>
+                                    </Grid>
+                                    <TextBlock Text="업데이트 중단"
+                                               Margin="0,8,0,0" FontSize="12"
+                                               TextWrapping="Wrap" TextAlignment="Center"
+                                               Width="118" HorizontalAlignment="Center"/>
+                                </StackPanel>
+                            </Button>
+
                             <Button x:Name="UpdateComboWordsButton"
-                                    Content="2~3글자 콤보 데이터 수집"
-                                    Margin="0,0,8,8"
-                                    Style="{StaticResource SecondaryButtonStyle}"
-                                    Click="UpdateComboWordsButton_Click"/>
+                                    Style="{StaticResource DataTileButtonStyle}"
+                                    Click="UpdateComboWordsButton_Click"
+                                    AutomationProperties.Name="2~3글자 콤보 데이터 수집">
+                                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                                    <Canvas Width="30" Height="30">
+                                        <Ellipse Canvas.Left="2" Canvas.Top="2" Width="13" Height="13"
+                                                 Stroke="{StaticResource Text.Primary}" StrokeThickness="1.6"/>
+                                        <Line X1="11" Y1="11" X2="15" Y2="15"
+                                              Stroke="{StaticResource Text.Primary}" StrokeThickness="1.6"
+                                              StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
+                                        <Path Data="M22,12 L22,20 M18,17 L22,21 L26,17 M17,24 L27,24"
+                                              Stroke="{StaticResource Text.Primary}" StrokeThickness="1.6"
+                                              StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"/>
+                                    </Canvas>
+                                    <TextBlock Text="2~3글자 콤보 데이터 수집"
+                                               Margin="0,8,0,0" FontSize="12"
+                                               TextWrapping="Wrap" TextAlignment="Center"
+                                               Width="118" HorizontalAlignment="Center"/>
+                                </StackPanel>
+                            </Button>
+
                             <Button x:Name="UpdateFourLetterButton"
-                                    Content="4글자 보충"
-                                    Margin="0,0,8,8"
-                                    Style="{StaticResource SecondaryButtonStyle}"
-                                    Click="UpdateFourLetterButton_Click"/>
+                                    Style="{StaticResource DataTileButtonStyle}"
+                                    Click="UpdateFourLetterButton_Click"
+                                    AutomationProperties.Name="4글자 보충">
+                                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                                    <Border Width="30" Height="30" CornerRadius="15"
+                                            Background="{StaticResource Bg.Field}"
+                                            BorderBrush="{StaticResource Line.TanStrong}"
+                                            BorderThickness="2">
+                                        <TextBlock Text="4" FontWeight="Bold" FontSize="15"
+                                                   Foreground="{StaticResource Text.Primary}"
+                                                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                    <TextBlock Text="4글자 보충"
+                                               Margin="0,8,0,0" FontSize="12"
+                                               TextWrapping="Wrap" TextAlignment="Center"
+                                               Width="118" HorizontalAlignment="Center"/>
+                                </StackPanel>
+                            </Button>
+
                             <Button x:Name="UpdateFiveLetterButton"
-                                    Content="5글자 보충"
-                                    Margin="0,0,8,8"
-                                    Style="{StaticResource SecondaryButtonStyle}"
-                                    Click="UpdateFiveLetterButton_Click"/>
+                                    Style="{StaticResource DataTileButtonStyle}"
+                                    Click="UpdateFiveLetterButton_Click"
+                                    AutomationProperties.Name="5글자 보충">
+                                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                                    <Border Width="30" Height="30" CornerRadius="15"
+                                            Background="{StaticResource Bg.Field}"
+                                            BorderBrush="{StaticResource Line.TanStrong}"
+                                            BorderThickness="2">
+                                        <TextBlock Text="5" FontWeight="Bold" FontSize="15"
+                                                   Foreground="{StaticResource Text.Primary}"
+                                                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                    <TextBlock Text="5글자 보충"
+                                               Margin="0,8,0,0" FontSize="12"
+                                               TextWrapping="Wrap" TextAlignment="Center"
+                                               Width="118" HorizontalAlignment="Center"/>
+                                </StackPanel>
+                            </Button>
+
                             <Button x:Name="UpdateSixLetterButton"
-                                    Content="6글자 보충"
-                                    Margin="0,0,8,8"
-                                    Style="{StaticResource SecondaryButtonStyle}"
-                                    Click="UpdateSixLetterButton_Click"/>
+                                    Style="{StaticResource DataTileButtonStyle}"
+                                    Click="UpdateSixLetterButton_Click"
+                                    AutomationProperties.Name="6글자 보충">
+                                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                                    <Border Width="30" Height="30" CornerRadius="15"
+                                            Background="{StaticResource Bg.Field}"
+                                            BorderBrush="{StaticResource Line.TanStrong}"
+                                            BorderThickness="2">
+                                        <TextBlock Text="6" FontWeight="Bold" FontSize="15"
+                                                   Foreground="{StaticResource Text.Primary}"
+                                                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                    <TextBlock Text="6글자 보충"
+                                               Margin="0,8,0,0" FontSize="12"
+                                               TextWrapping="Wrap" TextAlignment="Center"
+                                               Width="118" HorizontalAlignment="Center"/>
+                                </StackPanel>
+                            </Button>
+
                             <Button x:Name="UpdateSevenLetterButton"
-                                    Content="7글자 재검사"
-                                    Margin="0,0,8,8"
-                                    Style="{StaticResource SecondaryButtonStyle}"
-                                    Click="UpdateSevenLetterButton_Click"/>
+                                    Style="{StaticResource DataTileButtonStyle}"
+                                    Click="UpdateSevenLetterButton_Click"
+                                    AutomationProperties.Name="7글자 재검사">
+                                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                                    <Border Width="30" Height="30" CornerRadius="15"
+                                            Background="{StaticResource Bg.Field}"
+                                            BorderBrush="{StaticResource Line.TanStrong}"
+                                            BorderThickness="2">
+                                        <TextBlock Text="7" FontWeight="Bold" FontSize="15"
+                                                   Foreground="{StaticResource Text.Primary}"
+                                                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                    <TextBlock Text="7글자 재검사"
+                                               Margin="0,8,0,0" FontSize="12"
+                                               TextWrapping="Wrap" TextAlignment="Center"
+                                               Width="118" HorizontalAlignment="Center"/>
+                                </StackPanel>
+                            </Button>
+
                             <Button x:Name="UpdateSearchWordsButton"
-                                    Content="4~6글자 순차 보충"
-                                    Margin="0,0,0,8"
-                                    Style="{StaticResource PrimaryButtonStyle}"
-                                    Click="UpdateSearchWordsButton_Click"/>
-                        </WrapPanel>
+                                    Style="{StaticResource DataTilePrimaryButtonStyle}"
+                                    Click="UpdateSearchWordsButton_Click"
+                                    AutomationProperties.Name="4~6글자 순차 보충">
+                                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                                    <Grid Width="30" Height="30">
+                                        <Path Data="M4,4 L15,10 L26,4 M4,12 L15,18 L26,12 M4,20 L15,26 L26,20"
+                                              Stretch="None"
+                                              HorizontalAlignment="Center" VerticalAlignment="Center"
+                                              Stroke="{StaticResource Rose.Text}"
+                                              StrokeThickness="1.8"
+                                              StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"/>
+                                    </Grid>
+                                    <TextBlock Text="4~6글자 순차 보충"
+                                               Margin="0,8,0,0" FontSize="12" FontWeight="Bold"
+                                               TextWrapping="Wrap" TextAlignment="Center"
+                                               Width="118" HorizontalAlignment="Center"/>
+                                </StackPanel>
+                            </Button>
+                        </UniformGrid>
 
                         <ProgressBar x:Name="DictionaryUpdateProgressBar"
                                      Grid.Row="1"
