@@ -1,8 +1,8 @@
-﻿{
-    "version":  "1.25.3",
-    "releaseTag":  "v1.25.3",
-    "releaseUrl":  "https://github.com/sksmsaidkeu/Kotodaman_Simulator/releases/tag/v1.25.3",
-    "setupUrl":  "https://github.com/sksmsaidkeu/Kotodaman_Simulator/releases/download/v1.25.3/KotoTester-win-Setup.exe",
-    "setupSha256":  "e41ffcc3c720f90e03e7232813c299db1992cd99d5cfb3512fff8f6b0960680",
-    "publishedAt":  "2026-08-26T09:39:39.0000000Z"
+{
+    "version":  "1.25.4",
+    "releaseTag":  "v1.25.4",
+    "releaseUrl":  "https://github.com/sksmsaidkeu/Kotodaman_Simulator/releases/tag/v1.25.4",
+    "setupUrl":  "https://github.com/sksmsaidkeu/Kotodaman_Simulator/releases/download/v1.25.4/KotoTester-win-Setup.exe",
+    "setupSha256":  "34f644f29a807eb45a34ffb483ee988f722467a17c8b461a8b556eb4e4d721b8",
+    "publishedAt":  "2026-08-27T03:37:29.0000000Z"
 }
