@@ -1,7 +1,7 @@
 {
-  "SchemaVersion": 1,
-  "DataVersion": "2026.08.19.1",
-  "MinimumAppVersion": "1.25.1",
-  "UpdatedAt": "2026-08-19T00:00:00+09:00",
-  "CharacterCount": 2305
+    "SchemaVersion":  1,
+    "DataVersion":  "2026.08.27.1",
+    "MinimumAppVersion":  "1.25.1",
+    "UpdatedAt":  "2026-08-27T12:28:47.6370135+09:00",
+    "CharacterCount":  1
 }

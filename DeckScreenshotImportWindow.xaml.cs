@@ -186,7 +186,7 @@ public partial class DeckScreenshotImportWindow : Window
         int height = _screenshot.PixelHeight;
         double aspect = width / (double)Math.Max(1, height);
 
-        // GameWith에서 볼 수 있는 덱 화면처럼 4x3 카드 그리드가 화면 상·중단을 크게 차지하는 경우를 기본값으로 둡니다.
+        // GameWith에서 볼 수 있는 덱 화면처럼 6x2 카드 그리드가 화면 상·중단을 크게 차지하는 경우를 기본값으로 둡니다.
         // 기종/캡처 방식이 다르면 사용자가 드래그 한 번으로 바로 보정할 수 있습니다.
         double leftRatio;
         double topRatio;
@@ -194,13 +194,13 @@ public partial class DeckScreenshotImportWindow : Window
         double heightRatio;
         if (aspect < 0.60) // 휴대폰 세로형 전체 스크린샷 - 실제 코토다망 덱 편성 팝업 기준
         {
-            // 실제 세로형 코토다망 덱 화면의 문자 원(4열 x 3행) 간격으로 재보정.
-            // 폭/높이를 너무 넓게 잡으면 열·행이 내려갈수록 카드 중심이 밀려
-            // ORB와 속성색 판정이 동시에 약해지므로 문자 원 간격을 슬롯 간격에 맞춥니다.
-            leftRatio = 0.045;
-            topRatio = 0.363;
-            widthRatio = 0.86;
-            heightRatio = 0.31;
+            // v1.25.2: 게임 UI가 4열x3행에서 6열x2행으로 바뀌면서 카드 영역이
+            // 훨씬 낮고 얇아졌습니다. 실제 1080x2340 스크린샷 픽셀 좌표(88,895)-(988,1330)를
+            // 기준으로 재보정했습니다.
+            leftRatio = 0.08;
+            topRatio = 0.383;
+            widthRatio = 0.83;
+            heightRatio = 0.186;
         }
         else if (aspect < 0.82) // 태블릿/넓은 세로형
         {
@@ -219,7 +219,8 @@ public partial class DeckScreenshotImportWindow : Window
         else if (aspect >= 0.82 && aspect <= 1.25 && width <= 1600 && height <= 1600)
         {
             // Nox/에뮬레이터에서 덱 패널만 캡처한 준정사각형 이미지.
-            // 상단 리더 특성 바와 하단 버튼을 제외하면 실제 4x3 카드 영역은 대략 14%~84% 구간입니다.
+            // 상단 리더 특성 바와 하단 버튼을 제외한 대략 14%~84% 구간(4열x3행 시절 값).
+            // TODO: 6열x2행 UI로 바뀐 뒤의 실제 에뮬레이터 캡처로 재보정 필요 - 세로 폭이 훨씬 좁아졌을 가능성이 높습니다.
             leftRatio = 0.00;
             topRatio = 0.14;
             widthRatio = 1.00;

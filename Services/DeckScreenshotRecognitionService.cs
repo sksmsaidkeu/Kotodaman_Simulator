@@ -8,14 +8,15 @@ using OpenCvSharp;
 namespace KotodamanWordFinder.Services;
 
 /// <summary>
-/// 코토다망 덱 스크린샷의 4x3 슬롯을 캐릭터 DB 이미지와 비교합니다.
+/// 코토다망 덱 스크린샷의 6x2 슬롯을 캐릭터 DB 이미지와 비교합니다.
 /// 대규모 DB에서도 기다리는 시간을 줄이기 위해 12개 슬롯 병렬 비교 + ORB 특징 영구 캐시를 사용합니다.
 /// v1.21.1에서는 검수 확정 슬롯을 UI 프로필별 학습 샘플로 재사용하고, 상위 후보 reciprocal cross-check를 함께 사용합니다.
+/// 게임 UI가 4열x3행에서 6열x2행으로 바뀌면서 슬롯이 이전보다 세로로 길고 좁아졌습니다.
 /// </summary>
 public sealed class DeckScreenshotRecognitionService : IDisposable
 {
-    public const int ColumnCount = 4;
-    public const int RowCount = 3;
+    public const int ColumnCount = 6;
+    public const int RowCount = 2;
     public const int SlotCount = ColumnCount * RowCount;
 
     private const double RatioTestThreshold = 0.78;
@@ -28,11 +29,14 @@ public sealed class DeckScreenshotRecognitionService : IDisposable
     private const int AttributeHistogramBins = 36;
     private const double MinimumAttributeAssistConfidence = 0.45;
 
+    // v1.25.2: 6열x2행 그리드의 슬롯은 4열x3행보다 세로로 길쭉합니다(약 150x217px 비율).
+    // 문자 원 배지가 슬롯 좌상단 약 16%/20% 지점을 차지하고, 캐릭터 카드 아트는
+    // 슬롯 높이의 약 57% 지점(LV 바 시작 전)에서 끝나므로 아래 비율로 재보정했습니다.
     private static readonly RelativeRect[] SlotPortraitRegions =
     {
-        new(0.16, 0.02, 0.90, 0.66),
-        new(0.22, 0.04, 0.88, 0.62),
-        new(0.10, 0.00, 0.95, 0.72)
+        new(0.05, 0.02, 0.90, 0.55),
+        new(0.12, 0.05, 0.85, 0.52),
+        new(0.00, 0.00, 0.95, 0.58)
     };
 
     private readonly string _dataDirectory;
@@ -967,7 +971,8 @@ public sealed class DeckScreenshotRecognitionService : IDisposable
 
         int minDimension = Math.Min(color.Cols, color.Rows);
         int minRadius = Math.Max(14, (int)Math.Round(minDimension * 0.085));
-        int maxRadius = Math.Max(minRadius + 2, (int)Math.Round(minDimension * 0.20));
+        // 6열x2행 슬롯은 폭이 좁아 문자 원 반지름이 폭 대비 더 크게 잡힙니다(약 0.20~0.21).
+        int maxRadius = Math.Max(minRadius + 2, (int)Math.Round(minDimension * 0.23));
         CircleSegment[] circles;
         try
         {
@@ -998,13 +1003,13 @@ public sealed class DeckScreenshotRecognitionService : IDisposable
         double bestEvidenceScore = 0;
         double bestConfidence = 0;
 
-        // v1.23.7의 휴대폰 기본 그리드 보정값에서는 12칸 모두 문자 원이
-        // 슬롯 왼쪽 약 29%, 위쪽 약 14% 지점에 옵니다. 사용자가 영역을 약간
-        // 다르게 잡더라도 아래 허용 오차 안에서 Hough 원을 찾습니다.
-        double expectedCenterX = color.Cols * 0.29;
-        double expectedCenterY = color.Rows * 0.14;
-        double allowedXDistance = color.Cols * 0.18;
-        double allowedYDistance = color.Rows * 0.16;
+        // v1.25.2의 6열x2행 그리드 보정값에서는 12칸 모두 문자 원이
+        // 슬롯 왼쪽 약 16%, 위쪽 약 20% 지점에 옵니다(슬롯이 세로로 길어져 비율이 이동).
+        // 사용자가 영역을 약간 다르게 잡더라도 아래 허용 오차 안에서 Hough 원을 찾습니다.
+        double expectedCenterX = color.Cols * 0.163;
+        double expectedCenterY = color.Rows * 0.198;
+        double allowedXDistance = color.Cols * 0.16;
+        double allowedYDistance = color.Rows * 0.15;
 
         foreach (CircleSegment circle in circles.Take(14))
         {
