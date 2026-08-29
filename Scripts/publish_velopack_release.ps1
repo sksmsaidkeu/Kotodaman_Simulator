@@ -4,7 +4,7 @@ param([switch]$Draft)
 $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version 2.0
 
-$ProjectRoot = $PSScriptRoot
+$ProjectRoot = Split-Path $PSScriptRoot -Parent
 $ProjectPath = Join-Path $ProjectRoot 'KotodamanWordFinder.csproj'
 $PublishDir = Join-Path $ProjectRoot 'Publish\app'
 $ReleasesDir = Join-Path $ProjectRoot 'Releases'

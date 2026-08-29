@@ -3,7 +3,8 @@
 # 사용법: bash deploy_site.sh
 set -eu
 
-ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 TOKEN_FILE="$HOME/.vercel-token"
 
 [ -s "$TOKEN_FILE" ] || {
@@ -12,7 +13,7 @@ TOKEN_FILE="$HOME/.vercel-token"
   exit 1
 }
 
-bash "$ROOT/check_deploy.sh" < /dev/null
+bash "$SCRIPT_DIR/check_deploy.sh" < /dev/null
 
 cd "$ROOT/download-site"
 vercel deploy --prod --yes --token="$(cat "$TOKEN_FILE")"

@@ -9,12 +9,12 @@ function Get-RelativeSlashPath {
     return $target.Substring($baseFull.Length).TrimStart('\') -replace '\\', '/'
 }
 
-$ProjectRoot = $PSScriptRoot
+$ProjectRoot = Split-Path $PSScriptRoot -Parent
 $ProjectData = Join-Path $ProjectRoot 'Data'
 $BaselineRoot = Join-Path $ProjectRoot 'ReleaseTools\Baseline'
 $PendingUpdatePath = Join-Path $ProjectRoot 'ReleaseTools\pending_data_update.json'
 $BundledUpdates = Join-Path $ProjectData 'BundledUpdates'
-$SyncScript = Join-Path $ProjectRoot 'sync_release_data.ps1'
+$SyncScript = Join-Path $PSScriptRoot 'sync_release_data.ps1'
 
 try {
     if (-not (Test-Path -LiteralPath $PendingUpdatePath)) {

@@ -14,11 +14,11 @@ function Get-RelativeSlashPath {
     return $target.Substring($baseFull.Length).TrimStart('\') -replace '\\', '/'
 }
 
-$ProjectRoot = $PSScriptRoot
+$ProjectRoot = Split-Path $PSScriptRoot -Parent
 $ProjectData = Join-Path $ProjectRoot 'Data'
 $BaselineRoot = Join-Path $ProjectRoot 'ReleaseTools\Baseline'
 $UpdatesRoot = Join-Path $ProjectRoot 'Updates'
-$SyncScript = Join-Path $ProjectRoot 'sync_release_data.ps1'
+$SyncScript = Join-Path $PSScriptRoot 'sync_release_data.ps1'
 $BaselineCharacters = Join-Path $BaselineRoot 'characters.json'
 $BaselineHashes = Join-Path $BaselineRoot 'image_hashes.json'
 $BaselineReferenceHashes = Join-Path $BaselineRoot 'reference_hashes.json'

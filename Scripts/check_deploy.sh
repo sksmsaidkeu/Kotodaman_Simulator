@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
-# DEPLOY_CHECKLIST.md의 항목을 자동 검사한다.
-# 단독 실행: bash check_deploy.sh
+# Docs/DEPLOY_CHECKLIST.md의 항목을 자동 검사한다.
+# 단독 실행: bash Scripts/check_deploy.sh
 # hook 실행: PreToolUse(Bash) — stdin으로 도구 입력 JSON을 받고, vercel deploy가 아니면 통과.
 # 실패 시 exit 2 (PreToolUse에서 도구 실행을 막는 코드).
 set -u
 
-ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT" || exit 0
 
 # hook 호출이면 stdin으로 도구 입력 JSON이 온다. vercel 배포 명령일 때만 검사하고,
