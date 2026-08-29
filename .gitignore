@@ -2,6 +2,7 @@ bin/
 obj/
 Publish/
 Releases/
+Updates/
 
 # PRD: 캐릭터 이미지는 리포에 커밋하지 않고 GitHub Release 자산으로만 배포합니다.
 Data/CharacterImages/
