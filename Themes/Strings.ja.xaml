@@ -1,0 +1,114 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:system="clr-namespace:System;assembly=mscorlib">
+
+    <!-- Strings.ko.xaml 과 키 1:1 대응. 새 키를 추가하면 세 파일 모두에 추가할 것. -->
+
+    <system:String x:Key="Str.Exit">終了</system:String>
+    <system:String x:Key="Str.ExitTooltip">設定を保存してプログラムを終了します。</system:String>
+    <system:String x:Key="Str.LanguageToggle">言語切り替え</system:String>
+    <system:String x:Key="Str.LanguageToggleTooltip">言語切り替え ・KOR / JPN / ENG</system:String>
+    <system:String x:Key="Str.AutoSearch">自動検索</system:String>
+    <system:String x:Key="Str.BackupRestore">バックアップ / 復元</system:String>
+    <system:String x:Key="Str.UserData">ユーザーデータ</system:String>
+    <system:String x:Key="Str.UserDataTooltip">実際に変更・保存されるユーザーデータフォルダを開きます。</system:String>
+    <system:String x:Key="Str.ErrorLog">エラーログ</system:String>
+    <system:String x:Key="Str.ErrorLogTooltip">プログラムのエラーと実行記録が保存されるログフォルダを開きます。</system:String>
+    <system:String x:Key="Str.Reload">再読み込み</system:String>
+    <system:String x:Key="Str.SearchNow">今すぐ検索</system:String>
+    <system:String x:Key="Str.Undo">元に戻す</system:String>
+    <system:String x:Key="Str.PrevCell">前のマス</system:String>
+    <system:String x:Key="Str.NextCell">次のマス</system:String>
+    <system:String x:Key="Str.ResetBoard">盤面リセット</system:String>
+    <system:String x:Key="Str.Apply">適用</system:String>
+    <system:String x:Key="Str.Len7">7文字</system:String>
+    <system:String x:Key="Str.Len6">6文字</system:String>
+    <system:String x:Key="Str.Len5">5文字</system:String>
+    <system:String x:Key="Str.Len4">4文字</system:String>
+    <system:String x:Key="Str.CharacterListDeck">キャラクター一覧 / デッキ編成</system:String>
+    <system:String x:Key="Str.ResetHand">手札リセット</system:String>
+    <system:String x:Key="Str.ChangeToThisDeck">このデッキに変更</system:String>
+    <system:String x:Key="Str.PracticalRecommend">実戦おすすめ</system:String>
+    <system:String x:Key="Str.FirstTurnRate">初手成立率</system:String>
+    <system:String x:Key="Str.ExpectedCombo">予想コンボ</system:String>
+
+    <system:String x:Key="Str.AppTitle">コトダマン最長単語検索</system:String>
+    <system:String x:Key="Str.AppDescription">最長の単語を優先して探し、同じ文字数では予想コンボが高い候補から表示します。コンボは今回配置するキャラクターの文字が1つ以上含まれる単語のみ計算します。</system:String>
+    <system:String x:Key="Str.Board7Cells">盤面7マス</system:String>
+    <system:String x:Key="Str.QuickInput">クイック入力</system:String>
+    <system:String x:Key="Str.ExpandCollapseHint">クリックで開く / 閉じる ・7〜4文字を切り替えて確認</system:String>
+    <system:String x:Key="Str.ExpandCollapse">開く / 閉じる</system:String>
+    <system:String x:Key="Str.CharacterInputHint">文字入力 — 盤面のマスを押してから文字を選ぶと、次のマスへ自動で移動します</system:String>
+    <system:String x:Key="Str.CurrentHand4">現在の手札 4体</system:String>
+    <system:String x:Key="Str.DeckPreset">デッキプリセット</system:String>
+    <system:String x:Key="Str.PresetChangeHint">プリセットを選ぶと、現在のデッキ12体が入れ替わります。</system:String>
+    <system:String x:Key="Str.ResultLengthSelect">結果の文字数選択</system:String>
+    <system:String x:Key="Str.ResultLengthHint">検索は7・6・5・4文字を一度に計算します。下の各結果エリアの文字数ボタンで、見たい候補にすぐ切り替えられます。</system:String>
+    <system:String x:Key="Str.HandResultsTitle">現在の手札で可能</system:String>
+    <system:String x:Key="Str.DeckResultsTitle">デッキ全体で可能</system:String>
+    <system:String x:Key="Str.Sort">並び替え</system:String>
+    <system:String x:Key="Str.WordDataManagement">単語データ管理</system:String>
+    <system:String x:Key="Str.OpenGaccagSite">GACCAGサイトを開く</system:String>
+    <system:String x:Key="Str.CancelUpdate">更新を中断</system:String>
+    <system:String x:Key="Str.CollectComboData">2〜3文字コンボデータ収集</system:String>
+    <system:String x:Key="Str.Fill4">4文字補完</system:String>
+    <system:String x:Key="Str.Fill5">5文字補完</system:String>
+    <system:String x:Key="Str.Fill6">6文字補完</system:String>
+    <system:String x:Key="Str.Recheck7">7文字再チェック</system:String>
+    <system:String x:Key="Str.SequentialFill">4〜6文字を順に補完</system:String>
+    <system:String x:Key="Str.DataUsageHint">現在の4〜7文字データは最長単語検索に使われます。2〜3文字データはキャラクターの文字を含む連続単語の予想コンボ計算に使われます。</system:String>
+
+    <system:String x:Key="Str.QuickInputExample">例: _ゅう_くせい または □ゅう□くせい ・空欄はスペース</system:String>
+    <system:String x:Key="Str.DeckPresetTooltip">保存済みデッキプリセットを選択</system:String>
+    <system:String x:Key="Str.PracticalRecommendTooltip">実戦おすすめ = 予想コンボ × 初手成立率 ・初手はリーダー固定 + 残り6体基準</system:String>
+
+    <system:String x:Key="Str.KanaBasicSection">基本五十音図</system:String>
+    <system:String x:Key="Str.KanaVoicedSection">濁音・半濁音</system:String>
+    <system:String x:Key="Str.KanaSmallSection">小文字・特殊</system:String>
+    <system:String x:Key="Str.KanaRowSuffix">行</system:String>
+    <system:String x:Key="Str.KanaSmall">小文字</system:String>
+    <system:String x:Key="Str.KanaYoonSokuon">拗音・促音</system:String>
+    <system:String x:Key="Str.KanaOther">その他</system:String>
+    <system:String x:Key="Str.BlankCell">空欄</system:String>
+    <system:String x:Key="Str.LengthTabButton">{0}文字 {1}件</system:String>
+    <system:String x:Key="Str.LengthTabTooltipHasResults">{0}文字候補 {1}件を見る</system:String>
+    <system:String x:Key="Str.LengthTabTooltipNoResults">現在の条件では{0}文字候補なし</system:String>
+
+    <system:String x:Key="Str.LengthBadge">{0}文字</system:String>
+    <system:String x:Key="Str.ComboExpected">予想{0}コンボ</system:String>
+    <system:String x:Key="Str.ComboProvisional">暫定{0}コンボ</system:String>
+    <system:String x:Key="Str.FirstTurnBadge">初手 {0}</system:String>
+    <system:String x:Key="Str.FirstTurnTooltip" xml:space="preserve">{0} / {1} 構成で成立&#10;リーダーは手札1番に固定</system:String>
+    <system:String x:Key="Str.WordPlacementSummary">{0}文字の単語 ・盤面{1}〜{2}マスに配置</system:String>
+    <system:String x:Key="Str.ViewFullBoard">盤面7マス全体を見る</system:String>
+    <system:String x:Key="Str.ComboBreakdownComplete">コンボ構成 ・2文字{0} ・3文字{1} ・4文字以上{2}</system:String>
+    <system:String x:Key="Str.ComboBreakdownPartial">現在の計算 ・4文字以上{0}（2〜3文字データ収集後に正確なコンボを表示）</system:String>
+    <system:String x:Key="Str.WordCompositionHeader">単語構成 ・{0}文字</system:String>
+    <system:String x:Key="Str.NewPlacement">今回配置</system:String>
+    <system:String x:Key="Str.ExistingBoard">既存の盤面</system:String>
+    <system:String x:Key="Str.ExistingBoardLetter">既存の盤面文字</system:String>
+    <system:String x:Key="Str.CellTooltip">{0}マス ・{1}</system:String>
+    <system:String x:Key="Str.PlacementLegend">「今回配置」：今回置く文字 ・「既存の盤面」：すでにある盤面文字</system:String>
+    <system:String x:Key="Str.LeaderEffectShort">リーダー効果</system:String>
+    <system:String x:Key="Str.DeckConditionShort">デッキ条件</system:String>
+    <system:String x:Key="Str.DeckMemberCondition">デッキ人数条件</system:String>
+    <system:String x:Key="Str.GeneralSuggestionTooltip">{0}マス ・必要な文字 {1} ・手札制限なしの一般候補</system:String>
+    <system:String x:Key="Str.AssignmentCellHeader">{0}マス ・{1} ・{2}</system:String>
+    <system:String x:Key="Str.BelongingGroup">所属グループ：{0}</system:String>
+    <system:String x:Key="Str.SameNameModeShift">同名モードシフト：{0}</system:String>
+    <system:String x:Key="Str.LetterStateInfo">文字状態：{0}（{1}）</system:String>
+    <system:String x:Key="Str.MiracleLetterInfo">ミラクル文字：{0} リーダー効果</system:String>
+    <system:String x:Key="Str.DeckConditionLetterInfo">デッキ条件文字：{0}</system:String>
+    <system:String x:Key="Str.ComboWordsExpander">キャラクターの文字を含むコンボ単語{0}件を見る</system:String>
+    <system:String x:Key="Str.ComboMatchLine">{0}〜{1}マス ・{2}文字 ・{3}</system:String>
+    <system:String x:Key="Str.AssignmentGeneralLine">{0}マス  {1}  ←  必要な文字</system:String>
+    <system:String x:Key="Str.AssignmentLine">{0}マス  {1}  ←  {2}{3}</system:String>
+    <system:String x:Key="Str.AlternateFormEntry">{0}：{1}形態 ・{2}</system:String>
+    <system:String x:Key="Str.GroupUnspecified">グループ未指定</system:String>
+    <system:String x:Key="Str.MiracleLeaderEntry">{0}：{1} ・{2} リーダー効果（{3}）{4}</system:String>
+
+    <system:String x:Key="Str.ColWord">単語</system:String>
+    <system:String x:Key="Str.ColRequiredChars">必要な文字</system:String>
+    <system:String x:Key="Str.ColCombo">コンボ</system:String>
+
+</ResourceDictionary>

@@ -15,6 +15,9 @@ public sealed class UserSettings
     public List<string?> BoardCells { get; set; } = new();
     public bool AutoSearchEnabled { get; set; } = true;
 
+    // UI 언어: ko / ja / en
+    public string Language { get; set; } = "ko";
+
     // 덱 전체 결과 정렬: Practical / Probability / Combo
     public string DeckResultSortMode { get; set; } = "Practical";
 

@@ -22,9 +22,15 @@ public partial class App : Application
     {
         base.OnStartup(e);
 
+        // 예외 핸들러 등록이 항상 OnStartup의 첫 실질 동작이어야 한다 - 이후 어떤
+        // 초기화가 던지더라도 "시작 오류" 대화상자로 받아지게.
         DispatcherUnhandledException += App_DispatcherUnhandledException;
         AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
         TaskScheduler.UnobservedTaskException += TaskScheduler_UnobservedTaskException;
+
+        // 저장된 UI 언어를 다른 초기화보다 먼저 병합해야 MainWindow가
+        // DynamicResource로 첫 화면부터 올바른 언어를 그린다.
+        ApplyLanguage(UserSettingsService.Load().Language);
 
         try
         {
@@ -82,6 +88,31 @@ public partial class App : Application
         }
     }
 
+
+    // 시작 시(OnStartup)와 언어 토글 버튼 클릭 시(MainWindow) 둘 다 여기를 거친다.
+    // 기존 Strings.*.xaml 딕셔너리를 경로 문자열로 찾아 제거하고 새 언어로 교체하면,
+    // DynamicResource로 바인딩된 요소가 재시작 없이 즉시 갱신된다.
+    public static void ApplyLanguage(string language)
+    {
+        // settings.json은 수동 편집·손상·이전 값 잔존이 가능하므로, 존재하지 않는
+        // Strings.*.xaml을 가리켜 ResourceDictionary.Source가 즉시 예외를 던지는 걸 막는다.
+        string normalized = Loc.NormalizeLanguage(language);
+
+        var dictionaries = Current.Resources.MergedDictionaries;
+        for (int index = dictionaries.Count - 1; index >= 0; index--)
+        {
+            if (dictionaries[index].Source is Uri source &&
+                source.OriginalString.Contains("Themes/Strings.", StringComparison.OrdinalIgnoreCase))
+            {
+                dictionaries.RemoveAt(index);
+            }
+        }
+
+        dictionaries.Add(new ResourceDictionary
+        {
+            Source = new Uri($"Themes/Strings.{normalized}.xaml", UriKind.Relative)
+        });
+    }
 
     private bool TryHandleCommandLine(IReadOnlyList<string> args)
     {

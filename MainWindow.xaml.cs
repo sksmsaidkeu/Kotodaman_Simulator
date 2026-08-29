@@ -112,6 +112,7 @@ public partial class MainWindow : Window
     private bool _hasPerformedSearch;
     private bool _isRenderingSelectedHand;
     private string _deckResultSortMode = "Practical";
+    private string _currentLanguage = "ko";
 
     public MainWindow()
     {
@@ -138,7 +139,7 @@ public partial class MainWindow : Window
         _handModeShiftHoldTimer.Tick += HandModeShiftHoldTimer_Tick;
 
         InitializeComponent();
-        Title = $"{AppPaths.DisplayName} v{AppPaths.AppVersion}";
+        Title = $"{Loc.Get("Str.AppTitle")} v{AppPaths.AppVersion}";
 
         // 앱 업데이트 진행을 헤더 칩으로 흘려보낸다. App 이 이 창의 컨트롤을 직접 만지지 않게
         // 정적 이벤트 하나만 지나가고, 스레드 정리는 App.ReportUpdateStatus 가 끝낸다.
@@ -151,9 +152,7 @@ public partial class MainWindow : Window
             _dataDirectory = AppPaths.UserDataDirectory;
 
             BuildBoardButtons();
-            BuildKanaSection(BasicKanaPanel, "기본 오십음도", BasicKanaRows);
-            BuildKanaSection(VoicedKanaPanel, "탁음 · 반탁음", VoicedKanaRows);
-            BuildKanaSection(SmallKanaPanel, "소문자 · 특수", SmallKanaRows, includeBlankButton: true);
+            RefreshKanaSections();
 
             LoadDataFromDisk();
             RestoreSettings();
@@ -526,6 +525,37 @@ public partial class MainWindow : Window
         }
     }
 
+    // 시작 시(생성자)와 언어 토글 시 둘 다 여기를 거친다. 가나 패널은 XAML 선언이 아니라
+    // 코드로 조립되는 Button/TextBlock이라 DynamicResource가 안 먹는다 - 언어가 바뀌면
+    // 패널을 통째로 다시 그려야 라벨이 갱신된다(row.Letters 자체는 가나라 안 바뀐다).
+    private void RefreshKanaSections()
+    {
+        BuildKanaSection(BasicKanaPanel, Loc.Get("Str.KanaBasicSection"), BasicKanaRows);
+        BuildKanaSection(VoicedKanaPanel, Loc.Get("Str.KanaVoicedSection"), VoicedKanaRows);
+        BuildKanaSection(SmallKanaPanel, Loc.Get("Str.KanaSmallSection"), SmallKanaRows, includeBlankButton: true);
+    }
+
+    // "あ행" 같은 한글 라벨을 언어별로 바꾼다. "행"으로 끝나면 가나 접두사만 남기고
+    // 현재 언어의 행 접미사를 붙이고(가나 자체는 절대 번역하지 않는다), 그 외
+    // (소문자/요음·촉음/기타/빈칸)는 고정 카테고리라 개별 키로 조회한다.
+    private static string LocalizeKanaRowLabel(string koreanLabel)
+    {
+        if (koreanLabel.EndsWith("행", StringComparison.Ordinal))
+        {
+            string kanaPrefix = koreanLabel[..^1];
+            return kanaPrefix + Loc.Get("Str.KanaRowSuffix");
+        }
+
+        return koreanLabel switch
+        {
+            "소문자" => Loc.Get("Str.KanaSmall"),
+            "요음·촉음" => Loc.Get("Str.KanaYoonSokuon"),
+            "기타" => Loc.Get("Str.KanaOther"),
+            "빈칸" => Loc.Get("Str.BlankCell"),
+            _ => koreanLabel
+        };
+    }
+
     private void BuildKanaSection(
         Panel panel,
         string sectionTitle,
@@ -547,9 +577,10 @@ public partial class MainWindow : Window
 
         if (includeBlankButton)
         {
+            string blankLabel = LocalizeKanaRowLabel("빈칸");
             var blankButtons = new WrapPanel();
-            blankButtons.Children.Add(CreateKanaButton("빈칸", null, 76));
-            rowsPanel.Children.Add(CreateKanaRowCard("빈칸", blankButtons));
+            blankButtons.Children.Add(CreateKanaButton(blankLabel, null, 76));
+            rowsPanel.Children.Add(CreateKanaRowCard(blankLabel, blankButtons));
         }
 
         foreach (KanaRow row in rows)
@@ -560,7 +591,7 @@ public partial class MainWindow : Window
                 buttons.Children.Add(CreateKanaButton(letter, letter, 38));
             }
 
-            rowsPanel.Children.Add(CreateKanaRowCard(row.Label, buttons));
+            rowsPanel.Children.Add(CreateKanaRowCard(LocalizeKanaRowLabel(row.Label), buttons));
         }
 
         panel.Children.Add(rowsPanel);
@@ -703,6 +734,8 @@ public partial class MainWindow : Window
         }
 
         AutoSearchCheckBox.IsChecked = settings.AutoSearchEnabled;
+        _currentLanguage = Loc.NormalizeLanguage(settings.Language);
+        LanguageToggleButton.Content = Loc.Abbreviation(_currentLanguage);
         _deckResultSortMode = NormalizeDeckResultSortMode(settings.DeckResultSortMode);
         DeckResultSortComboBox.SelectedItem = DeckResultSortComboBox.Items
             .OfType<ComboBoxItem>()
@@ -730,6 +763,7 @@ public partial class MainWindow : Window
                 .Where(pair => _selectedHandCharacterIds.Contains(pair.Key, StringComparer.Ordinal))
                 .ToDictionary(pair => pair.Key, pair => pair.Value, StringComparer.Ordinal),
             AutoSearchEnabled = AutoSearchCheckBox.IsChecked == true,
+            Language = _currentLanguage,
             DeckResultSortMode = _deckResultSortMode,
             LastDeckEditorCharacterId = previousSettings.LastDeckEditorCharacterId,
             LastDeckEditorSearchText = previousSettings.LastDeckEditorSearchText,
@@ -1992,7 +2026,7 @@ public partial class MainWindow : Window
             ? "손패 캐릭터를 선택하면 현재 손패 결과가 표시됩니다."
             : "현재 손패로 만들 수 있는 4~7글자 단어가 없습니다.";
         _lastDeckEmptyMessage = "덱 전체에서도 만들 수 있는 4~7글자 단어가 없습니다.";
-        HandResultsTitleText.Text = "현재 손패로 가능";
+        HandResultsTitleText.Text = Loc.Get("Str.HandResultsTitle");
         _hasPerformedSearch = true;
 
         RenderStoredSearchResults();
@@ -2543,15 +2577,15 @@ public partial class MainWindow : Window
             bool isSelected = length == selectedLength;
             var button = new Button
             {
-                Content = $"{length}글자  {group.Results.Count}개",
+                Content = string.Format(Loc.Get("Str.LengthTabButton"), length, group.Results.Count),
                 Tag = length,
                 Style = (Style)FindResource(
                     isSelected ? "PrimaryButtonStyle" : "CompactButtonStyle"),
                 Margin = new Thickness(3, 0, 3, 0),
                 Padding = new Thickness(8, 8, 8, 8),
                 ToolTip = group.HasResults
-                    ? $"{length}글자 후보 {group.Results.Count}개 보기"
-                    : $"현재 조건에서 {length}글자 후보 없음"
+                    ? string.Format(Loc.Get("Str.LengthTabTooltipHasResults"), length, group.Results.Count)
+                    : string.Format(Loc.Get("Str.LengthTabTooltipNoResults"), length)
             };
 
             button.Click += (_, _) =>
@@ -2867,14 +2901,14 @@ public partial class MainWindow : Window
             Margin = new Thickness(10, 0, 0, 0)
         };
         badgePanel.Children.Add(CreateResultBadge(
-            $"{result.Cells.Count}글자",
+            string.Format(Loc.Get("Str.LengthBadge"), result.Cells.Count),
             Theme.InfoFace,
             Theme.InfoLine,
             featured));
         badgePanel.Children.Add(CreateResultBadge(
             hasCompleteComboData
-                ? $"예상 {result.ComboCount}콤보"
-                : $"임시 {result.ComboCount}콤보",
+                ? string.Format(Loc.Get("Str.ComboExpected"), result.ComboCount)
+                : string.Format(Loc.Get("Str.ComboProvisional"), result.ComboCount),
             hasCompleteComboData ? Theme.SuccessFace : Theme.AlertFace,
             hasCompleteComboData ? Theme.SuccessLine : Theme.AlertLine,
             featured));
@@ -2883,11 +2917,14 @@ public partial class MainWindow : Window
         {
             (Brush background, Brush border) = DataPalette.Probability(result.FirstTurnSuccessRate);
             badgePanel.Children.Add(CreateResultBadge(
-                $"첫 턴 {result.FirstTurnSuccessRate:P1}",
+                string.Format(Loc.Get("Str.FirstTurnBadge"), result.FirstTurnSuccessRate.ToString("P1")),
                 background,
                 border,
                 featured,
-                $"{result.FirstTurnSuccessCount:N0} / {result.FirstTurnCombinationCount:N0} 구성에서 성립\n리더는 1번 손패에 고정"));
+                string.Format(
+                    Loc.Get("Str.FirstTurnTooltip"),
+                    result.FirstTurnSuccessCount.ToString("N0"),
+                    result.FirstTurnCombinationCount.ToString("N0"))));
         }
 
         Grid.SetColumn(badgePanel, 1);
@@ -2898,7 +2935,11 @@ public partial class MainWindow : Window
 
         stack.Children.Add(new TextBlock
         {
-            Text = $"{result.Cells.Count}글자 단어 · 판면 {result.StartIndex + 1}~{result.EndIndex + 1}칸에 배치",
+            Text = string.Format(
+                Loc.Get("Str.WordPlacementSummary"),
+                result.Cells.Count,
+                result.StartIndex + 1,
+                result.EndIndex + 1),
             Foreground = Theme.TextSecondary,
             Margin = new Thickness(2, 3, 0, 5),
             TextWrapping = TextWrapping.Wrap
@@ -2906,7 +2947,7 @@ public partial class MainWindow : Window
 
         stack.Children.Add(new Expander
         {
-            Header = "전체 7칸 판면 보기",
+            Header = Loc.Get("Str.ViewFullBoard"),
             Foreground = Theme.BlueText,
             Margin = new Thickness(0, 1, 0, 8),
             IsExpanded = false,
@@ -2919,8 +2960,8 @@ public partial class MainWindow : Window
         stack.Children.Add(new TextBlock
         {
             Text = hasCompleteComboData
-                ? $"콤보 구성 · 2글자 {twoLetter} · 3글자 {threeLetter} · 4글자 이상 {longWords}"
-                : $"현재 계산 · 4글자 이상 {longWords}  (2~3글자 데이터 수집 후 정확한 콤보 표시)",
+                ? string.Format(Loc.Get("Str.ComboBreakdownComplete"), twoLetter, threeLetter, longWords)
+                : string.Format(Loc.Get("Str.ComboBreakdownPartial"), longWords),
             Foreground = hasCompleteComboData
                 ? Theme.Success
                 : Theme.AlertText,
@@ -2944,7 +2985,7 @@ public partial class MainWindow : Window
                         string letters = string.Join(" · ", group
                             .Select(item => item.Letter)
                             .Distinct(StringComparer.Ordinal));
-                        return $"⇄ {assignment.CharacterName}: {assignment.CharacterFormName} 형태 · {letters}";
+                        return $"⇄ {string.Format(Loc.Get("Str.AlternateFormEntry"), assignment.CharacterName, assignment.CharacterFormName, letters)}";
                     }));
 
             stack.Children.Add(new Border
@@ -3017,12 +3058,12 @@ public partial class MainWindow : Window
                             .Select(item => item.Letter)
                             .Distinct(StringComparer.Ordinal));
                         string groupText = string.IsNullOrWhiteSpace(assignment.CharacterGroupName)
-                            ? "그룹 미지정"
+                            ? Loc.Get("Str.GroupUnspecified")
                             : assignment.CharacterGroupName;
                         string note = string.IsNullOrWhiteSpace(assignment.MiracleEffectNote)
                             ? string.Empty
                             : $" · {assignment.MiracleEffectNote}";
-                        return $"✨ {assignment.CharacterName}: {letters} · {assignment.MiracleLeaderName} 리더 효과 ({groupText}){note}";
+                        return $"✨ {string.Format(Loc.Get("Str.MiracleLeaderEntry"), assignment.CharacterName, letters, assignment.MiracleLeaderName, groupText, note)}";
                     }));
 
             stack.Children.Add(new Border
@@ -3101,12 +3142,16 @@ public partial class MainWindow : Window
         {
             string comboDetails = string.Join(
                 Environment.NewLine,
-                result.ComboMatches.Select(match =>
-                    $"{match.StartIndex + 1}~{match.EndIndex + 1}칸 · {match.WordLength}글자 · {match.Word}"));
+                result.ComboMatches.Select(match => string.Format(
+                    Loc.Get("Str.ComboMatchLine"),
+                    match.StartIndex + 1,
+                    match.EndIndex + 1,
+                    match.WordLength,
+                    match.Word)));
 
             stack.Children.Add(new Expander
             {
-                Header = $"캐릭터 문자가 포함된 콤보 단어 {result.ComboMatches.Count}개 보기",
+                Header = string.Format(Loc.Get("Str.ComboWordsExpander"), result.ComboMatches.Count),
                 Foreground = Theme.BlueText,
                 Margin = new Thickness(0, 9, 0, 0),
                 IsExpanded = false,
@@ -3129,7 +3174,7 @@ public partial class MainWindow : Window
     {
         if (assignment.IsGeneralSuggestion)
         {
-            return $"{assignment.BoardIndex + 1}칸  {assignment.Letter}  ←  필요한 문자";
+            return string.Format(Loc.Get("Str.AssignmentGeneralLine"), assignment.BoardIndex + 1, assignment.Letter);
         }
 
         var tags = new List<string>();
@@ -3143,22 +3188,27 @@ public partial class MainWindow : Window
         }
         if (assignment.UsesMiracleLeaderLetter)
         {
-            tags.Add($"✨ {assignment.MiracleLeaderName} 리더 효과");
+            tags.Add($"✨ {assignment.MiracleLeaderName} {Loc.Get("Str.LeaderEffectShort")}");
         }
         if (assignment.UsesDeckGroupConditionLetter)
         {
-            tags.Add("◆ 덱 인원 조건");
+            tags.Add($"◆ {Loc.Get("Str.DeckMemberCondition")}");
         }
 
         string suffix = tags.Count == 0 ? string.Empty : $"  {string.Join(" · ", tags)}";
-        return $"{assignment.BoardIndex + 1}칸  {assignment.Letter}  ←  {assignment.CharacterName}{suffix}";
+        return string.Format(
+            Loc.Get("Str.AssignmentLine"),
+            assignment.BoardIndex + 1,
+            assignment.Letter,
+            assignment.CharacterName,
+            suffix);
     }
 
     private static string BuildAssignmentBoardLabel(CharacterAssignment assignment)
     {
         if (assignment.IsGeneralSuggestion)
         {
-            return "필요 문자";
+            return Loc.Get("Str.ColRequiredChars");
         }
 
         var labels = new List<string> { assignment.CharacterName };
@@ -3172,11 +3222,11 @@ public partial class MainWindow : Window
         }
         if (assignment.UsesMiracleLeaderLetter)
         {
-            labels.Add("✨ 리더 효과");
+            labels.Add($"✨ {Loc.Get("Str.LeaderEffectShort")}");
         }
         if (assignment.UsesDeckGroupConditionLetter)
         {
-            labels.Add("◆ 덱 조건");
+            labels.Add($"◆ {Loc.Get("Str.DeckConditionShort")}");
         }
         return string.Join(Environment.NewLine, labels);
     }
@@ -3185,24 +3235,24 @@ public partial class MainWindow : Window
     {
         if (assignment.IsGeneralSuggestion)
         {
-            return $"{boardIndex + 1}칸 · 필요한 문자 {assignment.Letter} · 손패 제한 없는 일반 추천";
+            return string.Format(Loc.Get("Str.GeneralSuggestionTooltip"), boardIndex + 1, assignment.Letter);
         }
 
         var lines = new List<string>
         {
-            $"{boardIndex + 1}칸 · {assignment.Letter} · {assignment.CharacterName}"
+            string.Format(Loc.Get("Str.AssignmentCellHeader"), boardIndex + 1, assignment.Letter, assignment.CharacterName)
         };
         if (!string.IsNullOrWhiteSpace(assignment.CharacterGroupName))
         {
-            lines.Add($"소속 그룹: {assignment.CharacterGroupName}");
+            lines.Add(string.Format(Loc.Get("Str.BelongingGroup"), assignment.CharacterGroupName));
         }
         if (assignment.UsesAlternateForm)
         {
-            lines.Add($"동일 이름 모드시프트: {assignment.CharacterFormName}");
+            lines.Add(string.Format(Loc.Get("Str.SameNameModeShift"), assignment.CharacterFormName));
         }
         if (assignment.UsesSpecialLetterState)
         {
-            lines.Add($"문자 상태: {assignment.LetterStateName} ({assignment.LetterStateKind})");
+            lines.Add(string.Format(Loc.Get("Str.LetterStateInfo"), assignment.LetterStateName, assignment.LetterStateKind));
             if (!string.IsNullOrWhiteSpace(assignment.LetterStateNote))
             {
                 lines.Add(assignment.LetterStateNote);
@@ -3210,7 +3260,7 @@ public partial class MainWindow : Window
         }
         if (assignment.UsesMiracleLeaderLetter)
         {
-            lines.Add($"미라클 문자: {assignment.MiracleLeaderName} 리더 효과");
+            lines.Add(string.Format(Loc.Get("Str.MiracleLetterInfo"), assignment.MiracleLeaderName));
             if (!string.IsNullOrWhiteSpace(assignment.MiracleEffectNote))
             {
                 lines.Add(assignment.MiracleEffectNote);
@@ -3218,7 +3268,7 @@ public partial class MainWindow : Window
         }
         if (assignment.UsesDeckGroupConditionLetter)
         {
-            lines.Add($"덱 조건 문자: {assignment.DeckGroupConditionText}");
+            lines.Add(string.Format(Loc.Get("Str.DeckConditionLetterInfo"), assignment.DeckGroupConditionText));
             if (!string.IsNullOrWhiteSpace(assignment.DeckGroupEffectNote))
             {
                 lines.Add(assignment.DeckGroupEffectNote);
@@ -3263,7 +3313,7 @@ public partial class MainWindow : Window
 
         container.Children.Add(new TextBlock
         {
-            Text = $"단어 구성 · {result.Cells.Count}글자",
+            Text = string.Format(Loc.Get("Str.WordCompositionHeader"), result.Cells.Count),
             Foreground = Theme.Focus,
             FontWeight = FontWeights.SemiBold,
             FontSize = featured ? 12 : 11,
@@ -3297,7 +3347,7 @@ public partial class MainWindow : Window
             });
             slot.Children.Add(new TextBlock
             {
-                Text = isPlaced ? "이번 배치" : "기존 판면",
+                Text = isPlaced ? Loc.Get("Str.NewPlacement") : Loc.Get("Str.ExistingBoard"),
                 FontSize = featured ? 10 : 9,
                 Foreground = isPlaced
                     ? Theme.OnFace(Theme.Orange)
@@ -3305,7 +3355,10 @@ public partial class MainWindow : Window
                 TextAlignment = TextAlignment.Center,
                 ToolTip = isPlaced
                     ? BuildAssignmentToolTip(boardIndex, assignment!)
-                    : $"{boardIndex + 1}칸 · 기존 판면 문자 {cell}"
+                    : string.Format(
+                        Loc.Get("Str.CellTooltip"),
+                        boardIndex + 1,
+                        $"{Loc.Get("Str.ExistingBoardLetter")} {cell}")
             });
 
             wordGrid.Children.Add(new Border
@@ -3328,7 +3381,7 @@ public partial class MainWindow : Window
         container.Children.Add(wordGrid);
         container.Children.Add(new TextBlock
         {
-            Text = "'이번 배치': 이번에 놓을 문자 · '기존 판면': 이미 있는 판면 문자",
+            Text = Loc.Get("Str.PlacementLegend"),
             Foreground = Theme.TextSecondary,
             FontSize = 10,
             Margin = new Thickness(2, 3, 0, 0)
@@ -3379,7 +3432,7 @@ public partial class MainWindow : Window
             {
                 Text = isPlaced
                     ? BuildAssignmentBoardLabel(assignment!)
-                    : isExisting ? "기존 판면" : "빈칸",
+                    : isExisting ? Loc.Get("Str.ExistingBoard") : Loc.Get("Str.BlankCell"),
                 FontSize = featured ? 10 : 9,
                 Foreground = isPlaced
                     ? Theme.OnFace(Theme.Orange)
@@ -3388,7 +3441,10 @@ public partial class MainWindow : Window
                 TextTrimming = TextTrimming.CharacterEllipsis,
                 ToolTip = isPlaced
                     ? BuildAssignmentToolTip(index, assignment!)
-                    : $"{index + 1}칸 · {(isExisting ? "기존 판면 문자" : "빈칸")}"
+                    : string.Format(
+                        Loc.Get("Str.CellTooltip"),
+                        index + 1,
+                        isExisting ? Loc.Get("Str.ExistingBoardLetter") : Loc.Get("Str.BlankCell"))
             });
 
             board.Children.Add(new Border
@@ -3415,7 +3471,7 @@ public partial class MainWindow : Window
         container.Children.Add(board);
         container.Children.Add(new TextBlock
         {
-            Text = "'기존 판면': 이미 있는 문자 · '이번 배치': 이번에 놓을 문자",
+            Text = Loc.Get("Str.PlacementLegend"),
             Foreground = Theme.TextSecondary,
             FontSize = 10,
             Margin = new Thickness(2, 3, 0, 0)
@@ -3430,7 +3486,7 @@ public partial class MainWindow : Window
         _lastHandResults = CreateEmptySearchGroups();
         _lastDeckResults = CreateEmptySearchGroups();
         _lastGeneralSearchSignature = string.Empty;
-        HandResultsTitleText.Text = "현재 손패로 가능";
+        HandResultsTitleText.Text = Loc.Get("Str.HandResultsTitle");
         RenderGeneralSuggestionToggle();
         RenderInitialResultPanels();
     }
@@ -3744,6 +3800,35 @@ public partial class MainWindow : Window
     // Close()는 MainWindow_Closing을 거치므로 설정 저장이 그대로 실행된다.
     // Application.Shutdown()이나 Environment.Exit()으로 바꾸면 저장을 건너뛴다.
     private void ExitButton_Click(object sender, RoutedEventArgs e) => Close();
+
+    // KOR -> JPN -> ENG -> KOR 순환. 약어는 번역 대상이 아니라 항상 알파벳으로 고정 표기한다.
+    private void LanguageToggleButton_Click(object sender, RoutedEventArgs e)
+    {
+        _currentLanguage = _currentLanguage switch
+        {
+            "ko" => "ja",
+            "ja" => "en",
+            _ => "ko"
+        };
+
+        App.ApplyLanguage(_currentLanguage);
+        // SaveSettings()가 이미 스냅샷에 Language를 채워 넣으므로 별도 Update() 호출은
+        // 저장 경로를 이중화할 뿐이었고, 게다가 다른 모든 설정 저장과 달리 try/catch가
+        // 없어 디스크 쓰기 실패 시 앱 전체가 죽을 수 있었다 — 기존의 안전한 경로로 통일.
+        SaveSettingsImmediatelySafely();
+        LanguageToggleButton.Content = Loc.Abbreviation(_currentLanguage);
+
+        // HandResultsTitleText와 Title 둘 다 DynamicResource가 아니라 코드비하인드가 값을
+        // 대입하는 자리라, 다음 검색/재시작까지 기다리지 않고 토글 시점에 바로 갱신해야 한다.
+        HandResultsTitleText.Text = Loc.Get("Str.HandResultsTitle");
+        Title = $"{Loc.Get("Str.AppTitle")} v{AppPaths.AppVersion}";
+
+        // 가나 패널과 손패/덱 결과 카드는 XAML DynamicResource가 아니라 코드가 조립하는
+        // Button/TextBlock이라 마찬가지로 직접 다시 그려야 한다.
+        RefreshKanaSections();
+        RenderStoredSearchResults();
+    }
+
 
     private void OpenLogFolderButton_Click(object sender, RoutedEventArgs e)
     {

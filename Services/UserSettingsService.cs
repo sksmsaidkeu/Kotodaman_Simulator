@@ -129,6 +129,7 @@ public static class UserSettingsService
                 StringComparer.Ordinal),
             BoardCells = (source.BoardCells ?? new List<string?>()).ToList(),
             AutoSearchEnabled = source.AutoSearchEnabled,
+            Language = source.Language ?? "ko",
             DeckResultSortMode = source.DeckResultSortMode ?? "Practical",
             LastDeckEditorCharacterId = source.LastDeckEditorCharacterId ?? string.Empty,
             LastDeckEditorSearchText = source.LastDeckEditorSearchText ?? string.Empty,

@@ -1,0 +1,114 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:system="clr-namespace:System;assembly=mscorlib">
+
+    <!-- Strings.ko.xaml 과 키 1:1 대응. 새 키를 추가하면 세 파일 모두에 추가할 것. -->
+
+    <system:String x:Key="Str.Exit">Exit</system:String>
+    <system:String x:Key="Str.ExitTooltip">Saves your settings and exits the program.</system:String>
+    <system:String x:Key="Str.LanguageToggle">Language toggle</system:String>
+    <system:String x:Key="Str.LanguageToggleTooltip">Language toggle · KOR / JPN / ENG</system:String>
+    <system:String x:Key="Str.AutoSearch">Auto search</system:String>
+    <system:String x:Key="Str.BackupRestore">Backup / Restore</system:String>
+    <system:String x:Key="Str.UserData">User data</system:String>
+    <system:String x:Key="Str.UserDataTooltip">Opens the folder where your user data is actually saved.</system:String>
+    <system:String x:Key="Str.ErrorLog">Error log</system:String>
+    <system:String x:Key="Str.ErrorLogTooltip">Opens the folder where error and run logs are saved.</system:String>
+    <system:String x:Key="Str.Reload">Reload</system:String>
+    <system:String x:Key="Str.SearchNow">Search now</system:String>
+    <system:String x:Key="Str.Undo">Undo</system:String>
+    <system:String x:Key="Str.PrevCell">Previous cell</system:String>
+    <system:String x:Key="Str.NextCell">Next cell</system:String>
+    <system:String x:Key="Str.ResetBoard">Reset board</system:String>
+    <system:String x:Key="Str.Apply">Apply</system:String>
+    <system:String x:Key="Str.Len7">7 letters</system:String>
+    <system:String x:Key="Str.Len6">6 letters</system:String>
+    <system:String x:Key="Str.Len5">5 letters</system:String>
+    <system:String x:Key="Str.Len4">4 letters</system:String>
+    <system:String x:Key="Str.CharacterListDeck">Character List / Deck Editor</system:String>
+    <system:String x:Key="Str.ResetHand">Reset hand</system:String>
+    <system:String x:Key="Str.ChangeToThisDeck">Switch to this deck</system:String>
+    <system:String x:Key="Str.PracticalRecommend">Practical pick</system:String>
+    <system:String x:Key="Str.FirstTurnRate">First-turn rate</system:String>
+    <system:String x:Key="Str.ExpectedCombo">Expected combo</system:String>
+
+    <system:String x:Key="Str.AppTitle">Kotodaman Longest Word Finder</system:String>
+    <system:String x:Key="Str.AppDescription">Finds the longest words first, then within the same length shows the candidates with the highest expected combo. Combo is only calculated for words containing at least one letter from the character you're placing this turn.</system:String>
+    <system:String x:Key="Str.Board7Cells">7-cell board</system:String>
+    <system:String x:Key="Str.QuickInput">Quick input</system:String>
+    <system:String x:Key="Str.ExpandCollapseHint">Click to expand / collapse · toggle 7-4 letters to check</system:String>
+    <system:String x:Key="Str.ExpandCollapse">Expand / Collapse</system:String>
+    <system:String x:Key="Str.CharacterInputHint">Letter input — tap a board cell, pick a letter, and focus moves to the next cell automatically</system:String>
+    <system:String x:Key="Str.CurrentHand4">Current hand (4)</system:String>
+    <system:String x:Key="Str.DeckPreset">Deck preset</system:String>
+    <system:String x:Key="Str.PresetChangeHint">Selecting a preset replaces all 12 characters in your current deck.</system:String>
+    <system:String x:Key="Str.ResultLengthSelect">Result length</system:String>
+    <system:String x:Key="Str.ResultLengthHint">Search calculates 7/6/5/4-letter results all at once. Use the length buttons in each result area below to switch candidates instantly.</system:String>
+    <system:String x:Key="Str.HandResultsTitle">Possible with current hand</system:String>
+    <system:String x:Key="Str.DeckResultsTitle">Possible across the deck</system:String>
+    <system:String x:Key="Str.Sort">Sort</system:String>
+    <system:String x:Key="Str.WordDataManagement">Word data management</system:String>
+    <system:String x:Key="Str.OpenGaccagSite">Open GACCAG site</system:String>
+    <system:String x:Key="Str.CancelUpdate">Cancel update</system:String>
+    <system:String x:Key="Str.CollectComboData">Collect 2-3 letter combo data</system:String>
+    <system:String x:Key="Str.Fill4">Fill 4-letter data</system:String>
+    <system:String x:Key="Str.Fill5">Fill 5-letter data</system:String>
+    <system:String x:Key="Str.Fill6">Fill 6-letter data</system:String>
+    <system:String x:Key="Str.Recheck7">Recheck 7-letter data</system:String>
+    <system:String x:Key="Str.SequentialFill">Sequentially fill 4-6 letter data</system:String>
+    <system:String x:Key="Str.DataUsageHint">4-7 letter data is used for the longest-word search. 2-3 letter data is used to calculate expected combos for consecutive words containing your character's letters.</system:String>
+
+    <system:String x:Key="Str.QuickInputExample">e.g. _ゅう_くせい or □ゅう□くせい · use blank for empty</system:String>
+    <system:String x:Key="Str.DeckPresetTooltip">Select a saved deck preset</system:String>
+    <system:String x:Key="Str.PracticalRecommendTooltip">Practical pick = expected combo x first-turn rate · first turn assumes a fixed leader plus the other 6 characters</system:String>
+
+    <system:String x:Key="Str.KanaBasicSection">Basic kana chart</system:String>
+    <system:String x:Key="Str.KanaVoicedSection">Voiced &amp; semi-voiced</system:String>
+    <system:String x:Key="Str.KanaSmallSection">Small kana &amp; special</system:String>
+    <system:String x:Key="Str.KanaRowSuffix"> row</system:String>
+    <system:String x:Key="Str.KanaSmall">Small kana</system:String>
+    <system:String x:Key="Str.KanaYoonSokuon">Yoon &amp; sokuon</system:String>
+    <system:String x:Key="Str.KanaOther">Other</system:String>
+    <system:String x:Key="Str.BlankCell">Blank</system:String>
+    <system:String x:Key="Str.LengthTabButton">{0} letters ({1})</system:String>
+    <system:String x:Key="Str.LengthTabTooltipHasResults">View {1} {0}-letter candidates</system:String>
+    <system:String x:Key="Str.LengthTabTooltipNoResults">No {0}-letter candidates under current conditions</system:String>
+
+    <system:String x:Key="Str.LengthBadge">{0} letters</system:String>
+    <system:String x:Key="Str.ComboExpected">Expected {0} combo</system:String>
+    <system:String x:Key="Str.ComboProvisional">Provisional {0} combo</system:String>
+    <system:String x:Key="Str.FirstTurnBadge">First turn {0}</system:String>
+    <system:String x:Key="Str.FirstTurnTooltip" xml:space="preserve">Succeeds in {0} / {1} combinations&#10;Leader is fixed as hand slot 1</system:String>
+    <system:String x:Key="Str.WordPlacementSummary">{0}-letter word · placed on board cells {1}-{2}</system:String>
+    <system:String x:Key="Str.ViewFullBoard">View full 7-cell board</system:String>
+    <system:String x:Key="Str.ComboBreakdownComplete">Combo breakdown · 2-letter {0} · 3-letter {1} · 4+ letter {2}</system:String>
+    <system:String x:Key="Str.ComboBreakdownPartial">Current estimate · 4+ letter {0} (exact combo shown after 2-3 letter data is collected)</system:String>
+    <system:String x:Key="Str.WordCompositionHeader">Word composition · {0} letters</system:String>
+    <system:String x:Key="Str.NewPlacement">New placement</system:String>
+    <system:String x:Key="Str.ExistingBoard">Existing board</system:String>
+    <system:String x:Key="Str.ExistingBoardLetter">Existing board letter</system:String>
+    <system:String x:Key="Str.CellTooltip">Cell {0} · {1}</system:String>
+    <system:String x:Key="Str.PlacementLegend">'New placement': the letter you're placing now · 'Existing board': a letter already there</system:String>
+    <system:String x:Key="Str.LeaderEffectShort">Leader effect</system:String>
+    <system:String x:Key="Str.DeckConditionShort">Deck condition</system:String>
+    <system:String x:Key="Str.DeckMemberCondition">Deck member count condition</system:String>
+    <system:String x:Key="Str.GeneralSuggestionTooltip">Cell {0} · required letter {1} · general suggestion, no hand restriction</system:String>
+    <system:String x:Key="Str.AssignmentCellHeader">Cell {0} · {1} · {2}</system:String>
+    <system:String x:Key="Str.BelongingGroup">Group: {0}</system:String>
+    <system:String x:Key="Str.SameNameModeShift">Same-name mode shift: {0}</system:String>
+    <system:String x:Key="Str.LetterStateInfo">Letter state: {0} ({1})</system:String>
+    <system:String x:Key="Str.MiracleLetterInfo">Miracle letter: {0} leader effect</system:String>
+    <system:String x:Key="Str.DeckConditionLetterInfo">Deck condition letter: {0}</system:String>
+    <system:String x:Key="Str.ComboWordsExpander">View {0} combo words containing your character's letters</system:String>
+    <system:String x:Key="Str.ComboMatchLine">{0}-{1} · {2} letters · {3}</system:String>
+    <system:String x:Key="Str.AssignmentGeneralLine">Cell {0}  {1}  ←  required letter</system:String>
+    <system:String x:Key="Str.AssignmentLine">Cell {0}  {1}  ←  {2}{3}</system:String>
+    <system:String x:Key="Str.AlternateFormEntry">{0}: {1} form · {2}</system:String>
+    <system:String x:Key="Str.GroupUnspecified">Unspecified group</system:String>
+    <system:String x:Key="Str.MiracleLeaderEntry">{0}: {1} · {2} leader effect ({3}){4}</system:String>
+
+    <system:String x:Key="Str.ColWord">Word</system:String>
+    <system:String x:Key="Str.ColRequiredChars">Required letters</system:String>
+    <system:String x:Key="Str.ColCombo">Combo</system:String>
+
+</ResourceDictionary>
