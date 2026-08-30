@@ -52,7 +52,7 @@ public partial class DeckScreenshotImportWindow : Window
     {
         var dialog = new OpenFileDialog
         {
-            Title = "코토다망 덱 화면 스크린샷 선택",
+            Title = Loc.Get("Str.Screenshot.OpenFileDialogTitle"),
             Filter = CharacterImageService.GetDialogFilter(),
             CheckFileExists = true,
             Multiselect = false
@@ -66,7 +66,7 @@ public partial class DeckScreenshotImportWindow : Window
         BitmapSource? bitmap = CharacterImageService.LoadBitmapFromPath(dialog.FileName, 0);
         if (bitmap is null)
         {
-            SetError("선택한 이미지를 읽지 못했습니다.");
+            SetError(Loc.Get("Str.Screenshot.ImageReadFailed"));
             return;
         }
 
@@ -100,7 +100,7 @@ public partial class DeckScreenshotImportWindow : Window
                         copy.Freeze();
                     }
 
-                    LoadScreenshot(copy, "클립보드 이미지");
+                    LoadScreenshot(copy, Loc.Get("Str.Screenshot.ClipboardImageLabel"));
                     return;
                 }
             }
@@ -121,16 +121,16 @@ public partial class DeckScreenshotImportWindow : Window
                         continue;
                     }
 
-                    LoadScreenshot(bitmap, $"클립보드 파일 · {System.IO.Path.GetFileName(filePath)}");
+                    LoadScreenshot(bitmap, string.Format(Loc.Get("Str.Screenshot.ClipboardFileLabel"), System.IO.Path.GetFileName(filePath)));
                     return;
                 }
             }
 
-            SetError("클립보드에 붙여넣을 이미지가 없습니다. 스크린샷을 복사한 뒤 Ctrl+V를 눌러 주세요.");
+            SetError(Loc.Get("Str.Screenshot.ClipboardEmpty"));
         }
         catch (Exception exception)
         {
-            SetError($"클립보드 이미지를 읽지 못했습니다: {exception.Message}");
+            SetError(string.Format(Loc.Get("Str.Screenshot.ClipboardReadFailed"), exception.Message));
         }
     }
 
@@ -153,9 +153,9 @@ public partial class DeckScreenshotImportWindow : Window
         ScreenshotPreviewImage.Source = safeBitmap;
         _slotViewModels.Clear();
         RecognitionResultsItemsControl.ItemsSource = null;
-        RecognitionSummaryText.Text = "인식 전";
+        RecognitionSummaryText.Text = Loc.Get("Str.Screenshot.BeforeRecognition");
         GuessGridSelection();
-        Controls.SetAlertBanner(StatusBanner, StatusText, $"{sourceLabel} · {safeBitmap.PixelWidth}×{safeBitmap.PixelHeight} · 자동 영역을 확인하고 필요하면 마우스로 다시 드래그하세요.", false, Theme.TextSecondary);
+        Controls.SetAlertBanner(StatusBanner, StatusText, string.Format(Loc.Get("Str.Screenshot.LoadedSummary"), sourceLabel, safeBitmap.PixelWidth, safeBitmap.PixelHeight), false, Theme.TextSecondary);
     }
 
     private void GuessGridButton_Click(object sender, RoutedEventArgs e)
@@ -165,7 +165,7 @@ public partial class DeckScreenshotImportWindow : Window
     {
         if (_screenshot is null)
         {
-            SetError("스크린샷을 먼저 선택하세요.");
+            SetError(Loc.Get("Str.Screenshot.SelectScreenshotFirst"));
             return;
         }
 
@@ -178,7 +178,7 @@ public partial class DeckScreenshotImportWindow : Window
     {
         if (_screenshot is null)
         {
-            SetError("스크린샷을 먼저 선택하세요.");
+            SetError(Loc.Get("Str.Screenshot.SelectScreenshotFirst"));
             return;
         }
 
@@ -307,13 +307,13 @@ public partial class DeckScreenshotImportWindow : Window
     {
         if (_screenshot is null)
         {
-            SetError("스크린샷을 먼저 선택하세요.");
+            SetError(Loc.Get("Str.Screenshot.SelectScreenshotFirst"));
             return;
         }
 
         if (_selectedGridRect is not Int32Rect gridRect)
         {
-            SetError("마우스로 덱 12칸 전체 영역을 지정하세요.");
+            SetError(Loc.Get("Str.Screenshot.SelectRegionFirst"));
             return;
         }
 
@@ -322,7 +322,7 @@ public partial class DeckScreenshotImportWindow : Window
             var recognitionWatch = Stopwatch.StartNew();
             Mouse.OverrideCursor = Cursors.Wait;
             RecognizeButton.IsEnabled = false;
-            Controls.SetAlertBanner(StatusBanner, StatusText, "캐릭터 특징을 병렬 비교하는 중입니다. 첫 인식만 ORB 캐시를 만들며, 다음부터는 더 빨라집니다.", false, Theme.TextSecondary);
+            Controls.SetAlertBanner(StatusBanner, StatusText, Loc.Get("Str.Screenshot.RecognizingBusy"), false, Theme.TextSecondary);
             BitmapSource screenshot = _screenshot;
 
             // CroppedBitmap/PngBitmapEncoder 같은 WPF 이미지 객체는 UI 스레드에서만 만듭니다.
@@ -356,23 +356,29 @@ public partial class DeckScreenshotImportWindow : Window
             int autoSelectedCount = _slotViewModels.Count(item => item.SelectedChoice?.Character is not null);
             LearningSampleStats learningStats = _learningService.GetStats();
             string learningText = UseLearnedSamplesCheckBox.IsChecked == true && learningStats.SampleCount > 0
-                ? $" · 학습 {learningStats.SampleCount}장 사용"
+                ? string.Format(Loc.Get("Str.Screenshot.LearningSampleSuffix"), learningStats.SampleCount)
                 : string.Empty;
             int attributeHintCount = matches.Count(match =>
                 match.AttributeConfidence >= 0.45 && !string.IsNullOrWhiteSpace(match.AttributeHint));
             string attributeText = UseAttributeColorAssistCheckBox.IsChecked == true
-                ? $" · 속성색 힌트 {attributeHintCount}/12"
+                ? string.Format(Loc.Get("Str.Screenshot.AttributeHintSuffix"), attributeHintCount)
                 : string.Empty;
-            RecognitionSummaryText.Text =
-                $"12칸 인식 완료 · {recognitionWatch.Elapsed.TotalSeconds:0.0}초 · 평균 최고 매칭 {averageMatches:F1}점 · 자동 선택 {autoSelectedCount}/12 · 확인 필요 {12 - autoSelectedCount}{learningText}{attributeText}";
+            RecognitionSummaryText.Text = string.Format(
+                Loc.Get("Str.Screenshot.RecognitionCompleteSummary"),
+                recognitionWatch.Elapsed.TotalSeconds.ToString("0.0"),
+                averageMatches.ToString("F1"),
+                autoSelectedCount,
+                12 - autoSelectedCount,
+                learningText,
+                attributeText);
             Controls.SetAlertBanner(StatusBanner, StatusText, autoSelectedCount == 12
-                ? "자동 선택이 완료되었습니다. 그래도 12칸을 한 번 확인한 뒤 적용하세요."
-                : "특징점 매칭이 애매한 슬롯만 비워 두었습니다. 추천 3개를 먼저 확인하고, 없으면 드롭다운에서 이름으로 검색하세요.",
+                ? Loc.Get("Str.Screenshot.AutoSelectDoneHint")
+                : Loc.Get("Str.Screenshot.AmbiguousSlotsHint"),
                 isAlert: autoSelectedCount != 12, Theme.Success);
         }
         catch (Exception exception)
         {
-            SetError($"덱 이미지 인식 중 오류: {exception.Message}");
+            SetError(string.Format(Loc.Get("Str.Screenshot.RecognitionError"), exception.Message));
         }
         finally
         {
@@ -388,7 +394,7 @@ public partial class DeckScreenshotImportWindow : Window
 
         var choices = new List<CharacterChoice>
         {
-            new(null, "— 확인 필요 / 이 슬롯 비우기 —", null)
+            new(null, Loc.Get("Str.Screenshot.ConfirmNeededPlaceholder"), null)
         };
 
         foreach (DeckScreenshotCandidate candidate in match.Candidates)
@@ -396,7 +402,11 @@ public partial class DeckScreenshotImportWindow : Window
             string attributeLabel = DeckDataService.NormalizeAttribute(candidate.Character.Attribute);
             choices.Add(new CharacterChoice(
                 candidate.Character,
-                $"★ 매칭 {candidate.MatchCount}점 · [{(attributeLabel.Length == 0 ? "?" : attributeLabel)}] {candidate.Character.Name}",
+                string.Format(
+                    Loc.Get("Str.Screenshot.MatchCandidateLine"),
+                    candidate.MatchCount,
+                    attributeLabel.Length == 0 ? "?" : attributeLabel,
+                    candidate.Character.Name),
                 candidate.Similarity));
         }
 
@@ -449,11 +459,17 @@ public partial class DeckScreenshotImportWindow : Window
 
         string attributeHintText = match.AttributeConfidence >= 0.38 &&
                                    !string.IsNullOrWhiteSpace(match.AttributeHint)
-            ? $"속성색 {match.AttributeHint} {match.AttributeConfidence:P0} ({match.AttributeSource}) · "
+            ? string.Format(
+                Loc.Get("Str.Screenshot.AttributeHintLine"),
+                match.AttributeHint,
+                match.AttributeConfidence.ToString("P0"),
+                match.AttributeSource)
             : "";
         string summary = match.Candidates.Count == 0
-            ? attributeHintText + "추천 후보 없음"
-            : attributeHintText + "추천 3개: " + string.Join(" / ", match.Candidates.Take(3).Select(candidate =>
+            ? attributeHintText + Loc.Get("Str.Screenshot.NoRecommendation")
+            : attributeHintText + string.Format(
+                Loc.Get("Str.Screenshot.RecommendationList"),
+                string.Join(" / ", match.Candidates.Take(3).Select(candidate =>
             {
                 string attribute = DeckDataService.NormalizeAttribute(candidate.Character.Attribute);
                 string marker = match.AttributeConfidence >= 0.45 &&
@@ -462,12 +478,17 @@ public partial class DeckScreenshotImportWindow : Window
                                     match.AttributeHint)
                     ? "✓"
                     : "";
-                return $"{marker}[{(attribute.Length == 0 ? "?" : attribute)}] {candidate.Character.Name} ({candidate.MatchCount}점)";
-            }));
+                return string.Format(
+                    Loc.Get("Str.Screenshot.CandidateOptionLine"),
+                    marker,
+                    attribute.Length == 0 ? "?" : attribute,
+                    candidate.Character.Name,
+                    candidate.MatchCount);
+            })));
 
         if (!autoConfident && best is not null)
         {
-            summary = $"⚠ 자동 확정 보류 · 1~2위 차이 {matchMargin}점 · " + summary;
+            summary = string.Format(Loc.Get("Str.Screenshot.AmbiguousHoldLine"), matchMargin, summary);
         }
 
         return new DeckScreenshotSlotViewModel(
@@ -510,7 +531,7 @@ public partial class DeckScreenshotImportWindow : Window
     {
         if (_slotViewModels.Count == 0)
         {
-            SetError("먼저 12칸 인식을 실행하세요.");
+            SetError(Loc.Get("Str.Screenshot.RunRecognitionFirst"));
             return;
         }
 
@@ -520,15 +541,15 @@ public partial class DeckScreenshotImportWindow : Window
             .ToArray();
         if (emptySlots.Length > 0)
         {
+            string emptySlotList = string.Join(", ", emptySlots.Select(slot =>
+                string.Format(Loc.Get("Str.Screenshot.SlotNumber"), slot)));
             MessageBox.Show(
                 this,
-                "아직 캐릭터가 선택되지 않은 슬롯이 있습니다.\n\n" +
-                $"확인할 슬롯: {string.Join(", ", emptySlots.Select(slot => $"{slot}번"))}\n\n" +
-                "애매한 슬롯은 ★ 후보를 확인해서 직접 선택해 주세요.",
-                "덱 적용 불가",
+                string.Format(Loc.Get("Str.Screenshot.SlotsNotSelectedBody"), emptySlotList),
+                Loc.Get("Str.Screenshot.SlotsNotSelectedTitle"),
                 MessageBoxButton.OK,
                 MessageBoxImage.Warning);
-            SetError("12칸 모두 캐릭터를 선택해야 덱에 적용할 수 있습니다.");
+            SetError(Loc.Get("Str.Screenshot.AllSlotsRequired"));
             return;
         }
 
@@ -549,25 +570,24 @@ public partial class DeckScreenshotImportWindow : Window
                 duplicateGroups.Select(group =>
                 {
                     string name = _library.FirstOrDefault(character => character.Id == group.Key)?.Name ?? group.Key;
-                    string slots = string.Join(", ", group.Select(item => $"{item.Slot}번"));
+                    string slots = string.Join(", ", group.Select(item =>
+                        string.Format(Loc.Get("Str.Screenshot.SlotNumber"), item.Slot)));
                     return $"• {name}: {slots}";
                 }));
 
             MessageBox.Show(
                 this,
-                "같은 캐릭터가 여러 슬롯에 선택되어 있어 적용할 수 없습니다.\n\n" +
-                duplicateText +
-                "\n\n중복된 슬롯 중 잘못 인식된 칸을 수정한 뒤 다시 적용하세요.",
-                "중복 캐릭터 - 덱 적용 중지",
+                string.Format(Loc.Get("Str.Screenshot.DuplicateCharacterBody"), duplicateText),
+                Loc.Get("Str.Screenshot.DuplicateCharacterTitle"),
                 MessageBoxButton.OK,
                 MessageBoxImage.Warning);
-            SetError("중복 캐릭터가 남아 있어 덱 적용을 중지했습니다.");
+            SetError(Loc.Get("Str.Screenshot.DuplicateRemainingStop"));
             return;
         }
 
         if (selected.Count != DeckScreenshotRecognitionService.SlotCount)
         {
-            SetError("덱은 12칸 모두 확인되어야 합니다.");
+            SetError(Loc.Get("Str.Screenshot.All12SlotsRequired"));
             return;
         }
 
@@ -582,8 +602,8 @@ public partial class DeckScreenshotImportWindow : Window
             {
                 MessageBox.Show(
                     this,
-                    $"덱 적용은 정상 처리하지만 학습 이미지 {learningResult.FailedCount}장을 저장하지 못했습니다.",
-                    "학습 일부 실패",
+                    string.Format(Loc.Get("Str.Screenshot.PartialLearningFailBody"), learningResult.FailedCount),
+                    Loc.Get("Str.Screenshot.PartialLearningFailTitle"),
                     MessageBoxButton.OK,
                     MessageBoxImage.Warning);
             }
@@ -602,8 +622,8 @@ public partial class DeckScreenshotImportWindow : Window
         {
             MessageBox.Show(
                 this,
-                "현재 UI 프로필에 저장된 학습 샘플이 없습니다.",
-                "학습 데이터",
+                Loc.Get("Str.Screenshot.NoLearningSamplesBody"),
+                Loc.Get("Str.Screenshot.NoLearningSamplesTitle"),
                 MessageBoxButton.OK,
                 MessageBoxImage.Information);
             return;
@@ -611,9 +631,11 @@ public partial class DeckScreenshotImportWindow : Window
 
         MessageBoxResult result = MessageBox.Show(
             this,
-            $"{DeckScreenshotLearningService.CurrentUiProfileDisplayName} 학습 샘플 {stats.SampleCount}장을 삭제할까요?\n\n" +
-            "캐릭터 DB 이미지는 삭제되지 않으며, 이후에는 기본 일러스트만으로 인식합니다.",
-            "현재 UI 학습 초기화",
+            string.Format(
+                Loc.Get("Str.Screenshot.ConfirmResetLearningBody"),
+                DeckScreenshotLearningService.CurrentUiProfileDisplayName,
+                stats.SampleCount),
+            Loc.Get("Str.Screenshot.ResetCurrentUiLearning"),
             MessageBoxButton.YesNo,
             MessageBoxImage.Warning,
             MessageBoxResult.No);
@@ -625,21 +647,24 @@ public partial class DeckScreenshotImportWindow : Window
 
         if (!_learningService.ClearCurrentProfile())
         {
-            SetError("학습 데이터 폴더를 삭제하지 못했습니다.");
+            SetError(Loc.Get("Str.Screenshot.DeleteLearningFolderFailed"));
             return;
         }
 
         _recognitionService.InvalidateLearnedTemplates();
         UpdateLearningStatus();
-        Controls.SetAlertBanner(StatusBanner, StatusText, "현재 UI 프로필의 학습 데이터를 초기화했습니다.", false, Theme.TextSecondary);
+        Controls.SetAlertBanner(StatusBanner, StatusText, Loc.Get("Str.Screenshot.ResetLearningDone"), false, Theme.TextSecondary);
     }
 
     private void UpdateLearningStatus()
     {
         LearningSampleStats stats = _learningService.GetStats();
-        LearningStatusText.Text =
-            $"학습 프로필: {DeckScreenshotLearningService.CurrentUiProfileDisplayName} · " +
-            $"{stats.CharacterCount}명 / {stats.SampleCount}장 · {stats.SizeText}";
+        LearningStatusText.Text = string.Format(
+            Loc.Get("Str.Screenshot.LearningProfileSummary"),
+            DeckScreenshotLearningService.CurrentUiProfileDisplayName,
+            stats.CharacterCount,
+            stats.SampleCount,
+            stats.SizeText);
     }
 
     private void DrawSelectionOverlay()
@@ -764,8 +789,8 @@ public partial class DeckScreenshotImportWindow : Window
     private void UpdateSelectionInfo()
     {
         SelectionInfoText.Text = _selectedGridRect is Int32Rect rect
-            ? $"선택 영역: {rect.Width}×{rect.Height} · 1칸 약 {rect.Width / 4}×{rect.Height / 3}px"
-            : "12칸 전체 영역을 마우스로 드래그하세요.";
+            ? string.Format(Loc.Get("Str.Screenshot.SelectionSizeSummary"), rect.Width, rect.Height, rect.Width / 4, rect.Height / 3)
+            : Loc.Get("Str.Screenshot.DragFullRegionHint");
     }
 
     private void SetError(string message)
@@ -832,7 +857,7 @@ public partial class DeckScreenshotImportWindow : Window
         }
 
         public int SlotIndex { get; }
-        public string SlotText => SlotIndex == 0 ? "1\n리더" : (SlotIndex + 1).ToString();
+        public string SlotText => SlotIndex == 0 ? Loc.Get("Str.Screenshot.SlotLeaderText") : (SlotIndex + 1).ToString();
         public ImageSource CropThumbnail { get; }
         public IReadOnlyList<CharacterChoice> Choices { get; }
         public double BestSimilarity { get; }
@@ -841,10 +866,10 @@ public partial class DeckScreenshotImportWindow : Window
         public int SecondMatchCount { get; }
         public bool IsAutoConfident { get; }
         public string BestScoreText => BestMatchCount <= 0
-            ? "매칭 없음"
+            ? Loc.Get("Str.Screenshot.NoMatch")
             : IsAutoConfident
-                ? $"매칭 {BestMatchCount} · 자동"
-                : $"매칭 {BestMatchCount} · 확인";
+                ? string.Format(Loc.Get("Str.Screenshot.MatchAuto"), BestMatchCount)
+                : string.Format(Loc.Get("Str.Screenshot.MatchConfirm"), BestMatchCount);
         public string CandidateSummary { get; }
         public ImageSource? SelectedCharacterThumbnail
         {

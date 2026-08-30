@@ -1,7 +1,7 @@
 <Window x:Class="KotodamanWordFinder.CharacterBulkEditorWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="등록 캐릭터 일괄 수정"
+        Title="{DynamicResource Str.CharBulk.Title}"
         Width="1500"
         Height="880"
         MinWidth="1080"
@@ -239,14 +239,14 @@
                 <StackPanel>
                     <TextBlock Foreground="{StaticResource Text.Secondary}"
                                TextWrapping="Wrap"
-                               Text="웹 등록 검사기처럼 현재 characters.json의 캐릭터를 표에서 직접 수정합니다. 일러를 보면서 이름·검색 별칭·문자·등급·속성·종족·그룹을 직접 입력·복붙할 수 있으며, 이미지·모드시프트·조건 문자·미라클 설정 자체는 그대로 유지됩니다."/>
+                               Text="{DynamicResource Str.CharBulk.Description}"/>
                 </StackPanel>
                 <TextBlock x:Name="CountText"
                            Grid.Column="1"
                            VerticalAlignment="Center"
                            Foreground="{StaticResource Status.Success}"
                            FontWeight="SemiBold"
-                           Text="0 / 0명"/>
+                           Text="{DynamicResource Str.CharBulk.CountInitial}"/>
             </Grid>
         </Border>
 
@@ -272,7 +272,7 @@
                     <TextBox x:Name="SearchTextBox"
                              Grid.Column="0"
                              MinHeight="36"
-                             ToolTip="이름, 검색 별칭, 문자, 그룹, 등급, 속성, 종족 검색"
+                             ToolTip="{DynamicResource Str.CharBulk.SearchTooltip}"
                              TextChanged="SearchTextBox_TextChanged"/>
                     <ComboBox x:Name="CategoryFilterComboBox"
                               Grid.Column="2"
@@ -289,7 +289,7 @@
                     <CheckBox x:Name="IncompleteOnlyCheckBox"
                               Grid.Column="7"
                               Margin="16,0,0,0"
-                              Content="속성·종족 미입력만"
+                              Content="{DynamicResource Str.CharBulk.MissingAttrSpeciesOnly}"
                               Checked="IncompleteOnlyCheckBox_Changed"
                               Unchecked="IncompleteOnlyCheckBox_Changed"/>
                 </Grid>
@@ -320,54 +320,54 @@
                                Grid.Column="0"
                                VerticalAlignment="Center"
                                Foreground="{StaticResource Text.Secondary}"
-                               Text="체크 항목 일괄 변경&#10;(빈칸=유지)"/>
+                               Text="{DynamicResource Str.CharBulk.BulkChangeHeader}"/>
                     <TextBlock Grid.Row="0" Grid.Column="2"
                                Margin="2,0,0,4"
                                Foreground="{StaticResource Text.Secondary}"
                                FontSize="11"
-                               Text="등급"/>
+                               Text="{DynamicResource Str.CharBulk.CategoryLabel}"/>
                     <TextBlock Grid.Row="0" Grid.Column="4"
                                Margin="2,0,0,4"
                                Foreground="{StaticResource Text.Secondary}"
                                FontSize="11"
-                               Text="속성"/>
+                               Text="{DynamicResource Str.CharBulk.AttributeLabel}"/>
                     <TextBlock Grid.Row="0" Grid.Column="6"
                                Margin="2,0,0,4"
                                Foreground="{StaticResource Text.Secondary}"
                                FontSize="11"
-                               Text="종족"/>
+                               Text="{DynamicResource Str.CharBulk.SpeciesLabel}"/>
                     <TextBlock Grid.Row="0" Grid.Column="8"
                                Margin="2,0,0,4"
                                Foreground="{StaticResource Accent.Focus}"
                                FontSize="11"
                                FontWeight="SemiBold"
-                               Text="소속 그룹"/>
+                               Text="{DynamicResource Str.CharBulk.GroupLabel}"/>
                     <TextBox x:Name="BatchCategoryTextBox"
                              Grid.Row="1" Grid.Column="2"
                              MinHeight="34"
-                             ToolTip="예: 스페셜, 콜라보. 비워 두면 변경하지 않습니다."/>
+                             ToolTip="{DynamicResource Str.CharBulk.CategoryBulkTooltip}"/>
                     <TextBox x:Name="BatchAttributeTextBox"
                              Grid.Row="1" Grid.Column="4"
                              MinHeight="34"
-                             ToolTip="예: 火. 비워 두면 유지, '미입력'을 입력하면 지웁니다."/>
+                             ToolTip="{DynamicResource Str.CharBulk.AttributeBulkTooltip}"/>
                     <TextBox x:Name="BatchSpeciesTextBox"
                              Grid.Row="1" Grid.Column="6"
                              MinHeight="34"
-                             ToolTip="예: 英. 비워 두면 유지, '미입력'을 입력하면 지웁니다."/>
+                             ToolTip="{DynamicResource Str.CharBulk.SpeciesBulkTooltip}"/>
                     <TextBox x:Name="BatchGroupTextBox"
                              Grid.Row="1" Grid.Column="8"
                              MinHeight="34"
-                             ToolTip="예: リザンテクス. 비워 두면 유지, '미입력'을 입력하면 그룹을 지웁니다."/>
+                             ToolTip="{DynamicResource Str.CharBulk.GroupBulkTooltip}"/>
                     <Button Grid.Row="1" Grid.Column="10"
-                            Content="체크 항목에 적용"
+                            Content="{DynamicResource Str.CharBulk.ApplyToChecked}"
                             Style="{StaticResource EditorButtonStyle}"
                             Click="ApplyBatchButton_Click"/>
                     <Button Grid.Row="1" Grid.Column="12"
-                            Content="현재 표시 체크"
+                            Content="{DynamicResource Str.CharBulk.CheckVisible}"
                             Style="{StaticResource EditorButtonStyle}"
                             Click="CheckVisibleButton_Click"/>
                     <Button Grid.Row="1" Grid.Column="14"
-                            Content="전체 체크 해제"
+                            Content="{DynamicResource Str.CharBulk.UncheckAll}"
                             Style="{StaticResource EditorButtonStyle}"
                             Click="ClearChecksButton_Click"/>
                 </Grid>
@@ -457,7 +457,7 @@
                     <DataGridCheckBoxColumn Header="✓"
                                             Width="42"
                                             Binding="{Binding IsChecked, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                    <DataGridTemplateColumn Header="일러" Width="58" IsReadOnly="True" CanUserSort="False">
+                    <DataGridTemplateColumn Header="{DynamicResource Str.CharBulk.ColThumbnail}" Width="58" IsReadOnly="True" CanUserSort="False">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <Border Width="42" Height="42"
@@ -485,49 +485,49 @@
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
-                    <DataGridTextColumn Header="이름"
+                    <DataGridTextColumn Header="{DynamicResource Str.CharBulk.ColName}"
                                         Width="190"
                                         Binding="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
-                    <DataGridTextColumn Header="검색 별칭"
+                    <DataGridTextColumn Header="{DynamicResource Str.CharBulk.ColAliases}"
                                         Width="180"
                                         Binding="{Binding SearchAliasesText, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
-                    <DataGridTextColumn Header="문자"
+                    <DataGridTextColumn Header="{DynamicResource Str.CharBulk.ColLetters}"
                                         Width="125"
                                         Binding="{Binding LettersText, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
-                    <DataGridTemplateColumn Header="등급" Width="110" SortMemberPath="Category">
+                    <DataGridTemplateColumn Header="{DynamicResource Str.CharBulk.CategoryLabel}" Width="110" SortMemberPath="Category">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBox Style="{StaticResource GridInlineTextBoxStyle}"
                                          Text="{Binding Category, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                         ToolTip="직접 입력/붙여넣기: 스페셜, 레전드, 그랜드, 드림, 미라클, 오리지널, 콜라보, 기타"/>
+                                         ToolTip="{DynamicResource Str.CharBulk.ColCategoryTooltip}"/>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
-                    <DataGridTemplateColumn Header="속성" Width="78" SortMemberPath="Attribute">
+                    <DataGridTemplateColumn Header="{DynamicResource Str.CharBulk.AttributeLabel}" Width="78" SortMemberPath="Attribute">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBox Style="{StaticResource GridInlineTextBoxStyle}"
                                          Text="{Binding Attribute, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                         ToolTip="직접 입력/붙여넣기: 火 水 木 光 闇 天 冥 虹 / 미입력"/>
+                                         ToolTip="{DynamicResource Str.CharBulk.ColAttributeTooltip}"/>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
-                    <DataGridTextColumn Header="서브 속성"
+                    <DataGridTextColumn Header="{DynamicResource Str.CharBulk.ColSubAttribute}"
                                         Width="105"
                                         Binding="{Binding SubAttributesText, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
-                    <DataGridTemplateColumn Header="종족" Width="78" SortMemberPath="Species">
+                    <DataGridTemplateColumn Header="{DynamicResource Str.CharBulk.SpeciesLabel}" Width="78" SortMemberPath="Species">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBox Style="{StaticResource GridInlineTextBoxStyle}"
                                          Text="{Binding Species, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                         ToolTip="직접 입력/붙여넣기: 神 魔 英 龍 獣 霊 物 妖 / 미입력"/>
+                                         ToolTip="{DynamicResource Str.CharBulk.ColSpeciesTooltip}"/>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
-                    <DataGridTextColumn Header="소속 그룹"
+                    <DataGridTextColumn Header="{DynamicResource Str.CharBulk.GroupLabel}"
                                         Width="180"
                                         Binding="{Binding GroupName, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
-                    <DataGridTextColumn Header="같이 취급 그룹"
+                    <DataGridTextColumn Header="{DynamicResource Str.CharBulk.ColIncludedGroups}"
                                         Width="210"
                                         Binding="{Binding IncludedGroupsText, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
                     <DataGridCheckBoxColumn Header="★"
@@ -552,14 +552,14 @@
             <Border x:Name="StatusBanner" Style="{StaticResource AlertBannerStyle}" VerticalAlignment="Center">
                 <TextBlock x:Name="StatusText"
                            Foreground="{StaticResource Text.Secondary}"
-                           Text="표에서 직접 수정하거나 체크 후 위의 일괄 변경을 사용하세요."/>
+                           Text="{DynamicResource Str.CharBulk.FooterHint}"/>
             </Border>
             <StackPanel Grid.Column="1" Orientation="Horizontal">
-                <Button Content="취소"
+                <Button Content="{DynamicResource Str.CharBulk.Cancel}"
                         Margin="0,0,10,0"
                         Style="{StaticResource GhostButtonStyle}"
                         Click="CancelButton_Click"/>
-                <Button Content="변경 내용 적용"
+                <Button Content="{DynamicResource Str.CharBulk.ApplyChanges}"
                         Style="{StaticResource ActionButtonStyle}"
                         Click="SaveButton_Click"/>
             </StackPanel>

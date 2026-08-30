@@ -1,7 +1,7 @@
 <Window x:Class="KotodamanWordFinder.DeckEditorWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="캐릭터 목록과 현재 덱 편성"
+        Title="{DynamicResource Str.DeckEditor.Title}"
         Width="1440"
         Height="930"
         MinWidth="960"
@@ -336,7 +336,7 @@
         <StackPanel Grid.Row="0" Margin="0,0,0,14">
             <TextBlock Foreground="{StaticResource Text.Secondary}"
                        TextWrapping="Wrap"
-                       Text="캐릭터는 한 번만 등록하고 현재 덱에는 목록에서 최대 12명을 추가합니다. 등급과 주력(★)·애정(♥) 표시를 지정하면 캐릭터가 많아져도 원하는 캐릭터를 빠르게 찾을 수 있습니다."/>
+                       Text="{DynamicResource Str.DeckEditor.Description}"/>
 
             <Border Margin="0,12,0,0"
                     Background="{StaticResource Bg.PanelInner}"
@@ -354,7 +354,7 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
 
-                    <TextBlock Text="덱 프리셋"
+                    <TextBlock Text="{DynamicResource Str.DeckPreset}"
                                VerticalAlignment="Center"
                                Margin="0,0,12,0"
                                FontWeight="Bold"
@@ -364,24 +364,24 @@
                               MaxDropDownHeight="320"
                               HorizontalContentAlignment="Stretch"
                               SelectionChanged="PresetComboBox_SelectionChanged"
-                              ToolTip="저장된 덱 프리셋 선택"/>
+                              ToolTip="{DynamicResource Str.DeckPresetTooltip}"/>
                     <TextBox x:Name="PresetNameTextBox"
                              Grid.Column="3"
-                             ToolTip="새 프리셋 이름 또는 선택한 프리셋 이름"/>
+                             ToolTip="{DynamicResource Str.DeckEditor.PresetNameTooltip}"/>
                     <WrapPanel Grid.Column="5" VerticalAlignment="Center">
-                        <Button Content="불러오기"
+                        <Button Content="{DynamicResource Str.DeckEditor.LoadPreset}"
                                 Margin="0,0,7,0"
                                 Style="{StaticResource EditorButtonStyle}"
                                 Click="LoadPresetButton_Click"/>
-                        <Button Content="현재 덱 저장"
+                        <Button Content="{DynamicResource Str.DeckEditor.SaveCurrentDeck}"
                                 Margin="0,0,7,0"
                                 Style="{StaticResource PrimaryButtonStyle}"
                                 Click="SavePresetButton_Click"/>
-                        <Button Content="새 이름"
+                        <Button Content="{DynamicResource Str.DeckEditor.NewName}"
                                 Margin="0,0,7,0"
                                 Style="{StaticResource EditorButtonStyle}"
                                 Click="NewPresetButton_Click"/>
-                        <Button Content="삭제"
+                        <Button Content="{DynamicResource Str.DeckEditor.Delete}"
                                 Style="{StaticResource DangerButtonStyle}"
                                 Click="DeletePresetButton_Click"/>
                     </WrapPanel>
@@ -415,14 +415,14 @@
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock Text="등록된 캐릭터 목록"
+                        <TextBlock Text="{DynamicResource Str.DeckEditor.LibraryHeader}"
                                    FontSize="18"
                                    FontWeight="Bold"/>
                         <TextBlock x:Name="LibraryCountText"
                                    Grid.Column="1"
                                    Foreground="{StaticResource Accent.Focus}"
                                    VerticalAlignment="Center"
-                                   Text="0명"/>
+                                   Text="{DynamicResource Str.DeckEditor.CountInitial}"/>
                     </Grid>
 
                     <Grid Grid.Row="1" Margin="0,0,0,10">
@@ -445,19 +445,19 @@
 
                         <TextBox x:Name="LibrarySearchTextBox"
                                  Grid.ColumnSpan="7"
-                                 ToolTip="공백으로 여러 조건을 입력하면 모두 만족하는 캐릭터를 찾습니다. 이름, 그룹, 문자, 등급, 속성, 종족, 형태명 검색 가능"
+                                 ToolTip="{DynamicResource Str.DeckEditor.SearchTooltip}"
                                  TextChanged="LibrarySearchTextBox_TextChanged"/>
                         <StackPanel Grid.Column="8"
                                     Orientation="Horizontal"
                                     HorizontalAlignment="Right"
                                     VerticalAlignment="Center">
                             <CheckBox x:Name="FavoriteOnlyCheckBox"
-                                      Content="★ 주력"
+                                      Content="{DynamicResource Str.DeckEditor.MainBadge}"
                                       Padding="2,0"
                                       Checked="LibraryCheckFilter_Changed"
                                       Unchecked="LibraryCheckFilter_Changed"/>
                             <CheckBox x:Name="BelovedOnlyCheckBox"
-                                      Content="♥ 애정"
+                                      Content="{DynamicResource Str.DeckEditor.LoveBadge}"
                                       Foreground="{StaticResource Rose.Text}"
                                       Margin="8,0,0,0"
                                       Padding="2,0"
@@ -469,37 +469,37 @@
                                   Grid.Row="1" Grid.Column="0" Margin="0,7,0,0"
                                   MaxDropDownHeight="360"
                                   SelectionChanged="LibrarySelectionFilter_Changed"
-                                  ToolTip="그룹 필터"/>
+                                  ToolTip="{DynamicResource Str.DeckEditor.GroupFilterTooltip}"/>
                         <ComboBox x:Name="CategoryFilterComboBox"
                                   Grid.Row="1" Grid.Column="2" Margin="0,7,0,0"
                                   SelectionChanged="LibrarySelectionFilter_Changed"
-                                  ToolTip="등급 필터"/>
+                                  ToolTip="{DynamicResource Str.DeckEditor.CategoryFilterTooltip}"/>
                         <ComboBox x:Name="AttributeFilterComboBox"
                                   Grid.Row="1" Grid.Column="4" Margin="0,7,0,0"
                                   SelectionChanged="LibrarySelectionFilter_Changed"
-                                  ToolTip="속성 필터"/>
+                                  ToolTip="{DynamicResource Str.DeckEditor.AttributeFilterTooltip}"/>
                         <ComboBox x:Name="SpeciesFilterComboBox"
                                   Grid.Row="1" Grid.Column="6" Margin="0,7,0,0"
                                   SelectionChanged="LibrarySelectionFilter_Changed"
-                                  ToolTip="종족 필터"/>
+                                  ToolTip="{DynamicResource Str.DeckEditor.SpeciesFilterTooltip}"/>
                         <ComboBox x:Name="StatusFilterComboBox"
                                   Grid.Row="1" Grid.Column="8" Margin="0,7,0,0"
                                   SelectionChanged="LibrarySelectionFilter_Changed"
-                                  ToolTip="등록 상태와 기능별 필터"/>
+                                  ToolTip="{DynamicResource Str.DeckEditor.StatusFilterTooltip}"/>
 
                         <TextBlock x:Name="LibrarySearchHintText"
                                    Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="5"
                                    Margin="2,7,0,0"
                                    Foreground="{StaticResource Text.Tertiary}"
                                    FontSize="10"
-                                   Text="예: 仮面ライダー し · 속성/종족도 검색 가능"/>
+                                   Text="{DynamicResource Str.DeckEditor.SearchPlaceholder}"/>
                         <ComboBox x:Name="SortComboBox"
                                   Grid.Row="2" Grid.Column="6"
                                   Margin="0,7,0,0"
                                   SelectionChanged="LibrarySelectionFilter_Changed"
-                                  ToolTip="목록 정렬"/>
+                                  ToolTip="{DynamicResource Str.DeckEditor.SortTooltip}"/>
                         <Button Grid.Row="2" Grid.Column="8"
-                                Content="초기화"
+                                Content="{DynamicResource Str.DeckEditor.ResetFilters}"
                                 Margin="0,7,0,0"
                                 Padding="10,6"
                                 Style="{StaticResource EditorButtonStyle}"
@@ -613,7 +613,7 @@
                                                         BorderBrush="{StaticResource Special.Line}"
                                                         BorderThickness="1"
                                                         CornerRadius="4"
-                                                        ToolTip="2초 길게 눌러 동일명 모드시프트 전환">
+                                                        ToolTip="{DynamicResource Str.DeckEditor.HoldToggleSameNameTooltip}">
                                                     <TextBlock Text="MS"
                                                                Foreground="{StaticResource Status.Special}"
                                                                FontSize="9"
@@ -637,7 +637,7 @@
                                                             </Style.Triggers>
                                                         </Style>
                                                     </Border.Style>
-                                                    <TextBlock Text="선택됨"
+                                                    <TextBlock Text="{DynamicResource Str.DeckEditor.SelectedBadge}"
                                                                Foreground="{StaticResource Alert.Text}"
                                                                FontSize="9"
                                                                FontWeight="Bold"/>
@@ -736,20 +736,20 @@
                         </Grid.ColumnDefinitions>
 
                         <WrapPanel Grid.Column="0">
-                            <Button Content="신규 입력"
+                            <Button Content="{DynamicResource Str.DeckEditor.NewEntry}"
                                     Margin="0,0,8,8"
                                     Style="{StaticResource EditorButtonStyle}"
                                     Click="NewCharacterButton_Click"/>
-                            <Button Content="웹 등록"
+                            <Button Content="{DynamicResource Str.DeckEditor.WebRegister}"
                                     Margin="0,0,8,8"
                                     Style="{StaticResource PrimaryButtonStyle}"
                                     Click="ImportCharacterFromWebButton_Click"/>
-                            <Button Content="일괄 수정"
+                            <Button Content="{DynamicResource Str.DeckEditor.BulkEdit}"
                                     Margin="0,0,8,8"
                                     Style="{StaticResource EditorButtonStyle}"
-                                    ToolTip="등록된 캐릭터의 이름·문자·등급·속성·종족·그룹을 표에서 한꺼번에 수정합니다."
+                                    ToolTip="{DynamicResource Str.DeckEditor.BulkEditTooltip}"
                                     Click="BulkEditCharactersButton_Click"/>
-                            <Button Content="삭제"
+                            <Button Content="{DynamicResource Str.DeckEditor.Delete}"
                                     Margin="0,0,8,8"
                                     Style="{StaticResource DangerButtonStyle}"
                                     Click="DeleteCharacterButton_Click"/>
@@ -767,7 +767,7 @@
                                     Padding="0"
                                     Margin="0,0,6,0"
                                     Style="{StaticResource EditorButtonStyle}"
-                                    ToolTip="이전 페이지"
+                                    ToolTip="{DynamicResource Str.DeckEditor.PrevPage}"
                                     Click="LibraryPrevPageButton_Click"/>
                             <TextBlock x:Name="LibraryPageText"
                                        MinWidth="64"
@@ -783,7 +783,7 @@
                                     Padding="0"
                                     Margin="6,0,0,0"
                                     Style="{StaticResource EditorButtonStyle}"
-                                    ToolTip="다음 페이지"
+                                    ToolTip="{DynamicResource Str.DeckEditor.NextPage}"
                                     Click="LibraryNextPageButton_Click"/>
                         </StackPanel>
                     </Grid>
@@ -808,14 +808,14 @@
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock Text="현재 덱"
+                        <TextBlock Text="{DynamicResource Str.DeckEditor.CurrentDeckHeader}"
                                    FontSize="18"
                                    FontWeight="Bold"/>
                         <TextBlock x:Name="DeckCountText"
                                    Grid.Column="1"
                                    Foreground="{StaticResource Accent.Focus}"
                                    VerticalAlignment="Center"
-                                   Text="0 / 12명"/>
+                                   Text="{DynamicResource Str.DeckEditor.DeckCountInitial}"/>
                     </Grid>
 
                     <ListBox x:Name="DeckListBox"
@@ -901,11 +901,11 @@
                     </ListBox>
 
                     <WrapPanel Grid.Row="2" Margin="0,10,0,0">
-                        <Button Content="스샷"
+                        <Button Content="{DynamicResource Str.DeckEditor.Screenshot}"
                                 Margin="0,0,8,8"
                                 Style="{StaticResource PrimaryButtonStyle}"
                                 Click="ImportDeckFromScreenshotButton_Click"/>
-                        <Button Content="★ 리더"
+                        <Button Content="{DynamicResource Str.DeckEditor.LeaderBadge}"
                                 Margin="0,0,8,8"
                                 Style="{StaticResource PrimaryButtonStyle}"
                                 Click="SetLeaderButton_Click"/>
@@ -917,11 +917,11 @@
                                 Margin="0,0,8,8"
                                 Style="{StaticResource EditorButtonStyle}"
                                 Click="MoveDeckDownButton_Click"/>
-                        <Button Content="제거"
+                        <Button Content="{DynamicResource Str.DeckEditor.Remove}"
                                 Margin="0,0,8,8"
                                 Style="{StaticResource DangerButtonStyle}"
                                 Click="RemoveFromDeckButton_Click"/>
-                        <Button Content="비우기"
+                        <Button Content="{DynamicResource Str.DeckEditor.ClearDeck}"
                                 Margin="0,0,0,8"
                                 Style="{StaticResource DangerButtonStyle}"
                                 Click="ClearDeckButton_Click"/>
@@ -974,11 +974,11 @@
                             </TextBlock>
                         </Border>
                         <StackPanel Grid.Column="1">
-                            <TextBlock Text="캐릭터 상세 편집"
+                            <TextBlock Text="{DynamicResource Str.DeckEditor.DetailEditHeader}"
                                        FontSize="16"
                                        FontWeight="Bold"
                                        Foreground="{StaticResource Accent.Focus}"/>
-                            <TextBlock Text="이름·문자·그룹·미라클·모드시프트·조건부 문자·이미지를 수정할 때만 펼치세요. 접으면 캐릭터 목록과 덱 영역이 넓어집니다."
+                            <TextBlock Text="{DynamicResource Str.DeckEditor.DetailEditHint}"
                                        Margin="0,4,0,0"
                                        Foreground="{StaticResource Text.Secondary}"
                                        FontSize="11"/>
@@ -989,10 +989,10 @@
                                    Margin="16,0,0,0">
                             <TextBlock.Style>
                                 <Style TargetType="TextBlock">
-                                    <Setter Property="Text" Value="위로 펼치기"/>
+                                    <Setter Property="Text" Value="{DynamicResource Str.DeckEditor.ExpandUp}"/>
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding IsExpanded, RelativeSource={RelativeSource AncestorType=Expander}}" Value="True">
-                                            <Setter Property="Text" Value="아래로 접기"/>
+                                            <Setter Property="Text" Value="{DynamicResource Str.DeckEditor.CollapseDown}"/>
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
@@ -1031,55 +1031,55 @@
                     </Grid.ColumnDefinitions>
 
                     <StackPanel Grid.Column="0">
-                        <TextBlock Text="캐릭터 이름"
+                        <TextBlock Text="{DynamicResource Str.DeckEditor.NameLabel}"
                                    Foreground="{StaticResource Text.Secondary}"
                                    Margin="0,0,0,5"/>
                         <TextBox x:Name="CharacterNameTextBox"
-                                 ToolTip="예: キュウセイ"/>
-                        <TextBlock Text="검색 별칭"
+                                 ToolTip="{DynamicResource Str.DeckEditor.NameTooltip}"/>
+                        <TextBlock Text="{DynamicResource Str.DeckEditor.AliasLabel}"
                                    Foreground="{StaticResource Text.Secondary}"
                                    Margin="0,9,0,5"/>
                         <TextBox x:Name="CharacterSearchAliasesTextBox"
-                                 ToolTip="한자 이름을 한글 등 다른 표기로 찾을 때 사용합니다. 여러 별칭은 쉼표 또는 ·로 구분하세요. 예: 카마도 탄지로"/>
+                                 ToolTip="{DynamicResource Str.DeckEditor.AliasTooltip}"/>
                     </StackPanel>
 
                     <StackPanel Grid.Column="2">
-                        <TextBlock Text="등급 / 분류"
+                        <TextBlock Text="{DynamicResource Str.DeckEditor.CategoryLabel}"
                                    Foreground="{StaticResource Text.Secondary}"
                                    Margin="0,0,0,5"/>
                         <ComboBox x:Name="CharacterCategoryComboBox"
                                   HorizontalContentAlignment="Stretch"
-                                  ToolTip="스페셜, 레전드, 그랜드, 드림, 미라클, 오리지널, 콜라보 또는 기타"/>
+                                  ToolTip="{DynamicResource Str.DeckEditor.CategoryTooltip}"/>
                         <StackPanel Orientation="Horizontal" Margin="2,8,0,0">
                             <CheckBox x:Name="CharacterFavoriteCheckBox"
-                                      Content="★ 주력"/>
+                                      Content="{DynamicResource Str.DeckEditor.MainBadge}"/>
                             <CheckBox x:Name="CharacterBelovedCheckBox"
-                                      Content="♥ 애정"
+                                      Content="{DynamicResource Str.DeckEditor.LoveBadge}"
                                       Foreground="{StaticResource Rose.Text}"
                                       Margin="12,0,0,0"/>
                         </StackPanel>
                     </StackPanel>
 
                     <StackPanel Grid.Column="4">
-                        <TextBlock Text="기본 사용 가능 문자"
+                        <TextBlock Text="{DynamicResource Str.DeckEditor.BaseLettersLabel}"
                                    Foreground="{StaticResource Text.Secondary}"
                                    Margin="0,0,0,5"/>
                         <TextBox x:Name="CharacterLettersTextBox"
-                                 ToolTip="항상 사용할 수 있는 기본 문자만 입력하세요. 예: き ゅ う 또는 きゅう"/>
+                                 ToolTip="{DynamicResource Str.DeckEditor.BaseLettersTooltip}"/>
                     </StackPanel>
 
                     <StackPanel Grid.Column="5"
                                 Margin="14,21,0,0"
                                 VerticalAlignment="Top">
                         <Button x:Name="AddCharacterButton"
-                                Content="새 캐릭터 추가"
+                                Content="{DynamicResource Str.DeckEditor.AddNewCharacter}"
                                 Margin="0,0,0,7"
                                 Style="{StaticResource PrimaryButtonStyle}"
                                 Click="AddCharacterButton_Click"/>
                         <Button x:Name="UpdateCharacterButton"
-                                Content="선택 캐릭터 수정"
+                                Content="{DynamicResource Str.DeckEditor.UpdateSelectedCharacter}"
                                 Style="{StaticResource PrimaryButtonStyle}"
-                                ToolTip="현재 상세 편집 내용을 작업 중인 캐릭터에 반영하고 즉시 자동 저장합니다. 창을 닫을 때도 마지막 편집을 자동 저장합니다."
+                                ToolTip="{DynamicResource Str.DeckEditor.UpdateSelectedTooltip}"
                                 Click="UpdateCharacterButton_Click"/>
                     </StackPanel>
                 </Grid>
@@ -1099,43 +1099,43 @@
                                 <ColumnDefinition Width="1*"/>
                             </Grid.ColumnDefinitions>
                             <StackPanel>
-                                <TextBlock Text="속성" Foreground="{StaticResource Text.Secondary}" Margin="0,0,0,5"/>
+                                <TextBlock Text="{DynamicResource Str.DeckEditor.AttributeLabel}" Foreground="{StaticResource Text.Secondary}" Margin="0,0,0,5"/>
                                 <ComboBox x:Name="CharacterAttributeComboBox"/>
                             </StackPanel>
                             <StackPanel Grid.Column="2">
-                                <TextBlock Text="종족" Foreground="{StaticResource Text.Secondary}" Margin="0,0,0,5"/>
+                                <TextBlock Text="{DynamicResource Str.DeckEditor.SpeciesLabel}" Foreground="{StaticResource Text.Secondary}" Margin="0,0,0,5"/>
                                 <ComboBox x:Name="CharacterSpeciesComboBox"/>
                             </StackPanel>
                         </Grid>
-                        <TextBlock Text="서브 / 변환 속성"
+                        <TextBlock Text="{DynamicResource Str.DeckEditor.SubAttributeLabel}"
                                    Foreground="{StaticResource Text.Secondary}"
                                    Margin="0,0,0,5"/>
                         <TextBox x:Name="CharacterSubAttributesTextBox"
                                  Margin="0,0,0,10"
-                                 ToolTip="예: 木 闇. 메인 속성을 제외한 서브 속성 또는 속성 변환 대상을 공백·쉼표·/로 구분하세요."/>
-                        <TextBlock Text="소속 그룹 (1개)"
+                                 ToolTip="{DynamicResource Str.DeckEditor.SubAttributeTooltip}"/>
+                        <TextBlock Text="{DynamicResource Str.DeckEditor.GroupLabel}"
                                    Foreground="{StaticResource Text.Secondary}"
                                    Margin="0,0,0,5"/>
                         <ComboBox x:Name="CharacterGroupComboBox"
                                   IsEditable="True"
                                   IsTextSearchEnabled="True"
                                   HorizontalContentAlignment="Stretch"
-                                  ToolTip="캐릭터의 기본 소속 그룹 하나를 입력하거나 기존 그룹에서 선택하세요."/>
+                                  ToolTip="{DynamicResource Str.DeckEditor.GroupTooltip}"/>
                         <TextBlock Margin="2,5,0,0"
                                    Foreground="{StaticResource Text.Tertiary}"
                                    FontSize="10"
                                    TextWrapping="Wrap"
-                                   Text="캐릭터의 실제 소속은 하나만 입력합니다."/>
-                        <TextBlock Text="같이 취급되는 그룹 (여러 개 가능)"
+                                   Text="{DynamicResource Str.DeckEditor.GroupHint}"/>
+                        <TextBlock Text="{DynamicResource Str.DeckEditor.IncludedGroupsLabel}"
                                    Foreground="{StaticResource Text.Secondary}"
                                    Margin="0,10,0,5"/>
                         <TextBox x:Name="CharacterIncludedGroupsTextBox"
-                                 ToolTip="이 소속 그룹의 캐릭터가 그룹 효과상 함께 취급되는 그룹을 쉼표 또는 ·로 구분하세요. 같은 소속 그룹 캐릭터 전체에 공유됩니다."/>
+                                 ToolTip="{DynamicResource Str.DeckEditor.IncludedGroupsTooltip}"/>
                         <TextBlock Margin="2,5,0,0"
                                    Foreground="{StaticResource Text.Tertiary}"
                                    FontSize="10"
                                    TextWrapping="Wrap"
-                                   Text="예: 全の戦律 → 斬・砲・突・重・超・打の戦律. 이 칸은 미라클 부여 대상과 별개입니다."/>
+                                   Text="{DynamicResource Str.DeckEditor.IncludedGroupsExample}"/>
                     </StackPanel>
 
                     <Border Grid.Column="2"
@@ -1157,8 +1157,8 @@
                                               IsHitTestVisible="False"
                                               Focusable="False"
                                               VerticalAlignment="Center"
-                                              ToolTip="대상 그룹과 부여 문자가 모두 입력되면 자동으로 효과 보유로 판단합니다."/>
-                                    <TextBlock Text="미라클 리더 문자 부여 · 자동 적용"
+                                              ToolTip="{DynamicResource Str.DeckEditor.MiracleAutoTooltip}"/>
+                                    <TextBlock Text="{DynamicResource Str.DeckEditor.MiracleHeader}"
                                                Margin="7,0,0,0"
                                                VerticalAlignment="Center"
                                                FontWeight="SemiBold"
@@ -1171,19 +1171,19 @@
                                         <ColumnDefinition Width="0.75*"/>
                                     </Grid.ColumnDefinitions>
                                     <StackPanel>
-                                        <TextBlock Text="대상 그룹" Foreground="{StaticResource Text.Secondary}" Margin="0,0,0,4"/>
+                                        <TextBlock Text="{DynamicResource Str.DeckEditor.TargetGroupLabel}" Foreground="{StaticResource Text.Secondary}" Margin="0,0,0,4"/>
                                         <TextBox x:Name="MiracleTargetGroupsTextBox"
-                                                 ToolTip="미라클 리더가 실제로 문자를 부여할 대상 그룹을 쉼표 또는 ·로 구분하세요."/>
+                                                 ToolTip="{DynamicResource Str.DeckEditor.MiracleTargetGroupTooltip}"/>
                                     </StackPanel>
                                     <StackPanel Grid.Column="2">
-                                        <TextBlock Text="부여 문자" Foreground="{StaticResource Text.Secondary}" Margin="0,0,0,4"/>
+                                        <TextBlock Text="{DynamicResource Str.DeckEditor.GrantedLettersLabel}" Foreground="{StaticResource Text.Secondary}" Margin="0,0,0,4"/>
                                         <TextBox x:Name="MiracleGrantedLettersTextBox"
-                                                 ToolTip="리더일 때 대상 그룹에게 추가되는 문자를 입력하세요."/>
+                                                 ToolTip="{DynamicResource Str.DeckEditor.GrantedLettersTooltip}"/>
                                     </StackPanel>
                                 </Grid>
                                 <TextBox x:Name="MiracleEffectNoteTextBox"
                                          Margin="0,8,0,0"
-                                         ToolTip="효과 조건이나 원문 메모 (선택)"/>
+                                         ToolTip="{DynamicResource Str.DeckEditor.EffectNoteTooltip}"/>
                             </StackPanel>
 
                             <Border Grid.Column="1" Width="1" Margin="6,0" Background="{StaticResource Special.Line}"/>
@@ -1194,8 +1194,8 @@
                                               IsHitTestVisible="False"
                                               Focusable="False"
                                               VerticalAlignment="Center"
-                                              ToolTip="조건 그룹, 최소 인원수, 추가 문자가 모두 입력되면 자동으로 활성화됩니다."/>
-                                    <TextBlock Text="덱 그룹 인원 조건 문자 · 자동 적용"
+                                              ToolTip="{DynamicResource Str.DeckEditor.DeckConditionAutoTooltip}"/>
+                                    <TextBlock Text="{DynamicResource Str.DeckEditor.DeckConditionHeader}"
                                                Margin="7,0,0,0"
                                                VerticalAlignment="Center"
                                                FontWeight="SemiBold"
@@ -1210,25 +1210,25 @@
                                         <ColumnDefinition Width="0.8*"/>
                                     </Grid.ColumnDefinitions>
                                     <StackPanel>
-                                        <TextBlock Text="조건 그룹" Foreground="{StaticResource Text.Secondary}" Margin="0,0,0,4"/>
+                                        <TextBlock Text="{DynamicResource Str.DeckEditor.ConditionGroupLabel}" Foreground="{StaticResource Text.Secondary}" Margin="0,0,0,4"/>
                                         <TextBox x:Name="DeckGroupConditionGroupsTextBox"
-                                                 ToolTip="덱에서 인원수를 셀 그룹입니다. 여러 그룹이면 쉼표 또는 ·로 구분하세요."/>
+                                                 ToolTip="{DynamicResource Str.DeckEditor.ConditionGroupTooltip}"/>
                                     </StackPanel>
                                     <StackPanel Grid.Column="2">
-                                        <TextBlock Text="최소 인원" Foreground="{StaticResource Text.Secondary}" Margin="0,0,0,4"/>
+                                        <TextBlock Text="{DynamicResource Str.DeckEditor.MinMembersLabel}" Foreground="{StaticResource Text.Secondary}" Margin="0,0,0,4"/>
                                         <TextBox x:Name="DeckGroupConditionMinimumCountTextBox"
                                                  Text="2"
-                                                 ToolTip="이 그룹 캐릭터가 덱에 몇 명 이상 있어야 발동하는지 입력하세요."/>
+                                                 ToolTip="{DynamicResource Str.DeckEditor.MinMembersTooltip}"/>
                                     </StackPanel>
                                     <StackPanel Grid.Column="4">
-                                        <TextBlock Text="추가 문자" Foreground="{StaticResource Text.Secondary}" Margin="0,0,0,4"/>
+                                        <TextBlock Text="{DynamicResource Str.DeckEditor.ExtraLetterLabel}" Foreground="{StaticResource Text.Secondary}" Margin="0,0,0,4"/>
                                         <TextBox x:Name="DeckGroupConditionGrantedLettersTextBox"
-                                                 ToolTip="조건 달성 시 이 캐릭터 자신에게 추가되는 문자를 입력하세요."/>
+                                                 ToolTip="{DynamicResource Str.DeckEditor.ExtraLetterTooltip}"/>
                                     </StackPanel>
                                 </Grid>
                                 <TextBox x:Name="DeckGroupConditionNoteTextBox"
                                          Margin="0,8,0,0"
-                                         ToolTip="덱 조건 문자 효과 메모 (선택)"/>
+                                         ToolTip="{DynamicResource Str.DeckEditor.DeckConditionNoteTooltip}"/>
                             </StackPanel>
                         </Grid>
                     </Border>
@@ -1249,12 +1249,12 @@
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Text="이름이 다른 모드시프트 연결"
+                            <TextBlock Text="{DynamicResource Str.DeckEditor.LinkedModeShiftHeader}"
                                        Foreground="{StaticResource Text.Secondary}"
                                        VerticalAlignment="Center"/>
                             <Button x:Name="ToggleRelatedFormEditorButton"
                                     Grid.Column="1"
-                                    Content="연결 설정"
+                                    Content="{DynamicResource Str.DeckEditor.LinkSettings}"
                                     Padding="10,5"
                                     Style="{StaticResource EditorButtonStyle}"
                                     Click="ToggleRelatedFormEditorButton_Click"/>
@@ -1264,7 +1264,7 @@
                                    Foreground="{StaticResource Text.Secondary}"
                                    FontSize="11"
                                    TextWrapping="Wrap"
-                                   Text="연결된 이름 다른 모드시프트 없음"/>
+                                   Text="{DynamicResource Str.DeckEditor.NoLinkedForm}"/>
                         <Grid x:Name="RelatedFormEditorPanel"
                               Margin="0,8,0,0"
                               Visibility="Collapsed">
@@ -1277,16 +1277,16 @@
                             </Grid.ColumnDefinitions>
                             <ComboBox x:Name="RelatedFormComboBox"
                                       HorizontalContentAlignment="Stretch"
-                                      ToolTip="이름이 달라 별도 캐릭터로 등록한 모드시프트 전후 형태를 선택하세요."/>
+                                      ToolTip="{DynamicResource Str.DeckEditor.LinkedFormPickerTooltip}"/>
                             <Button x:Name="LinkRelatedFormButton"
                                     Grid.Column="2"
-                                    Content="연결"
+                                    Content="{DynamicResource Str.DeckEditor.Link}"
                                     Padding="11,8"
                                     Style="{StaticResource EditorButtonStyle}"
                                     Click="LinkRelatedFormButton_Click"/>
                             <Button x:Name="UnlinkRelatedFormButton"
                                     Grid.Column="4"
-                                    Content="해제"
+                                    Content="{DynamicResource Str.DeckEditor.Unlink}"
                                     Padding="11,8"
                                     Style="{StaticResource DangerButtonStyle}"
                                     Click="UnlinkRelatedFormButton_Click"/>
@@ -1294,7 +1294,7 @@
                     </StackPanel>
 
                     <StackPanel Grid.Column="2">
-                        <TextBlock Text="조건부 / 변신 문자"
+                        <TextBlock Text="{DynamicResource Str.DeckEditor.ConditionalLettersHeader}"
                                    Foreground="{StaticResource Text.Secondary}"
                                    Margin="0,0,0,5"/>
                         <Border Background="{StaticResource Bg.PanelInner}"
@@ -1303,14 +1303,14 @@
                                 CornerRadius="7"
                                 Padding="10,8">
                             <TextBlock x:Name="CharacterStateSummaryText"
-                                       Text="추가 문자 상태 없음"
+                                       Text="{DynamicResource Str.DeckEditor.NoLetterStates}"
                                        Foreground="{StaticResource Text.Primary}"
                                        TextWrapping="Wrap"/>
                         </Border>
                     </StackPanel>
 
                     <Button Grid.Column="4"
-                            Content="문자 상태 편집..."
+                            Content="{DynamicResource Str.DeckEditor.EditLetterStates}"
                             Margin="0,21,0,0"
                             VerticalAlignment="Top"
                             Style="{StaticResource EditorButtonStyle}"
@@ -1329,7 +1329,7 @@
                             CornerRadius="8"
                             Padding="11">
                         <StackPanel>
-                            <TextBlock Text="동일 이름 모드시프트 형태"
+                            <TextBlock Text="{DynamicResource Str.DeckEditor.SameNameFormsHeader}"
                                        FontWeight="SemiBold"
                                        Foreground="{StaticResource Status.Info}"/>
                             <TextBlock x:Name="CharacterFormSummaryText"
@@ -1337,11 +1337,11 @@
                                        Foreground="{StaticResource Text.Secondary}"
                                        FontSize="11"
                                        TextWrapping="Wrap"
-                                       Text="추가 형태 없음 · 기본 형태는 위의 문자와 이미지를 사용"/>
+                                       Text="{DynamicResource Str.DeckEditor.NoExtraForms}"/>
                         </StackPanel>
                     </Border>
                     <Button Grid.Column="2"
-                            Content="동일명 형태 편집..."
+                            Content="{DynamicResource Str.DeckEditor.EditSameNameForms}"
                             VerticalAlignment="Center"
                             Style="{StaticResource EditorButtonStyle}"
                             Click="EditCharacterFormsButton_Click"/>
@@ -1370,7 +1370,7 @@
                                    VerticalAlignment="Center"
                                    Visibility="Collapsed"/>
                             <TextBlock x:Name="CharacterImagePlaceholder"
-                                       Text="이미지 없음"
+                                       Text="{DynamicResource Str.DeckEditor.NoImage}"
                                        Foreground="{StaticResource Text.Tertiary}"
                                        FontSize="11"
                                        TextWrapping="Wrap"
@@ -1381,27 +1381,27 @@
                     </Border>
 
                     <StackPanel Grid.Column="2" VerticalAlignment="Center">
-                        <TextBlock Text="캐릭터 이미지"
+                        <TextBlock Text="{DynamicResource Str.DeckEditor.ImageHeader}"
                                    Foreground="{StaticResource Text.Secondary}"
                                    FontWeight="SemiBold"/>
                         <TextBlock x:Name="CharacterImageFileText"
                                    Margin="0,4,0,0"
                                    Foreground="{StaticResource Text.Secondary}"
                                    FontSize="11"
-                                   Text="등록된 이미지 없음"
+                                   Text="{DynamicResource Str.DeckEditor.NoRegisteredImage}"
                                    TextTrimming="CharacterEllipsis"/>
                         <TextBlock Margin="0,4,0,0"
                                    Foreground="{StaticResource Text.Tertiary}"
                                    FontSize="10"
-                                   Text="PNG/JPG/BMP/GIF/TIFF · 표준 PNG로 변환 저장 · 현재 덱과 손패에만 표시"/>
+                                   Text="{DynamicResource Str.DeckEditor.ImageFormatHint}"/>
                     </StackPanel>
 
                     <WrapPanel Grid.Column="4" VerticalAlignment="Center">
-                        <Button Content="이미지 선택"
+                        <Button Content="{DynamicResource Str.DeckEditor.SelectImage}"
                                 Margin="0,0,7,0"
                                 Style="{StaticResource EditorButtonStyle}"
                                 Click="ChooseCharacterImageButton_Click"/>
-                        <Button Content="이미지 제거"
+                        <Button Content="{DynamicResource Str.DeckEditor.RemoveImage}"
                                 Style="{StaticResource DangerButtonStyle}"
                                 Click="RemoveCharacterImageButton_Click"/>
                     </WrapPanel>
@@ -1421,20 +1421,20 @@
                 <Border x:Name="EditorStatusBanner" Style="{StaticResource AlertBannerStyle}">
                     <TextBlock x:Name="EditorStatusText"
                                Foreground="{StaticResource Text.Secondary}"
-                               Text="덱 1번은 리더입니다. 캐릭터는 소속 그룹 하나를 가지며, 미라클 문자 부여는 해당 캐릭터가 리더일 때만 적용됩니다."/>
+                               Text="{DynamicResource Str.DeckEditor.LeaderHint}"/>
                 </Border>
                 <TextBlock Margin="0,4,0,0"
                            Foreground="{StaticResource Text.Tertiary}"
                            FontSize="11"
-                           Text="캐릭터 추가/수정과 덱 변경은 짧은 시간 안의 연속 작업을 묶어 자동 저장합니다. 저장 시 characters.json, deck.json, deck_presets.json을 각각 백업한 뒤 기록합니다."/>
+                           Text="{DynamicResource Str.DeckEditor.AutoSaveHint}"/>
             </StackPanel>
 
             <WrapPanel Grid.Column="1" HorizontalAlignment="Right">
-                <Button Content="닫기"
+                <Button Content="{DynamicResource Str.DeckEditor.Close}"
                         Margin="0,0,10,0"
                         Style="{StaticResource GhostButtonStyle}"
                         IsCancel="True"/>
-                <Button Content="저장하고 적용"
+                <Button Content="{DynamicResource Str.DeckEditor.SaveAndApply}"
                         Style="{StaticResource ActionButtonStyle}"
                         IsDefault="True"
                         Click="SaveButton_Click"/>

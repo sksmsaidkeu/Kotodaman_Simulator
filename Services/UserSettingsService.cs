@@ -135,8 +135,8 @@ public static class UserSettingsService
             LastDeckEditorSearchText = source.LastDeckEditorSearchText ?? string.Empty,
             LastDeckEditorGroupFilter = source.LastDeckEditorGroupFilter ?? "전체 그룹",
             LastDeckEditorCategoryFilter = source.LastDeckEditorCategoryFilter ?? "전체 등급",
-            LastDeckEditorStatusFilter = source.LastDeckEditorStatusFilter ?? "전체 상태",
-            LastDeckEditorSortMode = source.LastDeckEditorSortMode ?? "기본 정렬",
+            LastDeckEditorStatusFilterIndex = source.LastDeckEditorStatusFilterIndex,
+            LastDeckEditorSortModeIndex = source.LastDeckEditorSortModeIndex,
             LastDeckEditorFavoritesOnly = source.LastDeckEditorFavoritesOnly,
             LastDeckEditorBelovedOnly = source.LastDeckEditorBelovedOnly
         };

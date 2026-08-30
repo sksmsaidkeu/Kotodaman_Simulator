@@ -16,7 +16,7 @@ namespace KotodamanWordFinder;
 
 public partial class CharacterBulkEditorWindow : Window
 {
-    private const string Unset = "미입력";
+    private static string Unset => Loc.Unset;
 
     private static readonly string[] AttributeValues = { "火", "水", "木", "光", "闇", "天", "冥", "虹" };
     private static readonly string[] SpeciesValues = { "神", "魔", "英", "龍", "獣", "霊", "物", "妖" };
@@ -29,6 +29,17 @@ public partial class CharacterBulkEditorWindow : Window
     };
     private SearchToken[] _searchTokens = Array.Empty<SearchToken>();
 
+    // MatchesFilter는 ICollectionView가 행마다 호출하므로, Loc.Get 재조회 없이
+    // RefreshFilterView에서 한 번만 계산해 둔 값을 읽습니다.
+    private string _filterAllCategory = string.Empty;
+    private string _filterAllAttribute = string.Empty;
+    private string _filterAllSpecies = string.Empty;
+    private string _filterUnset = string.Empty;
+    private string _filterSelectedCategory = string.Empty;
+    private string _filterSelectedAttribute = string.Empty;
+    private string _filterSelectedSpecies = string.Empty;
+    private bool _filterIncompleteOnly;
+
     public CharacterBulkEditorWindow(IReadOnlyList<CharacterEntry> characters, string dataDirectory)
     {
         InitializeComponent();
@@ -39,9 +50,9 @@ public partial class CharacterBulkEditorWindow : Window
         AttributeOptions = new[] { Unset }.Concat(AttributeValues).ToArray();
         SpeciesOptions = new[] { Unset }.Concat(SpeciesValues).ToArray();
 
-        CategoryFilterComboBox.ItemsSource = new[] { "전체 등급" }.Concat(CategoryOptions).ToArray();
-        AttributeFilterComboBox.ItemsSource = new[] { "전체 속성" }.Concat(AttributeValues).Concat(new[] { Unset }).ToArray();
-        SpeciesFilterComboBox.ItemsSource = new[] { "전체 종족" }.Concat(SpeciesValues).Concat(new[] { Unset }).ToArray();
+        CategoryFilterComboBox.ItemsSource = new[] { Loc.Get("Str.FilterAllCategory") }.Concat(CategoryOptions).ToArray();
+        AttributeFilterComboBox.ItemsSource = new[] { Loc.Get("Str.FilterAllAttribute") }.Concat(AttributeValues).Concat(new[] { Unset }).ToArray();
+        SpeciesFilterComboBox.ItemsSource = new[] { Loc.Get("Str.FilterAllSpecies") }.Concat(SpeciesValues).Concat(new[] { Unset }).ToArray();
         CategoryFilterComboBox.SelectedIndex = 0;
         AttributeFilterComboBox.SelectedIndex = 0;
         SpeciesFilterComboBox.SelectedIndex = 0;
@@ -61,6 +72,7 @@ public partial class CharacterBulkEditorWindow : Window
 
         CharacterDataGrid.ItemsSource = _rows;
         _view = CollectionViewSource.GetDefaultView(_rows);
+        CaptureFilterState();
         _view.Filter = MatchesFilter;
         UpdateCountText();
     }
@@ -108,8 +120,21 @@ public partial class CharacterBulkEditorWindow : Window
         }
 
         _searchTokens = BuildSearchTokens(SearchTextBox.Text);
+        CaptureFilterState();
         _view.Refresh();
         UpdateCountText();
+    }
+
+    private void CaptureFilterState()
+    {
+        _filterAllCategory = Loc.Get("Str.FilterAllCategory");
+        _filterAllAttribute = Loc.Get("Str.FilterAllAttribute");
+        _filterAllSpecies = Loc.Get("Str.FilterAllSpecies");
+        _filterUnset = Unset;
+        _filterSelectedCategory = CategoryFilterComboBox.SelectedItem as string ?? _filterAllCategory;
+        _filterSelectedAttribute = AttributeFilterComboBox.SelectedItem as string ?? _filterAllAttribute;
+        _filterSelectedSpecies = SpeciesFilterComboBox.SelectedItem as string ?? _filterAllSpecies;
+        _filterIncompleteOnly = IncompleteOnlyCheckBox.IsChecked == true;
     }
 
     private bool MatchesFilter(object item)
@@ -119,30 +144,26 @@ public partial class CharacterBulkEditorWindow : Window
             return false;
         }
 
-        string selectedCategory = CategoryFilterComboBox.SelectedItem as string ?? "전체 등급";
-        string selectedAttribute = AttributeFilterComboBox.SelectedItem as string ?? "전체 속성";
-        string selectedSpecies = SpeciesFilterComboBox.SelectedItem as string ?? "전체 종족";
-
-        if (!string.Equals(selectedCategory, "전체 등급", StringComparison.Ordinal) &&
-            !string.Equals(row.Category, selectedCategory, StringComparison.Ordinal))
+        if (!string.Equals(_filterSelectedCategory, _filterAllCategory, StringComparison.Ordinal) &&
+            !string.Equals(row.Category, _filterSelectedCategory, StringComparison.Ordinal))
         {
             return false;
         }
 
-        if (!string.Equals(selectedAttribute, "전체 속성", StringComparison.Ordinal))
+        if (!string.Equals(_filterSelectedAttribute, _filterAllAttribute, StringComparison.Ordinal))
         {
-            if (string.Equals(selectedAttribute, Unset, StringComparison.Ordinal))
+            if (string.Equals(_filterSelectedAttribute, _filterUnset, StringComparison.Ordinal))
             {
-                if (!string.Equals(row.Attribute, Unset, StringComparison.Ordinal))
+                if (!string.Equals(row.Attribute, _filterUnset, StringComparison.Ordinal))
                 {
                     return false;
                 }
             }
             else
             {
-                bool hasAttribute = string.Equals(row.Attribute, selectedAttribute, StringComparison.Ordinal) ||
+                bool hasAttribute = string.Equals(row.Attribute, _filterSelectedAttribute, StringComparison.Ordinal) ||
                                     ParseSubAttributes(row.SubAttributesText, row.Attribute)
-                                        .Contains(selectedAttribute, StringComparer.Ordinal);
+                                        .Contains(_filterSelectedAttribute, StringComparer.Ordinal);
                 if (!hasAttribute)
                 {
                     return false;
@@ -150,15 +171,15 @@ public partial class CharacterBulkEditorWindow : Window
             }
         }
 
-        if (!string.Equals(selectedSpecies, "전체 종족", StringComparison.Ordinal) &&
-            !string.Equals(row.Species, selectedSpecies, StringComparison.Ordinal))
+        if (!string.Equals(_filterSelectedSpecies, _filterAllSpecies, StringComparison.Ordinal) &&
+            !string.Equals(row.Species, _filterSelectedSpecies, StringComparison.Ordinal))
         {
             return false;
         }
 
-        if (IncompleteOnlyCheckBox.IsChecked == true &&
-            !string.Equals(row.Attribute, Unset, StringComparison.Ordinal) &&
-            !string.Equals(row.Species, Unset, StringComparison.Ordinal))
+        if (_filterIncompleteOnly &&
+            !string.Equals(row.Attribute, _filterUnset, StringComparison.Ordinal) &&
+            !string.Equals(row.Species, _filterUnset, StringComparison.Ordinal))
         {
             return false;
         }
@@ -204,8 +225,8 @@ public partial class CharacterBulkEditorWindow : Window
         int visibleCount = _view?.Cast<object>().Count() ?? _rows.Count;
         int checkedCount = _rows.Count(row => row.IsChecked);
         CountText.Text = checkedCount > 0
-            ? $"표시 {visibleCount:N0} / 전체 {_rows.Count:N0}명 · 체크 {checkedCount:N0}명"
-            : $"표시 {visibleCount:N0} / 전체 {_rows.Count:N0}명";
+            ? string.Format(Loc.Get("Str.CharBulk.CountStatusWithChecked"), visibleCount.ToString("N0"), _rows.Count.ToString("N0"), checkedCount.ToString("N0"))
+            : string.Format(Loc.Get("Str.CharBulk.CountStatus"), visibleCount.ToString("N0"), _rows.Count.ToString("N0"));
     }
 
     private void CheckVisibleButton_Click(object sender, RoutedEventArgs e)
@@ -218,7 +239,7 @@ public partial class CharacterBulkEditorWindow : Window
 
         CharacterDataGrid.Items.Refresh();
         UpdateCountText();
-        Controls.SetAlertBanner(StatusBanner, StatusText, $"현재 표시된 {_view.Cast<object>().Count():N0}명을 체크했습니다.", false, Theme.Success);
+        Controls.SetAlertBanner(StatusBanner, StatusText, string.Format(Loc.Get("Str.CharBulk.CheckedVisibleStatus"), _view.Cast<object>().Count().ToString("N0")), false, Theme.Success);
     }
 
     private void ClearChecksButton_Click(object sender, RoutedEventArgs e)
@@ -230,7 +251,7 @@ public partial class CharacterBulkEditorWindow : Window
 
         CharacterDataGrid.Items.Refresh();
         UpdateCountText();
-        Controls.SetAlertBanner(StatusBanner, StatusText, "체크를 모두 해제했습니다.", false, Theme.TextSecondary);
+        Controls.SetAlertBanner(StatusBanner, StatusText, Loc.Get("Str.CharBulk.UncheckedAllStatus"), false, Theme.TextSecondary);
     }
 
     private void ApplyBatchButton_Click(object sender, RoutedEventArgs e)
@@ -239,7 +260,7 @@ public partial class CharacterBulkEditorWindow : Window
         CharacterBulkEditRow[] selected = _rows.Where(row => row.IsChecked).ToArray();
         if (selected.Length == 0)
         {
-            SetError("먼저 일괄 변경할 캐릭터를 체크하세요.");
+            SetError(Loc.Get("Str.CharBulk.SelectToBulkChange"));
             return;
         }
 
@@ -247,7 +268,7 @@ public partial class CharacterBulkEditorWindow : Window
         string attributeInput = (BatchAttributeTextBox.Text ?? string.Empty).Trim();
         string speciesInput = (BatchSpeciesTextBox.Text ?? string.Empty).Trim();
         string groupInput = (BatchGroupTextBox.Text ?? string.Empty).Trim();
-        bool clearGroup = groupInput.Equals("미입력", StringComparison.OrdinalIgnoreCase) ||
+        bool clearGroup = groupInput.Equals(Unset, StringComparison.OrdinalIgnoreCase) ||
                           groupInput.Equals("없음", StringComparison.OrdinalIgnoreCase) ||
                           groupInput == "-";
         string group = clearGroup
@@ -259,28 +280,28 @@ public partial class CharacterBulkEditorWindow : Window
                           groupInput.Length > 0;
         if (!anySetting)
         {
-            SetError("일괄 변경할 등급·속성·종족·그룹 중 하나를 입력하세요. 빈칸은 변경하지 않습니다.");
+            SetError(Loc.Get("Str.CharBulk.EnterAtLeastOneBulkField"));
             return;
         }
 
         string category = string.Empty;
         if (categoryInput.Length > 0 && !TryNormalizeCategoryInput(categoryInput, out category))
         {
-            SetError($"등급 '{categoryInput}'을 인식할 수 없습니다. 예: 스페셜, 레전드, 그랜드, 드림, 미라클, 오리지널, 콜라보, 기타");
+            SetError(string.Format(Loc.Get("Str.CharBulk.UnrecognizedCategory"), categoryInput));
             return;
         }
 
         string attribute = string.Empty;
         if (attributeInput.Length > 0 && !TryNormalizeAttributeInput(attributeInput, out attribute))
         {
-            SetError($"속성 '{attributeInput}'을 인식할 수 없습니다. 예: 火, 水, 木, 光, 闇, 天, 冥, 虹 또는 미입력");
+            SetError(string.Format(Loc.Get("Str.CharBulk.UnrecognizedAttribute"), attributeInput));
             return;
         }
 
         string species = string.Empty;
         if (speciesInput.Length > 0 && !TryNormalizeSpeciesInput(speciesInput, out species))
         {
-            SetError($"종족 '{speciesInput}'을 인식할 수 없습니다. 예: 神, 魔, 英, 龍, 獣, 霊, 物, 妖 또는 미입력");
+            SetError(string.Format(Loc.Get("Str.CharBulk.UnrecognizedSpecies"), speciesInput));
             return;
         }
 
@@ -315,7 +336,7 @@ public partial class CharacterBulkEditorWindow : Window
         CharacterDataGrid.Items.Refresh();
         _view.Refresh();
         UpdateCountText();
-        Controls.SetAlertBanner(StatusBanner, StatusText, $"체크한 {selected.Length:N0}명의 표 값을 변경했습니다. 아래 '변경 내용 적용'을 누르면 characters.json에 반영됩니다.", false, Theme.Warn);
+        Controls.SetAlertBanner(StatusBanner, StatusText, string.Format(Loc.Get("Str.CharBulk.BulkAppliedStatus"), selected.Length.ToString("N0")), false, Theme.Warn);
     }
 
     private void SaveButton_Click(object sender, RoutedEventArgs e)
@@ -327,28 +348,28 @@ public partial class CharacterBulkEditorWindow : Window
             string name = (row.Name ?? string.Empty).Trim();
             if (name.Length == 0)
             {
-                SetError($"이름이 비어 있는 캐릭터가 있습니다. ID: {row.Id}");
+                SetError(string.Format(Loc.Get("Str.CharBulk.NameEmptyForId"), row.Id));
                 SelectRow(row);
                 return;
             }
 
             if (!TryNormalizeCategoryInput(row.Category, out _))
             {
-                SetError($"'{name}'의 등급 '{row.Category}'을 인식할 수 없습니다.");
+                SetError(string.Format(Loc.Get("Str.CharBulk.RowUnrecognizedCategory"), name, row.Category));
                 SelectRow(row);
                 return;
             }
 
             if (!TryNormalizeAttributeInput(row.Attribute, out _))
             {
-                SetError($"'{name}'의 속성 '{row.Attribute}'을 인식할 수 없습니다.");
+                SetError(string.Format(Loc.Get("Str.CharBulk.RowUnrecognizedAttribute"), name, row.Attribute));
                 SelectRow(row);
                 return;
             }
 
             if (!TryNormalizeSpeciesInput(row.Species, out _))
             {
-                SetError($"'{name}'의 종족 '{row.Species}'을 인식할 수 없습니다.");
+                SetError(string.Format(Loc.Get("Str.CharBulk.RowUnrecognizedSpecies"), name, row.Species));
                 SelectRow(row);
                 return;
             }
@@ -359,7 +380,7 @@ public partial class CharacterBulkEditorWindow : Window
                                    row.Source.LetterStates.Any(state => state.Letters.Count > 0);
             if (letters.Count == 0 && !hasOtherLetters)
             {
-                SetError($"'{name}'의 사용 가능 문자가 비어 있습니다.");
+                SetError(string.Format(Loc.Get("Str.CharBulk.RowLettersEmpty"), name));
                 SelectRow(row);
                 return;
             }
@@ -467,6 +488,28 @@ public partial class CharacterBulkEditorWindow : Window
     private static bool TryNormalizeCategoryInput(string? value, out string normalized)
     {
         string input = (value ?? string.Empty).Normalize(NormalizationForm.FormC).Trim();
+        // 등급 자체(스페셜/레전드 등)는 게임 데이터라 번역하지 않지만, 오류 힌트(Str.CharBulk.UnrecognizedCategory)에는
+        // en/ja 예시 단어를 보여주므로 그 단어들도 정규 한국어 값으로 인식해야 한다.
+        input = input.ToLowerInvariant() switch
+        {
+            "special" => CharacterCategories.Special,
+            "legend" => CharacterCategories.Legend,
+            "grand" => CharacterCategories.Grand,
+            "dream" => CharacterCategories.Dream,
+            "miracle" => CharacterCategories.Miracle,
+            "original" => CharacterCategories.Original,
+            "collab" or "collaboration" => CharacterCategories.Collaboration,
+            "other" => CharacterCategories.Other,
+            "スペシャル" => CharacterCategories.Special,
+            "レジェンド" => CharacterCategories.Legend,
+            "グランド" => CharacterCategories.Grand,
+            "ドリーム" => CharacterCategories.Dream,
+            "ミラクル" => CharacterCategories.Miracle,
+            "オリジナル" => CharacterCategories.Original,
+            "コラボ" => CharacterCategories.Collaboration,
+            "その他" => CharacterCategories.Other,
+            _ => input
+        };
         normalized = CharacterCategories.Normalize(input);
         return CharacterCategories.All.Contains(input, StringComparer.Ordinal);
     }
@@ -615,7 +658,7 @@ public partial class CharacterBulkEditorWindow : Window
             get
             {
                 EnsureThumbnailLoading();
-                return _thumbnailLoadCompleted ? "없음" : "…";
+                return _thumbnailLoadCompleted ? Loc.Get("Str.CharBulk.ThumbnailNone") : "…";
             }
         }
 

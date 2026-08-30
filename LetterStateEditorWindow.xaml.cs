@@ -12,8 +12,8 @@ namespace KotodamanWordFinder;
 
 public partial class LetterStateEditorWindow : Window
 {
-    private const string AddModeText = "기본 문자에 추가";
-    private const string ReplaceModeText = "기본 문자를 대체";
+    private static string AddModeText => Loc.Get("Str.LetterState.AddMode");
+    private static string ReplaceModeText => Loc.Get("Str.LetterState.ReplaceMode");
 
     private readonly List<CharacterLetterState> _states;
     private string? _editingStateId;
@@ -26,8 +26,8 @@ public partial class LetterStateEditorWindow : Window
         InitializeComponent();
 
         Title = string.IsNullOrWhiteSpace(characterName)
-            ? "새 캐릭터 · 문자 상태 편집"
-            : $"{characterName} · 문자 상태 편집";
+            ? Loc.Get("Str.LetterState.TitleNewCharacter")
+            : string.Format(Loc.Get("Str.LetterState.TitleForCharacter"), characterName);
         StateKindComboBox.ItemsSource = CharacterLetterStateKinds.All;
         StateKindComboBox.SelectedItem = CharacterLetterStateKinds.Conditional;
         StateMergeModeComboBox.ItemsSource = new[] { AddModeText, ReplaceModeText };
@@ -103,7 +103,7 @@ public partial class LetterStateEditorWindow : Window
             : ReplaceModeText;
         StateNoteTextBox.Text = state.Note;
         UpdateStateButton.IsEnabled = true;
-        Controls.SetAlertBanner(StateStatusBanner, StateStatusText, $"'{state.Name}' 상태를 편집 중입니다.", false, Theme.BlueText);
+        Controls.SetAlertBanner(StateStatusBanner, StateStatusText, string.Format(Loc.Get("Str.LetterState.EditingStatus"), state.Name), false, Theme.BlueText);
     }
 
     private void ClearEditor()
@@ -119,7 +119,7 @@ public partial class LetterStateEditorWindow : Window
         StateNoteTextBox.Clear();
         UpdateStateButton.IsEnabled = false;
         StateNameTextBox.Focus();
-        Controls.SetAlertBanner(StateStatusBanner, StateStatusText, "새 문자 상태의 이름과 문자를 입력하세요.", false, Theme.TextSecondary);
+        Controls.SetAlertBanner(StateStatusBanner, StateStatusText, Loc.Get("Str.LetterState.EnterNameAndLetters"), false, Theme.TextSecondary);
     }
 
     private void NewStateButton_Click(object sender, RoutedEventArgs e)
@@ -140,7 +140,7 @@ public partial class LetterStateEditorWindow : Window
         if (_states.Any(state =>
                 string.Equals(state.Name, name, StringComparison.OrdinalIgnoreCase)))
         {
-            SetError("같은 이름의 문자 상태가 이미 있습니다.");
+            SetError(Loc.Get("Str.LetterState.DuplicateName"));
             return;
         }
 
@@ -157,7 +157,7 @@ public partial class LetterStateEditorWindow : Window
         _editingStateId = state.Id;
         RefreshStateList(state.Id);
         BeginEditing(state.Id);
-        Controls.SetAlertBanner(StateStatusBanner, StateStatusText, $"'{state.Name}' 상태를 추가했습니다.", false, Theme.Success);
+        Controls.SetAlertBanner(StateStatusBanner, StateStatusText, string.Format(Loc.Get("Str.LetterState.AddedStatus"), state.Name), false, Theme.Success);
     }
 
     private void UpdateStateButton_Click(object sender, RoutedEventArgs e)
@@ -165,7 +165,7 @@ public partial class LetterStateEditorWindow : Window
         CharacterLetterState? state = FindState(_editingStateId);
         if (state is null)
         {
-            SetError("수정할 문자 상태를 먼저 선택하세요.");
+            SetError(Loc.Get("Str.LetterState.SelectToEdit"));
             return;
         }
 
@@ -183,7 +183,7 @@ public partial class LetterStateEditorWindow : Window
                 !string.Equals(other.Id, state.Id, StringComparison.Ordinal) &&
                 string.Equals(other.Name, name, StringComparison.OrdinalIgnoreCase)))
         {
-            SetError("같은 이름의 다른 문자 상태가 이미 있습니다.");
+            SetError(Loc.Get("Str.LetterState.DuplicateOtherName"));
             return;
         }
 
@@ -194,7 +194,7 @@ public partial class LetterStateEditorWindow : Window
         state.Note = note;
         RefreshStateList(state.Id);
         BeginEditing(state.Id);
-        Controls.SetAlertBanner(StateStatusBanner, StateStatusText, $"'{state.Name}' 상태를 수정했습니다.", false, Theme.Success);
+        Controls.SetAlertBanner(StateStatusBanner, StateStatusText, string.Format(Loc.Get("Str.LetterState.UpdatedStatus"), state.Name), false, Theme.Success);
     }
 
     private void DeleteStateButton_Click(object sender, RoutedEventArgs e)
@@ -202,13 +202,13 @@ public partial class LetterStateEditorWindow : Window
         CharacterLetterState? state = FindState(_editingStateId);
         if (state is null)
         {
-            SetError("삭제할 문자 상태를 먼저 선택하세요.");
+            SetError(Loc.Get("Str.LetterState.SelectToDelete"));
             return;
         }
 
         MessageBoxResult result = MessageBox.Show(
-            $"'{state.Name}' 문자 상태를 삭제할까요?",
-            "문자 상태 삭제",
+            string.Format(Loc.Get("Str.LetterState.ConfirmDelete"), state.Name),
+            Loc.Get("Str.LetterState.ConfirmDeleteTitle"),
             MessageBoxButton.YesNo,
             MessageBoxImage.Warning);
         if (result != MessageBoxResult.Yes)
@@ -219,7 +219,7 @@ public partial class LetterStateEditorWindow : Window
         _states.Remove(state);
         ClearEditor();
         RefreshStateList();
-        Controls.SetAlertBanner(StateStatusBanner, StateStatusText, $"'{state.Name}' 상태를 삭제했습니다.", false, Theme.Warn);
+        Controls.SetAlertBanner(StateStatusBanner, StateStatusText, string.Format(Loc.Get("Str.LetterState.DeletedStatus"), state.Name), false, Theme.Warn);
     }
 
     private void SaveButton_Click(object sender, RoutedEventArgs e)
@@ -260,7 +260,7 @@ public partial class LetterStateEditorWindow : Window
             if (_states.Any(state =>
                     string.Equals(state.Name, name, StringComparison.OrdinalIgnoreCase)))
             {
-                SetError("입력 중인 새 상태가 기존 상태와 중복됩니다.");
+                SetError(Loc.Get("Str.LetterState.DuplicateInProgress"));
                 return false;
             }
 
@@ -308,7 +308,7 @@ public partial class LetterStateEditorWindow : Window
                 !string.Equals(other.Id, editing.Id, StringComparison.Ordinal) &&
                 string.Equals(other.Name, updatedName, StringComparison.OrdinalIgnoreCase)))
         {
-            SetError("같은 이름의 다른 문자 상태가 이미 있습니다.");
+            SetError(Loc.Get("Str.LetterState.DuplicateOtherName"));
             return false;
         }
 
@@ -338,14 +338,14 @@ public partial class LetterStateEditorWindow : Window
 
         if (name.Length == 0)
         {
-            SetError("상태 이름을 입력하세요.");
+            SetError(Loc.Get("Str.LetterState.EnterName"));
             StateNameTextBox.Focus();
             return false;
         }
 
         if (letters.Count == 0)
         {
-            SetError("상태 문자를 한 글자 이상 입력하세요.");
+            SetError(Loc.Get("Str.LetterState.EnterLetters"));
             StateLettersTextBox.Focus();
             return false;
         }
@@ -407,8 +407,8 @@ public partial class LetterStateEditorWindow : Window
             Name = state.Name;
             Kind = CharacterLetterStateKinds.Normalize(state.Kind);
             ModeText = state.IncludeBaseLetters
-                ? "기본 문자 + 상태 문자"
-                : "상태 문자로 대체";
+                ? Loc.Get("Str.LetterState.SummaryAdd")
+                : Loc.Get("Str.LetterState.SummaryReplace");
             LettersText = string.Join(" · ", state.Letters);
             Note = state.Note;
         }

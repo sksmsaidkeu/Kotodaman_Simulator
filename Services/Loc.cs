@@ -9,6 +9,10 @@ public static class Loc
 {
     public static string Get(string key) => Application.Current.Resources[key] as string ?? key;
 
+    // 속성/종족 등 "미입력" 자리표시자 텍스트. 여러 창이 각자 다른 이름(Unset/UnsetLabel/UnsetText)으로
+    // 이 값을 중복 정의했다가 code-review로 지적받아 여기로 통합함.
+    public static string Unset => Get("Str.Unset");
+
     // ko/ja/en 판별 로직의 유일한 출처. App.ApplyLanguage와 MainWindow의 복원/토글이
     // 전부 이걸 거쳐야, 셋 중 하나만 따로 고쳐서 "토글 버튼 표시"와 "실제 로드된 언어"가
     // 어긋나는 사고를 막을 수 있다.

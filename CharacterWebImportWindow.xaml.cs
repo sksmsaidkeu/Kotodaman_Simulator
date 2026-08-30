@@ -28,6 +28,8 @@ public partial class CharacterWebImportWindow : Window
     private CharacterImportData? _fetchedData;
     private string _downloadedImagePath = string.Empty;
 
+    private static string UnsetLabel => Loc.Unset;
+
     public CharacterWebImportWindow(
         IEnumerable<string> knownGroups,
         IReadOnlyDictionary<string, string[]>? knownGroupRelations = null,
@@ -59,10 +61,10 @@ public partial class CharacterWebImportWindow : Window
 
         CategoryComboBox.ItemsSource = CharacterCategories.All;
         CategoryComboBox.SelectedItem = CharacterCategories.Other;
-        AttributeComboBox.ItemsSource = new[] { "미입력", "火", "水", "木", "光", "闇", "天", "冥", "虹" };
-        AttributeComboBox.SelectedItem = "미입력";
-        SpeciesComboBox.ItemsSource = new[] { "미입력", "神", "魔", "英", "龍", "獣", "霊", "物", "妖" };
-        SpeciesComboBox.SelectedItem = "미입력";
+        AttributeComboBox.ItemsSource = new[] { UnsetLabel, "火", "水", "木", "光", "闇", "天", "冥", "虹" };
+        AttributeComboBox.SelectedItem = UnsetLabel;
+        SpeciesComboBox.ItemsSource = new[] { UnsetLabel, "神", "魔", "英", "龍", "獣", "霊", "物", "妖" };
+        SpeciesComboBox.SelectedItem = UnsetLabel;
         BatchCategoryComboBox.ItemsSource = CharacterCategories.All;
         BatchCategoryComboBox.SelectedItem = CharacterCategories.Other;
         GroupComboBox.ItemsSource = _knownGroups;
@@ -103,7 +105,7 @@ public partial class CharacterWebImportWindow : Window
         string url = SourceUrlTextBox.Text.Trim();
         if (url.Length == 0)
         {
-            SetStatus("캐릭터 페이지 주소를 입력하세요.", isError: true);
+            SetStatus(Loc.Get("Str.WebImport.EnterUrlFirst"), isError: true);
             SourceUrlTextBox.Focus();
             return;
         }
@@ -121,7 +123,7 @@ public partial class CharacterWebImportWindow : Window
         BatchApplyButton.IsEnabled = false;
         _fetchedData = null;
         SetBusy(true);
-        SetStatus("웹 페이지를 읽고 있습니다…", isError: false);
+        SetStatus(Loc.Get("Str.WebImport.LoadingPage"), isError: false);
         WarningText.Text = string.Empty;
         CharacterImagePreview.Source = null;
         ImagePlaceholderText.Visibility = Visibility.Visible;
@@ -141,7 +143,7 @@ public partial class CharacterWebImportWindow : Window
 
             if (data.ImageUrl.Length > 0)
             {
-                SetStatus("캐릭터 정보 확인 완료 · 이미지를 불러오는 중…", isError: false);
+                SetStatus(Loc.Get("Str.WebImport.InfoConfirmedLoadingImage"), isError: false);
                 try
                 {
                     _downloadedImagePath = await DownloadSupportedImageAsync(
@@ -154,7 +156,7 @@ public partial class CharacterWebImportWindow : Window
                             260);
                         if (CharacterImagePreview.Source is null)
                         {
-                            AppendWarning("다운로드한 이미지를 해석하지 못했습니다. 이미지는 직접 선택하세요.");
+                            AppendWarning(Loc.Get("Str.WebImport.ImageDecodeFailed"));
                             DeleteTemporaryFile(_downloadedImagePath);
                             _downloadedImagePath = string.Empty;
                             UseImageCheckBox.IsChecked = false;
@@ -166,29 +168,29 @@ public partial class CharacterWebImportWindow : Window
                     }
                     else
                     {
-                        AppendWarning("웹 이미지 형식을 현재 앱에서 지원하지 않습니다. 이미지는 직접 선택하세요.");
+                        AppendWarning(Loc.Get("Str.WebImport.ImageFormatUnsupported"));
                         UseImageCheckBox.IsChecked = false;
                     }
                 }
                 catch (Exception imageException)
                 {
-                    AppendWarning($"이미지 자동 다운로드 실패: {imageException.Message}");
+                    AppendWarning(string.Format(Loc.Get("Str.WebImport.ImageDownloadFailed"), imageException.Message));
                     UseImageCheckBox.IsChecked = false;
                 }
             }
 
             ApplyButton.IsEnabled = data.Name.Length > 0;
-            SetStatus("가져온 값을 확인하고 필요한 부분을 수정한 뒤 상세 편집으로 넘기세요.", isError: false);
+            SetStatus(Loc.Get("Str.WebImport.ReviewBeforeImport"), isError: false);
         }
         catch (OperationCanceledException)
         {
-            SetStatus("가져오기를 취소했습니다.", isError: false);
+            SetStatus(Loc.Get("Str.WebImport.FetchCanceled"), isError: false);
         }
         catch (Exception exception)
         {
             _fetchedData = null;
             ApplyButton.IsEnabled = false;
-            SetStatus($"정보를 가져오지 못했습니다: {exception.Message}", isError: true);
+            SetStatus(string.Format(Loc.Get("Str.WebImport.FetchFailed"), exception.Message), isError: true);
         }
         finally
         {
@@ -217,20 +219,24 @@ public partial class CharacterWebImportWindow : Window
         GroupComboBox.Text = data.GroupName;
         LettersTextBox.Text = string.Join(" ", letters);
         string normalizedAttribute = DeckDataService.NormalizeAttribute(data.Attribute);
-        AttributeComboBox.SelectedItem = normalizedAttribute.Length > 0 ? normalizedAttribute : "미입력";
+        AttributeComboBox.SelectedItem = normalizedAttribute.Length > 0 ? normalizedAttribute : UnsetLabel;
         SubAttributesTextBox.Text = string.Join(" / ", DeckDataService.NormalizeAttributes(data.SubAttributes, normalizedAttribute));
         string normalizedSpecies = DeckDataService.NormalizeSpecies(data.Species);
-        SpeciesComboBox.SelectedItem = normalizedSpecies.Length > 0 ? normalizedSpecies : "미입력";
+        SpeciesComboBox.SelectedItem = normalizedSpecies.Length > 0 ? normalizedSpecies : UnsetLabel;
         IncludedGroupsTextBox.Text = string.Join(" · ", includedGroups);
         GroupCandidateText.Text = groupCandidates.Count > 0
-            ? $"인식 후보: {string.Join(" · ", groupCandidates)}"
-            : "인식 후보 없음 · 필요하면 직접 선택";
-        ImageUrlText.Text = data.ImageUrl.Length > 0 ? data.ImageUrl : "인식된 이미지 주소 없음";
+            ? string.Format(Loc.Get("Str.WebImport.GroupCandidates"), string.Join(" · ", groupCandidates))
+            : Loc.Get("Str.WebImport.NoGroupCandidate");
+        ImageUrlText.Text = data.ImageUrl.Length > 0 ? data.ImageUrl : Loc.Get("Str.WebImport.NoImageUrlDetected");
         UseImageCheckBox.IsChecked = data.ImageUrl.Length > 0;
 
         string subAttributeText = data.SubAttributes.Count > 0 ? $" / {string.Join("/", data.SubAttributes)}" : string.Empty;
-        string metadataText = $"속성: {(data.Attribute.Length > 0 ? data.Attribute + subAttributeText : "미인식")} · 종족: {(data.Species.Length > 0 ? data.Species : "미인식")}";
-        SourceSummaryText.Text = $"{metadataText}\n출처: {data.SourceSite}\n{data.SourceUrl}";
+        string unrecognized = Loc.Get("Str.WebImport.Unrecognized");
+        string metadataText = string.Format(
+            Loc.Get("Str.WebImport.AttrSpeciesSummary"),
+            data.Attribute.Length > 0 ? data.Attribute + subAttributeText : unrecognized,
+            data.Species.Length > 0 ? data.Species : unrecognized);
+        SourceSummaryText.Text = string.Format(Loc.Get("Str.WebImport.MetadataSourceLine"), metadataText, data.SourceSite, data.SourceUrl);
         WarningText.Text = string.Join("\n", notes.Select(note => $"• {note}"));
     }
 
@@ -238,7 +244,7 @@ public partial class CharacterWebImportWindow : Window
     {
         if (_fetchedData is null)
         {
-            SetStatus("먼저 웹 정보를 가져오세요.", isError: true);
+            SetStatus(Loc.Get("Str.WebImport.FetchWebInfoFirst"), isError: true);
             return;
         }
 
@@ -246,13 +252,13 @@ public partial class CharacterWebImportWindow : Window
         List<string> letters = ParseLetters(LettersTextBox.Text);
         if (name.Length == 0)
         {
-            SetStatus("캐릭터 이름을 입력하세요.", isError: true);
+            SetStatus(Loc.Get("Str.WebImport.EnterCharacterName"), isError: true);
             CharacterNameTextBox.Focus();
             return;
         }
         if (letters.Count == 0)
         {
-            SetStatus("사용 가능 문자를 하나 이상 확인하세요.", isError: true);
+            SetStatus(Loc.Get("Str.WebImport.ConfirmAtLeastOneLetter"), isError: true);
             LettersTextBox.Focus();
             return;
         }
@@ -300,7 +306,7 @@ public partial class CharacterWebImportWindow : Window
         if (RatedSCheckBox.IsChecked == true) ratings.Add("S");
         if (ratings.Count == 0)
         {
-            SetRatedSearchStatus("검색할 평가를 하나 이상 선택하세요.", isError: true);
+            SetRatedSearchStatus(Loc.Get("Str.WebImport.SelectAtLeastOneRating"), isError: true);
             return;
         }
 
@@ -316,8 +322,8 @@ public partial class CharacterWebImportWindow : Window
         CancellationToken cancellationToken = _batchCancellation.Token;
         SetBatchBusy(true);
         BatchLogTextBox.Clear();
-        SetRatedSearchStatus($"GameWith 전 캐릭터 표에서 {string.Join("·", ratings)} 조건을 찾고 있습니다…", isError: false);
-        SetBatchSummary("전 캐릭터 평가표를 분석하고 있습니다…", isError: false);
+        SetRatedSearchStatus(string.Format(Loc.Get("Str.WebImport.SearchingFullList"), string.Join("·", ratings)), isError: false);
+        SetBatchSummary(Loc.Get("Str.WebImport.AnalyzingRatingTable"), isError: false);
 
         try
         {
@@ -358,49 +364,57 @@ public partial class CharacterWebImportWindow : Window
 
             string modeText = matchMode switch
             {
-                GameWithRatingMatchMode.SubOnly => "서브 평가",
-                GameWithRatingMatchMode.LeaderOnly => "리더 평가",
-                GameWithRatingMatchMode.Both => "서브·리더 모두",
-                _ => "서브/리더 중 하나"
+                GameWithRatingMatchMode.SubOnly => Loc.Get("Str.WebImport.RatingSubLabel"),
+                GameWithRatingMatchMode.LeaderOnly => Loc.Get("Str.WebImport.RatingLeaderLabel"),
+                GameWithRatingMatchMode.Both => Loc.Get("Str.WebImport.RatingBothLabel"),
+                _ => Loc.Get("Str.WebImport.RatingEitherLabel")
             };
-            string originalText = originalOnly ? " · 오리지널 후보" : string.Empty;
+            string originalText = originalOnly ? Loc.Get("Str.WebImport.OriginalCandidateSuffix") : string.Empty;
             int recentACount = selected.Count(link => link.RequiresRecentSixStarValidation);
-            string recentAText = includeRecentSixStarA ? $" · 최신 6성 A 재확인 {recentACount}개" : string.Empty;
-            string existingText = excludeRegistered ? $" · 등록 이름 제외 {excludedRegisteredCount}개" : string.Empty;
+            string recentAText = includeRecentSixStarA
+                ? string.Format(Loc.Get("Str.WebImport.RecentASuffix"), recentACount)
+                : string.Empty;
+            string existingText = excludeRegistered
+                ? string.Format(Loc.Get("Str.WebImport.ExcludedRegisteredSuffix"), excludedRegisteredCount)
+                : string.Empty;
             SetRatedSearchStatus(
-                $"찾기 완료 · {modeText} {string.Join("·", ratings)}{originalText}{recentAText} · 링크 {selected.Length}개{existingText}",
+                string.Format(
+                    Loc.Get("Str.WebImport.SearchCompleteSummary"),
+                    modeText, string.Join("·", ratings), originalText, recentAText, selected.Length, existingText),
                 isError: selected.Length == 0);
             SetBatchSummary(
                 selected.Length > 0
-                    ? $"조건에 맞는 링크 {selected.Length}개를 입력했습니다. '연속 가져오기 시작'을 누르면 개별 페이지에서 오리지널 여부를 한 번 더 검사합니다."
-                    : "조건에 맞는 미등록 캐릭터가 없습니다.",
+                    ? string.Format(Loc.Get("Str.WebImport.LinksEnteredSummary"), selected.Length)
+                    : Loc.Get("Str.WebImport.NoMatchingUnregistered"),
                 isError: selected.Length == 0);
 
             foreach (GameWithCharacterLink link in selected.Take(80))
             {
                 string originalState = link.IsCollaboration switch
                 {
-                    false => "오리지널 확인",
-                    true => "콜라보 메타 후보 · 개별 페이지 재확인",
-                    _ => "개별 페이지 재확인"
+                    false => Loc.Get("Str.WebImport.OriginalConfirmLabel"),
+                    true => Loc.Get("Str.WebImport.CollabMetaCandidateLabel"),
+                    _ => Loc.Get("Str.WebImport.IndividualPageRecheckLabel")
                 };
                 string validationText = link.RequiresRecentSixStarValidation
-                    ? " · 6성/최신 그룹 재확인"
+                    ? Loc.Get("Str.WebImport.RecentGroupRecheckSuffix")
                     : string.Empty;
-                AppendBatchLog($"{link.NameHint} · 서브 {link.SubRating} / 리더 {link.LeaderRating} · {originalState}{validationText}");
+                AppendBatchLog(string.Format(
+                    Loc.Get("Str.WebImport.LinkSummaryLine"),
+                    link.NameHint, link.SubRating, link.LeaderRating, originalState, validationText));
             }
             if (selected.Length > 80)
             {
-                AppendBatchLog($"… 외 {selected.Length - 80}개");
+                AppendBatchLog(string.Format(Loc.Get("Str.WebImport.MoreItemsSuffix"), selected.Length - 80));
             }
         }
         catch (OperationCanceledException)
         {
-            SetRatedSearchStatus("조건 검색을 중지했습니다.", isError: false);
+            SetRatedSearchStatus(Loc.Get("Str.WebImport.SearchStopped"), isError: false);
         }
         catch (Exception exception)
         {
-            SetRatedSearchStatus($"조건 검색 실패: {exception.Message}", isError: true);
+            SetRatedSearchStatus(string.Format(Loc.Get("Str.WebImport.SearchFailed"), exception.Message), isError: true);
             SetBatchSummary(exception.Message, isError: true);
         }
         finally
@@ -414,7 +428,7 @@ public partial class CharacterWebImportWindow : Window
         List<string> sourceUrls = ParseBatchUrls(BatchUrlTextBox.Text);
         if (sourceUrls.Count == 0)
         {
-            SetBatchSummary("GameWith 목록 또는 개별 캐릭터 주소를 입력하세요.", isError: true);
+            SetBatchSummary(Loc.Get("Str.WebImport.EnterListOrUrl"), isError: true);
             BatchUrlTextBox.Focus();
             return;
         }
@@ -432,7 +446,7 @@ public partial class CharacterWebImportWindow : Window
 
         BatchLogTextBox.Clear();
         SetBatchBusy(true);
-        SetBatchSummary($"{sourceUrls.Count}개 페이지에서 캐릭터 링크를 찾고 있습니다…", isError: false);
+        SetBatchSummary(string.Format(Loc.Get("Str.WebImport.FindingLinksFromPages"), sourceUrls.Count), isError: false);
 
         try
         {
@@ -440,7 +454,7 @@ public partial class CharacterWebImportWindow : Window
             {
                 cancellationToken.ThrowIfCancellationRequested();
                 string sourceUrl = sourceUrls[index];
-                AppendBatchLog($"[{index + 1}/{sourceUrls.Count}] 링크 분석 중: {sourceUrl}");
+                AppendBatchLog(string.Format(Loc.Get("Str.WebImport.AnalyzingLinkAt"), index + 1, sourceUrls.Count, sourceUrl));
 
                 try
                 {
@@ -451,7 +465,7 @@ public partial class CharacterWebImportWindow : Window
                     if (links.Count == 0)
                     {
                         failureCount++;
-                        AppendBatchLog("  캐릭터 개별 링크를 찾지 못했습니다.");
+                        AppendBatchLog(Loc.Get("Str.WebImport.NoIndividualLinksFound"));
                         continue;
                     }
 
@@ -465,7 +479,7 @@ public partial class CharacterWebImportWindow : Window
                         }
                     }
 
-                    AppendBatchLog($"  발견 {links.Count}개" +
+                    AppendBatchLog(string.Format(Loc.Get("Str.WebImport.FoundCountSuffix"), links.Count) +
                         (links.Count <= 8 && links.Any(link => link.NameHint.Length > 0)
                             ? $" · {string.Join(" · ", links.Select(link => link.NameHint).Where(name => name.Length > 0).Take(8))}"
                             : string.Empty));
@@ -478,7 +492,7 @@ public partial class CharacterWebImportWindow : Window
                 {
                     failureCount++;
                     lastFailureMessage = exception.Message;
-                    AppendBatchLog($"  실패 · {exception.Message}");
+                    AppendBatchLog(string.Format(Loc.Get("Str.WebImport.FailedWithReason"), exception.Message));
                 }
             }
 
@@ -486,7 +500,7 @@ public partial class CharacterWebImportWindow : Window
             {
                 string message = lastFailureMessage.Length > 0
                     ? lastFailureMessage
-                    : "캐릭터 링크를 찾지 못했습니다. 개별 캐릭터 URL을 직접 붙여 넣어도 됩니다.";
+                    : Loc.Get("Str.WebImport.NoLinksFoundHint");
                 SetBatchSummary(message, isError: true);
                 return;
             }
@@ -502,20 +516,20 @@ public partial class CharacterWebImportWindow : Window
                 .Distinct(StringComparer.OrdinalIgnoreCase)
                 .ToArray();
             string groupHintText = detectedGroupHints.Length == 1
-                ? $" · 목록 페이지 소속 힌트: {detectedGroupHints[0]}"
+                ? string.Format(Loc.Get("Str.WebImport.ListGroupHintSuffix"), detectedGroupHints[0])
                 : string.Empty;
             string largeListWarning = ordered.Length > 100
-                ? " · 100개가 넘습니다. 필요한 캐릭터만 남긴 뒤 연속 가져오기를 권장합니다."
+                ? Loc.Get("Str.WebImport.TooManyLinksWarning")
                 : string.Empty;
             SetBatchSummary(
-                $"캐릭터 개별 링크 {ordered.Length}개를 찾았습니다.{groupHintText} 이제 '연속 가져오기 시작'을 누르세요.{largeListWarning}",
+                string.Format(Loc.Get("Str.WebImport.LinksFoundSummary"), ordered.Length, groupHintText, largeListWarning),
                 isError: false);
-            AppendBatchLog($"링크 정리 완료 · 중복 제거 후 {ordered.Length}개 · 분석 실패 {failureCount}개");
+            AppendBatchLog(string.Format(Loc.Get("Str.WebImport.LinkCleanupSummary"), ordered.Length, failureCount));
         }
         catch (OperationCanceledException)
         {
-            SetBatchSummary("링크 찾기를 중지했습니다.", isError: false);
-            AppendBatchLog("사용자가 링크 찾기를 중지했습니다.");
+            SetBatchSummary(Loc.Get("Str.WebImport.LinkSearchStopped"), isError: false);
+            AppendBatchLog(Loc.Get("Str.WebImport.UserStoppedLinkSearch"));
         }
         finally
         {
@@ -528,7 +542,7 @@ public partial class CharacterWebImportWindow : Window
         List<string> urls = ParseBatchUrls(BatchUrlTextBox.Text);
         if (urls.Count == 0)
         {
-            SetBatchSummary("GameWith 개별 캐릭터 주소를 한 줄에 하나씩 입력하세요.", isError: true);
+            SetBatchSummary(Loc.Get("Str.WebImport.EnterIndividualUrlsPerLine"), isError: true);
             BatchUrlTextBox.Focus();
             return;
         }
@@ -575,7 +589,7 @@ public partial class CharacterWebImportWindow : Window
         var failureReasons = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
 
         SetBatchBusy(true);
-        SetBatchSummary($"{urls.Count}개 주소를 순서대로 확인합니다…", isError: false);
+        SetBatchSummary(string.Format(Loc.Get("Str.WebImport.CheckingUrlsSequentially"), urls.Count), isError: false);
 
         try
         {
@@ -584,8 +598,8 @@ public partial class CharacterWebImportWindow : Window
                 cancellationToken.ThrowIfCancellationRequested();
                 string url = urls[index];
                 int displayIndex = index + 1;
-                BatchProgressText.Text = $"{displayIndex} / {urls.Count} 확인 중 · 항목당 최대 28초";
-                AppendBatchLog($"[{displayIndex}/{urls.Count}] 가져오는 중: {url}");
+                BatchProgressText.Text = string.Format(Loc.Get("Str.WebImport.CheckingProgress"), displayIndex, urls.Count);
+                AppendBatchLog(string.Format(Loc.Get("Str.WebImport.FetchingAt"), displayIndex, urls.Count, url));
 
                 try
                 {
@@ -596,19 +610,19 @@ public partial class CharacterWebImportWindow : Window
                         failureCount++;
                         _lastFailedUrls.Add(url);
                         AddFailureReason(failureReasons, fetchResult.FailureReason);
-                        AppendBatchLog($"  실패 · {fetchResult.FailureReason}");
+                        AppendBatchLog(string.Format(Loc.Get("Str.WebImport.FailedWithReason"), fetchResult.FailureReason));
                         continue;
                     }
 
                     if (fetchResult.RetryCount > 0)
                     {
                         retryRecoveredCount++;
-                        AppendBatchLog($"  재시도 복구 · {fetchResult.RetryCount}회 추가 시도 후 성공");
+                        AppendBatchLog(string.Format(Loc.Get("Str.WebImport.RetryRecoveredSuffix"), fetchResult.RetryCount));
                     }
                     if (fetchResult.UsedRatingTableFallback)
                     {
                         ratingFallbackCount++;
-                        AppendBatchLog("  표 정보 복구 · 개별 페이지에서 빠진 이름/문자/속성을 평가표 정보로 보완");
+                        AppendBatchLog(Loc.Get("Str.WebImport.TableInfoRecoveredNote"));
                     }
 
                     if (_originalOnlyCandidateUrls.Contains(url))
@@ -622,16 +636,16 @@ public partial class CharacterWebImportWindow : Window
                         if (collaboration == true)
                         {
                             filteredCollaborationCount++;
-                            AppendBatchLog($"  건너뜀 · 명시적 콜라보 근거 확인: {data.Name}");
+                            AppendBatchLog(string.Format(Loc.Get("Str.WebImport.SkippedExplicitCollab"), data.Name));
                             continue;
                         }
                         if (!collaboration.HasValue)
                         {
                             if (rowEvidence == true)
                             {
-                                data.Notes.Add("목록 메타데이터에는 콜라보 후보 표시가 있었지만 개별 페이지에서 확정되지 않아 제외하지 않았습니다.");
+                                data.Notes.Add(Loc.Get("Str.WebImport.CollabNotConfirmedKept"));
                             }
-                            data.Notes.Add("오리지널/콜라보를 자동 확정하지 못했지만 제외하지 않았습니다. 그룹이 없는 오리지널 캐릭터도 있으므로 검수표에서 필요할 때만 확인하세요.");
+                            data.Notes.Add(Loc.Get("Str.WebImport.OriginalCollabUnconfirmedKept"));
                         }
                     }
 
@@ -642,8 +656,8 @@ public partial class CharacterWebImportWindow : Window
                         if (!string.Equals(data.GroupName, normalizedHint, StringComparison.OrdinalIgnoreCase))
                         {
                             data.Notes.Add(data.GroupName.Length > 0
-                                ? $"개별 특성 추정 그룹 '{data.GroupName}' 대신 목록 페이지 소속 '{normalizedHint}'을 적용했습니다."
-                                : $"목록 페이지에서 소속 그룹을 적용했습니다: {normalizedHint}");
+                                ? string.Format(Loc.Get("Str.WebImport.AppliedListGroupOverride"), data.GroupName, normalizedHint)
+                                : string.Format(Loc.Get("Str.WebImport.AppliedListGroup"), normalizedHint));
                         }
                         data.GroupName = normalizedHint;
                         data.IncludedGroups = (data.IncludedGroups ?? new List<string>())
@@ -658,12 +672,12 @@ public partial class CharacterWebImportWindow : Window
                         if (!CharacterWebImportService.IsRecentSixStarAEligible(data, validationLink, out string validationReason))
                         {
                             filteredRecentACount++;
-                            AppendBatchLog($"  건너뜀 · A 평가 추가 조건 불충족: {data.Name} · {validationReason}");
+                            AppendBatchLog(string.Format(Loc.Get("Str.WebImport.SkippedAValidationFailed"), data.Name, validationReason));
                             continue;
                         }
 
-                        data.Notes.Add($"GameWith A 평가지만 세이유니마 이후 그룹의 6성으로 확인되어 포함했습니다. (소속 {data.GroupName}, 레어리티 {data.Rarity})");
-                        AppendBatchLog($"  A 평가 포함 확인 · 6성 / {data.GroupName}");
+                        data.Notes.Add(string.Format(Loc.Get("Str.WebImport.IncludedRecentAConfirmed"), data.GroupName, data.Rarity));
+                        AppendBatchLog(string.Format(Loc.Get("Str.WebImport.IncludedAConfirmSuffix"), data.GroupName));
                     }
 
                     List<string> letters = NormalizeImportedLetters(data.Letters);
@@ -673,10 +687,10 @@ public partial class CharacterWebImportWindow : Window
                         failureCount++;
                         _lastFailedUrls.Add(url);
                         string reason = name.Length == 0
-                            ? "이름 인식 실패"
-                            : "문자 인식 실패";
+                            ? Loc.Get("Str.WebImport.NameRecognitionFailed")
+                            : Loc.Get("Str.WebImport.LettersRecognitionFailed");
                         AddFailureReason(failureReasons, reason);
-                        AppendBatchLog($"  실패 · {reason}");
+                        AppendBatchLog(string.Format(Loc.Get("Str.WebImport.FailedWithReason"), reason));
                         continue;
                     }
 
@@ -684,7 +698,7 @@ public partial class CharacterWebImportWindow : Window
                     if (!knownKeys.Add(characterKey))
                     {
                         duplicateCount++;
-                        AppendBatchLog($"  건너뜀 · 이미 등록된 캐릭터: {name} ({string.Join("·", letters)})");
+                        AppendBatchLog(string.Format(Loc.Get("Str.WebImport.SkippedAlreadyRegistered"), name, string.Join("·", letters)));
                         continue;
                     }
 
@@ -697,7 +711,7 @@ public partial class CharacterWebImportWindow : Window
                         }
                         catch (Exception imageException) when (imageException is not OperationCanceledException)
                         {
-                            data.Notes.Add($"이미지 자동 다운로드 실패: {imageException.Message}");
+                            data.Notes.Add(string.Format(Loc.Get("Str.WebImport.ImageDownloadFailed"), imageException.Message));
                         }
                     }
 
@@ -725,7 +739,7 @@ public partial class CharacterWebImportWindow : Window
                         SourceSite = data.SourceSite,
                         MatchedDatabaseUrl = data.MatchedDatabaseUrl,
                         GameWithRatingText = _discoveredLinks.TryGetValue(url, out GameWithCharacterLink? ratingLink)
-                            ? $"서브 {ratingLink.SubRating} / 리더 {ratingLink.LeaderRating}"
+                            ? string.Format(Loc.Get("Str.WebImport.SubLeaderRatingSummary"), ratingLink.SubRating, ratingLink.LeaderRating)
                             : string.Empty,
                         Notes = (data.Notes ?? new List<string>()).ToList()
                     };
@@ -736,11 +750,13 @@ public partial class CharacterWebImportWindow : Window
                         reviewCount++;
                     }
 
-                    string groupText = data.GroupName.Length > 0 ? data.GroupName : "그룹 없음(등록 가능)";
-                    string attributeText = data.Attribute.Length > 0 ? data.Attribute : "속성?";
-                    string speciesText = data.Species.Length > 0 ? data.Species : "종족?";
-                    string imageText = downloadedImagePath.Length > 0 ? "이미지 포함" : "이미지 없음";
-                    AppendBatchLog($"  성공 · {name} · {string.Join("·", letters)} · {attributeText}/{speciesText} · {groupText} · {imageText}");
+                    string groupText = data.GroupName.Length > 0 ? data.GroupName : Loc.Get("Str.WebImport.NoGroupRegistrable");
+                    string attributeText = data.Attribute.Length > 0 ? data.Attribute : Loc.Get("Str.WebImport.AttributeUnknownMark");
+                    string speciesText = data.Species.Length > 0 ? data.Species : Loc.Get("Str.WebImport.SpeciesUnknownMark");
+                    string imageText = downloadedImagePath.Length > 0 ? Loc.Get("Str.WebImport.ImageIncluded") : Loc.Get("Str.WebImport.NoImage");
+                    AppendBatchLog(string.Format(
+                        Loc.Get("Str.WebImport.SuccessLine"),
+                        name, string.Join("·", letters), attributeText, speciesText, groupText, imageText));
                 }
                 catch (OperationCanceledException)
                 {
@@ -752,7 +768,7 @@ public partial class CharacterWebImportWindow : Window
                     _lastFailedUrls.Add(url);
                     string reason = SimplifyBatchFailureReason(exception.Message);
                     AddFailureReason(failureReasons, reason);
-                    AppendBatchLog($"  실패 · {reason}");
+                    AppendBatchLog(string.Format(Loc.Get("Str.WebImport.FailedWithReason"), reason));
                 }
                 finally
                 {
@@ -769,7 +785,7 @@ public partial class CharacterWebImportWindow : Window
         catch (OperationCanceledException)
         {
             wasCanceled = true;
-            AppendBatchLog("사용자가 연속 가져오기를 중지했습니다.");
+            AppendBatchLog(Loc.Get("Str.WebImport.UserStoppedBulkFetch"));
         }
         finally
         {
@@ -777,12 +793,15 @@ public partial class CharacterWebImportWindow : Window
             SetBatchBusy(false);
             BatchApplyButton.IsEnabled = _batchReviewItems.Count > 0;
             BatchRetryFailedButton.IsEnabled = _lastFailedUrls.Count > 0;
-            string prefix = wasCanceled ? "중지됨" : "완료";
+            string prefix = wasCanceled ? Loc.Get("Str.WebImport.StoppedLabel") : Loc.Get("Str.WebImport.CompletedLabel");
             ShowBatchFailureReasons(failureReasons);
             SetBatchSummary(
-                $"{prefix} · 검수 대상 {successCount}개 · 확인 권장 {reviewCount}개 · 중복 {duplicateCount}개 · 명시적 콜라보 제외 {filteredCollaborationCount}개 · 최신 6성 A 조건 제외 {filteredRecentACount}개 · 재시도 복구 {retryRecoveredCount}개 · 표 정보 복구 {ratingFallbackCount}개 · 실패 {failureCount}개" +
+                string.Format(
+                    Loc.Get("Str.WebImport.BulkResultSummary"),
+                    prefix, successCount, reviewCount, duplicateCount, filteredCollaborationCount,
+                    filteredRecentACount, retryRecoveredCount, ratingFallbackCount, failureCount) +
                 (_batchReviewItems.Count > 0
-                    ? " · 그룹은 비어 있어도 등록할 수 있습니다. 확인 권장으로 표시된 행만 보고 등록하세요."
+                    ? Loc.Get("Str.WebImport.GroupOptionalNote")
                     : string.Empty),
                 isError: _batchReviewItems.Count == 0 && failureCount > 0);
         }
@@ -792,7 +811,7 @@ public partial class CharacterWebImportWindow : Window
     {
         const int maxAttempts = 2;
         TimeSpan itemTimeout = TimeSpan.FromSeconds(28);
-        string lastReason = "가져오기 실패";
+        string lastReason = Loc.Get("Str.WebImport.FetchFailedTitle");
         using var itemCancellation = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
         itemCancellation.CancelAfter(itemTimeout);
 
@@ -828,7 +847,7 @@ public partial class CharacterWebImportWindow : Window
             }
             catch (OperationCanceledException) when (!cancellationToken.IsCancellationRequested)
             {
-                lastReason = $"개별 캐릭터 처리 시간 초과({itemTimeout.TotalSeconds:0}초)";
+                lastReason = string.Format(Loc.Get("Str.WebImport.ItemTimeoutReason"), itemTimeout.TotalSeconds.ToString("0"));
                 break;
             }
             catch (OperationCanceledException)
@@ -846,7 +865,7 @@ public partial class CharacterWebImportWindow : Window
                     }
                     catch (OperationCanceledException) when (!cancellationToken.IsCancellationRequested)
                     {
-                        lastReason = $"개별 캐릭터 처리 시간 초과({itemTimeout.TotalSeconds:0}초)";
+                        lastReason = string.Format(Loc.Get("Str.WebImport.ItemTimeoutReason"), itemTimeout.TotalSeconds.ToString("0"));
                         break;
                     }
                 }
@@ -892,7 +911,7 @@ public partial class CharacterWebImportWindow : Window
 
         if (changed)
         {
-            data.Notes.Add("GameWith 전 캐릭터 평가표의 이름/문자/속성 정보를 보조로 사용했습니다.");
+            data.Notes.Add(Loc.Get("Str.WebImport.RatingTableFallbackUsed"));
         }
         return changed;
     }
@@ -917,12 +936,12 @@ public partial class CharacterWebImportWindow : Window
             Attribute = DeckDataService.NormalizeAttribute(link.AttributeHint),
             Letters = letters,
             SourceUrl = url,
-            SourceSite = "GameWith 평가표",
+            SourceSite = Loc.Get("Str.WebImport.RatingTableSourceSite"),
             IsCollaboration = link.IsCollaboration,
             Notes = new List<string>
             {
-                $"개별 페이지 가져오기는 실패했지만 평가표 정보로 검수 항목을 만들었습니다: {failureReason}",
-                "종족·이미지·그룹은 비어 있을 수 있으므로 등록 전 필요한 항목만 확인하세요."
+                string.Format(Loc.Get("Str.WebImport.PageFailedButTableUsed"), failureReason),
+                Loc.Get("Str.WebImport.SpeciesImageGroupMayBeEmpty")
             }
         };
     }
@@ -951,32 +970,34 @@ public partial class CharacterWebImportWindow : Window
 
     private static void AddFailureReason(IDictionary<string, int> counts, string reason)
     {
-        string key = string.IsNullOrWhiteSpace(reason) ? "기타" : reason.Trim();
+        string key = string.IsNullOrWhiteSpace(reason) ? Loc.Get("Str.WebImport.OtherReason") : reason.Trim();
         counts[key] = counts.TryGetValue(key, out int current) ? current + 1 : 1;
     }
 
     private static string SimplifyBatchFailureReason(string message)
     {
         string text = (message ?? string.Empty).Trim();
-        if (text.Contains("429", StringComparison.OrdinalIgnoreCase)) return "요청 제한(429)";
-        if (text.Contains("timeout", StringComparison.OrdinalIgnoreCase) || text.Contains("시간", StringComparison.Ordinal)) return "시간 초과";
-        if (text.Contains("404", StringComparison.OrdinalIgnoreCase)) return "페이지 없음(404)";
-        if (text.Contains("이름", StringComparison.Ordinal)) return "이름 인식 실패";
-        if (text.Contains("문자", StringComparison.Ordinal)) return "문자 인식 실패";
-        if (text.Contains("페이지를 읽지 못", StringComparison.Ordinal)) return "페이지 요청 실패";
-        return text.Length > 80 ? text[..80] : (text.Length > 0 ? text : "기타");
+        // 아래 Contains 판별은 CharacterWebImportService가 내는 원본 한글 예외 메시지를 매칭하는 내부 로직이라
+        // 화면 표시용이 아니다. 언어가 바뀌어도 서비스 예외 메시지는 그대로이므로 건드리지 않는다.
+        if (text.Contains("429", StringComparison.OrdinalIgnoreCase)) return Loc.Get("Str.WebImport.ReasonRateLimited");
+        if (text.Contains("timeout", StringComparison.OrdinalIgnoreCase) || text.Contains("시간", StringComparison.Ordinal)) return Loc.Get("Str.WebImport.ReasonTimeout");
+        if (text.Contains("404", StringComparison.OrdinalIgnoreCase)) return Loc.Get("Str.WebImport.ReasonNotFound");
+        if (text.Contains("이름", StringComparison.Ordinal)) return Loc.Get("Str.WebImport.NameRecognitionFailed");
+        if (text.Contains("문자", StringComparison.Ordinal)) return Loc.Get("Str.WebImport.LettersRecognitionFailed");
+        if (text.Contains("페이지를 읽지 못", StringComparison.Ordinal)) return Loc.Get("Str.WebImport.ReasonRequestFailed");
+        return text.Length > 80 ? text[..80] : (text.Length > 0 ? text : Loc.Get("Str.WebImport.OtherReason"));
     }
 
     private void BatchRetryFailedButton_Click(object sender, RoutedEventArgs e)
     {
         if (_lastFailedUrls.Count == 0)
         {
-            SetBatchSummary("다시 시도할 실패 URL이 없습니다.", isError: false);
+            SetBatchSummary(Loc.Get("Str.WebImport.NoFailedUrlsToRetry"), isError: false);
             return;
         }
 
         BatchUrlTextBox.Text = string.Join(Environment.NewLine, _lastFailedUrls.Distinct(StringComparer.OrdinalIgnoreCase));
-        SetBatchSummary($"실패 URL {_lastFailedUrls.Count}개만 입력했습니다. 현재 검수 결과를 먼저 등록한 뒤, 다시 열어서 요청 간격을 1200ms 이상으로 올려 재시도하는 것을 권장합니다.", isError: false);
+        SetBatchSummary(string.Format(Loc.Get("Str.WebImport.RetryFailedInputSummary"), _lastFailedUrls.Count), isError: false);
         BatchUrlTextBox.Focus();
     }
 
@@ -1017,7 +1038,7 @@ public partial class CharacterWebImportWindow : Window
             .ToList();
         if (selectedItems.Count == 0)
         {
-            SetBatchSummary("등록할 항목을 하나 이상 체크하세요.", isError: true);
+            SetBatchSummary(Loc.Get("Str.WebImport.CheckAtLeastOneItem"), isError: true);
             return;
         }
 
@@ -1028,7 +1049,11 @@ public partial class CharacterWebImportWindow : Window
             List<string> letters = ParseLetters(item.LettersText);
             if (name.Length == 0 || letters.Count == 0)
             {
-                SetBatchSummary($"'{(name.Length > 0 ? name : "이름 없음")}' 항목의 이름/문자를 확인하세요.", isError: true);
+                SetBatchSummary(
+                    string.Format(
+                        Loc.Get("Str.WebImport.CheckNameLettersFor"),
+                        name.Length > 0 ? name : Loc.Get("Str.WebImport.NoNameLabel")),
+                    isError: true);
                 return;
             }
 
@@ -1119,7 +1144,7 @@ public partial class CharacterWebImportWindow : Window
         {
             DeleteTemporaryFile(path);
             throw new InvalidDataException(
-                $"캐릭터 일러스트보다 작은 이미지({width}x{height})가 감지되어 제외했습니다. 속성/종족 아이콘일 가능성이 높습니다.");
+                string.Format(Loc.Get("Str.WebImport.SmallImageExcluded"), width, height));
         }
 
         return path;
@@ -1194,7 +1219,7 @@ public partial class CharacterWebImportWindow : Window
     private static string ReadMetadataCombo(System.Windows.Controls.ComboBox comboBox, bool isAttribute)
     {
         string raw = comboBox.SelectedItem as string ?? comboBox.Text ?? string.Empty;
-        if (string.Equals(raw, "미입력", StringComparison.Ordinal))
+        if (string.Equals(raw, UnsetLabel, StringComparison.Ordinal))
         {
             return string.Empty;
         }

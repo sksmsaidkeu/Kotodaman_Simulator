@@ -26,6 +26,45 @@ public partial class DeckEditorWindow : Window
     private static readonly string[] AttributeValues = { "火", "水", "木", "光", "闇", "天", "冥", "虹" };
     private static readonly string[] SpeciesValues = { "神", "魔", "英", "龍", "獣", "霊", "物", "妖" };
 
+    // 필터 콤보 표시값과 아래 비교/스위치 로직이 반드시 같은 프로퍼티를 참조해야 합니다.
+    // 표시만 Loc.Get으로 바꾸고 비교를 리터럴로 남기면 언어를 바꿨을 때 필터가 전부 깨집니다.
+    private static string UnsetText => Loc.Unset;
+    private static string AllCategoryText => Loc.Get("Str.FilterAllCategory");
+    private static string AllAttributeText => Loc.Get("Str.FilterAllAttribute");
+    private static string AllSpeciesText => Loc.Get("Str.FilterAllSpecies");
+    private static string AllGroupText => Loc.Get("Str.DeckEditor.FilterAllGroup");
+    private static string StatusAllText => Loc.Get("Str.DeckEditor.StatusAll");
+    private static string StatusInDeckText => Loc.Get("Str.DeckEditor.StatusInDeck");
+    private static string StatusNotInDeckText => Loc.Get("Str.DeckEditor.StatusNotInDeck");
+    private static string StatusNoImageText => Loc.Get("Str.DeckEditor.StatusNoImage");
+    private static string StatusNoGroupText => Loc.Get("Str.DeckEditor.StatusNoGroup");
+    private static string StatusSameNameModeShiftText => Loc.Get("Str.DeckEditor.StatusSameNameModeShift");
+    private static string StatusDifferentNameModeShiftText => Loc.Get("Str.DeckEditor.StatusDifferentNameModeShift");
+    private static string StatusHasConditionalLettersText => Loc.Get("Str.DeckEditor.StatusHasConditionalLetters");
+    private static string StatusHasMiracleEffectText => Loc.Get("Str.DeckEditor.StatusHasMiracleEffect");
+    private static string StatusHasDeckConditionLettersText => Loc.Get("Str.DeckEditor.StatusHasDeckConditionLetters");
+    private static string StatusIncompleteInfoText => Loc.Get("Str.DeckEditor.StatusIncompleteInfo");
+    private static string SortDefaultText => Loc.Get("Str.DeckEditor.SortDefault");
+    private static string SortByNameText => Loc.Get("Str.DeckEditor.SortByName");
+    private static string SortByAttributeText => Loc.Get("Str.DeckEditor.SortByAttribute");
+    private static string SortBySpeciesText => Loc.Get("Str.DeckEditor.SortBySpecies");
+    private static string SortDeckFirstText => Loc.Get("Str.DeckEditor.SortDeckFirst");
+    private static string SortNoImageFirstText => Loc.Get("Str.DeckEditor.SortNoImageFirst");
+    private static string SortNoGroupFirstText => Loc.Get("Str.DeckEditor.SortNoGroupFirst");
+
+    private static string[] StatusFilterOptions => new[]
+    {
+        StatusAllText, StatusInDeckText, StatusNotInDeckText, StatusNoImageText, StatusNoGroupText,
+        StatusSameNameModeShiftText, StatusDifferentNameModeShiftText, StatusHasConditionalLettersText,
+        StatusHasMiracleEffectText, StatusHasDeckConditionLettersText, StatusIncompleteInfoText
+    };
+
+    private static string[] SortOptions => new[]
+    {
+        SortDefaultText, SortByNameText, SortByAttributeText, SortBySpeciesText,
+        SortDeckFirstText, SortNoImageFirstText, SortNoGroupFirstText
+    };
+
     private readonly string _deckPath;
     private readonly string _libraryPath;
     private readonly string _presetPath;
@@ -117,43 +156,21 @@ public partial class DeckEditorWindow : Window
 
         CharacterCategoryComboBox.ItemsSource = CharacterCategories.All;
         CharacterCategoryComboBox.SelectedItem = CharacterCategories.Other;
-        CategoryFilterComboBox.ItemsSource = new[] { "전체 등급" }
+        CategoryFilterComboBox.ItemsSource = new[] { AllCategoryText }
             .Concat(CharacterCategories.All)
             .ToArray();
         CategoryFilterComboBox.SelectedIndex = 0;
-        CharacterAttributeComboBox.ItemsSource = new[] { "미입력" }.Concat(AttributeValues).ToArray();
-        CharacterAttributeComboBox.SelectedItem = "미입력";
-        CharacterSpeciesComboBox.ItemsSource = new[] { "미입력" }.Concat(SpeciesValues).ToArray();
-        CharacterSpeciesComboBox.SelectedItem = "미입력";
-        AttributeFilterComboBox.ItemsSource = new[] { "전체 속성" }.Concat(AttributeValues).Concat(new[] { "미입력" }).ToArray();
+        CharacterAttributeComboBox.ItemsSource = new[] { UnsetText }.Concat(AttributeValues).ToArray();
+        CharacterAttributeComboBox.SelectedItem = UnsetText;
+        CharacterSpeciesComboBox.ItemsSource = new[] { UnsetText }.Concat(SpeciesValues).ToArray();
+        CharacterSpeciesComboBox.SelectedItem = UnsetText;
+        AttributeFilterComboBox.ItemsSource = new[] { AllAttributeText }.Concat(AttributeValues).Concat(new[] { UnsetText }).ToArray();
         AttributeFilterComboBox.SelectedIndex = 0;
-        SpeciesFilterComboBox.ItemsSource = new[] { "전체 종족" }.Concat(SpeciesValues).Concat(new[] { "미입력" }).ToArray();
+        SpeciesFilterComboBox.ItemsSource = new[] { AllSpeciesText }.Concat(SpeciesValues).Concat(new[] { UnsetText }).ToArray();
         SpeciesFilterComboBox.SelectedIndex = 0;
-        StatusFilterComboBox.ItemsSource = new[]
-        {
-            "전체 상태",
-            "현재 덱",
-            "현재 덱 제외",
-            "이미지 없음",
-            "그룹 없음",
-            "동일명 모드시프트",
-            "이름 다른 모드시프트",
-            "조건 문자 보유",
-            "미라클 효과 보유",
-            "덱 그룹 조건 문자 보유",
-            "미완성 정보"
-        };
+        StatusFilterComboBox.ItemsSource = StatusFilterOptions;
         StatusFilterComboBox.SelectedIndex = 0;
-        SortComboBox.ItemsSource = new[]
-        {
-            "기본 정렬",
-            "이름순",
-            "속성순",
-            "종족순",
-            "현재 덱 우선",
-            "이미지 없음 우선",
-            "그룹 없음 우선"
-        };
+        SortComboBox.ItemsSource = SortOptions;
         SortComboBox.SelectedIndex = 0;
 
         _deckPath = deckPath;
@@ -251,7 +268,7 @@ public partial class DeckEditorWindow : Window
 
         _selectedPresetId = item.Id;
         PresetNameTextBox.Text = item.Name;
-        Controls.SetAlertBanner(EditorStatusBanner, EditorStatusText, $"'{item.Name}' 프리셋 선택 · 불러오기를 누르면 현재 덱을 교체합니다.", false, Theme.BlueText);
+        Controls.SetAlertBanner(EditorStatusBanner, EditorStatusText, string.Format(Loc.Get("Str.DeckEditor.PresetSelectedStatus"), item.Name), false, Theme.BlueText);
     }
 
     private void LoadPresetButton_Click(object sender, RoutedEventArgs e)
@@ -259,7 +276,7 @@ public partial class DeckEditorWindow : Window
         DeckPreset? preset = FindPreset(_selectedPresetId);
         if (preset is null)
         {
-            SetError("불러올 덱 프리셋을 먼저 선택하세요.");
+            SetError(Loc.Get("Str.DeckEditor.SelectPresetToLoad"));
             return;
         }
 
@@ -277,8 +294,8 @@ public partial class DeckEditorWindow : Window
 
         RefreshAllLists(_editingCharacterId);
         Controls.SetAlertBanner(EditorStatusBanner, EditorStatusText, skippedCount > 0
-            ? $"'{preset.Name}' 프리셋을 불러왔습니다 · {_deckIds.Count}명 · 모드시프트 형태 {skippedCount}명 제외"
-            : $"'{preset.Name}' 프리셋을 불러왔습니다 · {_deckIds.Count}명", false, Theme.Success);
+            ? string.Format(Loc.Get("Str.DeckEditor.PresetLoadedWithSkip"), preset.Name, _deckIds.Count, skippedCount)
+            : string.Format(Loc.Get("Str.DeckEditor.PresetLoaded"), preset.Name, _deckIds.Count), false, Theme.Success);
     }
 
     private void SavePresetButton_Click(object sender, RoutedEventArgs e)
@@ -290,7 +307,7 @@ public partial class DeckEditorWindow : Window
 
         if (_deckIds.Count == 0)
         {
-            SetError("프리셋으로 저장할 현재 덱이 비어 있습니다.");
+            SetError(Loc.Get("Str.DeckEditor.DeckEmptyForPresetSave"));
             return;
         }
 
@@ -303,7 +320,7 @@ public partial class DeckEditorWindow : Window
         string name = PresetNameTextBox.Text.Trim();
         if (name.Length == 0)
         {
-            SetError("덱 프리셋 이름을 입력하세요.");
+            SetError(Loc.Get("Str.DeckEditor.EnterPresetName"));
             PresetNameTextBox.Focus();
             return;
         }
@@ -316,7 +333,7 @@ public partial class DeckEditorWindow : Window
             sameName is not null &&
             !string.Equals(selectedPreset.Id, sameName.Id, StringComparison.Ordinal))
         {
-            SetError("같은 이름의 다른 덱 프리셋이 이미 있습니다.");
+            SetError(Loc.Get("Str.DeckEditor.DuplicatePresetName"));
             return;
         }
 
@@ -352,8 +369,8 @@ public partial class DeckEditorWindow : Window
         RefreshPresetList(targetPreset.Id);
 
         Controls.SetAlertBanner(EditorStatusBanner, EditorStatusText, isNew
-            ? $"'{name}' 프리셋을 새로 만들었습니다. 자동 저장되었습니다."
-            : $"'{name}' 프리셋을 현재 덱으로 갱신했습니다. 자동 저장되었습니다.", false, Theme.Success);
+            ? string.Format(Loc.Get("Str.DeckEditor.PresetCreated"), name)
+            : string.Format(Loc.Get("Str.DeckEditor.PresetUpdated"), name), false, Theme.Success);
         AutoSaveCommittedStateSafely();
     }
 
@@ -365,7 +382,7 @@ public partial class DeckEditorWindow : Window
         _isRefreshingPresets = false;
         PresetNameTextBox.Clear();
         PresetNameTextBox.Focus();
-        Controls.SetAlertBanner(EditorStatusBanner, EditorStatusText, "새 프리셋 이름을 입력한 뒤 현재 덱 저장을 누르세요.", false, Theme.TextSecondary);
+        Controls.SetAlertBanner(EditorStatusBanner, EditorStatusText, Loc.Get("Str.DeckEditor.EnterNameThenSave"), false, Theme.TextSecondary);
     }
 
     private void DeletePresetButton_Click(object sender, RoutedEventArgs e)
@@ -373,13 +390,13 @@ public partial class DeckEditorWindow : Window
         DeckPreset? preset = FindPreset(_selectedPresetId);
         if (preset is null)
         {
-            SetError("삭제할 덱 프리셋을 먼저 선택하세요.");
+            SetError(Loc.Get("Str.DeckEditor.SelectPresetToDelete"));
             return;
         }
 
         MessageBoxResult result = MessageBox.Show(
-            $"'{preset.Name}' 프리셋을 삭제할까요?\n현재 덱과 캐릭터 목록은 삭제되지 않습니다.",
-            "덱 프리셋 삭제",
+            string.Format(Loc.Get("Str.DeckEditor.ConfirmDeletePreset"), preset.Name),
+            Loc.Get("Str.DeckEditor.DeletePresetTitle"),
             MessageBoxButton.YesNo,
             MessageBoxImage.Warning);
         if (result != MessageBoxResult.Yes)
@@ -390,7 +407,7 @@ public partial class DeckEditorWindow : Window
         _presets.Remove(preset);
         _selectedPresetId = null;
         RefreshPresetList(_presets.FirstOrDefault()?.Id);
-        Controls.SetAlertBanner(EditorStatusBanner, EditorStatusText, $"'{preset.Name}' 프리셋을 삭제했습니다. 자동 저장되었습니다.", false, Theme.Warn);
+        Controls.SetAlertBanner(EditorStatusBanner, EditorStatusText, string.Format(Loc.Get("Str.DeckEditor.PresetDeleted"), preset.Name), false, Theme.Warn);
         AutoSaveCommittedStateSafely();
     }
 
@@ -438,7 +455,7 @@ public partial class DeckEditorWindow : Window
 
     private void RefreshGroupFilterOptions()
     {
-        string current = GroupFilterComboBox.SelectedItem as string ?? "전체 그룹";
+        string current = GroupFilterComboBox.SelectedItem as string ?? AllGroupText;
         string[] groups = _library
             .SelectMany(GetEffectiveGroupNamesCached)
             .Select(DeckDataService.NormalizeGroupName)
@@ -446,7 +463,7 @@ public partial class DeckEditorWindow : Window
             .Distinct(StringComparer.OrdinalIgnoreCase)
             .OrderBy(group => group, StringComparer.Ordinal)
             .ToArray();
-        string[] items = new[] { "전체 그룹" }.Concat(groups).ToArray();
+        string[] items = new[] { AllGroupText }.Concat(groups).ToArray();
 
         _isRefreshingGroupFilter = true;
         try
@@ -454,7 +471,7 @@ public partial class DeckEditorWindow : Window
             GroupFilterComboBox.ItemsSource = items;
             GroupFilterComboBox.SelectedItem = items.Contains(current, StringComparer.OrdinalIgnoreCase)
                 ? items.First(item => string.Equals(item, current, StringComparison.OrdinalIgnoreCase))
-                : "전체 그룹";
+                : AllGroupText;
         }
         finally
         {
@@ -466,12 +483,18 @@ public partial class DeckEditorWindow : Window
     private void RestoreLibraryFilterState(UserSettings settings)
     {
         LibrarySearchTextBox.Text = settings.LastDeckEditorSearchText ?? string.Empty;
-        SelectComboBoxValue(CategoryFilterComboBox, settings.LastDeckEditorCategoryFilter, "전체 등급");
-        SelectComboBoxValue(AttributeFilterComboBox, settings.LastDeckEditorAttributeFilter, "전체 속성");
-        SelectComboBoxValue(SpeciesFilterComboBox, settings.LastDeckEditorSpeciesFilter, "전체 종족");
-        SelectComboBoxValue(GroupFilterComboBox, settings.LastDeckEditorGroupFilter, "전체 그룹");
-        SelectComboBoxValue(StatusFilterComboBox, settings.LastDeckEditorStatusFilter, "전체 상태");
-        SelectComboBoxValue(SortComboBox, settings.LastDeckEditorSortMode, "기본 정렬");
+        SelectComboBoxValue(CategoryFilterComboBox, settings.LastDeckEditorCategoryFilter, AllCategoryText);
+        SelectComboBoxValue(
+            AttributeFilterComboBox,
+            DecodeAttributeSpeciesFilter(settings.LastDeckEditorAttributeFilter, UnsetText),
+            AllAttributeText);
+        SelectComboBoxValue(
+            SpeciesFilterComboBox,
+            DecodeAttributeSpeciesFilter(settings.LastDeckEditorSpeciesFilter, UnsetText),
+            AllSpeciesText);
+        SelectComboBoxValue(GroupFilterComboBox, settings.LastDeckEditorGroupFilter, AllGroupText);
+        SelectComboBoxIndex(StatusFilterComboBox, settings.LastDeckEditorStatusFilterIndex);
+        SelectComboBoxIndex(SortComboBox, settings.LastDeckEditorSortModeIndex);
         FavoriteOnlyCheckBox.IsChecked = settings.LastDeckEditorFavoritesOnly;
         BelovedOnlyCheckBox.IsChecked = settings.LastDeckEditorBelovedOnly;
         UpdateLibrarySearchHint();
@@ -488,18 +511,41 @@ public partial class DeckEditorWindow : Window
             .FirstOrDefault(item => string.Equals(item?.ToString(), fallback, StringComparison.OrdinalIgnoreCase));
     }
 
+    private static void SelectComboBoxIndex(ComboBox comboBox, int savedIndex)
+    {
+        comboBox.SelectedIndex = savedIndex >= 0 && savedIndex < comboBox.Items.Count ? savedIndex : 0;
+    }
+
+    // Status/Sort 항목은 전부 언어별로 번역된 텍스트뿐이라 인덱스로 저장한다.
+    // Attribute/Species는 실제 값(한자 1글자)은 언어와 무관하지만 "전체"/"미입력" 자리표시자만 번역되므로,
+    // 그 두 항목만 비언어권 마커로 인코딩하고 나머지 값은 원문 그대로 저장한다.
+    private const string UnsetFilterMarker = "__UNSET__";
+
+    private static string EncodeAttributeSpeciesFilter(string selected, string allText, string unsetText)
+    {
+        if (string.Equals(selected, allText, StringComparison.Ordinal))
+        {
+            return string.Empty;
+        }
+
+        return string.Equals(selected, unsetText, StringComparison.Ordinal) ? UnsetFilterMarker : selected;
+    }
+
+    private static string DecodeAttributeSpeciesFilter(string? saved, string unsetText)
+        => string.Equals(saved, UnsetFilterMarker, StringComparison.Ordinal) ? unsetText : saved ?? string.Empty;
+
     private void RefreshLibraryList(string? selectedCharacterId = null)
     {
         _isRefreshingLists = true;
         try
         {
             SearchTokenQuery[] searchTokens = BuildSearchTokenQueries(LibrarySearchTextBox.Text);
-            string selectedCategory = CategoryFilterComboBox.SelectedItem as string ?? "전체 등급";
-            string selectedAttribute = AttributeFilterComboBox.SelectedItem as string ?? "전체 속성";
-            string selectedSpecies = SpeciesFilterComboBox.SelectedItem as string ?? "전체 종족";
-            string selectedGroup = GroupFilterComboBox.SelectedItem as string ?? "전체 그룹";
-            string selectedStatus = StatusFilterComboBox.SelectedItem as string ?? "전체 상태";
-            string selectedSort = SortComboBox.SelectedItem as string ?? "기본 정렬";
+            string selectedCategory = CategoryFilterComboBox.SelectedItem as string ?? AllCategoryText;
+            string selectedAttribute = AttributeFilterComboBox.SelectedItem as string ?? AllAttributeText;
+            string selectedSpecies = SpeciesFilterComboBox.SelectedItem as string ?? AllSpeciesText;
+            string selectedGroup = GroupFilterComboBox.SelectedItem as string ?? AllGroupText;
+            string selectedStatus = StatusFilterComboBox.SelectedItem as string ?? StatusAllText;
+            string selectedSort = SortComboBox.SelectedItem as string ?? SortDefaultText;
             bool favoritesOnly = FavoriteOnlyCheckBox.IsChecked == true;
             bool belovedOnly = BelovedOnlyCheckBox.IsChecked == true;
             IEnumerable<CharacterEntry> filtered = _library;
@@ -510,7 +556,7 @@ public partial class DeckEditorWindow : Window
                     CharacterMatchesSearchToken(character, token)));
             }
 
-            if (!string.Equals(selectedCategory, "전체 등급", StringComparison.Ordinal))
+            if (!string.Equals(selectedCategory, AllCategoryText, StringComparison.Ordinal))
             {
                 filtered = filtered.Where(character =>
                     string.Equals(
@@ -519,23 +565,23 @@ public partial class DeckEditorWindow : Window
                         StringComparison.Ordinal));
             }
 
-            if (!string.Equals(selectedAttribute, "전체 속성", StringComparison.Ordinal))
+            if (!string.Equals(selectedAttribute, AllAttributeText, StringComparison.Ordinal))
             {
-                filtered = string.Equals(selectedAttribute, "미입력", StringComparison.Ordinal)
+                filtered = string.Equals(selectedAttribute, UnsetText, StringComparison.Ordinal)
                     ? filtered.Where(character => GetAllCharacterAttributes(character).Count == 0)
                     : filtered.Where(character => GetAllCharacterAttributes(character)
                         .Contains(selectedAttribute, StringComparer.Ordinal));
             }
 
-            if (!string.Equals(selectedSpecies, "전체 종족", StringComparison.Ordinal))
+            if (!string.Equals(selectedSpecies, AllSpeciesText, StringComparison.Ordinal))
             {
-                filtered = string.Equals(selectedSpecies, "미입력", StringComparison.Ordinal)
+                filtered = string.Equals(selectedSpecies, UnsetText, StringComparison.Ordinal)
                     ? filtered.Where(character => GetAllCharacterSpecies(character).Count == 0)
                     : filtered.Where(character => GetAllCharacterSpecies(character)
                         .Contains(selectedSpecies, StringComparer.Ordinal));
             }
 
-            if (!string.Equals(selectedGroup, "전체 그룹", StringComparison.Ordinal))
+            if (!string.Equals(selectedGroup, AllGroupText, StringComparison.Ordinal))
             {
                 filtered = filtered.Where(character =>
                     GetEffectiveGroupNamesCached(character).Any(group =>
@@ -547,27 +593,27 @@ public partial class DeckEditorWindow : Window
 
             filtered = selectedStatus switch
             {
-                "현재 덱" => filtered.Where(character =>
+                string status when string.Equals(status, StatusInDeckText, StringComparison.Ordinal) => filtered.Where(character =>
                     _deckIds.Contains(character.Id, StringComparer.Ordinal)),
-                "현재 덱 제외" => filtered.Where(character =>
+                string status when string.Equals(status, StatusNotInDeckText, StringComparison.Ordinal) => filtered.Where(character =>
                     !_deckIds.Contains(character.Id, StringComparer.Ordinal)),
-                "이미지 없음" => filtered.Where(character =>
+                string status when string.Equals(status, StatusNoImageText, StringComparison.Ordinal) => filtered.Where(character =>
                     string.IsNullOrWhiteSpace(character.ImageFileName) ||
                     (character.AlternateForms ?? new List<CharacterForm>())
                         .Any(form => string.IsNullOrWhiteSpace(form.ImageFileName))),
-                "그룹 없음" => filtered.Where(character =>
+                string status when string.Equals(status, StatusNoGroupText, StringComparison.Ordinal) => filtered.Where(character =>
                     string.IsNullOrWhiteSpace(character.GroupName)),
-                "동일명 모드시프트" => filtered.Where(character =>
+                string status when string.Equals(status, StatusSameNameModeShiftText, StringComparison.Ordinal) => filtered.Where(character =>
                     character.HasAlternateForms),
-                "이름 다른 모드시프트" => filtered.Where(character =>
+                string status when string.Equals(status, StatusDifferentNameModeShiftText, StringComparison.Ordinal) => filtered.Where(character =>
                     !string.IsNullOrWhiteSpace(character.DeckRestrictionGroupId)),
-                "조건 문자 보유" => filtered.Where(character =>
+                string status when string.Equals(status, StatusHasConditionalLettersText, StringComparison.Ordinal) => filtered.Where(character =>
                     character.LetterStates.Count > 0),
-                "미라클 효과 보유" => filtered.Where(character =>
+                string status when string.Equals(status, StatusHasMiracleEffectText, StringComparison.Ordinal) => filtered.Where(character =>
                     DeckDataService.NormalizeMiracleLeaderEffect(character.MiracleLeaderEffect).IsConfigured),
-                "덱 그룹 조건 문자 보유" => filtered.Where(character =>
+                string status when string.Equals(status, StatusHasDeckConditionLettersText, StringComparison.Ordinal) => filtered.Where(character =>
                     DeckDataService.NormalizeDeckGroupLetterEffect(character.DeckGroupLetterEffect).IsConfigured),
-                "미완성 정보" => filtered.Where(character =>
+                string status when string.Equals(status, StatusIncompleteInfoText, StringComparison.Ordinal) => filtered.Where(character =>
                     string.IsNullOrWhiteSpace(character.ImageFileName) ||
                     (character.AlternateForms ?? new List<CharacterForm>())
                         .Any(form => string.IsNullOrWhiteSpace(form.ImageFileName)) ||
@@ -589,24 +635,24 @@ public partial class DeckEditorWindow : Window
 
             IOrderedEnumerable<CharacterEntry> ordered = selectedSort switch
             {
-                "이름순" => filtered
+                string sort when string.Equals(sort, SortByNameText, StringComparison.Ordinal) => filtered
                     .OrderBy(character => character.Name, StringComparer.Ordinal)
                     .ThenBy(character => CharacterCategories.GetSortOrder(character.Category)),
-                "속성순" => filtered
+                string sort when string.Equals(sort, SortByAttributeText, StringComparison.Ordinal) => filtered
                     .OrderBy(character => GetAttributeSortOrder(character.Attribute))
                     .ThenBy(character => CharacterCategories.GetSortOrder(character.Category))
                     .ThenBy(character => character.Name, StringComparer.Ordinal),
-                "종족순" => filtered
+                string sort when string.Equals(sort, SortBySpeciesText, StringComparison.Ordinal) => filtered
                     .OrderBy(character => GetSpeciesSortOrder(character.Species))
                     .ThenBy(character => CharacterCategories.GetSortOrder(character.Category))
                     .ThenBy(character => character.Name, StringComparer.Ordinal),
-                "현재 덱 우선" => filtered
+                string sort when string.Equals(sort, SortDeckFirstText, StringComparison.Ordinal) => filtered
                     .OrderByDescending(character => _deckIds.Contains(character.Id, StringComparer.Ordinal))
                     .ThenByDescending(character => character.IsFavorite)
                     .ThenByDescending(character => character.IsBeloved)
                     .ThenBy(character => CharacterCategories.GetSortOrder(character.Category))
                     .ThenBy(character => character.Name, StringComparer.Ordinal),
-                "이미지 없음 우선" => filtered
+                string sort when string.Equals(sort, SortNoImageFirstText, StringComparison.Ordinal) => filtered
                     .OrderByDescending(character =>
                         string.IsNullOrWhiteSpace(character.ImageFileName) ||
                         (character.AlternateForms ?? new List<CharacterForm>())
@@ -615,7 +661,7 @@ public partial class DeckEditorWindow : Window
                     .ThenByDescending(character => character.IsBeloved)
                     .ThenBy(character => CharacterCategories.GetSortOrder(character.Category))
                     .ThenBy(character => character.Name, StringComparer.Ordinal),
-                "그룹 없음 우선" => filtered
+                string sort when string.Equals(sort, SortNoGroupFirstText, StringComparison.Ordinal) => filtered
                     .OrderByDescending(character => string.IsNullOrWhiteSpace(character.GroupName))
                     .ThenByDescending(character => character.IsFavorite)
                     .ThenByDescending(character => character.IsBeloved)
@@ -843,9 +889,9 @@ public partial class DeckEditorWindow : Window
     private void UpdateCountTexts()
     {
         LibraryCountText.Text = _lastFilteredLibraryCount == _library.Count
-            ? $"{_library.Count:N0}명"
-            : $"검색 {_lastFilteredLibraryCount:N0} / 전체 {_library.Count:N0}명";
-        DeckCountText.Text = $"{_deckIds.Count} / {MaximumDeckSize}명";
+            ? string.Format(Loc.Get("Str.DeckEditor.LibraryCountFormat"), _library.Count.ToString("N0"))
+            : string.Format(Loc.Get("Str.DeckEditor.LibrarySearchCountFormat"), _lastFilteredLibraryCount.ToString("N0"), _library.Count.ToString("N0"));
+        DeckCountText.Text = string.Format(Loc.Get("Str.DeckEditor.DeckCountFormat"), _deckIds.Count, MaximumDeckSize);
     }
 
     private void LibrarySearchTextBox_TextChanged(object sender, TextChangedEventArgs e)
@@ -874,8 +920,8 @@ public partial class DeckEditorWindow : Window
         string text = LibrarySearchTextBox.Text;
         string converted = KanaUtility.ConvertHangulToKana(text);
         LibrarySearchHintText.Text = converted != text
-            ? $"가나 변환: {text} → {converted}"
-            : "예: 仮面ライダー し · 속성·종족도 함께 검색할 수 있습니다";
+            ? string.Format(Loc.Get("Str.DeckEditor.KanaConversionHint"), text, converted)
+            : Loc.Get("Str.DeckEditor.SearchPlaceholderAlt");
     }
 
     private void LibrarySelectionFilter_Changed(object sender, SelectionChangedEventArgs e)
@@ -1134,7 +1180,7 @@ public partial class DeckEditorWindow : Window
         UpdateCountTexts();
 
         string activeName = character.GetActiveFormName();
-        Controls.SetAlertBanner(EditorStatusBanner, EditorStatusText, $"'{character.Name}' 동일명 모드시프트 → {activeName}", false, Theme.Special);
+        Controls.SetAlertBanner(EditorStatusBanner, EditorStatusText, string.Format(Loc.Get("Str.DeckEditor.SameNameModeShiftStatus"), character.Name, activeName), false, Theme.Special);
     }
 
     private bool TryCycleConnectedModeShift(int deckIndex, CharacterEntry current)
@@ -1187,7 +1233,7 @@ public partial class DeckEditorWindow : Window
 
         if (target is null)
         {
-            Controls.SetAlertBanner(EditorStatusBanner, EditorStatusText, "전환 가능한 연결형 모드시프트가 현재 덱의 다른 칸에 이미 편성되어 있습니다.", true);
+            Controls.SetAlertBanner(EditorStatusBanner, EditorStatusText, Loc.Get("Str.DeckEditor.LinkedFormAlreadyInDeck"), true);
             return true;
         }
 
@@ -1195,7 +1241,7 @@ public partial class DeckEditorWindow : Window
         AutoSaveCommittedStateSafely();
         RefreshAllLists(target.Id, deckIndex);
         BeginEditing(target.Id, selectLibraryItem: true);
-        Controls.SetAlertBanner(EditorStatusBanner, EditorStatusText, $"덱 {deckIndex + 1}번 연결형 모드시프트 · {current.Name} → {target.Name}", false, Theme.Special);
+        Controls.SetAlertBanner(EditorStatusBanner, EditorStatusText, string.Format(Loc.Get("Str.DeckEditor.LinkedModeShiftStatus"), deckIndex + 1, current.Name, target.Name), false, Theme.Special);
         return true;
     }
 
@@ -1240,7 +1286,7 @@ public partial class DeckEditorWindow : Window
         _lastSelectedCharacterId = character.Id;
         _isRelatedFormEditorOpen = false;
         RelatedFormEditorPanel.Visibility = Visibility.Collapsed;
-        ToggleRelatedFormEditorButton.Content = "연결 설정";
+        ToggleRelatedFormEditorButton.Content = Loc.Get("Str.DeckEditor.LinkSettings");
         ToggleRelatedFormEditorButton.IsEnabled = true;
         CharacterNameTextBox.Text = character.Name;
         CharacterSearchAliasesTextBox.Text = string.Join(" · ", DeckDataService.NormalizeSearchAliases(character.SearchAliases));
@@ -1287,7 +1333,7 @@ public partial class DeckEditorWindow : Window
         AddCharacterButton.IsEnabled = true;
         UpdateCharacterButton.IsEnabled = true;
 
-        Controls.SetAlertBanner(EditorStatusBanner, EditorStatusText, $"'{character.Name}' 편집 중 · 수정 버튼을 누르면 자동 저장되고, 창을 닫을 때도 마지막 편집을 저장합니다.", false, Theme.BlueText);
+        Controls.SetAlertBanner(EditorStatusBanner, EditorStatusText, string.Format(Loc.Get("Str.DeckEditor.EditingCharacterStatus"), character.Name), false, Theme.BlueText);
 
         if (selectLibraryItem)
         {
@@ -1355,7 +1401,7 @@ public partial class DeckEditorWindow : Window
             BeginEditing(currentEditingId);
         }
 
-        Controls.SetAlertBanner(EditorStatusBanner, EditorStatusText, $"캐릭터 {changedIds.Length:N0}명을 일괄 수정했습니다. 연속 작업을 묶어 자동 저장합니다.", false, Theme.Success);
+        Controls.SetAlertBanner(EditorStatusBanner, EditorStatusText, string.Format(Loc.Get("Str.DeckEditor.BulkEditedStatus"), changedIds.Length.ToString("N0")), false, Theme.Success);
     }
 
     private void ImportCharacterFromWebButton_Click(object sender, RoutedEventArgs e)
@@ -1423,9 +1469,9 @@ public partial class DeckEditorWindow : Window
         UpdateCharacterImagePreview();
 
         string sourceNote = preview.MatchedDatabaseUrl.Length > 0
-            ? $"{preview.SourceSite} + 코토다망DB"
+            ? string.Format(Loc.Get("Str.DeckEditor.SourceNoteFormat"), preview.SourceSite)
             : preview.SourceSite;
-        Controls.SetAlertBanner(EditorStatusBanner, EditorStatusText, $"'{preview.Name}' 정보를 {sourceNote}에서 가져왔습니다. 내용을 확인한 뒤 '새 캐릭터 추가'를 누르세요.", false, Theme.Success);
+        Controls.SetAlertBanner(EditorStatusBanner, EditorStatusText, string.Format(Loc.Get("Str.DeckEditor.WebImportedStatus"), preview.Name, sourceNote), false, Theme.Success);
 
         Dispatcher.BeginInvoke(
             new Action(() =>
@@ -1553,22 +1599,22 @@ public partial class DeckEditorWindow : Window
             BeginEditing(lastAddedCharacterId);
         }
 
-        var details = new List<string> { $"추가 {addedCount}개" };
+        var details = new List<string> { string.Format(Loc.Get("Str.DeckEditor.AddedCountSuffix"), addedCount) };
         if (duplicateCount > 0)
         {
-            details.Add($"중복 건너뜀 {duplicateCount}개");
+            details.Add(string.Format(Loc.Get("Str.DeckEditor.DuplicateSkippedSuffix"), duplicateCount));
         }
         if (invalidCount > 0)
         {
-            details.Add($"정보 부족 {invalidCount}개");
+            details.Add(string.Format(Loc.Get("Str.DeckEditor.InsufficientInfoSuffix"), invalidCount));
         }
         if (imageFailureCount > 0)
         {
-            details.Add($"이미지 저장 실패 {imageFailureCount}개");
+            details.Add(string.Format(Loc.Get("Str.DeckEditor.ImageSaveFailedSuffix"), imageFailureCount));
         }
 
-        string autoRegisterMessage = "연속 자동 등록 완료 · " + string.Join(" · ", details) +
-            (addedCount > 0 ? " · 자동 저장되었습니다." : string.Empty);
+        string autoRegisterMessage = Loc.Get("Str.DeckEditor.BulkAutoRegisterCompletePrefix") + string.Join(" · ", details) +
+            (addedCount > 0 ? Loc.Get("Str.DeckEditor.AutoSavedSuffix") : string.Empty);
         Controls.SetAlertBanner(EditorStatusBanner, EditorStatusText, autoRegisterMessage, isAlert: addedCount <= 0, Theme.Success);
     }
 
@@ -1577,7 +1623,7 @@ public partial class DeckEditorWindow : Window
         _editingCharacterId = null;
         _isRelatedFormEditorOpen = false;
         RelatedFormEditorPanel.Visibility = Visibility.Collapsed;
-        ToggleRelatedFormEditorButton.Content = "연결 설정";
+        ToggleRelatedFormEditorButton.Content = Loc.Get("Str.DeckEditor.LinkSettings");
         ToggleRelatedFormEditorButton.IsEnabled = false;
         _isRefreshingLists = true;
         CharacterLibraryListBox.SelectedItem = null;
@@ -1585,9 +1631,9 @@ public partial class DeckEditorWindow : Window
         CharacterNameTextBox.Clear();
         CharacterSearchAliasesTextBox.Clear();
         CharacterCategoryComboBox.SelectedItem = CharacterCategories.Other;
-        CharacterAttributeComboBox.SelectedItem = "미입력";
+        CharacterAttributeComboBox.SelectedItem = UnsetText;
         CharacterSubAttributesTextBox.Clear();
-        CharacterSpeciesComboBox.SelectedItem = "미입력";
+        CharacterSpeciesComboBox.SelectedItem = UnsetText;
         CharacterFavoriteCheckBox.IsChecked = false;
         CharacterBelovedCheckBox.IsChecked = false;
         CharacterLettersTextBox.Clear();
@@ -1619,7 +1665,7 @@ public partial class DeckEditorWindow : Window
         CharacterNameTextBox.Focus();
         UpdateCharacterButton.IsEnabled = false;
         AddCharacterButton.IsEnabled = true;
-        Controls.SetAlertBanner(EditorStatusBanner, EditorStatusText, "새 캐릭터의 이름과 문자를 입력하세요.", false, Theme.TextSecondary);
+        Controls.SetAlertBanner(EditorStatusBanner, EditorStatusText, Loc.Get("Str.DeckEditor.EnterNewCharacterNameAndLetters"), false, Theme.TextSecondary);
     }
 
     private void RefreshRelatedFormCandidates(string? currentCharacterId = null)
@@ -1646,7 +1692,7 @@ public partial class DeckEditorWindow : Window
     {
         if (character is null)
         {
-            RelatedFormsSummaryText.Text = "캐릭터를 먼저 추가하거나 선택하세요.";
+            RelatedFormsSummaryText.Text = Loc.Get("Str.DeckEditor.AddOrSelectCharacterFirst");
             RelatedFormsSummaryText.Foreground = Theme.TextSecondary;
             return;
         }
@@ -1654,12 +1700,12 @@ public partial class DeckEditorWindow : Window
         CharacterEntry[] related = GetRelatedForms(character).ToArray();
         if (related.Length == 0)
         {
-            RelatedFormsSummaryText.Text = "연결된 다른 형태 없음";
+            RelatedFormsSummaryText.Text = Loc.Get("Str.DeckEditor.NoLinkedOtherForm");
             RelatedFormsSummaryText.Foreground = Theme.TextSecondary;
             return;
         }
 
-        RelatedFormsSummaryText.Text = "모드시프트: " +
+        RelatedFormsSummaryText.Text = Loc.Get("Str.DeckEditor.ModeShiftPrefix") +
             string.Join(" · ", related.Select(item => item.Name));
         RelatedFormsSummaryText.Foreground = Theme.BlueText;
     }
@@ -1680,7 +1726,7 @@ public partial class DeckEditorWindow : Window
         CharacterEntry? current = FindCharacter(_editingCharacterId);
         if (current is null)
         {
-            SetError("모드시프트를 설정할 캐릭터를 먼저 선택하세요.");
+            SetError(Loc.Get("Str.DeckEditor.SelectCharacterForModeShift"));
             return;
         }
 
@@ -1689,8 +1735,8 @@ public partial class DeckEditorWindow : Window
             ? Visibility.Visible
             : Visibility.Collapsed;
         ToggleRelatedFormEditorButton.Content = _isRelatedFormEditorOpen
-            ? "설정 닫기"
-            : "연결 설정";
+            ? Loc.Get("Str.DeckEditor.CloseSettings")
+            : Loc.Get("Str.DeckEditor.LinkSettings");
 
         if (_isRelatedFormEditorOpen)
         {
@@ -1703,20 +1749,20 @@ public partial class DeckEditorWindow : Window
         CharacterEntry? current = FindCharacter(_editingCharacterId);
         if (current is null)
         {
-            SetError("먼저 캐릭터를 목록에 추가하거나 선택하세요.");
+            SetError(Loc.Get("Str.DeckEditor.AddOrSelectCharacterFirstAlt"));
             return;
         }
 
         if (RelatedFormComboBox.SelectedItem is not RelatedFormDisplayItem selected)
         {
-            SetError("모드시프트로 연결할 다른 캐릭터를 선택하세요.");
+            SetError(Loc.Get("Str.DeckEditor.SelectOtherCharacterToLink"));
             return;
         }
 
         CharacterEntry? target = FindCharacter(selected.Id);
         if (target is null || string.Equals(target.Id, current.Id, StringComparison.Ordinal))
         {
-            SetError("연결할 캐릭터를 찾지 못했습니다.");
+            SetError(Loc.Get("Str.DeckEditor.LinkTargetNotFound"));
             return;
         }
 
@@ -1726,7 +1772,7 @@ public partial class DeckEditorWindow : Window
         if (currentGroup.Length > 0 &&
             string.Equals(currentGroup, targetGroup, StringComparison.OrdinalIgnoreCase))
         {
-            Controls.SetAlertBanner(EditorStatusBanner, EditorStatusText, $"'{current.Name}'과 '{target.Name}'은 이미 모드시프트로 연결되어 있습니다.", false, Theme.BlueText);
+            Controls.SetAlertBanner(EditorStatusBanner, EditorStatusText, string.Format(Loc.Get("Str.DeckEditor.AlreadyLinked"), current.Name, target.Name), false, Theme.BlueText);
             return;
         }
 
@@ -1752,7 +1798,7 @@ public partial class DeckEditorWindow : Window
             _deckIds.Contains(member.Id, StringComparer.Ordinal));
         if (deckMemberCount > 1)
         {
-            SetError("연결하려는 형태가 현재 덱에 둘 이상 있습니다. 같은 카드 형태 중 한 명만 남긴 뒤 연결하세요.");
+            SetError(Loc.Get("Str.DeckEditor.MultipleFormsInDeck"));
             return;
         }
 
@@ -1771,7 +1817,7 @@ public partial class DeckEditorWindow : Window
         int selectedDeckIndex = GetSelectedDeckIndexForCharacter(current.Id);
         RefreshAllLists(current.Id, selectedDeckIndex);
         BeginEditing(current.Id);
-        Controls.SetAlertBanner(EditorStatusBanner, EditorStatusText, $"'{current.Name}'과 '{target.Name}'을 같은 카드 형태로 연결했습니다. 두 형태는 한 덱에 동시에 넣을 수 없습니다.", false, Theme.Success);
+        Controls.SetAlertBanner(EditorStatusBanner, EditorStatusText, string.Format(Loc.Get("Str.DeckEditor.LinkedSuccess"), current.Name, target.Name), false, Theme.Success);
     }
 
     private void UnlinkRelatedFormButton_Click(object sender, RoutedEventArgs e)
@@ -1779,14 +1825,14 @@ public partial class DeckEditorWindow : Window
         CharacterEntry? current = FindCharacter(_editingCharacterId);
         if (current is null)
         {
-            SetError("연결을 해제할 캐릭터를 먼저 선택하세요.");
+            SetError(Loc.Get("Str.DeckEditor.SelectCharacterToUnlink"));
             return;
         }
 
         string group = NormalizeRestrictionGroup(current.DeckRestrictionGroupId);
         if (group.Length == 0)
         {
-            SetError($"'{current.Name}'은 연결된 모드시프트 형태가 없습니다.");
+            SetError(string.Format(Loc.Get("Str.DeckEditor.NoLinkedFormToUnlink"), current.Name));
             return;
         }
 
@@ -1799,8 +1845,8 @@ public partial class DeckEditorWindow : Window
         RefreshAllLists(current.Id, selectedDeckIndex);
         BeginEditing(current.Id);
         Controls.SetAlertBanner(EditorStatusBanner, EditorStatusText, relatedBefore.Length == 0
-            ? $"'{current.Name}'의 이전 모드시프트 그룹 정보를 정리했습니다."
-            : $"'{current.Name}'을 모드시프트 연결에서 분리했습니다.", false, Theme.Warn);
+            ? string.Format(Loc.Get("Str.DeckEditor.CleanedOldModeShiftGroup"), current.Name)
+            : string.Format(Loc.Get("Str.DeckEditor.UnlinkedSuccess"), current.Name), false, Theme.Warn);
     }
 
     private void ClearRestrictionGroupWhenOnlyOneMemberRemains(string? restrictionGroupId)
@@ -1877,7 +1923,7 @@ public partial class DeckEditorWindow : Window
             character.Letters.SequenceEqual(letters, StringComparer.Ordinal));
         if (exactDuplicate)
         {
-            SetError("같은 이름과 문자를 가진 캐릭터가 이미 등록되어 있습니다.");
+            SetError(Loc.Get("Str.DeckEditor.DuplicateNameLetters"));
             return;
         }
 
@@ -1917,14 +1963,14 @@ public partial class DeckEditorWindow : Window
         RefreshGroupOptions(character.GroupName);
         RefreshAllLists(character.Id);
         BeginEditing(character.Id);
-        Controls.SetAlertBanner(EditorStatusBanner, EditorStatusText, $"'{character.Name}'을 캐릭터 목록에 추가했습니다. 자동 저장되었습니다.", false, Theme.Success);
+        Controls.SetAlertBanner(EditorStatusBanner, EditorStatusText, string.Format(Loc.Get("Str.DeckEditor.CharacterAdded"), character.Name), false, Theme.Success);
     }
 
     private void UpdateCharacterButton_Click(object sender, RoutedEventArgs e)
     {
         if (string.IsNullOrWhiteSpace(_editingCharacterId))
         {
-            SetError("수정할 캐릭터를 목록에서 먼저 선택하세요.");
+            SetError(Loc.Get("Str.DeckEditor.SelectCharacterToEdit"));
             return;
         }
 
@@ -1939,7 +1985,7 @@ public partial class DeckEditorWindow : Window
         CharacterEntry? character = FindCharacter(_editingCharacterId);
         if (character is null)
         {
-            SetError("수정할 캐릭터를 찾지 못했습니다.");
+            SetError(Loc.Get("Str.DeckEditor.CharacterToEditNotFound"));
             return false;
         }
 
@@ -1962,7 +2008,7 @@ public partial class DeckEditorWindow : Window
             other.Letters.SequenceEqual(letters, StringComparer.Ordinal));
         if (exactDuplicate)
         {
-            SetError("같은 이름과 문자를 가진 다른 캐릭터가 이미 등록되어 있습니다.");
+            SetError(Loc.Get("Str.DeckEditor.DuplicateNameLettersOther"));
             return false;
         }
 
@@ -1999,7 +2045,7 @@ public partial class DeckEditorWindow : Window
 
         if (showSuccessMessage)
         {
-            Controls.SetAlertBanner(EditorStatusBanner, EditorStatusText, $"'{character.Name}' 정보를 수정했습니다. 덱에도 자동 반영됩니다.", false, Theme.Success);
+            Controls.SetAlertBanner(EditorStatusBanner, EditorStatusText, string.Format(Loc.Get("Str.DeckEditor.CharacterUpdated"), character.Name), false, Theme.Success);
         }
 
         return true;
@@ -2011,18 +2057,18 @@ public partial class DeckEditorWindow : Window
         CharacterEntry? character = FindCharacter(characterId);
         if (character is null)
         {
-            SetError("삭제할 캐릭터를 목록에서 먼저 선택하세요.");
+            SetError(Loc.Get("Str.DeckEditor.SelectCharacterToDelete"));
             return;
         }
 
         bool isInDeck = _deckIds.Contains(character.Id, StringComparer.Ordinal);
         string deckNotice = isInDeck
-            ? "\n\n현재 덱에서도 함께 제거됩니다."
+            ? Loc.Get("Str.DeckEditor.AlsoRemovedFromDeckNote")
             : string.Empty;
 
         MessageBoxResult result = MessageBox.Show(
-            $"'{character.Name}'을 캐릭터 목록에서 삭제할까요?{deckNotice}",
-            "캐릭터 삭제",
+            string.Format(Loc.Get("Str.DeckEditor.ConfirmDeleteCharacter"), character.Name, deckNotice),
+            Loc.Get("Str.DeckEditor.DeleteCharacterTitle"),
             MessageBoxButton.YesNo,
             MessageBoxImage.Warning);
         if (result != MessageBoxResult.Yes)
@@ -2049,7 +2095,7 @@ public partial class DeckEditorWindow : Window
         RefreshGroupOptions();
         RefreshPresetList(_selectedPresetId);
         RefreshAllLists();
-        Controls.SetAlertBanner(EditorStatusBanner, EditorStatusText, $"'{character.Name}'을 목록과 덱에서 제거했습니다. 저장된 프리셋에서도 제거했습니다.", true);
+        Controls.SetAlertBanner(EditorStatusBanner, EditorStatusText, string.Format(Loc.Get("Str.DeckEditor.CharacterRemovedEverywhere"), character.Name), true);
     }
 
     private void LibraryDeckToggleButton_Click(object sender, RoutedEventArgs e)
@@ -2085,8 +2131,8 @@ public partial class DeckEditorWindow : Window
         _deckIds.RemoveAt(deckIndex);
         RefreshAllLists(characterId, Math.Min(deckIndex, _deckIds.Count - 1));
         Controls.SetAlertBanner(EditorStatusBanner, EditorStatusText, character is null
-            ? "선택한 캐릭터를 현재 덱에서 뺐습니다."
-            : $"'{character.Name}'을 현재 덱에서 뺐습니다. 캐릭터 목록에는 남아 있습니다.", false, Theme.Warn);
+            ? Loc.Get("Str.DeckEditor.RemovedFromDeck")
+            : string.Format(Loc.Get("Str.DeckEditor.RemovedFromDeckNamed"), character.Name), false, Theme.Warn);
     }
 
     private void AddSelectedToDeckButton_Click(object sender, RoutedEventArgs e)
@@ -2094,7 +2140,7 @@ public partial class DeckEditorWindow : Window
         string? characterId = GetSelectedLibraryCharacterId() ?? _editingCharacterId;
         if (string.IsNullOrWhiteSpace(characterId))
         {
-            SetError("덱에 추가할 캐릭터를 목록에서 먼저 선택하세요.");
+            SetError(Loc.Get("Str.DeckEditor.SelectCharacterToAddToDeck"));
             return;
         }
 
@@ -2106,31 +2152,31 @@ public partial class DeckEditorWindow : Window
         CharacterEntry? character = FindCharacter(characterId);
         if (character is null)
         {
-            SetError("덱에 추가할 캐릭터를 찾지 못했습니다.");
+            SetError(Loc.Get("Str.DeckEditor.CharacterToAddNotFound"));
             return;
         }
 
         if (_deckIds.Contains(character.Id, StringComparer.Ordinal))
         {
-            SetError($"'{character.Name}'은 이미 현재 덱에 있습니다.");
+            SetError(string.Format(Loc.Get("Str.DeckEditor.AlreadyInDeck"), character.Name));
             return;
         }
 
         if (HasRestrictionConflict(character.Id, character.DeckRestrictionGroupId, out CharacterEntry? conflict))
         {
-            SetError($"'{character.Name}'은 '{conflict!.Name}'과 같은 모드시프트 그룹이라 함께 넣을 수 없습니다.");
+            SetError(string.Format(Loc.Get("Str.DeckEditor.SameModeShiftGroupConflict"), character.Name, conflict!.Name));
             return;
         }
 
         if (_deckIds.Count >= MaximumDeckSize)
         {
-            SetError("현재 덱은 최대 12명입니다. 기존 캐릭터를 먼저 빼세요.");
+            SetError(Loc.Get("Str.DeckEditor.DeckFull"));
             return;
         }
 
         _deckIds.Add(character.Id);
         RefreshAllLists(character.Id, _deckIds.Count - 1);
-        Controls.SetAlertBanner(EditorStatusBanner, EditorStatusText, $"'{character.Name}'을 현재 덱 {_deckIds.Count}번에 추가했습니다.", false, Theme.Success);
+        Controls.SetAlertBanner(EditorStatusBanner, EditorStatusText, string.Format(Loc.Get("Str.DeckEditor.AddedToDeckAt"), character.Name, _deckIds.Count), false, Theme.Success);
     }
 
     private void RemoveFromDeckButton_Click(object sender, RoutedEventArgs e)
@@ -2140,7 +2186,7 @@ public partial class DeckEditorWindow : Window
     {
         if (DeckListBox.SelectedItem is not DeckDisplayItem item)
         {
-            SetError("덱에서 뺄 캐릭터를 먼저 선택하세요.");
+            SetError(Loc.Get("Str.DeckEditor.SelectCharacterToRemoveFromDeck"));
             return;
         }
 
@@ -2149,8 +2195,8 @@ public partial class DeckEditorWindow : Window
         _deckIds.RemoveAt(selectedIndex);
         RefreshAllLists(character?.Id ?? _editingCharacterId, Math.Min(selectedIndex, _deckIds.Count - 1));
         Controls.SetAlertBanner(EditorStatusBanner, EditorStatusText, character is null
-            ? "선택한 캐릭터를 현재 덱에서 뺐습니다."
-            : $"'{character.Name}'을 현재 덱에서 뺐습니다. 캐릭터 목록에는 남아 있습니다.", false, Theme.Warn);
+            ? Loc.Get("Str.DeckEditor.RemovedFromDeck")
+            : string.Format(Loc.Get("Str.DeckEditor.RemovedFromDeckNamed"), character.Name), false, Theme.Warn);
     }
 
     private void ImportDeckFromScreenshotButton_Click(object sender, RoutedEventArgs e)
@@ -2182,21 +2228,21 @@ public partial class DeckEditorWindow : Window
 
         int skippedCount = requestedIds.Length - normalizedIds.Count;
         Controls.SetAlertBanner(EditorStatusBanner, EditorStatusText, skippedCount > 0
-            ? $"덱 스크린샷에서 {_deckIds.Count}명을 적용했습니다 · 중복/모드시프트 제한 {skippedCount}명 제외 · 자동 저장되었습니다."
-            : $"덱 스크린샷에서 {_deckIds.Count}명을 적용했습니다 · 자동 저장되었습니다.", false, Theme.Success);
+            ? string.Format(Loc.Get("Str.DeckEditor.ScreenshotAppliedWithSkip"), _deckIds.Count, skippedCount)
+            : string.Format(Loc.Get("Str.DeckEditor.ScreenshotApplied"), _deckIds.Count), false, Theme.Success);
     }
 
     private void SetLeaderButton_Click(object sender, RoutedEventArgs e)
     {
         if (DeckListBox.SelectedItem is not DeckDisplayItem item)
         {
-            SetError("리더로 지정할 캐릭터를 현재 덱에서 먼저 선택하세요.");
+            SetError(Loc.Get("Str.DeckEditor.SelectCharacterForLeader"));
             return;
         }
 
         if (item.Index == 0)
         {
-            Controls.SetAlertBanner(EditorStatusBanner, EditorStatusText, $"'{item.Name}'은 이미 현재 덱의 리더입니다.", false, Theme.BlueText);
+            Controls.SetAlertBanner(EditorStatusBanner, EditorStatusText, string.Format(Loc.Get("Str.DeckEditor.AlreadyLeader"), item.Name), false, Theme.BlueText);
             return;
         }
 
@@ -2204,7 +2250,7 @@ public partial class DeckEditorWindow : Window
         _deckIds.RemoveAt(item.Index);
         _deckIds.Insert(0, characterId);
         RefreshAllLists(characterId, 0);
-        Controls.SetAlertBanner(EditorStatusBanner, EditorStatusText, $"'{item.Name}'을 덱 1번 리더로 지정했습니다.", false, Theme.Special);
+        Controls.SetAlertBanner(EditorStatusBanner, EditorStatusText, string.Format(Loc.Get("Str.DeckEditor.SetAsLeader"), item.Name), false, Theme.Special);
     }
 
     private void MoveDeckUpButton_Click(object sender, RoutedEventArgs e)
@@ -2241,8 +2287,8 @@ public partial class DeckEditorWindow : Window
         }
 
         MessageBoxResult result = MessageBox.Show(
-            "현재 덱의 12칸을 모두 비울까요?\n캐릭터 목록 자체는 삭제되지 않습니다.",
-            "덱 비우기",
+            Loc.Get("Str.DeckEditor.ConfirmClearDeck"),
+            Loc.Get("Str.DeckEditor.ClearDeckTitle"),
             MessageBoxButton.YesNo,
             MessageBoxImage.Question);
         if (result != MessageBoxResult.Yes)
@@ -2252,7 +2298,7 @@ public partial class DeckEditorWindow : Window
 
         _deckIds.Clear();
         RefreshAllLists(_editingCharacterId);
-        Controls.SetAlertBanner(EditorStatusBanner, EditorStatusText, "현재 덱을 비웠습니다. 캐릭터 목록은 그대로 유지됩니다.", false, Theme.Warn);
+        Controls.SetAlertBanner(EditorStatusBanner, EditorStatusText, Loc.Get("Str.DeckEditor.DeckCleared"), false, Theme.Warn);
     }
 
     private void SaveButton_Click(object sender, RoutedEventArgs e)
@@ -2270,13 +2316,13 @@ public partial class DeckEditorWindow : Window
 
         if (_library.Count == 0)
         {
-            SetError("캐릭터 목록에 최소 한 명은 등록해야 합니다.");
+            SetError(Loc.Get("Str.DeckEditor.MinOneCharacterRequired"));
             return false;
         }
 
         if (_deckIds.Count == 0)
         {
-            SetError("현재 덱에 최소 한 명은 추가해야 합니다.");
+            SetError(Loc.Get("Str.DeckEditor.MinOneDeckMemberRequired"));
             return false;
         }
 
@@ -2316,7 +2362,7 @@ public partial class DeckEditorWindow : Window
             return true;
         }
 
-        Controls.SetAlertBanner(EditorStatusBanner, EditorStatusText, "현재 캐릭터 상세 정보와 덱 상태를 저장했습니다.", false, Theme.Success);
+        Controls.SetAlertBanner(EditorStatusBanner, EditorStatusText, Loc.Get("Str.DeckEditor.SavedCurrentState"), false, Theme.Success);
         return true;
     }
 
@@ -2368,14 +2414,14 @@ public partial class DeckEditorWindow : Window
             if (showErrorDialog)
             {
                 MessageBox.Show(
-                    $"캐릭터 목록 또는 덱을 저장하지 못했습니다.\n\n{exception.Message}",
-                    "덱 저장 오류",
+                    string.Format(Loc.Get("Str.DeckEditor.SaveFailedBody"), exception.Message),
+                    Loc.Get("Str.DeckEditor.SaveErrorTitle"),
                     MessageBoxButton.OK,
                     MessageBoxImage.Error);
             }
             else
             {
-                Controls.SetAlertBanner(EditorStatusBanner, EditorStatusText, $"자동 저장 실패: {exception.Message}", true);
+                Controls.SetAlertBanner(EditorStatusBanner, EditorStatusText, string.Format(Loc.Get("Str.DeckEditor.AutoSaveFailed"), exception.Message), true);
             }
 
             return false;
@@ -2551,7 +2597,7 @@ public partial class DeckEditorWindow : Window
             character.Letters.SequenceEqual(letters, StringComparer.Ordinal));
         if (exactDuplicate)
         {
-            SetError("입력 중인 새 캐릭터가 기존 목록과 중복됩니다.");
+            SetError(Loc.Get("Str.DeckEditor.NewCharacterDuplicate"));
             return false;
         }
 
@@ -2619,21 +2665,21 @@ public partial class DeckEditorWindow : Window
 
         if (name.Length == 0)
         {
-            SetError("캐릭터 이름을 입력하세요.");
+            SetError(Loc.Get("Str.DeckEditor.EnterCharacterName"));
             CharacterNameTextBox.Focus();
             return false;
         }
 
         if (letters.Count == 0 && letterStates.Count == 0 && _editingForms.Count == 0)
         {
-            SetError("기본 문자, 동일명 형태 또는 문자 상태를 한 개 이상 등록하세요.");
+            SetError(Loc.Get("Str.DeckEditor.NeedAtLeastOneLetterSource"));
             CharacterLettersTextBox.Focus();
             return false;
         }
 
         if (includedGroups.Count > 0 && groupName.Length == 0)
         {
-            SetError("같이 취급되는 그룹을 사용하려면 먼저 기본 소속 그룹을 입력하세요.");
+            SetError(Loc.Get("Str.DeckEditor.NeedBaseGroupForIncluded"));
             CharacterGroupComboBox.Focus();
             return false;
         }
@@ -2643,7 +2689,7 @@ public partial class DeckEditorWindow : Window
         if (miracleLeaderEffect.GrantedLetters.Count > 0 &&
             miracleLeaderEffect.TargetGroups.Count == 0)
         {
-            SetError("미라클 리더 효과의 대상 그룹을 한 개 이상 입력하세요.");
+            SetError(Loc.Get("Str.DeckEditor.NeedMiracleTargetGroup"));
             MiracleTargetGroupsTextBox.Focus();
             return false;
         }
@@ -2661,21 +2707,21 @@ public partial class DeckEditorWindow : Window
         {
             if (deckGroupEffect.TargetGroups.Count == 0)
             {
-                SetError("덱 그룹 조건 문자의 조건 그룹을 한 개 이상 입력하세요.");
+                SetError(Loc.Get("Str.DeckEditor.NeedConditionGroup"));
                 DeckGroupConditionGroupsTextBox.Focus();
                 return false;
             }
 
             if (deckGroupEffect.GrantedLetters.Count == 0)
             {
-                SetError("덱 그룹 조건 달성 시 추가되는 문자를 입력하세요.");
+                SetError(Loc.Get("Str.DeckEditor.NeedConditionLetter"));
                 DeckGroupConditionGrantedLettersTextBox.Focus();
                 return false;
             }
 
             if (!int.TryParse(DeckGroupConditionMinimumCountTextBox.Text.Trim(), out int minimumCount) || minimumCount < 1 || minimumCount > MaximumDeckSize)
             {
-                SetError($"최소 인원은 1~{MaximumDeckSize} 사이의 숫자로 입력하세요.");
+                SetError(string.Format(Loc.Get("Str.DeckEditor.MinMembersRange"), MaximumDeckSize));
                 DeckGroupConditionMinimumCountTextBox.Focus();
                 return false;
             }
@@ -2688,7 +2734,7 @@ public partial class DeckEditorWindow : Window
     {
         var dialog = new OpenFileDialog
         {
-            Title = "캐릭터 이미지 선택",
+            Title = Loc.Get("Str.DeckEditor.ImageDialogTitle"),
             Filter = CharacterImageService.GetDialogFilter(),
             CheckFileExists = true,
             Multiselect = false
@@ -2701,20 +2747,20 @@ public partial class DeckEditorWindow : Window
 
         if (!CharacterImageService.IsSupportedImageFile(dialog.FileName))
         {
-            SetError($"지원하지 않는 이미지 형식입니다. {CharacterImageService.GetSupportedFormatText()} 파일을 선택하세요.");
+            SetError(string.Format(Loc.Get("Str.DeckEditor.UnsupportedImageFormat"), CharacterImageService.GetSupportedFormatText()));
             return;
         }
 
         if (CharacterImageService.LoadBitmapFromPath(dialog.FileName, 160) is null)
         {
-            SetError("선택한 이미지를 읽을 수 없습니다. 파일이 손상되었거나 지원하지 않는 이미지 형식인지 확인해 주세요.");
+            SetError(Loc.Get("Str.DeckEditor.ImageUnreadable"));
             return;
         }
 
         _pendingImageSourcePath = dialog.FileName;
         _removeImageRequested = false;
         UpdateCharacterImagePreview();
-        Controls.SetAlertBanner(EditorStatusBanner, EditorStatusText, "이미지를 선택했습니다. 저장할 때 표준 PNG로 변환해 Data/CharacterImages 폴더에 저장합니다.", false, Theme.BlueText);
+        Controls.SetAlertBanner(EditorStatusBanner, EditorStatusText, Loc.Get("Str.DeckEditor.ImageSelectedNote"), false, Theme.BlueText);
     }
 
     private void RemoveCharacterImageButton_Click(object sender, RoutedEventArgs e)
@@ -2723,7 +2769,7 @@ public partial class DeckEditorWindow : Window
         _removeImageRequested = true;
         _editingImageFileName = string.Empty;
         UpdateCharacterImagePreview();
-        Controls.SetAlertBanner(EditorStatusBanner, EditorStatusText, "캐릭터 이미지를 제거하도록 표시했습니다. 수정 버튼 또는 창 닫기 시 자동 반영됩니다.", false, Theme.Warn);
+        Controls.SetAlertBanner(EditorStatusBanner, EditorStatusText, Loc.Get("Str.DeckEditor.ImageMarkedForRemoval"), false, Theme.Warn);
     }
 
     private void UpdateCharacterImagePreview()
@@ -2742,7 +2788,7 @@ public partial class DeckEditorWindow : Window
 
         if (!string.IsNullOrWhiteSpace(_pendingImageSourcePath))
         {
-            CharacterImageFileText.Text = $"선택됨: {Path.GetFileName(_pendingImageSourcePath)}";
+            CharacterImageFileText.Text = string.Format(Loc.Get("Str.DeckEditor.ImageSelectedFilename"), Path.GetFileName(_pendingImageSourcePath));
             CharacterImageFileText.Foreground = Theme.BlueText;
         }
         else if (!string.IsNullOrWhiteSpace(_editingImageFileName) && bitmap is not null)
@@ -2752,7 +2798,7 @@ public partial class DeckEditorWindow : Window
         }
         else
         {
-            CharacterImageFileText.Text = "등록된 이미지 없음";
+            CharacterImageFileText.Text = Loc.Get("Str.DeckEditor.NoRegisteredImage");
             CharacterImageFileText.Foreground = Theme.TextSecondary;
         }
     }
@@ -2784,7 +2830,7 @@ public partial class DeckEditorWindow : Window
         }
         catch (Exception exception)
         {
-            SetError($"캐릭터 이미지를 저장하지 못했습니다: {exception.Message}");
+            SetError(string.Format(Loc.Get("Str.DeckEditor.ImageSaveFailed"), exception.Message));
             return false;
         }
     }
@@ -2807,14 +2853,14 @@ public partial class DeckEditorWindow : Window
             .Select(CharacterLibraryService.CloneState)
             .ToList();
         UpdateCharacterStateSummary();
-        Controls.SetAlertBanner(EditorStatusBanner, EditorStatusText, $"문자 상태 {_editingLetterStates.Count}개를 편집했습니다. 캐릭터 수정 버튼을 누르거나 창을 닫으면 자동 반영됩니다.", false, Theme.Success);
+        Controls.SetAlertBanner(EditorStatusBanner, EditorStatusText, string.Format(Loc.Get("Str.DeckEditor.LetterStatesEdited"), _editingLetterStates.Count), false, Theme.Success);
     }
 
     private void UpdateCharacterStateSummary()
     {
         if (_editingLetterStates.Count == 0)
         {
-            CharacterStateSummaryText.Text = "추가 문자 상태 없음 · 기본 문자만 사용";
+            CharacterStateSummaryText.Text = Loc.Get("Str.DeckEditor.NoLetterStatesUseBase");
             CharacterStateSummaryText.Foreground = Theme.TextSecondary;
             return;
         }
@@ -2831,7 +2877,7 @@ public partial class DeckEditorWindow : Window
         string characterName = CharacterNameTextBox.Text.Trim();
         if (characterName.Length == 0)
         {
-            SetError("동일명 형태를 편집할 캐릭터 이름을 먼저 입력하세요.");
+            SetError(Loc.Get("Str.DeckEditor.EnterNameBeforeEditingForms"));
             return;
         }
 
@@ -2857,19 +2903,19 @@ public partial class DeckEditorWindow : Window
             .ToList();
         UpdateCharacterFormSummary();
         InvalidateCharacterThumbnail(characterId);
-        Controls.SetAlertBanner(EditorStatusBanner, EditorStatusText, $"동일 이름 모드시프트 형태 {_editingForms.Count}개를 편집했습니다. 캐릭터 수정 버튼을 누르거나 창을 닫으면 자동 반영됩니다.", false, Theme.Success);
+        Controls.SetAlertBanner(EditorStatusBanner, EditorStatusText, string.Format(Loc.Get("Str.DeckEditor.FormsEdited"), _editingForms.Count), false, Theme.Success);
     }
 
     private void UpdateCharacterFormSummary()
     {
         if (_editingForms.Count == 0)
         {
-            CharacterFormSummaryText.Text = "추가 형태 없음 · 기본 형태는 위의 문자와 이미지를 사용";
+            CharacterFormSummaryText.Text = Loc.Get("Str.DeckEditor.NoExtraForms");
             CharacterFormSummaryText.Foreground = Theme.TextSecondary;
             return;
         }
 
-        CharacterFormSummaryText.Text = $"기본 형태 + {_editingForms.Count}개 · " + string.Join(
+        CharacterFormSummaryText.Text = string.Format(Loc.Get("Str.DeckEditor.FormsSummaryPrefix"), _editingForms.Count) + string.Join(
             "  /  ",
             _editingForms.Select(form =>
             {
@@ -3118,29 +3164,29 @@ public partial class DeckEditorWindow : Window
         }
 
         string stateText = character.LetterStates.Count > 0
-            ? $" · 상태 {character.LetterStates.Count}개"
+            ? string.Format(Loc.Get("Str.DeckEditor.LetterStateCountSuffix"), character.LetterStates.Count)
             : string.Empty;
         string sameNameFormText = character.HasAlternateForms
-            ? $" · 동일명 MS {character.AlternateForms.Count + 1}형태"
+            ? string.Format(Loc.Get("Str.DeckEditor.SameNameMsCountSuffix"), character.AlternateForms.Count + 1)
             : string.Empty;
         string restrictionText = string.IsNullOrWhiteSpace(character.DeckRestrictionGroupId)
             ? string.Empty
-            : " · 이름 다른 MS";
+            : Loc.Get("Str.DeckEditor.DifferentNameMsSuffix");
         string groupText = string.IsNullOrWhiteSpace(character.GroupName)
             ? string.Empty
-            : $" · 그룹 {character.GroupName}" +
-              (GetEffectiveGroupNamesCached(character).Length > 1 ? "(포괄)" : string.Empty);
+            : string.Format(Loc.Get("Str.DeckEditor.GroupSuffix"), character.GroupName) +
+              (GetEffectiveGroupNamesCached(character).Length > 1 ? Loc.Get("Str.DeckEditor.InclusiveMark") : string.Empty);
         string miracleText = DeckDataService.NormalizeMiracleLeaderEffect(
                 character.MiracleLeaderEffect).IsConfigured
-            ? " · 미라클 리더 효과"
+            ? Loc.Get("Str.DeckEditor.MiracleLeaderEffectSuffix")
             : string.Empty;
         string deckGroupText = DeckDataService.NormalizeDeckGroupLetterEffect(
                 character.DeckGroupLetterEffect).IsConfigured
-            ? " · 덱 인원 조건 문자"
+            ? Loc.Get("Str.DeckEditor.DeckMemberConditionSuffix")
             : string.Empty;
 
         string activeFormText = character.HasAlternateForms
-            ? $" · 현재 MS {character.GetActiveFormName()}"
+            ? string.Format(Loc.Get("Str.DeckEditor.CurrentMsSuffix"), character.GetActiveFormName())
             : string.Empty;
         string summary = string.Join(" · ", character.GetAvailableLetters()) +
                          activeFormText + stateText + sameNameFormText + groupText + restrictionText + miracleText + deckGroupText;
@@ -3266,12 +3312,12 @@ public partial class DeckEditorWindow : Window
     }
 
     private static string MetadataComboValue(string normalized)
-        => string.IsNullOrWhiteSpace(normalized) ? "미입력" : normalized;
+        => string.IsNullOrWhiteSpace(normalized) ? UnsetText : normalized;
 
     private static string ReadMetadataCombo(ComboBox comboBox, bool isAttribute)
     {
         string raw = comboBox.SelectedItem as string ?? comboBox.Text ?? string.Empty;
-        if (string.Equals(raw, "미입력", StringComparison.Ordinal))
+        if (string.Equals(raw, UnsetText, StringComparison.Ordinal))
         {
             return string.Empty;
         }
@@ -3286,12 +3332,14 @@ public partial class DeckEditorWindow : Window
                 ?? _lastSelectedCharacterId
                 ?? string.Empty;
             string searchText = LibrarySearchTextBox.Text ?? string.Empty;
-            string groupFilter = GroupFilterComboBox.SelectedItem as string ?? "전체 그룹";
-            string categoryFilter = CategoryFilterComboBox.SelectedItem as string ?? "전체 등급";
-            string attributeFilter = AttributeFilterComboBox.SelectedItem as string ?? "전체 속성";
-            string speciesFilter = SpeciesFilterComboBox.SelectedItem as string ?? "전체 종족";
-            string statusFilter = StatusFilterComboBox.SelectedItem as string ?? "전체 상태";
-            string sortMode = SortComboBox.SelectedItem as string ?? "기본 정렬";
+            string groupFilter = GroupFilterComboBox.SelectedItem as string ?? AllGroupText;
+            string categoryFilter = CategoryFilterComboBox.SelectedItem as string ?? AllCategoryText;
+            string attributeFilter = EncodeAttributeSpeciesFilter(
+                AttributeFilterComboBox.SelectedItem as string ?? AllAttributeText, AllAttributeText, UnsetText);
+            string speciesFilter = EncodeAttributeSpeciesFilter(
+                SpeciesFilterComboBox.SelectedItem as string ?? AllSpeciesText, AllSpeciesText, UnsetText);
+            int statusFilterIndex = StatusFilterComboBox.SelectedIndex;
+            int sortModeIndex = SortComboBox.SelectedIndex;
             bool favoritesOnly = FavoriteOnlyCheckBox.IsChecked == true;
             bool belovedOnly = BelovedOnlyCheckBox.IsChecked == true;
 
@@ -3303,8 +3351,8 @@ public partial class DeckEditorWindow : Window
                 settings.LastDeckEditorCategoryFilter = categoryFilter;
                 settings.LastDeckEditorAttributeFilter = attributeFilter;
                 settings.LastDeckEditorSpeciesFilter = speciesFilter;
-                settings.LastDeckEditorStatusFilter = statusFilter;
-                settings.LastDeckEditorSortMode = sortMode;
+                settings.LastDeckEditorStatusFilterIndex = statusFilterIndex;
+                settings.LastDeckEditorSortModeIndex = sortModeIndex;
                 settings.LastDeckEditorFavoritesOnly = favoritesOnly;
                 settings.LastDeckEditorBelovedOnly = belovedOnly;
             });
@@ -3521,7 +3569,9 @@ public partial class DeckEditorWindow : Window
 
             if (groups.TryGetValue(group, out CharacterEntry? existing))
             {
-                error = $"'{existing.Name}'과 '{character.Name}'은 같은 모드시프트 그룹이라 함께 저장할 수 없습니다.";
+                // ponytail: "저장할 수 없습니다" 전용 키가 코디네이터 번역에 없어 뜻이 같은
+                // SameModeShiftGroupConflict("...함께 넣을 수 없습니다")를 재사용합니다.
+                error = string.Format(Loc.Get("Str.DeckEditor.SameModeShiftGroupConflict"), existing.Name, character.Name);
                 return false;
             }
 
@@ -3647,7 +3697,7 @@ public partial class DeckEditorWindow : Window
         {
             Id = preset.Id;
             Name = preset.Name;
-            DisplayText = $"{preset.Name}  ({preset.CharacterIds.Count}명)";
+            DisplayText = string.Format(Loc.Get("Str.DeckEditor.PresetDisplayFormat"), preset.Name, preset.CharacterIds.Count);
         }
 
         public string Id { get; }
@@ -3717,14 +3767,14 @@ public partial class DeckEditorWindow : Window
             IsInDeck = deckIndex >= 0;
             DeckPositionText = deckIndex switch
             {
-                0 => "★ 리더",
-                >= 1 => $"덱 {deckIndex + 1}",
+                0 => Loc.Get("Str.DeckEditor.LeaderBadge"),
+                >= 1 => string.Format(Loc.Get("Str.DeckEditor.DeckSlotLabel"), deckIndex + 1),
                 _ => string.Empty
             };
             DeckBadgeVisibility = IsInDeck
                 ? Visibility.Visible
                 : Visibility.Collapsed;
-            DeckActionText = IsInDeck ? "제거" : "추가";
+            DeckActionText = IsInDeck ? Loc.Get("Str.DeckEditor.Remove") : Loc.Get("Str.DeckEditor.Add");
             ModeShiftBadgeVisibility = character.HasAlternateForms
                 ? Visibility.Visible
                 : Visibility.Collapsed;
@@ -3768,7 +3818,7 @@ public partial class DeckEditorWindow : Window
             get
             {
                 EnsureThumbnailLoading();
-                return _thumbnailLoadCompleted ? "이미지\n없음" : "…";
+                return _thumbnailLoadCompleted ? Loc.Get("Str.DeckEditor.NoImageMultiline") : "…";
             }
         }
         public bool IsInDeck { get; }
@@ -3842,7 +3892,7 @@ public partial class DeckEditorWindow : Window
         {
             Index = index;
             Id = character.Id;
-            SlotText = index == 0 ? "★ 리더" : $"{index + 1}";
+            SlotText = index == 0 ? Loc.Get("Str.DeckEditor.LeaderBadge") : $"{index + 1}";
             Name = character.Name;
             Thumbnail = thumbnail;
             ThumbnailVisibility = thumbnail is null
@@ -3861,11 +3911,11 @@ public partial class DeckEditorWindow : Window
                 ? Visibility.Visible
                 : Visibility.Collapsed;
             ModeShiftHintText = hasConnectedModeShift
-                ? "2초 길게 눌러 연결형 모드시프트 전환"
+                ? Loc.Get("Str.DeckEditor.HoldToggleLinkedTooltip")
                 : hasSameNameModeShift
-                    ? "2초 길게 눌러 동일명 모드시프트 전환"
+                    ? Loc.Get("Str.DeckEditor.HoldToggleSameNameTooltip")
                     : string.Empty;
-            string formText = hasSameNameModeShift ? $"\n현재 형태: {character.GetActiveFormName()}" : string.Empty;
+            string formText = hasSameNameModeShift ? string.Format(Loc.Get("Str.DeckEditor.CurrentFormSuffix"), character.GetActiveFormName()) : string.Empty;
             ToolTipText = $"{character.Name}\n{lettersText}" +
                           (MetaBadgeText.Length > 0 ? $"\n{MetaBadgeText}" : string.Empty) +
                           formText +
@@ -3887,7 +3937,7 @@ public partial class DeckEditorWindow : Window
         public Visibility PlaceholderVisibility { get; }
         public Visibility ModeShiftBadgeVisibility { get; }
         public string ModeShiftHintText { get; }
-        public string PlaceholderText => "이미지\n없음";
+        public string PlaceholderText => Loc.Get("Str.DeckEditor.NoImageMultiline");
 
     }
 }

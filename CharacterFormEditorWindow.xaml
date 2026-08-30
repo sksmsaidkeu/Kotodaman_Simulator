@@ -1,7 +1,6 @@
 <Window x:Class="KotodamanWordFinder.CharacterFormEditorWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="동일 이름 모드시프트 형태 편집"
         Width="920"
         Height="620"
         MinWidth="800"
@@ -94,7 +93,7 @@
         <StackPanel Grid.Row="0" Margin="0,0,0,12">
             <TextBlock Foreground="{StaticResource Text.Secondary}"
                        TextWrapping="Wrap"
-                       Text="기본 형태는 캐릭터 상세 편집의 기존 이름·문자·이미지를 사용합니다. 여기에는 이름이 같은 모드시프트 형태만 추가하세요."/>
+                       Text="{DynamicResource Str.CharForm.Description}"/>
         </StackPanel>
 
         <Grid Grid.Row="1">
@@ -111,7 +110,7 @@
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
-                    <TextBlock Text="추가 형태" FontSize="16" FontWeight="Bold" Margin="0,0,0,10"/>
+                    <TextBlock Text="{DynamicResource Str.CharForm.AddedFormsLabel}" FontSize="16" FontWeight="Bold" Margin="0,0,0,10"/>
                     <ListBox x:Name="FormListBox" Grid.Row="1" SelectionChanged="FormListBox_SelectionChanged">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
@@ -136,7 +135,7 @@
                                                    Stretch="Uniform"
                                                    HorizontalAlignment="Center"
                                                    VerticalAlignment="Center"/>
-                                            <TextBlock Text="이미지&#x0a;없음"
+                                            <TextBlock Text="{DynamicResource Str.CharForm.NoImage}"
                                                        Visibility="{Binding PlaceholderVisibility}"
                                                        Foreground="{StaticResource Text.Tertiary}"
                                                        FontSize="8"
@@ -154,8 +153,8 @@
                         </ListBox.ItemTemplate>
                     </ListBox>
                     <WrapPanel Grid.Row="2" Margin="0,10,0,0">
-                        <Button Content="새 형태" Margin="0,0,8,0" Click="NewFormButton_Click"/>
-                        <Button Content="선택 삭제" Background="{StaticResource Rose.Face}" BorderBrush="{StaticResource Rose.Line}" Foreground="{StaticResource Rose.Text}" Click="DeleteFormButton_Click"/>
+                        <Button Content="{DynamicResource Str.CharForm.NewForm}" Margin="0,0,8,0" Click="NewFormButton_Click"/>
+                        <Button Content="{DynamicResource Str.CharForm.DeleteSelected}" Background="{StaticResource Rose.Face}" BorderBrush="{StaticResource Rose.Line}" Foreground="{StaticResource Rose.Text}" Click="DeleteFormButton_Click"/>
                     </WrapPanel>
                 </Grid>
             </Border>
@@ -163,11 +162,11 @@
             <Border Grid.Column="2" Background="{StaticResource Bg.Panel}" BorderBrush="{StaticResource Line.Tan}" BorderThickness="1" CornerRadius="10" Padding="16">
                 <ScrollViewer VerticalScrollBarVisibility="Auto">
                     <StackPanel>
-                        <TextBlock Text="형태 이름" Foreground="{StaticResource Text.Secondary}" Margin="0,0,0,5"/>
-                        <TextBox x:Name="FormNameTextBox" ToolTip="예: 모드시프트, 통상/변환 후를 구분할 짧은 이름"/>
+                        <TextBlock Text="{DynamicResource Str.CharForm.NameLabel}" Foreground="{StaticResource Text.Secondary}" Margin="0,0,0,5"/>
+                        <TextBox x:Name="FormNameTextBox" ToolTip="{DynamicResource Str.CharForm.NameTooltip}"/>
 
-                        <TextBlock Text="사용 가능 문자" Foreground="{StaticResource Text.Secondary}" Margin="0,14,0,5"/>
-                        <TextBox x:Name="FormLettersTextBox" ToolTip="이 형태에서 사용할 수 있는 문자"/>
+                        <TextBlock Text="{DynamicResource Str.CharForm.LettersLabel}" Foreground="{StaticResource Text.Secondary}" Margin="0,14,0,5"/>
+                        <TextBox x:Name="FormLettersTextBox" ToolTip="{DynamicResource Str.CharForm.LettersTooltip}"/>
 
                         <Grid Margin="0,14,0,0">
                             <Grid.ColumnDefinitions>
@@ -176,18 +175,18 @@
                                 <ColumnDefinition Width="1*"/>
                             </Grid.ColumnDefinitions>
                             <StackPanel>
-                                <TextBlock Text="형태 속성 (선택)" Foreground="{StaticResource Text.Secondary}" Margin="0,0,0,5"/>
-                                <TextBox x:Name="FormAttributeTextBox" ToolTip="火/水/木/光/闇/天/冥/虹. 빈칸이면 기본 형태 속성을 사용합니다."/>
+                                <TextBlock Text="{DynamicResource Str.CharForm.AttributeLabel}" Foreground="{StaticResource Text.Secondary}" Margin="0,0,0,5"/>
+                                <TextBox x:Name="FormAttributeTextBox" ToolTip="{DynamicResource Str.CharForm.AttributeTooltip}"/>
                             </StackPanel>
                             <StackPanel Grid.Column="2">
-                                <TextBlock Text="형태 종족 (선택)" Foreground="{StaticResource Text.Secondary}" Margin="0,0,0,5"/>
-                                <TextBox x:Name="FormSpeciesTextBox" ToolTip="神/魔/英/龍/獣/霊/物/妖. 빈칸이면 기본 형태 종족을 사용합니다."/>
+                                <TextBlock Text="{DynamicResource Str.CharForm.SpeciesLabel}" Foreground="{StaticResource Text.Secondary}" Margin="0,0,0,5"/>
+                                <TextBox x:Name="FormSpeciesTextBox" ToolTip="{DynamicResource Str.CharForm.SpeciesTooltip}"/>
                             </StackPanel>
                         </Grid>
-                        <TextBlock Text="서브 / 변환 속성 (선택)" Foreground="{StaticResource Text.Secondary}" Margin="0,10,0,5"/>
-                        <TextBox x:Name="FormSubAttributesTextBox" ToolTip="여러 속성은 공백, /, 쉼표로 구분합니다. 빈칸이면 별도 서브 속성 없음."/>
+                        <TextBlock Text="{DynamicResource Str.CharForm.SubAttributeLabel}" Foreground="{StaticResource Text.Secondary}" Margin="0,10,0,5"/>
+                        <TextBox x:Name="FormSubAttributesTextBox" ToolTip="{DynamicResource Str.CharForm.SubAttributeTooltip}"/>
 
-                        <TextBlock Text="메모" Foreground="{StaticResource Text.Secondary}" Margin="0,14,0,5"/>
+                        <TextBlock Text="{DynamicResource Str.CharForm.NoteLabel}" Foreground="{StaticResource Text.Secondary}" Margin="0,14,0,5"/>
                         <TextBox x:Name="FormNoteTextBox" AcceptsReturn="True" Height="66" TextWrapping="Wrap" VerticalContentAlignment="Top"/>
 
                         <Grid Margin="0,14,0,0">
@@ -199,20 +198,20 @@
                             <Border Width="100" Height="100" Background="{StaticResource Bg.Panel}" BorderBrush="{StaticResource Accent.PinkSoft}" BorderThickness="1" CornerRadius="8" ClipToBounds="True">
                                 <Grid>
                                     <Image x:Name="FormImagePreview" Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Collapsed"/>
-                                    <TextBlock x:Name="FormImagePlaceholder" Text="이미지 없음" Foreground="{StaticResource Text.Tertiary}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    <TextBlock x:Name="FormImagePlaceholder" Text="{DynamicResource Str.CharForm.ImageNone}" Foreground="{StaticResource Text.Tertiary}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                 </Grid>
                             </Border>
                             <StackPanel Grid.Column="2" VerticalAlignment="Center">
-                                <TextBlock Text="형태 이미지" FontWeight="SemiBold"/>
-                                <TextBlock x:Name="FormImageFileText" Foreground="{StaticResource Text.Secondary}" FontSize="11" Margin="0,4,0,8" Text="등록된 이미지 없음" TextTrimming="CharacterEllipsis"/>
+                                <TextBlock Text="{DynamicResource Str.CharForm.ImageHeader}" FontWeight="SemiBold"/>
+                                <TextBlock x:Name="FormImageFileText" Foreground="{StaticResource Text.Secondary}" FontSize="11" Margin="0,4,0,8" Text="{DynamicResource Str.CharForm.NoRegisteredImage}" TextTrimming="CharacterEllipsis"/>
                                 <WrapPanel>
-                                    <Button Content="이미지 선택" Margin="0,0,8,0" Click="ChooseImageButton_Click"/>
-                                    <Button Content="이미지 제거" Background="{StaticResource Rose.Face}" BorderBrush="{StaticResource Rose.Line}" Foreground="{StaticResource Rose.Text}" Click="RemoveImageButton_Click"/>
+                                    <Button Content="{DynamicResource Str.CharForm.SelectImage}" Margin="0,0,8,0" Click="ChooseImageButton_Click"/>
+                                    <Button Content="{DynamicResource Str.CharForm.RemoveImage}" Background="{StaticResource Rose.Face}" BorderBrush="{StaticResource Rose.Line}" Foreground="{StaticResource Rose.Text}" Click="RemoveImageButton_Click"/>
                                 </WrapPanel>
                             </StackPanel>
                         </Grid>
 
-                        <Button x:Name="ApplyFormButton" Content="현재 형태 반영" Margin="0,18,0,0" HorizontalAlignment="Left" Background="{StaticResource Accent.Pink}" BorderBrush="{StaticResource Accent.Pink}" Foreground="{StaticResource Text.OnAccent}" Click="ApplyFormButton_Click"/>
+                        <Button x:Name="ApplyFormButton" Content="{DynamicResource Str.CharForm.ApplyCurrentForm}" Margin="0,18,0,0" HorizontalAlignment="Left" Background="{StaticResource Accent.Pink}" BorderBrush="{StaticResource Accent.Pink}" Foreground="{StaticResource Text.OnAccent}" Click="ApplyFormButton_Click"/>
                         <Border x:Name="EditorStatusBanner" Style="{StaticResource AlertBannerStyle}" Margin="0,10,0,0">
                             <TextBlock x:Name="EditorStatusText" Foreground="{StaticResource Text.Secondary}" TextWrapping="Wrap"/>
                         </Border>
@@ -226,10 +225,10 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-            <TextBlock Foreground="{StaticResource Text.Secondary}" VerticalAlignment="Center" Text="저장하면 손패에서 형태별 이미지와 문자를 선택할 수 있습니다."/>
+            <TextBlock Foreground="{StaticResource Text.Secondary}" VerticalAlignment="Center" Text="{DynamicResource Str.CharForm.SaveHint}"/>
             <WrapPanel Grid.Column="1">
-                <Button Content="취소" Margin="0,0,10,0" Style="{StaticResource GhostButtonStyle}" Click="CancelButton_Click"/>
-                <Button Content="저장하고 닫기" Style="{StaticResource ActionButtonStyle}" Click="SaveButton_Click"/>
+                <Button Content="{DynamicResource Str.CharForm.Cancel}" Margin="0,0,10,0" Style="{StaticResource GhostButtonStyle}" Click="CancelButton_Click"/>
+                <Button Content="{DynamicResource Str.CharForm.SaveAndClose}" Style="{StaticResource ActionButtonStyle}" Click="SaveButton_Click"/>
             </WrapPanel>
         </Grid>
     </Grid>

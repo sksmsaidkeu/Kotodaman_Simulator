@@ -40,7 +40,7 @@ public partial class CharacterFormEditorWindow : Window
             .Select(form => new FormEditItem(CharacterLibraryService.CloneForm(form)))
             .ToList();
 
-        Title = $"{characterName} · 동일 이름 모드시프트";
+        Title = string.Format(Loc.Get("Str.CharForm.TitleForCharacter"), characterName);
         RefreshList(_items.FirstOrDefault()?.Form.Id);
         if (_items.Count == 0)
         {
@@ -110,8 +110,8 @@ public partial class CharacterFormEditorWindow : Window
         _pendingImageSourcePath = item.PendingImageSourcePath;
         _removeImageRequested = item.RemoveImageRequested;
         UpdateImagePreview(item);
-        ApplyFormButton.Content = "현재 형태 수정";
-        Controls.SetAlertBanner(EditorStatusBanner, EditorStatusText, $"'{item.Form.Name}' 편집 중", false, Theme.BlueText);
+        ApplyFormButton.Content = Loc.Get("Str.CharForm.ApplyButtonUpdate");
+        Controls.SetAlertBanner(EditorStatusBanner, EditorStatusText, string.Format(Loc.Get("Str.CharForm.EditingStatus"), item.Form.Name), false, Theme.BlueText);
     }
 
     private void ClearEditorForNew()
@@ -128,9 +128,9 @@ public partial class CharacterFormEditorWindow : Window
         FormImagePreview.Source = null;
         FormImagePreview.Visibility = Visibility.Collapsed;
         FormImagePlaceholder.Visibility = Visibility.Visible;
-        FormImageFileText.Text = "등록된 이미지 없음";
-        ApplyFormButton.Content = "새 형태 추가";
-        Controls.SetAlertBanner(EditorStatusBanner, EditorStatusText, "형태 이름과 문자를 입력하세요.", false, Theme.TextSecondary);
+        FormImageFileText.Text = Loc.Get("Str.CharForm.NoRegisteredImage");
+        ApplyFormButton.Content = Loc.Get("Str.CharForm.ApplyButtonAdd");
+        Controls.SetAlertBanner(EditorStatusBanner, EditorStatusText, Loc.Get("Str.CharForm.EnterNameAndLetters"), false, Theme.TextSecondary);
         FormNameTextBox.Focus();
     }
 
@@ -146,12 +146,12 @@ public partial class CharacterFormEditorWindow : Window
         List<string> letters = ParseLetters(FormLettersTextBox.Text);
         if (name.Length == 0)
         {
-            SetError("형태 이름을 입력하세요.");
+            SetError(Loc.Get("Str.CharForm.EnterName"));
             return false;
         }
         if (letters.Count == 0)
         {
-            SetError("형태에서 사용할 문자를 하나 이상 입력하세요.");
+            SetError(Loc.Get("Str.CharForm.EnterLetters"));
             return false;
         }
 
@@ -160,7 +160,7 @@ public partial class CharacterFormEditorWindow : Window
             string.Equals(item.Form.Name, name, StringComparison.OrdinalIgnoreCase));
         if (duplicateName)
         {
-            SetError("같은 이름의 형태가 이미 있습니다.");
+            SetError(Loc.Get("Str.CharForm.DuplicateName"));
             return false;
         }
 
@@ -174,7 +174,7 @@ public partial class CharacterFormEditorWindow : Window
 
         if (target is null)
         {
-            SetError("편집 중인 형태를 찾지 못했습니다. 목록에서 다시 선택하세요.");
+            SetError(Loc.Get("Str.CharForm.EditingNotFound"));
             return false;
         }
 
@@ -196,9 +196,8 @@ public partial class CharacterFormEditorWindow : Window
         RefreshList(target.Form.Id);
         if (showSuccessMessage)
         {
-            Controls.SetAlertBanner(EditorStatusBanner, EditorStatusText, isNew
-                ? $"'{name}' 형태를 추가했습니다. 아래 저장하고 닫기를 눌러 확정하세요."
-                : $"'{name}' 형태를 수정했습니다. 아래 저장하고 닫기를 눌러 확정하세요.", false, Theme.Success);
+            Controls.SetAlertBanner(EditorStatusBanner, EditorStatusText, string.Format(
+                Loc.Get(isNew ? "Str.CharForm.AddedStatus" : "Str.CharForm.UpdatedStatus"), name), false, Theme.Success);
         }
 
         return true;
@@ -208,7 +207,7 @@ public partial class CharacterFormEditorWindow : Window
     {
         if (FormListBox.SelectedItem is not FormDisplayItem selected)
         {
-            SetError("삭제할 형태를 선택하세요.");
+            SetError(Loc.Get("Str.CharForm.SelectToDelete"));
             return;
         }
 
@@ -219,8 +218,8 @@ public partial class CharacterFormEditorWindow : Window
         }
 
         MessageBoxResult result = MessageBox.Show(
-            $"'{item.Form.Name}' 형태를 삭제할까요?",
-            "동일 이름 형태 삭제",
+            string.Format(Loc.Get("Str.CharForm.ConfirmDelete"), item.Form.Name),
+            Loc.Get("Str.CharForm.ConfirmDeleteTitle"),
             MessageBoxButton.YesNo,
             MessageBoxImage.Warning);
         if (result != MessageBoxResult.Yes)
@@ -240,7 +239,7 @@ public partial class CharacterFormEditorWindow : Window
     {
         var dialog = new OpenFileDialog
         {
-            Title = "형태 이미지 선택",
+            Title = Loc.Get("Str.CharForm.ImageDialogTitle"),
             Filter = CharacterImageService.GetDialogFilter(),
             CheckFileExists = true,
             Multiselect = false
@@ -253,7 +252,7 @@ public partial class CharacterFormEditorWindow : Window
 
         if (CharacterImageService.LoadBitmapFromPath(dialog.FileName, 240) is null)
         {
-            SetError("선택한 이미지를 읽을 수 없습니다.");
+            SetError(Loc.Get("Str.CharForm.ImageReadFailed"));
             return;
         }
 
@@ -262,7 +261,7 @@ public partial class CharacterFormEditorWindow : Window
         FormImagePreview.Source = CharacterImageService.LoadBitmapFromPath(dialog.FileName, 240);
         FormImagePreview.Visibility = Visibility.Visible;
         FormImagePlaceholder.Visibility = Visibility.Collapsed;
-        FormImageFileText.Text = Path.GetFileName(dialog.FileName) + " · 저장 시 PNG 변환";
+        FormImageFileText.Text = string.Format(Loc.Get("Str.CharForm.ImageSelectedFormat"), Path.GetFileName(dialog.FileName));
     }
 
     private void RemoveImageButton_Click(object sender, RoutedEventArgs e)
@@ -272,7 +271,7 @@ public partial class CharacterFormEditorWindow : Window
         FormImagePreview.Source = null;
         FormImagePreview.Visibility = Visibility.Collapsed;
         FormImagePlaceholder.Visibility = Visibility.Visible;
-        FormImageFileText.Text = "이미지 제거 예정";
+        FormImageFileText.Text = Loc.Get("Str.CharForm.ImageRemovePending");
     }
 
     private void UpdateImagePreview(FormEditItem item)
@@ -289,11 +288,11 @@ public partial class CharacterFormEditorWindow : Window
         FormImagePreview.Visibility = source is null ? Visibility.Collapsed : Visibility.Visible;
         FormImagePlaceholder.Visibility = source is null ? Visibility.Visible : Visibility.Collapsed;
         FormImageFileText.Text = item.RemoveImageRequested
-            ? "이미지 제거 예정"
+            ? Loc.Get("Str.CharForm.ImageRemovePending")
             : !string.IsNullOrWhiteSpace(item.PendingImageSourcePath)
-                ? Path.GetFileName(item.PendingImageSourcePath) + " · 저장 시 PNG 변환"
+                ? string.Format(Loc.Get("Str.CharForm.ImageSelectedFormat"), Path.GetFileName(item.PendingImageSourcePath))
                 : string.IsNullOrWhiteSpace(item.Form.ImageFileName)
-                    ? "등록된 이미지 없음"
+                    ? Loc.Get("Str.CharForm.NoRegisteredImage")
                     : item.Form.ImageFileName;
     }
 

@@ -769,8 +769,8 @@ public partial class MainWindow : Window
             LastDeckEditorSearchText = previousSettings.LastDeckEditorSearchText,
             LastDeckEditorGroupFilter = previousSettings.LastDeckEditorGroupFilter,
             LastDeckEditorCategoryFilter = previousSettings.LastDeckEditorCategoryFilter,
-            LastDeckEditorStatusFilter = previousSettings.LastDeckEditorStatusFilter,
-            LastDeckEditorSortMode = previousSettings.LastDeckEditorSortMode,
+            LastDeckEditorStatusFilterIndex = previousSettings.LastDeckEditorStatusFilterIndex,
+            LastDeckEditorSortModeIndex = previousSettings.LastDeckEditorSortModeIndex,
             LastDeckEditorFavoritesOnly = previousSettings.LastDeckEditorFavoritesOnly,
             LastDeckEditorBelovedOnly = previousSettings.LastDeckEditorBelovedOnly
         };
@@ -2713,6 +2713,13 @@ public partial class MainWindow : Window
             TextWrapping = TextWrapping.Wrap
         });
 
+        ResultBadgeTemplates badgeTemplates = new(
+            Loc.Get("Str.LengthBadge"),
+            Loc.Get("Str.ComboExpected"),
+            Loc.Get("Str.ComboProvisional"),
+            Loc.Get("Str.FirstTurnBadge"),
+            Loc.Get("Str.FirstTurnTooltip"));
+
         SearchResult[] featured = displayedResults.Take(2).ToArray();
         foreach (SearchResult result in featured)
         {
@@ -2720,7 +2727,8 @@ public partial class MainWindow : Window
                 result,
                 featured: true,
                 hasCompleteComboData: hasCompleteComboData,
-                showFirstTurnProbability: isDeckResults));
+                showFirstTurnProbability: isDeckResults,
+                badgeTemplates));
         }
 
         SearchResult[] remaining = displayedResults.Skip(2).ToArray();
@@ -2736,7 +2744,8 @@ public partial class MainWindow : Window
                 result,
                 featured: false,
                 hasCompleteComboData: hasCompleteComboData,
-                showFirstTurnProbability: isDeckResults));
+                showFirstTurnProbability: isDeckResults,
+                badgeTemplates));
         }
 
         panel.Children.Add(new Expander
@@ -2859,11 +2868,19 @@ public partial class MainWindow : Window
         return $"최장 {longest.WordLength}글자 {longest.Results.Count}개 · 전체 {total}개";
     }
 
+    private readonly record struct ResultBadgeTemplates(
+        string LengthBadge,
+        string ComboExpected,
+        string ComboProvisional,
+        string FirstTurnBadge,
+        string FirstTurnTooltip);
+
     private Border CreateResultCard(
         SearchResult result,
         bool featured,
         bool hasCompleteComboData,
-        bool showFirstTurnProbability)
+        bool showFirstTurnProbability,
+        ResultBadgeTemplates badgeTemplates)
     {
         var card = new Border
         {
@@ -2901,14 +2918,14 @@ public partial class MainWindow : Window
             Margin = new Thickness(10, 0, 0, 0)
         };
         badgePanel.Children.Add(CreateResultBadge(
-            string.Format(Loc.Get("Str.LengthBadge"), result.Cells.Count),
+            string.Format(badgeTemplates.LengthBadge, result.Cells.Count),
             Theme.InfoFace,
             Theme.InfoLine,
             featured));
         badgePanel.Children.Add(CreateResultBadge(
             hasCompleteComboData
-                ? string.Format(Loc.Get("Str.ComboExpected"), result.ComboCount)
-                : string.Format(Loc.Get("Str.ComboProvisional"), result.ComboCount),
+                ? string.Format(badgeTemplates.ComboExpected, result.ComboCount)
+                : string.Format(badgeTemplates.ComboProvisional, result.ComboCount),
             hasCompleteComboData ? Theme.SuccessFace : Theme.AlertFace,
             hasCompleteComboData ? Theme.SuccessLine : Theme.AlertLine,
             featured));
@@ -2917,12 +2934,12 @@ public partial class MainWindow : Window
         {
             (Brush background, Brush border) = DataPalette.Probability(result.FirstTurnSuccessRate);
             badgePanel.Children.Add(CreateResultBadge(
-                string.Format(Loc.Get("Str.FirstTurnBadge"), result.FirstTurnSuccessRate.ToString("P1")),
+                string.Format(badgeTemplates.FirstTurnBadge, result.FirstTurnSuccessRate.ToString("P1")),
                 background,
                 border,
                 featured,
                 string.Format(
-                    Loc.Get("Str.FirstTurnTooltip"),
+                    badgeTemplates.FirstTurnTooltip,
                     result.FirstTurnSuccessCount.ToString("N0"),
                     result.FirstTurnCombinationCount.ToString("N0"))));
         }

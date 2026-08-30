@@ -1,7 +1,7 @@
 <Window x:Class="KotodamanWordFinder.DeckScreenshotImportWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="덱 스크린샷 자동 불러오기"
+        Title="{DynamicResource Str.Screenshot.Title}"
         Width="1240"
         Height="820"
         MinWidth="980"
@@ -148,7 +148,7 @@
         <StackPanel Grid.Row="0" Margin="0,0,0,12">
             <TextBlock Foreground="{StaticResource Text.Secondary}"
                        TextWrapping="Wrap"
-                       Text="게임의 덱 편성 화면 스크린샷을 선택한 뒤 12칸(6열 × 2행) 영역을 지정하세요. 프로그램이 각 슬롯 그림을 캐릭터 DB 이미지와 비교합니다. 애매한 슬롯은 자동으로 비워 두며, 12칸 확인과 중복 해소가 끝나기 전에는 덱에 적용되지 않습니다."/>
+                       Text="{DynamicResource Str.Screenshot.Description}"/>
         </StackPanel>
 
         <Border Grid.Row="1"
@@ -159,64 +159,64 @@
                 BorderThickness="1"
                 CornerRadius="10">
             <WrapPanel>
-                <Button Content="스크린샷 선택"
+                <Button Content="{DynamicResource Str.Screenshot.SelectScreenshot}"
                         Margin="0,0,8,8"
                         Style="{StaticResource PrimaryButtonStyle}"
                         Click="ChooseScreenshotButton_Click"/>
-                <Button Content="클립보드 붙여넣기 (Ctrl+V)"
+                <Button Content="{DynamicResource Str.Screenshot.PasteClipboard}"
                         Margin="0,0,8,8"
                         Style="{StaticResource SecondaryButtonStyle}"
-                        ToolTip="Windows 클립보드에 이미지나 이미지 파일이 있으면 바로 불러옵니다."
+                        ToolTip="{DynamicResource Str.Screenshot.PasteClipboardTooltip}"
                         Click="PasteScreenshotButton_Click"/>
-                <Button Content="자동 영역 추정"
+                <Button Content="{DynamicResource Str.Screenshot.AutoDetectRegion}"
                         Margin="0,0,8,8"
                         Style="{StaticResource SecondaryButtonStyle}"
                         Click="GuessGridButton_Click"/>
-                <Button Content="전체 이미지를 4×3으로 사용"
+                <Button Content="{DynamicResource Str.Screenshot.UseFullImage4x3}"
                         Margin="0,0,8,8"
                         Style="{StaticResource SecondaryButtonStyle}"
                         Click="UseFullImageButton_Click"/>
                 <Button x:Name="RecognizeButton"
-                        Content="12칸 인식 시작"
+                        Content="{DynamicResource Str.Screenshot.StartRecognition}"
                         Margin="0,0,8,8"
                         Style="{StaticResource PrimaryButtonStyle}"
                         Click="RecognizeButton_Click"/>
                 <CheckBox x:Name="UseLearnedSamplesCheckBox"
-                          Content="학습 샘플 사용"
+                          Content="{DynamicResource Str.Screenshot.UseLearningSamples}"
                           IsChecked="True"
                           Margin="8,7,10,8"
                           VerticalAlignment="Center"
                           Foreground="{StaticResource Status.Success}"
-                          ToolTip="검수로 확정한 과거 실제 덱 슬롯 이미지를 다음 인식에 함께 사용합니다."/>
+                          ToolTip="{DynamicResource Str.Screenshot.UseLearningSamplesTooltip}"/>
                 <CheckBox x:Name="UseAttributeColorAssistCheckBox"
-                          Content="속성색 보조 판정"
+                          Content="{DynamicResource Str.Screenshot.UseAttributeColorAssist}"
                           IsChecked="True"
                           Margin="0,7,10,8"
                           VerticalAlignment="Center"
                           Foreground="{StaticResource Status.Info}"
-                          ToolTip="캐릭터 문자 원의 속성색과 DB 속성을 함께 사용해 비슷한 일러스트 후보 순서를 보정합니다. 확신이 낮으면 기존 ORB 결과를 그대로 유지합니다."/>
+                          ToolTip="{DynamicResource Str.Screenshot.UseAttributeColorAssistTooltip}"/>
                 <CheckBox x:Name="LearnVerifiedSamplesCheckBox"
-                          Content="검수 결과 학습"
+                          Content="{DynamicResource Str.Screenshot.LearnFromReview}"
                           IsChecked="True"
                           Margin="0,7,10,8"
                           VerticalAlignment="Center"
                           Foreground="{StaticResource Status.Success}"
-                          ToolTip="현재 덱에 적용할 때 확정한 12칸 슬롯 이미지를 캐릭터별 학습 샘플로 저장합니다."/>
-                <Button Content="현재 UI 학습 초기화"
+                          ToolTip="{DynamicResource Str.Screenshot.LearnFromReviewTooltip}"/>
+                <Button Content="{DynamicResource Str.Screenshot.ResetCurrentUiLearning}"
                         Margin="0,0,8,8"
                         Style="{StaticResource SecondaryButtonStyle}"
-                        ToolTip="공식 덱 UI가 바뀌었거나 잘못 학습한 샘플을 지우고 싶을 때 사용합니다."
+                        ToolTip="{DynamicResource Str.Screenshot.ResetCurrentUiLearningTooltip}"
                         Click="ClearLearningButton_Click"/>
                 <TextBlock x:Name="LearningStatusText"
                            Margin="8,8,12,8"
                            VerticalAlignment="Center"
                            Foreground="{StaticResource Status.Success}"
                            FontSize="11"
-                           Text="학습 프로필 확인 중..."/>
+                           Text="{DynamicResource Str.Screenshot.CheckingLearningProfile}"/>
                 <TextBlock x:Name="SelectionInfoText"
                            Margin="8,8,0,0"
                            Foreground="{StaticResource Text.Secondary}"
-                           Text="스크린샷을 먼저 선택하세요."/>
+                           Text="{DynamicResource Str.Screenshot.SelectScreenshotFirst}"/>
             </WrapPanel>
         </Border>
 
@@ -251,7 +251,7 @@
                             Background="{StaticResource Overlay.Scrim}">
                         <TextBlock Foreground="{StaticResource Text.Primary}"
                                    FontSize="11"
-                                   Text="마우스로 12칸 전체 영역을 드래그해서 보정할 수 있습니다."/>
+                                   Text="{DynamicResource Str.Screenshot.DragHintCalibrate}"/>
                     </Border>
                 </Grid>
             </Border>
@@ -273,20 +273,20 @@
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
                         <StackPanel>
-                            <TextBlock Text="인식 결과 검수"
+                            <TextBlock Text="{DynamicResource Str.Screenshot.ReviewHeader}"
                                        FontSize="18"
                                        FontWeight="Bold"/>
                             <TextBlock x:Name="RecognitionSummaryText"
                                        Margin="0,3,0,0"
                                        FontSize="11"
                                        Foreground="{StaticResource Text.Secondary}"
-                                       Text="인식 전"/>
+                                       Text="{DynamicResource Str.Screenshot.BeforeRecognition}"/>
                         </StackPanel>
                         <TextBlock Grid.Column="1"
                                    VerticalAlignment="Center"
                                    Foreground="{StaticResource Alert.Text}"
                                    FontSize="11"
-                                   Text="1번 슬롯 = 리더"/>
+                                   Text="{DynamicResource Str.Screenshot.Slot1Leader}"/>
                     </Grid>
 
                     <ScrollViewer Grid.Row="1"
@@ -323,7 +323,7 @@
                                                     BorderThickness="1"
                                                     CornerRadius="7"
                                                     ClipToBounds="True"
-                                                    ToolTip="스크린샷에서 잘라낸 슬롯">
+                                                    ToolTip="{DynamicResource Str.Screenshot.SlotCropTooltip}">
                                                 <Image Source="{Binding CropThumbnail}"
                                                        Stretch="UniformToFill"/>
                                             </Border>
@@ -343,7 +343,7 @@
                                                     BorderThickness="1"
                                                     CornerRadius="7"
                                                     ClipToBounds="True"
-                                                    ToolTip="현재 선택한 DB 캐릭터 일러스트">
+                                                    ToolTip="{DynamicResource Str.Screenshot.DbIllustrationTooltip}">
                                                 <Grid>
                                                     <TextBlock Text="DB"
                                                                Foreground="{StaticResource Text.Tertiary}"
@@ -402,14 +402,14 @@
                 <TextBlock x:Name="StatusText"
                            Foreground="{StaticResource Text.Secondary}"
                            TextWrapping="Wrap"
-                           Text="이미지 비교는 보조 기능입니다. 빈 슬롯이나 중복 캐릭터가 하나라도 남아 있으면 적용 버튼이 덱 변경을 수행하지 않습니다."/>
+                           Text="{DynamicResource Str.Screenshot.ImageCompareNote}"/>
             </Border>
             <WrapPanel Grid.Column="1" Margin="12,0,0,0">
-                <Button Content="취소"
+                <Button Content="{DynamicResource Str.Screenshot.Cancel}"
                         Margin="0,0,10,0"
                         Style="{StaticResource GhostButtonStyle}"
                         IsCancel="True"/>
-                <Button Content="검수 결과를 현재 덱에 적용"
+                <Button Content="{DynamicResource Str.Screenshot.ApplyReviewToDeck}"
                         Style="{StaticResource ActionButtonStyle}"
                         Click="ApplyButton_Click"/>
             </WrapPanel>

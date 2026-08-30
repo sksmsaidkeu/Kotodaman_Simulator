@@ -25,7 +25,7 @@ public partial class DataBackupWindow : Window
     {
         IReadOnlyList<BackupArchiveInfo> backups = DataBackupService.ListBackups(_dataDirectory);
         BackupListBox.ItemsSource = backups;
-        BackupCountText.Text = $"{backups.Count:N0}개";
+        BackupCountText.Text = string.Format(Loc.Get("Str.Backup.CountFormat"), backups.Count.ToString("N0"));
 
         BackupArchiveInfo? selected = !string.IsNullOrWhiteSpace(selectPath)
             ? backups.FirstOrDefault(item =>
@@ -43,15 +43,16 @@ public partial class DataBackupWindow : Window
         }
 
         await RunBusyAsync(
-            "현재 데이터를 백업하는 중입니다. 캐릭터 이미지가 많으면 잠시 걸릴 수 있습니다.",
+            Loc.Get("Str.Backup.BusyBackingUp"),
             async () =>
             {
                 string backupPath = await Task.Run(
                     () => DataBackupService.CreateManualBackup(_dataDirectory));
                 RefreshBackupList(backupPath);
-                StatusText.Text =
-                    $"백업 완료 · {Path.GetFileName(backupPath)} · " +
-                    DataBackupService.FormatByteSize(new FileInfo(backupPath).Length);
+                StatusText.Text = string.Format(
+                    Loc.Get("Str.Backup.CompleteStatus"),
+                    Path.GetFileName(backupPath),
+                    DataBackupService.FormatByteSize(new FileInfo(backupPath).Length));
                 StatusText.Foreground = Theme.Success;
             });
     }
@@ -65,16 +66,17 @@ public partial class DataBackupWindow : Window
 
         if (BackupListBox.SelectedItem is not BackupArchiveInfo selected)
         {
-            ShowError("복원할 백업을 먼저 선택하세요.");
+            ShowError(Loc.Get("Str.Backup.SelectToRestore"));
             return;
         }
 
         MessageBoxResult answer = MessageBox.Show(
-            $"다음 백업으로 현재 데이터를 되돌릴까요?\n\n" +
-            $"{selected.FileName}\n" +
-            $"{selected.CreatedText} · {selected.SizeText}\n\n" +
-            "복원 직전에 현재 데이터도 자동으로 안전 백업합니다.",
-            "데이터 백업 복원",
+            string.Format(
+                Loc.Get("Str.Backup.ConfirmRestore"),
+                selected.FileName,
+                selected.CreatedText,
+                selected.SizeText),
+            Loc.Get("Str.Backup.ConfirmRestoreTitle"),
             MessageBoxButton.YesNo,
             MessageBoxImage.Warning);
 
@@ -84,20 +86,21 @@ public partial class DataBackupWindow : Window
         }
 
         await RunBusyAsync(
-            "백업을 복원하는 중입니다. 현재 상태 안전 백업 → 데이터 교체 순서로 진행합니다.",
+            Loc.Get("Str.Backup.BusyRestoring"),
             async () =>
             {
                 BackupRestoreResult result = await Task.Run(
                     () => DataBackupService.RestoreBackup(_dataDirectory, selected.Path));
 
                 RestoreCompleted = true;
-                StatusText.Text =
-                    $"복원 완료 · 복원 전 상태도 {Path.GetFileName(result.SafetyBackupPath)} 로 안전 백업했습니다.";
+                StatusText.Text = string.Format(
+                    Loc.Get("Str.Backup.RestoreCompleteStatus"),
+                    Path.GetFileName(result.SafetyBackupPath));
                 StatusText.Foreground = Theme.Success;
 
                 MessageBox.Show(
-                    "복원이 완료되었습니다.\n현재 창을 닫으면 메인 화면도 복원된 데이터를 다시 읽습니다.",
-                    "복원 완료",
+                    Loc.Get("Str.Backup.RestoreCompleteBody"),
+                    Loc.Get("Str.Backup.RestoreCompleteTitle"),
                     MessageBoxButton.OK,
                     MessageBoxImage.Information);
 
@@ -114,13 +117,13 @@ public partial class DataBackupWindow : Window
 
         if (BackupListBox.SelectedItem is not BackupArchiveInfo selected)
         {
-            ShowError("삭제할 백업을 먼저 선택하세요.");
+            ShowError(Loc.Get("Str.Backup.SelectToDelete"));
             return;
         }
 
         MessageBoxResult answer = MessageBox.Show(
-            $"이 백업 파일을 삭제할까요?\n\n{selected.FileName}\n{selected.SizeText}",
-            "백업 삭제",
+            string.Format(Loc.Get("Str.Backup.ConfirmDelete"), selected.FileName, selected.SizeText),
+            Loc.Get("Str.Backup.ConfirmDeleteTitle"),
             MessageBoxButton.YesNo,
             MessageBoxImage.Warning);
 
@@ -133,12 +136,12 @@ public partial class DataBackupWindow : Window
         {
             File.Delete(selected.Path);
             RefreshBackupList();
-            StatusText.Text = $"'{selected.FileName}' 백업을 삭제했습니다.";
+            StatusText.Text = string.Format(Loc.Get("Str.Backup.DeletedStatus"), selected.FileName);
             StatusText.Foreground = Theme.Warn;
         }
         catch (Exception exception)
         {
-            ShowError($"백업 삭제에 실패했습니다.\n\n{exception.Message}");
+            ShowError(string.Format(Loc.Get("Str.Backup.DeleteFailed"), exception.Message));
         }
     }
 
@@ -160,7 +163,7 @@ public partial class DataBackupWindow : Window
         }
         catch (Exception exception)
         {
-            ShowError($"백업 폴더를 열 수 없습니다.\n\n{exception.Message}");
+            ShowError(string.Format(Loc.Get("Str.Backup.OpenFolderFailed"), exception.Message));
         }
     }
 
@@ -203,7 +206,7 @@ public partial class DataBackupWindow : Window
 
         MessageBox.Show(
             message,
-            "백업 오류",
+            Loc.Get("Str.Backup.ErrorTitle"),
             MessageBoxButton.OK,
             MessageBoxImage.Error);
     }
