@@ -1180,7 +1180,7 @@ public partial class DeckEditorWindow : Window
         UpdateCountTexts();
 
         string activeName = character.GetActiveFormName();
-        Controls.SetAlertBanner(EditorStatusBanner, EditorStatusText, string.Format(Loc.Get("Str.DeckEditor.SameNameModeShiftStatus"), character.Name, activeName), false, Theme.Special);
+        Controls.SetAlertBanner(EditorStatusBanner, EditorStatusText, string.Format(Loc.Get("Str.DeckEditor.SameNameModeShiftStatus"), CharacterNameLoc.GetName(character), activeName), false, Theme.Special);
     }
 
     private bool TryCycleConnectedModeShift(int deckIndex, CharacterEntry current)
@@ -1241,7 +1241,7 @@ public partial class DeckEditorWindow : Window
         AutoSaveCommittedStateSafely();
         RefreshAllLists(target.Id, deckIndex);
         BeginEditing(target.Id, selectLibraryItem: true);
-        Controls.SetAlertBanner(EditorStatusBanner, EditorStatusText, string.Format(Loc.Get("Str.DeckEditor.LinkedModeShiftStatus"), deckIndex + 1, current.Name, target.Name), false, Theme.Special);
+        Controls.SetAlertBanner(EditorStatusBanner, EditorStatusText, string.Format(Loc.Get("Str.DeckEditor.LinkedModeShiftStatus"), deckIndex + 1, CharacterNameLoc.GetName(current), CharacterNameLoc.GetName(target)), false, Theme.Special);
         return true;
     }
 
@@ -1333,7 +1333,7 @@ public partial class DeckEditorWindow : Window
         AddCharacterButton.IsEnabled = true;
         UpdateCharacterButton.IsEnabled = true;
 
-        Controls.SetAlertBanner(EditorStatusBanner, EditorStatusText, string.Format(Loc.Get("Str.DeckEditor.EditingCharacterStatus"), character.Name), false, Theme.BlueText);
+        Controls.SetAlertBanner(EditorStatusBanner, EditorStatusText, string.Format(Loc.Get("Str.DeckEditor.EditingCharacterStatus"), CharacterNameLoc.GetName(character)), false, Theme.BlueText);
 
         if (selectLibraryItem)
         {
@@ -1706,7 +1706,7 @@ public partial class DeckEditorWindow : Window
         }
 
         RelatedFormsSummaryText.Text = Loc.Get("Str.DeckEditor.ModeShiftPrefix") +
-            string.Join(" · ", related.Select(item => item.Name));
+            string.Join(" · ", related.Select(CharacterNameLoc.GetName));
         RelatedFormsSummaryText.Foreground = Theme.BlueText;
     }
 
@@ -1772,7 +1772,7 @@ public partial class DeckEditorWindow : Window
         if (currentGroup.Length > 0 &&
             string.Equals(currentGroup, targetGroup, StringComparison.OrdinalIgnoreCase))
         {
-            Controls.SetAlertBanner(EditorStatusBanner, EditorStatusText, string.Format(Loc.Get("Str.DeckEditor.AlreadyLinked"), current.Name, target.Name), false, Theme.BlueText);
+            Controls.SetAlertBanner(EditorStatusBanner, EditorStatusText, string.Format(Loc.Get("Str.DeckEditor.AlreadyLinked"), CharacterNameLoc.GetName(current), CharacterNameLoc.GetName(target)), false, Theme.BlueText);
             return;
         }
 
@@ -1817,7 +1817,7 @@ public partial class DeckEditorWindow : Window
         int selectedDeckIndex = GetSelectedDeckIndexForCharacter(current.Id);
         RefreshAllLists(current.Id, selectedDeckIndex);
         BeginEditing(current.Id);
-        Controls.SetAlertBanner(EditorStatusBanner, EditorStatusText, string.Format(Loc.Get("Str.DeckEditor.LinkedSuccess"), current.Name, target.Name), false, Theme.Success);
+        Controls.SetAlertBanner(EditorStatusBanner, EditorStatusText, string.Format(Loc.Get("Str.DeckEditor.LinkedSuccess"), CharacterNameLoc.GetName(current), CharacterNameLoc.GetName(target)), false, Theme.Success);
     }
 
     private void UnlinkRelatedFormButton_Click(object sender, RoutedEventArgs e)
@@ -1832,7 +1832,7 @@ public partial class DeckEditorWindow : Window
         string group = NormalizeRestrictionGroup(current.DeckRestrictionGroupId);
         if (group.Length == 0)
         {
-            SetError(string.Format(Loc.Get("Str.DeckEditor.NoLinkedFormToUnlink"), current.Name));
+            SetError(string.Format(Loc.Get("Str.DeckEditor.NoLinkedFormToUnlink"), CharacterNameLoc.GetName(current)));
             return;
         }
 
@@ -1845,8 +1845,8 @@ public partial class DeckEditorWindow : Window
         RefreshAllLists(current.Id, selectedDeckIndex);
         BeginEditing(current.Id);
         Controls.SetAlertBanner(EditorStatusBanner, EditorStatusText, relatedBefore.Length == 0
-            ? string.Format(Loc.Get("Str.DeckEditor.CleanedOldModeShiftGroup"), current.Name)
-            : string.Format(Loc.Get("Str.DeckEditor.UnlinkedSuccess"), current.Name), false, Theme.Warn);
+            ? string.Format(Loc.Get("Str.DeckEditor.CleanedOldModeShiftGroup"), CharacterNameLoc.GetName(current))
+            : string.Format(Loc.Get("Str.DeckEditor.UnlinkedSuccess"), CharacterNameLoc.GetName(current)), false, Theme.Warn);
     }
 
     private void ClearRestrictionGroupWhenOnlyOneMemberRemains(string? restrictionGroupId)
@@ -1963,7 +1963,7 @@ public partial class DeckEditorWindow : Window
         RefreshGroupOptions(character.GroupName);
         RefreshAllLists(character.Id);
         BeginEditing(character.Id);
-        Controls.SetAlertBanner(EditorStatusBanner, EditorStatusText, string.Format(Loc.Get("Str.DeckEditor.CharacterAdded"), character.Name), false, Theme.Success);
+        Controls.SetAlertBanner(EditorStatusBanner, EditorStatusText, string.Format(Loc.Get("Str.DeckEditor.CharacterAdded"), CharacterNameLoc.GetName(character)), false, Theme.Success);
     }
 
     private void UpdateCharacterButton_Click(object sender, RoutedEventArgs e)
@@ -2045,7 +2045,7 @@ public partial class DeckEditorWindow : Window
 
         if (showSuccessMessage)
         {
-            Controls.SetAlertBanner(EditorStatusBanner, EditorStatusText, string.Format(Loc.Get("Str.DeckEditor.CharacterUpdated"), character.Name), false, Theme.Success);
+            Controls.SetAlertBanner(EditorStatusBanner, EditorStatusText, string.Format(Loc.Get("Str.DeckEditor.CharacterUpdated"), CharacterNameLoc.GetName(character)), false, Theme.Success);
         }
 
         return true;
@@ -2067,7 +2067,7 @@ public partial class DeckEditorWindow : Window
             : string.Empty;
 
         MessageBoxResult result = MessageBox.Show(
-            string.Format(Loc.Get("Str.DeckEditor.ConfirmDeleteCharacter"), character.Name, deckNotice),
+            string.Format(Loc.Get("Str.DeckEditor.ConfirmDeleteCharacter"), CharacterNameLoc.GetName(character), deckNotice),
             Loc.Get("Str.DeckEditor.DeleteCharacterTitle"),
             MessageBoxButton.YesNo,
             MessageBoxImage.Warning);
@@ -2095,7 +2095,7 @@ public partial class DeckEditorWindow : Window
         RefreshGroupOptions();
         RefreshPresetList(_selectedPresetId);
         RefreshAllLists();
-        Controls.SetAlertBanner(EditorStatusBanner, EditorStatusText, string.Format(Loc.Get("Str.DeckEditor.CharacterRemovedEverywhere"), character.Name), true);
+        Controls.SetAlertBanner(EditorStatusBanner, EditorStatusText, string.Format(Loc.Get("Str.DeckEditor.CharacterRemovedEverywhere"), CharacterNameLoc.GetName(character)), true);
     }
 
     private void LibraryDeckToggleButton_Click(object sender, RoutedEventArgs e)
@@ -2132,7 +2132,7 @@ public partial class DeckEditorWindow : Window
         RefreshAllLists(characterId, Math.Min(deckIndex, _deckIds.Count - 1));
         Controls.SetAlertBanner(EditorStatusBanner, EditorStatusText, character is null
             ? Loc.Get("Str.DeckEditor.RemovedFromDeck")
-            : string.Format(Loc.Get("Str.DeckEditor.RemovedFromDeckNamed"), character.Name), false, Theme.Warn);
+            : string.Format(Loc.Get("Str.DeckEditor.RemovedFromDeckNamed"), CharacterNameLoc.GetName(character)), false, Theme.Warn);
     }
 
     private void AddSelectedToDeckButton_Click(object sender, RoutedEventArgs e)
@@ -2158,13 +2158,13 @@ public partial class DeckEditorWindow : Window
 
         if (_deckIds.Contains(character.Id, StringComparer.Ordinal))
         {
-            SetError(string.Format(Loc.Get("Str.DeckEditor.AlreadyInDeck"), character.Name));
+            SetError(string.Format(Loc.Get("Str.DeckEditor.AlreadyInDeck"), CharacterNameLoc.GetName(character)));
             return;
         }
 
         if (HasRestrictionConflict(character.Id, character.DeckRestrictionGroupId, out CharacterEntry? conflict))
         {
-            SetError(string.Format(Loc.Get("Str.DeckEditor.SameModeShiftGroupConflict"), character.Name, conflict!.Name));
+            SetError(string.Format(Loc.Get("Str.DeckEditor.SameModeShiftGroupConflict"), CharacterNameLoc.GetName(character), CharacterNameLoc.GetName(conflict!)));
             return;
         }
 
@@ -2176,7 +2176,7 @@ public partial class DeckEditorWindow : Window
 
         _deckIds.Add(character.Id);
         RefreshAllLists(character.Id, _deckIds.Count - 1);
-        Controls.SetAlertBanner(EditorStatusBanner, EditorStatusText, string.Format(Loc.Get("Str.DeckEditor.AddedToDeckAt"), character.Name, _deckIds.Count), false, Theme.Success);
+        Controls.SetAlertBanner(EditorStatusBanner, EditorStatusText, string.Format(Loc.Get("Str.DeckEditor.AddedToDeckAt"), CharacterNameLoc.GetName(character), _deckIds.Count), false, Theme.Success);
     }
 
     private void RemoveFromDeckButton_Click(object sender, RoutedEventArgs e)
@@ -2196,7 +2196,7 @@ public partial class DeckEditorWindow : Window
         RefreshAllLists(character?.Id ?? _editingCharacterId, Math.Min(selectedIndex, _deckIds.Count - 1));
         Controls.SetAlertBanner(EditorStatusBanner, EditorStatusText, character is null
             ? Loc.Get("Str.DeckEditor.RemovedFromDeck")
-            : string.Format(Loc.Get("Str.DeckEditor.RemovedFromDeckNamed"), character.Name), false, Theme.Warn);
+            : string.Format(Loc.Get("Str.DeckEditor.RemovedFromDeckNamed"), CharacterNameLoc.GetName(character)), false, Theme.Warn);
     }
 
     private void ImportDeckFromScreenshotButton_Click(object sender, RoutedEventArgs e)
@@ -2242,7 +2242,7 @@ public partial class DeckEditorWindow : Window
 
         if (item.Index == 0)
         {
-            Controls.SetAlertBanner(EditorStatusBanner, EditorStatusText, string.Format(Loc.Get("Str.DeckEditor.AlreadyLeader"), item.Name), false, Theme.BlueText);
+            Controls.SetAlertBanner(EditorStatusBanner, EditorStatusText, string.Format(Loc.Get("Str.DeckEditor.AlreadyLeader"), CharacterNameLoc.GetName(item.Id, item.Name)), false, Theme.BlueText);
             return;
         }
 
@@ -2250,7 +2250,7 @@ public partial class DeckEditorWindow : Window
         _deckIds.RemoveAt(item.Index);
         _deckIds.Insert(0, characterId);
         RefreshAllLists(characterId, 0);
-        Controls.SetAlertBanner(EditorStatusBanner, EditorStatusText, string.Format(Loc.Get("Str.DeckEditor.SetAsLeader"), item.Name), false, Theme.Special);
+        Controls.SetAlertBanner(EditorStatusBanner, EditorStatusText, string.Format(Loc.Get("Str.DeckEditor.SetAsLeader"), CharacterNameLoc.GetName(item.Id, item.Name)), false, Theme.Special);
     }
 
     private void MoveDeckUpButton_Click(object sender, RoutedEventArgs e)
@@ -3174,7 +3174,7 @@ public partial class DeckEditorWindow : Window
             : Loc.Get("Str.DeckEditor.DifferentNameMsSuffix");
         string groupText = string.IsNullOrWhiteSpace(character.GroupName)
             ? string.Empty
-            : string.Format(Loc.Get("Str.DeckEditor.GroupSuffix"), character.GroupName) +
+            : string.Format(Loc.Get("Str.DeckEditor.GroupSuffix"), CharacterNameLoc.GetGroupName(character.GroupName)) +
               (GetEffectiveGroupNamesCached(character).Length > 1 ? Loc.Get("Str.DeckEditor.InclusiveMark") : string.Empty);
         string miracleText = DeckDataService.NormalizeMiracleLeaderEffect(
                 character.MiracleLeaderEffect).IsConfigured
@@ -3571,7 +3571,7 @@ public partial class DeckEditorWindow : Window
             {
                 // ponytail: "저장할 수 없습니다" 전용 키가 코디네이터 번역에 없어 뜻이 같은
                 // SameModeShiftGroupConflict("...함께 넣을 수 없습니다")를 재사용합니다.
-                error = string.Format(Loc.Get("Str.DeckEditor.SameModeShiftGroupConflict"), existing.Name, character.Name);
+                error = string.Format(Loc.Get("Str.DeckEditor.SameModeShiftGroupConflict"), CharacterNameLoc.GetName(existing), CharacterNameLoc.GetName(character));
                 return false;
             }
 
@@ -3713,7 +3713,7 @@ public partial class DeckEditorWindow : Window
         {
             Id = character.Id;
             Name = character.Name;
-            DisplayText = $"[{CharacterCategories.Normalize(character.Category)}] {character.Name}  ·  {string.Join(" · ", character.GetAvailableLetters())}";
+            DisplayText = $"[{CharacterCategories.Normalize(character.Category)}] {CharacterNameLoc.GetName(character)}  ·  {string.Join(" · ", character.GetAvailableLetters())}";
         }
 
         public string Id { get; }
@@ -3750,7 +3750,7 @@ public partial class DeckEditorWindow : Window
             int deckIndex)
         {
             Id = character.Id;
-            Name = character.Name;
+            Name = CharacterNameLoc.GetName(character);
             Category = CharacterCategories.Normalize(character.Category);
             IReadOnlyList<string> activeAttributes = GetActiveCharacterAttributes(character);
             string activeSpecies = GetActiveCharacterSpecies(character);
@@ -3916,7 +3916,7 @@ public partial class DeckEditorWindow : Window
                     ? Loc.Get("Str.DeckEditor.HoldToggleSameNameTooltip")
                     : string.Empty;
             string formText = hasSameNameModeShift ? string.Format(Loc.Get("Str.DeckEditor.CurrentFormSuffix"), character.GetActiveFormName()) : string.Empty;
-            ToolTipText = $"{character.Name}\n{lettersText}" +
+            ToolTipText = $"{CharacterNameLoc.GetName(character)}\n{lettersText}" +
                           (MetaBadgeText.Length > 0 ? $"\n{MetaBadgeText}" : string.Empty) +
                           formText +
                           (ModeShiftHintText.Length > 0 ? $"\n{ModeShiftHintText}" : string.Empty);

@@ -831,9 +831,10 @@ public partial class MainWindow : Window
         }
         else
         {
-            string fallback = string.IsNullOrWhiteSpace(character.Name)
+            string displayName = CharacterNameLoc.GetName(character);
+            string fallback = string.IsNullOrWhiteSpace(displayName)
                 ? "?"
-                : character.Name[..1];
+                : displayName[..1];
             border.Child = new TextBlock
             {
                 Text = fallback,
@@ -937,11 +938,12 @@ public partial class MainWindow : Window
             titleRow.Children.Add(Themes.Controls.LabelBadge(
                 "덱 조건", Theme.SuccessFace, Theme.SuccessLine, Theme.Success));
         }
+        string characterDisplayName = CharacterNameLoc.GetName(character);
         titleRow.Children.Add(new TextBlock
         {
             Text = isSelected
-                ? $"{selectedIndex + 1}. {character.Name}{formSuffix}{stateSuffix}"
-                : $"{character.Name}{formSuffix}",
+                ? $"{selectedIndex + 1}. {characterDisplayName}{formSuffix}{stateSuffix}"
+                : $"{characterDisplayName}{formSuffix}",
             FontWeight = FontWeights.SemiBold,
             VerticalAlignment = VerticalAlignment.Center,
             TextTrimming = TextTrimming.CharacterEllipsis
@@ -1197,8 +1199,8 @@ public partial class MainWindow : Window
                 titlePanel.Children.Add(new TextBlock
                 {
                     Text = selectedForm is null
-                        ? character.Name
-                        : $"{character.Name}〔{selectedForm.Name}〕",
+                        ? CharacterNameLoc.GetName(character)
+                        : $"{CharacterNameLoc.GetName(character)}〔{selectedForm.Name}〕",
                     FontWeight = FontWeights.Bold,
                     FontSize = 12,
                     Foreground = Theme.TextPrimary,
@@ -1576,7 +1578,7 @@ public partial class MainWindow : Window
             return;
         }
 
-        StatusText.Text = $"'{character.Name}'에서 전환 가능한 모드시프트를 찾지 못했습니다.";
+        StatusText.Text = $"'{CharacterNameLoc.GetName(character)}'에서 전환 가능한 모드시프트를 찾지 못했습니다.";
     }
 
     private bool TryCycleConnectedHandModeShift(int handIndex, CharacterEntry current)
@@ -1661,7 +1663,7 @@ public partial class MainWindow : Window
             ScheduleAutoSearch(handChanged: true);
 
             StatusText.Text =
-                $"현재 손패 {handIndex + 1}번 연결형 모드시프트 · {current.Name} → {targetClone.Name} · 덱 {deckIndex + 1}번과 동기화";
+                $"현재 손패 {handIndex + 1}번 연결형 모드시프트 · {CharacterNameLoc.GetName(current)} → {CharacterNameLoc.GetName(targetClone)} · 덱 {deckIndex + 1}번과 동기화";
             return true;
         }
         catch (Exception exception)
@@ -1691,7 +1693,7 @@ public partial class MainWindow : Window
         SetSelectedHandForm(character.Id, next.Id);
         UpdateCharacterButtons(new[] { character.Id });
         DeckCharacterPanel.InvalidateVisual();
-        StatusText.Text = $"현재 손패 동일명 모드시프트 · {character.Name} → {next.DisplayText}";
+        StatusText.Text = $"현재 손패 동일명 모드시프트 · {CharacterNameLoc.GetName(character)} → {next.DisplayText}";
     }
 
     private IReadOnlyList<CharacterEntry> GetModeShiftLibrary()
@@ -2358,7 +2360,7 @@ public partial class MainWindow : Window
             }
 
             character.ActiveMiracleGrantedLetters = effect.GrantedLetters.ToList();
-            character.ActiveMiracleLeaderName = leader.Name;
+            character.ActiveMiracleLeaderName = CharacterNameLoc.GetName(leader);
             character.ActiveMiracleEffectNote = effect.Note;
         }
     }
@@ -2386,7 +2388,7 @@ public partial class MainWindow : Window
             }
 
             character.ActiveDeckGroupGrantedLetters = effect.GrantedLetters.ToList();
-            string groupText = string.Join(" · ", effect.TargetGroups);
+            string groupText = string.Join(" · ", effect.TargetGroups.Select(CharacterNameLoc.GetGroupName));
             character.ActiveDeckGroupConditionText =
                 $"{groupText} 덱 {matchingCount}명 / 필요 {effect.MinimumCount}명";
             character.ActiveDeckGroupEffectNote = effect.Note;
@@ -2425,9 +2427,10 @@ public partial class MainWindow : Window
 
         MiracleLeaderEffect effect = DeckDataService.NormalizeMiracleLeaderEffect(
             leader.MiracleLeaderEffect);
+        string leaderDisplayName = CharacterNameLoc.GetName(leader);
         if (!effect.IsConfigured)
         {
-            MiracleLeaderStatusText.Text = $"리더: {leader.Name} · 미라클 문자 부여 효과 없음";
+            MiracleLeaderStatusText.Text = $"리더: {leaderDisplayName} · 미라클 문자 부여 효과 없음";
             MiracleLeaderStatusText.Foreground = Theme.TextSecondary;
             MiracleLeaderStatusText.ToolTip = "덱 1번 캐릭터가 리더입니다.";
             return;
@@ -2438,24 +2441,28 @@ public partial class MainWindow : Window
                 character, effect.TargetGroups))
             .ToArray();
 
+        string targetGroupNames = string.Join(
+            " · ", effect.TargetGroups.Select(CharacterNameLoc.GetGroupName));
+
         if (matchingCharacters.Length == 0)
         {
             MiracleLeaderStatusText.Text =
-                $"리더: {leader.Name} · 미라클 효과 설정됨 · 현재 덱에서 대상 그룹 캐릭터 0명";
+                $"리더: {leaderDisplayName} · 미라클 효과 설정됨 · 현재 덱에서 대상 그룹 캐릭터 0명";
             MiracleLeaderStatusText.Foreground = Theme.Warn;
             MiracleLeaderStatusText.ToolTip =
-                $"대상 그룹: {string.Join(" · ", effect.TargetGroups)}\n" +
+                $"대상 그룹: {targetGroupNames}\n" +
                 $"부여 문자: {string.Join(" · ", effect.GrantedLetters)}\n" +
                 "현재 덱 캐릭터의 소속 그룹 또는 포괄 그룹 규칙과 일치하는 대상이 없습니다.";
             return;
         }
 
         MiracleLeaderStatusText.Text =
-            $"리더: {leader.Name} · 미라클 문자 부여 활성 · 적용 대상 {matchingCharacters.Length}명 · +{string.Join(" · ", effect.GrantedLetters)}";
+            $"리더: {leaderDisplayName} · 미라클 문자 부여 활성 · 적용 대상 {matchingCharacters.Length}명 · +{string.Join(" · ", effect.GrantedLetters)}";
         MiracleLeaderStatusText.Foreground = Theme.Special;
-        string targetNames = string.Join(" · ", matchingCharacters.Select(character => character.Name));
+        string targetNames = string.Join(
+            " · ", matchingCharacters.Select(CharacterNameLoc.GetName));
         MiracleLeaderStatusText.ToolTip =
-            $"대상 그룹: {string.Join(" · ", effect.TargetGroups)}\n" +
+            $"대상 그룹: {targetGroupNames}\n" +
             $"적용 캐릭터: {targetNames}\n" +
             (string.IsNullOrWhiteSpace(effect.Note)
                 ? "덱 1번 캐릭터가 리더일 때만 적용됩니다."
@@ -2466,17 +2473,18 @@ public partial class MainWindow : Window
     {
         var lines = new List<string>
         {
-            $"{(isLeader ? "[리더] " : string.Empty)}{character.Name}",
+            $"{(isLeader ? "[리더] " : string.Empty)}{CharacterNameLoc.GetName(character)}",
             $"현재 자체 문자: {string.Join(" · ", character.GetOwnAvailableLetters())}"
         };
         if (!string.IsNullOrWhiteSpace(character.GroupName))
         {
-            lines.Add($"소속 그룹: {character.GroupName}");
+            lines.Add($"소속 그룹: {CharacterNameLoc.GetGroupName(character.GroupName)}");
             List<string> includedGroups = DeckDataService.GetEffectiveGroupNames(character)
                 .Where(group => !string.Equals(
                     group,
                     DeckDataService.NormalizeGroupName(character.GroupName),
                     StringComparison.OrdinalIgnoreCase))
+                .Select(CharacterNameLoc.GetGroupName)
                 .ToList();
             if (includedGroups.Count > 0)
             {
@@ -2508,13 +2516,17 @@ public partial class MainWindow : Window
             character.DeckGroupLetterEffect);
         if (deckGroupEffect.IsConfigured)
         {
-            lines.Add($"덱 조건: {string.Join(" · ", deckGroupEffect.TargetGroups)} {deckGroupEffect.MinimumCount}명 이상 → +{string.Join(" · ", deckGroupEffect.GrantedLetters)}");
+            string deckConditionGroups = string.Join(
+                " · ", deckGroupEffect.TargetGroups.Select(CharacterNameLoc.GetGroupName));
+            lines.Add($"덱 조건: {deckConditionGroups} {deckGroupEffect.MinimumCount}명 이상 → +{string.Join(" · ", deckGroupEffect.GrantedLetters)}");
         }
         MiracleLeaderEffect effect = DeckDataService.NormalizeMiracleLeaderEffect(
             character.MiracleLeaderEffect);
         if (isLeader && effect.IsConfigured)
         {
-            lines.Add($"미라클 리더 효과: {string.Join(" · ", effect.TargetGroups)} 그룹에 {string.Join(" · ", effect.GrantedLetters)} 부여");
+            string leaderEffectGroups = string.Join(
+                " · ", effect.TargetGroups.Select(CharacterNameLoc.GetGroupName));
+            lines.Add($"미라클 리더 효과: {leaderEffectGroups} 그룹에 {string.Join(" · ", effect.GrantedLetters)} 부여");
         }
         return string.Join(Environment.NewLine, lines);
     }
@@ -3002,7 +3014,7 @@ public partial class MainWindow : Window
                         string letters = string.Join(" · ", group
                             .Select(item => item.Letter)
                             .Distinct(StringComparer.Ordinal));
-                        return $"⇄ {string.Format(Loc.Get("Str.AlternateFormEntry"), assignment.CharacterName, assignment.CharacterFormName, letters)}";
+                        return $"⇄ {string.Format(Loc.Get("Str.AlternateFormEntry"), CharacterNameLoc.GetName(assignment.CharacterId, assignment.CharacterName), assignment.CharacterFormName, letters)}";
                     }));
 
             stack.Children.Add(new Border
@@ -3038,7 +3050,7 @@ public partial class MainWindow : Window
                         string note = string.IsNullOrWhiteSpace(assignment.LetterStateNote)
                             ? string.Empty
                             : $" · {assignment.LetterStateNote}";
-                        return $"⚠ {assignment.CharacterName}: {assignment.LetterStateName} ({assignment.LetterStateKind}){note}";
+                        return $"⚠ {CharacterNameLoc.GetName(assignment.CharacterId, assignment.CharacterName)}: {assignment.LetterStateName} ({assignment.LetterStateKind}){note}";
                     }));
 
             stack.Children.Add(new Border
@@ -3076,11 +3088,11 @@ public partial class MainWindow : Window
                             .Distinct(StringComparer.Ordinal));
                         string groupText = string.IsNullOrWhiteSpace(assignment.CharacterGroupName)
                             ? Loc.Get("Str.GroupUnspecified")
-                            : assignment.CharacterGroupName;
+                            : CharacterNameLoc.GetGroupName(assignment.CharacterGroupName);
                         string note = string.IsNullOrWhiteSpace(assignment.MiracleEffectNote)
                             ? string.Empty
                             : $" · {assignment.MiracleEffectNote}";
-                        return $"✨ {string.Format(Loc.Get("Str.MiracleLeaderEntry"), assignment.CharacterName, letters, assignment.MiracleLeaderName, groupText, note)}";
+                        return $"✨ {string.Format(Loc.Get("Str.MiracleLeaderEntry"), CharacterNameLoc.GetName(assignment.CharacterId, assignment.CharacterName), letters, assignment.MiracleLeaderName, groupText, note)}";
                     }));
 
             stack.Children.Add(new Border
@@ -3119,7 +3131,7 @@ public partial class MainWindow : Window
                         string note = string.IsNullOrWhiteSpace(assignment.DeckGroupEffectNote)
                             ? string.Empty
                             : $" · {assignment.DeckGroupEffectNote}";
-                        return $"◆ {assignment.CharacterName}: {letters} · {assignment.DeckGroupConditionText}{note}";
+                        return $"◆ {CharacterNameLoc.GetName(assignment.CharacterId, assignment.CharacterName)}: {letters} · {assignment.DeckGroupConditionText}{note}";
                     }));
 
             stack.Children.Add(new Border
@@ -3217,7 +3229,7 @@ public partial class MainWindow : Window
             Loc.Get("Str.AssignmentLine"),
             assignment.BoardIndex + 1,
             assignment.Letter,
-            assignment.CharacterName,
+            CharacterNameLoc.GetName(assignment.CharacterId, assignment.CharacterName),
             suffix);
     }
 
@@ -3228,7 +3240,10 @@ public partial class MainWindow : Window
             return Loc.Get("Str.ColRequiredChars");
         }
 
-        var labels = new List<string> { assignment.CharacterName };
+        var labels = new List<string>
+        {
+            CharacterNameLoc.GetName(assignment.CharacterId, assignment.CharacterName)
+        };
         if (assignment.UsesAlternateForm)
         {
             labels.Add($"⇄ {assignment.CharacterFormName}");
@@ -3257,11 +3272,17 @@ public partial class MainWindow : Window
 
         var lines = new List<string>
         {
-            string.Format(Loc.Get("Str.AssignmentCellHeader"), boardIndex + 1, assignment.Letter, assignment.CharacterName)
+            string.Format(
+                Loc.Get("Str.AssignmentCellHeader"),
+                boardIndex + 1,
+                assignment.Letter,
+                CharacterNameLoc.GetName(assignment.CharacterId, assignment.CharacterName))
         };
         if (!string.IsNullOrWhiteSpace(assignment.CharacterGroupName))
         {
-            lines.Add(string.Format(Loc.Get("Str.BelongingGroup"), assignment.CharacterGroupName));
+            lines.Add(string.Format(
+                Loc.Get("Str.BelongingGroup"),
+                CharacterNameLoc.GetGroupName(assignment.CharacterGroupName)));
         }
         if (assignment.UsesAlternateForm)
         {
@@ -3844,6 +3865,12 @@ public partial class MainWindow : Window
         // Button/TextBlock이라 마찬가지로 직접 다시 그려야 한다.
         RefreshKanaSections();
         RenderStoredSearchResults();
+
+        // 덱 보드 버튼(캐릭터명)과 미라클 리더 상태줄도 코드비하인드가 직접 그리는
+        // 자리라, 토글 즉시 캐릭터명이 한/일로 바뀌게 하려면 여기서도 다시 그려야 한다.
+        UpdateCharacterButtons();
+        UpdateMiracleLeaderStatus();
+        RenderSelectedHandSlots();
     }
 
 

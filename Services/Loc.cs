@@ -7,6 +7,10 @@ namespace KotodamanWordFinder.Services;
 // 코드에서 .Text/.Content 로 직접 대입하는 자리는 이 헬퍼를 거쳐야 언어 전환이 반영된다.
 public static class Loc
 {
+    // App.ApplyLanguage가 유일하게 갱신한다 - 시작 시와 토글 버튼 클릭 시 둘 다
+    // 그 함수를 거치므로, 여기 값은 항상 실제 로드된 언어와 일치한다.
+    public static string CurrentLanguage { get; set; } = "ko";
+
     public static string Get(string key) => Application.Current.Resources[key] as string ?? key;
 
     // 속성/종족 등 "미입력" 자리표시자 텍스트. 여러 창이 각자 다른 이름(Unset/UnsetLabel/UnsetText)으로

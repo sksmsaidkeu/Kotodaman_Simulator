@@ -750,7 +750,7 @@ public partial class CharacterWebImportWindow : Window
                         reviewCount++;
                     }
 
-                    string groupText = data.GroupName.Length > 0 ? data.GroupName : Loc.Get("Str.WebImport.NoGroupRegistrable");
+                    string groupText = data.GroupName.Length > 0 ? CharacterNameLoc.GetGroupName(data.GroupName) : Loc.Get("Str.WebImport.NoGroupRegistrable");
                     string attributeText = data.Attribute.Length > 0 ? data.Attribute : Loc.Get("Str.WebImport.AttributeUnknownMark");
                     string speciesText = data.Species.Length > 0 ? data.Species : Loc.Get("Str.WebImport.SpeciesUnknownMark");
                     string imageText = downloadedImagePath.Length > 0 ? Loc.Get("Str.WebImport.ImageIncluded") : Loc.Get("Str.WebImport.NoImage");

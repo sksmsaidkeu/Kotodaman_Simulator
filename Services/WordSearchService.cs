@@ -570,6 +570,10 @@ public sealed class WordSearchService
                     UsesSpecialLetterState = character.UsesSpecialLetterState,
                     CharacterGroupName = character.GroupName ?? string.Empty,
                     UsesMiracleLeaderLetter = character.UsesMiracleGrantedLetter(slot.Letter),
+                    // ponytail: ActiveMiracleLeaderName은 ApplyActiveMiracleLeaderEffect가 이미
+                    // 표시 언어로 구워 넣은 값이다. 검색 결과가 캐시된 뒤 언어를 토글하면 이 줄만
+                    // 한 박자 늦게 반영될 수 있음 — CharacterId를 안 들고 있어 렌더 시점 재번역이
+                    // 불가능하다. 필요해지면 이 필드도 CharacterId를 추가로 들고 다니게 한다.
                     MiracleLeaderName = character.ActiveMiracleLeaderName ?? string.Empty,
                     MiracleEffectNote = character.ActiveMiracleEffectNote ?? string.Empty,
                     UsesDeckGroupConditionLetter = character.UsesDeckGroupGrantedLetter(slot.Letter),

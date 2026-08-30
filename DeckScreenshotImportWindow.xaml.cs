@@ -406,7 +406,7 @@ public partial class DeckScreenshotImportWindow : Window
                     Loc.Get("Str.Screenshot.MatchCandidateLine"),
                     candidate.MatchCount,
                     attributeLabel.Length == 0 ? "?" : attributeLabel,
-                    candidate.Character.Name),
+                    CharacterNameLoc.GetName(candidate.Character)),
                 candidate.Similarity));
         }
 
@@ -417,9 +417,10 @@ public partial class DeckScreenshotImportWindow : Window
                 continue;
             }
             string attributeLabel = DeckDataService.NormalizeAttribute(character.Attribute);
+            string characterDisplayName = CharacterNameLoc.GetName(character);
             choices.Add(new CharacterChoice(
                 character,
-                attributeLabel.Length == 0 ? character.Name : $"[{attributeLabel}] {character.Name}",
+                attributeLabel.Length == 0 ? characterDisplayName : $"[{attributeLabel}] {characterDisplayName}",
                 null));
         }
 
@@ -482,7 +483,7 @@ public partial class DeckScreenshotImportWindow : Window
                     Loc.Get("Str.Screenshot.CandidateOptionLine"),
                     marker,
                     attribute.Length == 0 ? "?" : attribute,
-                    candidate.Character.Name,
+                    CharacterNameLoc.GetName(candidate.Character),
                     candidate.MatchCount);
             })));
 
@@ -569,7 +570,8 @@ public partial class DeckScreenshotImportWindow : Window
                 Environment.NewLine,
                 duplicateGroups.Select(group =>
                 {
-                    string name = _library.FirstOrDefault(character => character.Id == group.Key)?.Name ?? group.Key;
+                    CharacterEntry? matchedCharacter = _library.FirstOrDefault(character => character.Id == group.Key);
+                    string name = matchedCharacter is null ? group.Key : CharacterNameLoc.GetName(matchedCharacter);
                     string slots = string.Join(", ", group.Select(item =>
                         string.Format(Loc.Get("Str.Screenshot.SlotNumber"), item.Slot)));
                     return $"• {name}: {slots}";

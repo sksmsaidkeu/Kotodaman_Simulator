@@ -36,6 +36,7 @@ public partial class App : Application
         {
             DataInitializationResult initialization = AppPaths.Initialize();
             AppLog.Initialize();
+            CharacterNameLoc.Load();
             AppLog.Info(
                 $"데이터 준비 완료 · 사용자 데이터 생성={initialization.CreatedUserData} · " +
                 $"기본 파일 복사={initialization.CopiedFileCount} · " +
@@ -97,6 +98,7 @@ public partial class App : Application
         // settings.json은 수동 편집·손상·이전 값 잔존이 가능하므로, 존재하지 않는
         // Strings.*.xaml을 가리켜 ResourceDictionary.Source가 즉시 예외를 던지는 걸 막는다.
         string normalized = Loc.NormalizeLanguage(language);
+        Loc.CurrentLanguage = normalized;
 
         var dictionaries = Current.Resources.MergedDictionaries;
         for (int index = dictionaries.Count - 1; index >= 0; index--)
