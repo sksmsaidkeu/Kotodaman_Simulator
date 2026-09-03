@@ -315,6 +315,8 @@
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="8"/>
                         <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="8"/>
+                        <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
                     <TextBlock Grid.RowSpan="2"
                                Grid.Column="0"
@@ -370,6 +372,12 @@
                             Content="{DynamicResource Str.CharBulk.UncheckAll}"
                             Style="{StaticResource EditorButtonStyle}"
                             Click="ClearChecksButton_Click"/>
+                    <Button x:Name="FetchGimmickTagsButton"
+                            Grid.Row="1" Grid.Column="16"
+                            ToolTip="{DynamicResource Str.CharBulk.GimmickFetchTooltip}"
+                            Content="{DynamicResource Str.CharBulk.GimmickFetchButton}"
+                            Style="{StaticResource EditorButtonStyle}"
+                            Click="FetchGimmickTagsButton_Click"/>
                 </Grid>
             </StackPanel>
         </Border>
@@ -530,6 +538,12 @@
                     <DataGridTextColumn Header="{DynamicResource Str.CharBulk.ColIncludedGroups}"
                                         Width="210"
                                         Binding="{Binding IncludedGroupsText, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
+                    <DataGridTextColumn Header="{DynamicResource Str.CharBulk.ColGimmickCounters}"
+                                        Width="180"
+                                        Binding="{Binding GimmickCountersText, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
+                    <DataGridTextColumn Header="{DynamicResource Str.CharBulk.ColStatusResistances}"
+                                        Width="160"
+                                        Binding="{Binding StatusResistancesText, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
                     <DataGridCheckBoxColumn Header="★"
                                             Width="48"
                                             Binding="{Binding IsFavorite, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>

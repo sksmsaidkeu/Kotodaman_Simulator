@@ -262,6 +262,13 @@
     <system:String x:Key="Str.CharBulk.ColSubAttribute">サブ属性</system:String>
     <system:String x:Key="Str.CharBulk.ColSpeciesTooltip">直接入力／貼り付け：神 魔 英 龍 獣 霊 物 妖 ／未入力</system:String>
     <system:String x:Key="Str.CharBulk.ColIncludedGroups">同時扱いグループ</system:String>
+    <system:String x:Key="Str.CharBulk.ColGimmickCounters">ギミック対策</system:String>
+    <system:String x:Key="Str.CharBulk.ColStatusResistances">状態異常耐性</system:String>
+    <system:String x:Key="Str.CharBulk.GimmickFetchButton">ギミック/状態異常を更新</system:String>
+    <system:String x:Key="Str.CharBulk.GimmickFetchTooltip">GameWithの全キャラ一覧をクロールし、名前が一致するキャラのギミック対策・状態異常耐性欄を自動で埋めます。</system:String>
+    <system:String x:Key="Str.CharBulk.GimmickFetching">GameWithの全キャラ一覧を読み込み中...</system:String>
+    <system:String x:Key="Str.CharBulk.GimmickFetchDone">{0}/{1}人一致、{2}人のギミック/状態異常欄を埋めました。保存するには下の「変更内容を適用」を押してください。</system:String>
+    <system:String x:Key="Str.CharBulk.GimmickFetchFailed">ギミック/状態異常の更新に失敗しました: {0}</system:String>
     <system:String x:Key="Str.CharBulk.FooterHint">表で直接修正するか、チェックして上の一括変更を使ってください。</system:String>
     <system:String x:Key="Str.CharBulk.Cancel">キャンセル</system:String>
     <system:String x:Key="Str.CharBulk.ApplyChanges">変更内容を適用</system:String>

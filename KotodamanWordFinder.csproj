@@ -13,10 +13,10 @@
     <!-- SDK 버전에 따라 켜지기도 해서 명시적으로 끕니다. 코드에서 BinaryFormatter를 쓰지 않습니다. -->
     <EnableUnsafeBinaryFormatterSerialization>false</EnableUnsafeBinaryFormatterSerialization>
 
-    <Version>1.26.0</Version>
-    <AssemblyVersion>1.26.0.0</AssemblyVersion>
-    <FileVersion>1.26.0.0</FileVersion>
-    <InformationalVersion>1.26.0</InformationalVersion>
+    <Version>1.26.1</Version>
+    <AssemblyVersion>1.26.1.0</AssemblyVersion>
+    <FileVersion>1.26.1.0</FileVersion>
+    <InformationalVersion>1.26.1</InformationalVersion>
     <Product>코토다망 최장 단어 탐색기</Product>
     <Description>코토다망 덱과 손패를 기준으로 가능한 최장 단어를 탐색하는 Windows 도구</Description>
     <Company>KotodamanWordFinder</Company>

@@ -262,6 +262,13 @@
     <system:String x:Key="Str.CharBulk.ColSubAttribute">Sub attribute</system:String>
     <system:String x:Key="Str.CharBulk.ColSpeciesTooltip">Type/paste directly: 神 魔 英 龍 獣 霊 物 妖 / Unset</system:String>
     <system:String x:Key="Str.CharBulk.ColIncludedGroups">Included groups</system:String>
+    <system:String x:Key="Str.CharBulk.ColGimmickCounters">Gimmick counters</system:String>
+    <system:String x:Key="Str.CharBulk.ColStatusResistances">Status resistances</system:String>
+    <system:String x:Key="Str.CharBulk.GimmickFetchButton">Update gimmick/status</system:String>
+    <system:String x:Key="Str.CharBulk.GimmickFetchTooltip">Crawls GameWith's full character list and auto-fills gimmick counter / status resistance columns for characters whose names match.</system:String>
+    <system:String x:Key="Str.CharBulk.GimmickFetching">Loading GameWith's full character list...</system:String>
+    <system:String x:Key="Str.CharBulk.GimmickFetchDone">Matched {0}/{1}, filled gimmick/status data for {2}. Press "Apply changes" below to save.</system:String>
+    <system:String x:Key="Str.CharBulk.GimmickFetchFailed">Failed to update gimmick/status: {0}</system:String>
     <system:String x:Key="Str.CharBulk.FooterHint">Edit the table directly, or check rows and use the bulk change above.</system:String>
     <system:String x:Key="Str.CharBulk.Cancel">Cancel</system:String>
     <system:String x:Key="Str.CharBulk.ApplyChanges">Apply changes</system:String>

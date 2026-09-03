@@ -70,6 +70,13 @@ public sealed class CharacterEntry
     // 이미 사용한 1회 한정 문자. 추후 UI에서 체크하도록 확장할 수 있습니다.
     public List<string> UsedOneTimeLetters { get; set; } = new();
 
+    // 대응 가능한 기믹(예: フリーズ/バルーン/コピー). GameWith 전캐릭터 일람표에서 자동 추출되며,
+    // 비어 있으면 아직 갱신되지 않은 상태입니다.
+    public List<string> GimmickCounters { get; set; } = new();
+
+    // 상태이상 내성(예: 毒/混乱/炎上). 위와 동일한 방식으로 자동 추출됩니다.
+    public List<string> StatusResistances { get; set; } = new();
+
     // 검색할 때만 사용하는 현재 문자 상태. JSON에는 저장하지 않습니다.
     [JsonIgnore]
     public string? ActiveLetterStateId { get; set; }

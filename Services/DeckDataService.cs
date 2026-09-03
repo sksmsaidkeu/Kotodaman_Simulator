@@ -64,7 +64,9 @@ public static class DeckDataService
                 MiracleLeaderEffect = NormalizeMiracleLeaderEffect(character.MiracleLeaderEffect),
                 DeckGroupLetterEffect = NormalizeDeckGroupLetterEffect(character.DeckGroupLetterEffect),
                 OneTimeLetters = NormalizeLetters(character.OneTimeLetters),
-                UsedOneTimeLetters = NormalizeLetters(character.UsedOneTimeLetters)
+                UsedOneTimeLetters = NormalizeLetters(character.UsedOneTimeLetters),
+                GimmickCounters = character.GimmickCounters?.ToList() ?? new List<string>(),
+                StatusResistances = character.StatusResistances?.ToList() ?? new List<string>()
             })
             .Where(character =>
                 character.Letters.Count > 0 ||

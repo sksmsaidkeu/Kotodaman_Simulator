@@ -123,7 +123,9 @@ public static class JsonDataLoader
                     MiracleLeaderEffect = miracle,
                     DeckGroupLetterEffect = DeckDataService.NormalizeDeckGroupLetterEffect(character.DeckGroupLetterEffect),
                     OneTimeLetters = DeckDataService.NormalizeLetters(character.OneTimeLetters),
-                    UsedOneTimeLetters = DeckDataService.NormalizeLetters(character.UsedOneTimeLetters)
+                    UsedOneTimeLetters = DeckDataService.NormalizeLetters(character.UsedOneTimeLetters),
+                    GimmickCounters = character.GimmickCounters?.ToList() ?? new List<string>(),
+                    StatusResistances = character.StatusResistances?.ToList() ?? new List<string>()
                 };
             })
             .Where(character => character.Id.Length > 0 && character.Name.Length > 0)

@@ -36,7 +36,10 @@ try {
 
     if (-not (Test-Path -LiteralPath $charactersPath)) { throw 'Data\characters.json was not found.' }
 
-    $characterArray = @(Get-Content -LiteralPath $charactersPath -Raw -Encoding UTF8 | ConvertFrom-Json)
+    # 이 머신 PS 5.1에서는 이 자리(함수로 감싸지 않은 직접 대입)에서 @()로 배열을 다시 감싸면
+    # Count가 실제 요소 수 대신 1로 나오는 버그가 있습니다. ConvertFrom-Json이 JSON 배열에는
+    # 이미 System.Object[]를 반환하므로 @() 없이 그대로 씁니다.
+    $characterArray = Get-Content -LiteralPath $charactersPath -Raw -Encoding UTF8 | ConvertFrom-Json
     $metadata = [pscustomobject]@{
         SchemaVersion = 1
         DataVersion = [string]$pending.DataVersion

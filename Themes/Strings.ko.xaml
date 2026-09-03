@@ -268,6 +268,13 @@
     <system:String x:Key="Str.CharBulk.ColSubAttribute">서브 속성</system:String>
     <system:String x:Key="Str.CharBulk.ColSpeciesTooltip">직접 입력/붙여넣기: 神 魔 英 龍 獣 霊 物 妖 / 미입력</system:String>
     <system:String x:Key="Str.CharBulk.ColIncludedGroups">같이 취급 그룹</system:String>
+    <system:String x:Key="Str.CharBulk.ColGimmickCounters">기믹 대책</system:String>
+    <system:String x:Key="Str.CharBulk.ColStatusResistances">상태이상 내성</system:String>
+    <system:String x:Key="Str.CharBulk.GimmickFetchButton">기믹/상태이상 갱신</system:String>
+    <system:String x:Key="Str.CharBulk.GimmickFetchTooltip">GameWith 전캐릭터 일람표를 크롤링해 이름이 일치하는 캐릭터의 기믹 대책·상태이상 내성 칸을 자동으로 채웁니다.</system:String>
+    <system:String x:Key="Str.CharBulk.GimmickFetching">GameWith 전캐릭터 일람표를 불러오는 중...</system:String>
+    <system:String x:Key="Str.CharBulk.GimmickFetchDone">{0}/{1}명 매칭, {2}명의 기믹/상태이상 칸을 채웠습니다. 저장하려면 아래 "변경 내용 적용"을 누르세요.</system:String>
+    <system:String x:Key="Str.CharBulk.GimmickFetchFailed">기믹/상태이상 갱신 실패: {0}</system:String>
     <system:String x:Key="Str.CharBulk.FooterHint">표에서 직접 수정하거나 체크 후 위의 일괄 변경을 사용하세요.</system:String>
     <system:String x:Key="Str.CharBulk.Cancel">취소</system:String>
     <system:String x:Key="Str.CharBulk.ApplyChanges">변경 내용 적용</system:String>

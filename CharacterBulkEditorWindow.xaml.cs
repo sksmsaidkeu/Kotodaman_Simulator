@@ -23,6 +23,8 @@ public partial class CharacterBulkEditorWindow : Window
 
     private readonly ObservableCollection<CharacterBulkEditRow> _rows;
     private readonly ICollectionView _view;
+    private readonly CharacterWebImportService _webImportService = new();
+    private CancellationTokenSource? _gimmickFetchCancellation;
     private readonly DispatcherTimer _searchTimer = new()
     {
         Interval = TimeSpan.FromMilliseconds(220)
@@ -44,7 +46,11 @@ public partial class CharacterBulkEditorWindow : Window
     {
         InitializeComponent();
         _searchTimer.Tick += SearchTimer_Tick;
-        Closed += (_, _) => _searchTimer.Stop();
+        Closed += (_, _) =>
+        {
+            _searchTimer.Stop();
+            _gimmickFetchCancellation?.Cancel();
+        };
 
         CategoryOptions = CharacterCategories.All.ToArray();
         AttributeOptions = new[] { Unset }.Concat(AttributeValues).ToArray();
@@ -339,6 +345,61 @@ public partial class CharacterBulkEditorWindow : Window
         Controls.SetAlertBanner(StatusBanner, StatusText, string.Format(Loc.Get("Str.CharBulk.BulkAppliedStatus"), selected.Length.ToString("N0")), false, Theme.Warn);
     }
 
+    private async void FetchGimmickTagsButton_Click(object sender, RoutedEventArgs e)
+    {
+        CommitGridEdit();
+        _gimmickFetchCancellation?.Cancel();
+        _gimmickFetchCancellation?.Dispose();
+        _gimmickFetchCancellation = new CancellationTokenSource();
+
+        FetchGimmickTagsButton.IsEnabled = false;
+        Controls.SetAlertBanner(StatusBanner, StatusText, Loc.Get("Str.CharBulk.GimmickFetching"), false, Theme.TextSecondary);
+
+        try
+        {
+            GimmickTagCrawlResult result = await _webImportService.CrawlGimmickTagsAsync(
+                _rows.Select(row => row.Source).ToArray(),
+                _gimmickFetchCancellation.Token);
+
+            int filledCount = 0;
+            foreach (CharacterBulkEditRow row in _rows)
+            {
+                if (!result.TagsByCharacterId.TryGetValue(row.Id, out (List<string> Gimmicks, List<string> Statuses) tags))
+                {
+                    continue;
+                }
+
+                row.GimmickCountersText = string.Join(" · ", tags.Gimmicks);
+                row.StatusResistancesText = string.Join(" · ", tags.Statuses);
+                filledCount++;
+            }
+
+            CharacterDataGrid.Items.Refresh();
+            Controls.SetAlertBanner(
+                StatusBanner,
+                StatusText,
+                string.Format(
+                    Loc.Get("Str.CharBulk.GimmickFetchDone"),
+                    result.MatchedCount.ToString("N0"),
+                    result.TotalRows.ToString("N0"),
+                    filledCount.ToString("N0")),
+                false,
+                Theme.Success);
+        }
+        catch (OperationCanceledException)
+        {
+            // 창을 닫거나 다시 눌러 취소한 경우 조용히 무시합니다.
+        }
+        catch (Exception exception)
+        {
+            SetError(string.Format(Loc.Get("Str.CharBulk.GimmickFetchFailed"), exception.Message));
+        }
+        finally
+        {
+            FetchGimmickTagsButton.IsEnabled = true;
+        }
+    }
+
     private void SaveButton_Click(object sender, RoutedEventArgs e)
     {
         CommitGridEdit();
@@ -476,6 +537,25 @@ public partial class CharacterBulkEditorWindow : Window
         return DeckDataService.NormalizeSearchAliases(tokens);
     }
 
+    private static List<string> ParseFreeTextList(string text)
+    {
+        string[] tokens = (text ?? string.Empty)
+            .Normalize(NormalizationForm.FormC)
+            .Split(new[] { ',', '，', '、', '/', '／', '·', '・', '|', ';', '；', '\r', '\n' },
+                StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+        var seen = new HashSet<string>(StringComparer.Ordinal);
+        var result = new List<string>();
+        foreach (string token in tokens)
+        {
+            if (seen.Add(token))
+            {
+                result.Add(token);
+            }
+        }
+
+        return result;
+    }
+
     private static List<string> ParseGroups(string text)
     {
         string[] tokens = (text ?? string.Empty)
@@ -606,6 +686,8 @@ public partial class CharacterBulkEditorWindow : Window
             }
             GroupName = DeckDataService.NormalizeGroupName(source.GroupName);
             IncludedGroupsText = string.Join(" · ", DeckDataService.NormalizeGroupNames(source.IncludedGroups));
+            GimmickCountersText = string.Join(" · ", source.GimmickCounters ?? new List<string>());
+            StatusResistancesText = string.Join(" · ", source.StatusResistances ?? new List<string>());
             IsFavorite = source.IsFavorite;
             IsBeloved = source.IsBeloved;
         }
@@ -623,6 +705,8 @@ public partial class CharacterBulkEditorWindow : Window
         public string Species { get; set; }
         public string GroupName { get; set; }
         public string IncludedGroupsText { get; set; }
+        public string GimmickCountersText { get; set; }
+        public string StatusResistancesText { get; set; }
         public bool IsFavorite { get; set; }
         public bool IsBeloved { get; set; }
 
@@ -677,6 +761,8 @@ public partial class CharacterBulkEditorWindow : Window
                 Species,
                 GroupName,
                 IncludedGroupsText,
+                GimmickCountersText,
+                StatusResistancesText,
                 Id
             }).Normalize(NormalizationForm.FormC);
 
@@ -693,6 +779,8 @@ public partial class CharacterBulkEditorWindow : Window
             List<string> includedGroups = ParseGroups(IncludedGroupsText)
                 .Where(group => !string.Equals(group, groupName, StringComparison.OrdinalIgnoreCase))
                 .ToList();
+            List<string> gimmickCounters = ParseFreeTextList(GimmickCountersText);
+            List<string> statusResistances = ParseFreeTextList(StatusResistancesText);
 
             bool changed = !string.Equals(Source.Name, name, StringComparison.Ordinal) ||
                            !DeckDataService.NormalizeSearchAliases(Source.SearchAliases)
@@ -707,6 +795,8 @@ public partial class CharacterBulkEditorWindow : Window
                            !DeckDataService.NormalizeGroupNames(Source.IncludedGroups)
                                .OrderBy(group => group, StringComparer.OrdinalIgnoreCase)
                                .SequenceEqual(includedGroups.OrderBy(group => group, StringComparer.OrdinalIgnoreCase), StringComparer.OrdinalIgnoreCase) ||
+                           !(Source.GimmickCounters ?? new List<string>()).SequenceEqual(gimmickCounters, StringComparer.Ordinal) ||
+                           !(Source.StatusResistances ?? new List<string>()).SequenceEqual(statusResistances, StringComparer.Ordinal) ||
                            Source.IsFavorite != IsFavorite ||
                            Source.IsBeloved != IsBeloved;
 
@@ -724,6 +814,8 @@ public partial class CharacterBulkEditorWindow : Window
             Source.Species = species;
             Source.GroupName = groupName;
             Source.IncludedGroups = includedGroups;
+            Source.GimmickCounters = gimmickCounters;
+            Source.StatusResistances = statusResistances;
             Source.IsFavorite = IsFavorite;
             Source.IsBeloved = IsBeloved;
             return true;

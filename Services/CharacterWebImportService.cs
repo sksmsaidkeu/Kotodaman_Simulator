@@ -990,6 +990,146 @@ public sealed class CharacterWebImportService
         throw new InvalidOperationException("GameWith의 개별 캐릭터 페이지 주소를 입력하세요.");
     }
 
+    // GameWith 전캐릭터 평가 일람표(캐릭터별 対策 컬럼에 기믹 대책/상태이상 내성이
+    // 이미 텍스트로 정리돼 있음) 1페이지만 크롤링해서 로컬 캐릭터에 매칭합니다.
+    // 개별 캐릭터 페이지(2,300여 개)를 전부 돌 필요가 없어 이 방식을 씁니다.
+    private const string GimmickTagListUrl = "https://gamewith.jp/kotodaman/article/show/99665";
+
+    private static readonly string[] GimmickCategoryTokens =
+    {
+        "シールド", "トゲ", "チェンジ", "弱体", "ウォール", "ビリビリ", "ヒール",
+        "コピー", "フリーズ", "地雷", "スマッシュ", "バルーン", "レーザー", "スーパーのみ"
+    };
+
+    private static readonly string[] StatusResistanceCategoryTokens =
+    {
+        "毒", "睡眠", "呪い", "混乱", "汚染", "炎上", "改造", "衰弱", "変異", "消去"
+    };
+
+    // data-col1(이름)은 일부 캐릭터에서 후리가나+한자가 붙어 있어 매칭을 방해하므로,
+    // 대신 캐릭터 링크 썸네일의 alt 텍스트(실제 표시 이름과 동일)를 이름으로 사용합니다.
+    private static readonly Regex GimmickTagRowRegex = new(
+        "<tr class=\"[^\"]*\" data-col1=\"[^\"]*\" data-col2=\"[^\"]*\" data-col3=\"[^\"]*\" " +
+        "data-col4=\"(?<tags>[^\"]*)\" data-col5=\"[^\"]*\" data-col6=\"[^\"]*\"><td><a href='(?<href>[^']*)'" +
+        "[^>]*><img[^>]*alt='(?<alt>[^']*)'",
+        RegexOptions.Compiled);
+
+    public async Task<GimmickTagCrawlResult> CrawlGimmickTagsAsync(
+        IReadOnlyList<CharacterEntry> characters,
+        CancellationToken cancellationToken = default)
+    {
+        if (!Uri.TryCreate(GimmickTagListUrl, UriKind.Absolute, out Uri? uri) || uri is null)
+        {
+            throw new InvalidOperationException("기믹/상태이상 표 주소가 올바르지 않습니다.");
+        }
+
+        string html = await GetHtmlAsync(uri, cancellationToken);
+        var result = new GimmickTagCrawlResult();
+
+        var exactIndex = new Dictionary<string, CharacterEntry>(StringComparer.Ordinal);
+        foreach (CharacterEntry character in characters)
+        {
+            string key = NormalizeNameForComparison(RemoveEpithet(character.Name));
+            if (key.Length > 0 && !exactIndex.ContainsKey(key))
+            {
+                exactIndex[key] = character;
+            }
+        }
+
+        foreach (Match match in GimmickTagRowRegex.Matches(html))
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            string altName = WebUtility.HtmlDecode(match.Groups["alt"].Value).Trim();
+            if (altName.Length == 0)
+            {
+                continue;
+            }
+
+            result.TotalRows++;
+            string stripped = RemoveEpithet(altName);
+            string normalized = NormalizeNameForComparison(stripped);
+            (List<string> gimmicks, List<string> statuses) = ParseGimmickTagTokens(match.Groups["tags"].Value);
+
+            bool isFuzzy = false;
+            CharacterEntry? character = exactIndex.TryGetValue(normalized, out CharacterEntry? exact) ? exact : null;
+            if (character is null)
+            {
+                CharacterEntry? best = null;
+                int bestScore = 0;
+                foreach (CharacterEntry candidate in characters)
+                {
+                    int score = GetNameMatchScore(normalized, candidate.Name);
+                    if (score > bestScore)
+                    {
+                        bestScore = score;
+                        best = candidate;
+                    }
+                }
+
+                if (best is not null && bestScore >= 74)
+                {
+                    character = best;
+                    isFuzzy = true;
+                }
+            }
+
+            if (character is null)
+            {
+                result.UnmatchedNames.Add(altName);
+                continue;
+            }
+
+            result.MatchedCount++;
+            if (isFuzzy)
+            {
+                result.FuzzyMatchedCount++;
+            }
+
+            if (gimmicks.Count > 0 || statuses.Count > 0)
+            {
+                result.TagsByCharacterId[character.Id] = (gimmicks, statuses);
+            }
+        }
+
+        return result;
+    }
+
+    private static (List<string> Gimmicks, List<string> Statuses) ParseGimmickTagTokens(string rawAttributeValue)
+    {
+        var gimmicks = new List<string>();
+        var statuses = new List<string>();
+        string decoded = WebUtility.HtmlDecode(rawAttributeValue);
+
+        foreach (string rawToken in decoded.Split(' ', StringSplitOptions.RemoveEmptyEntries))
+        {
+            // 표에서 뱃지 아이콘이 텍스트로 뭉개져 토큰 앞에 알파벳이 붙는 경우(예: "Sフリーズブレイカー")가 있어 제거합니다.
+            string token = Regex.Replace(rawToken, "^[A-Z]+(?=[぀-ヿ一-鿿])", string.Empty);
+
+            if (token.EndsWith("ガード", StringComparison.Ordinal) || token.EndsWith("ブレイカー", StringComparison.Ordinal))
+            {
+                string baseWord = Regex.Replace(token, "(ガード|ブレイカー)$", string.Empty);
+                baseWord = Regex.Replace(baseWord, "\\((祝福|大討伐)\\)$", string.Empty);
+                string? category = GimmickCategoryTokens.FirstOrDefault(candidate =>
+                    baseWord == candidate || baseWord.StartsWith(candidate, StringComparison.Ordinal));
+                if (category is not null && !gimmicks.Contains(category, StringComparer.Ordinal))
+                {
+                    gimmicks.Add(category);
+                }
+            }
+            else if (token.EndsWith("耐性", StringComparison.Ordinal))
+            {
+                string baseWord = token[..^2];
+                if (StatusResistanceCategoryTokens.Contains(baseWord, StringComparer.Ordinal) &&
+                    !statuses.Contains(baseWord, StringComparer.Ordinal))
+                {
+                    statuses.Add(baseWord);
+                }
+            }
+        }
+
+        return (gimmicks, statuses);
+    }
+
     public async Task<bool> TryEnrichFromDatabaseAsync(
         CharacterImportData data,
         string? databaseOverrideUrl = null,
