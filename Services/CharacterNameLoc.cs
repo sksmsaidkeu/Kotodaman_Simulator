@@ -16,6 +16,40 @@ public static class CharacterNameLoc
     private static IReadOnlyDictionary<string, string> _groupNames =
         new Dictionary<string, string>();
 
+    // 기믹 대책/상태이상 내성은 GameWith 표에서 나오는 고정된 어휘(각 14종/10종)라
+    // 캐릭터/그룹 이름처럼 조회 파일을 따로 두지 않고 여기 바로 적어둔다.
+    private static readonly IReadOnlyDictionary<string, string> GimmickNames = new Dictionary<string, string>
+    {
+        ["シールド"] = "실드",
+        ["トゲ"] = "가시",
+        ["チェンジ"] = "체인지",
+        ["弱体"] = "약화",
+        ["ウォール"] = "벽",
+        ["ビリビリ"] = "감전",
+        ["ヒール"] = "힐",
+        ["コピー"] = "카피",
+        ["フリーズ"] = "빙결",
+        ["地雷"] = "지뢰",
+        ["スマッシュ"] = "스매시",
+        ["バルーン"] = "풍선",
+        ["レーザー"] = "레이저",
+        ["スーパーのみ"] = "슈퍼 전용",
+    };
+
+    private static readonly IReadOnlyDictionary<string, string> StatusNames = new Dictionary<string, string>
+    {
+        ["毒"] = "독",
+        ["睡眠"] = "수면",
+        ["呪い"] = "저주",
+        ["混乱"] = "혼란",
+        ["汚染"] = "오염",
+        ["炎上"] = "화상",
+        ["改造"] = "개조",
+        ["衰弱"] = "쇠약",
+        ["変異"] = "변이",
+        ["消去"] = "소거",
+    };
+
     public static void Load()
     {
         _characterNames = LoadMap(AppPaths.GetBundledDataPath("character_names.ko.json"));
@@ -36,6 +70,16 @@ public static class CharacterNameLoc
         => Loc.CurrentLanguage == "ko" && _groupNames.TryGetValue(groupName, out string? name)
             ? name
             : groupName;
+
+    public static string GetGimmickLabel(string gimmick)
+        => Loc.CurrentLanguage == "ko" && GimmickNames.TryGetValue(gimmick, out string? name)
+            ? name
+            : gimmick;
+
+    public static string GetStatusLabel(string status)
+        => Loc.CurrentLanguage == "ko" && StatusNames.TryGetValue(status, out string? name)
+            ? name
+            : status;
 
     private static IReadOnlyDictionary<string, string> LoadMap(string path)
     {

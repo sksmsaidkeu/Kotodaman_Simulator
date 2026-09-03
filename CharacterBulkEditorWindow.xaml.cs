@@ -369,8 +369,8 @@ public partial class CharacterBulkEditorWindow : Window
                     continue;
                 }
 
-                row.GimmickCountersText = string.Join(" · ", tags.Gimmicks);
-                row.StatusResistancesText = string.Join(" · ", tags.Statuses);
+                row.GimmickCounters = tags.Gimmicks;
+                row.StatusResistances = tags.Statuses;
                 filledCount++;
             }
 
@@ -537,25 +537,6 @@ public partial class CharacterBulkEditorWindow : Window
         return DeckDataService.NormalizeSearchAliases(tokens);
     }
 
-    private static List<string> ParseFreeTextList(string text)
-    {
-        string[] tokens = (text ?? string.Empty)
-            .Normalize(NormalizationForm.FormC)
-            .Split(new[] { ',', '，', '、', '/', '／', '·', '・', '|', ';', '；', '\r', '\n' },
-                StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
-        var seen = new HashSet<string>(StringComparer.Ordinal);
-        var result = new List<string>();
-        foreach (string token in tokens)
-        {
-            if (seen.Add(token))
-            {
-                result.Add(token);
-            }
-        }
-
-        return result;
-    }
-
     private static List<string> ParseGroups(string text)
     {
         string[] tokens = (text ?? string.Empty)
@@ -686,8 +667,8 @@ public partial class CharacterBulkEditorWindow : Window
             }
             GroupName = DeckDataService.NormalizeGroupName(source.GroupName);
             IncludedGroupsText = string.Join(" · ", DeckDataService.NormalizeGroupNames(source.IncludedGroups));
-            GimmickCountersText = string.Join(" · ", source.GimmickCounters ?? new List<string>());
-            StatusResistancesText = string.Join(" · ", source.StatusResistances ?? new List<string>());
+            GimmickCounters = (source.GimmickCounters ?? new List<string>()).ToList();
+            StatusResistances = (source.StatusResistances ?? new List<string>()).ToList();
             IsFavorite = source.IsFavorite;
             IsBeloved = source.IsBeloved;
         }
@@ -705,8 +686,15 @@ public partial class CharacterBulkEditorWindow : Window
         public string Species { get; set; }
         public string GroupName { get; set; }
         public string IncludedGroupsText { get; set; }
-        public string GimmickCountersText { get; set; }
-        public string StatusResistancesText { get; set; }
+        public List<string> GimmickCounters { get; set; } = new();
+        public List<string> StatusResistances { get; set; } = new();
+
+        // 기믹/상태이상 갱신 버튼(크롤링)으로만 채워지는 값이라 자유 입력란이 아니라
+        // 한국어 표시 전용 읽기전용 텍스트로 노출한다(저장은 원문 목록을 그대로 사용).
+        public string GimmickCountersText
+            => string.Join(" · ", GimmickCounters.Select(CharacterNameLoc.GetGimmickLabel));
+        public string StatusResistancesText
+            => string.Join(" · ", StatusResistances.Select(CharacterNameLoc.GetStatusLabel));
         public bool IsFavorite { get; set; }
         public bool IsBeloved { get; set; }
 
@@ -779,8 +767,6 @@ public partial class CharacterBulkEditorWindow : Window
             List<string> includedGroups = ParseGroups(IncludedGroupsText)
                 .Where(group => !string.Equals(group, groupName, StringComparison.OrdinalIgnoreCase))
                 .ToList();
-            List<string> gimmickCounters = ParseFreeTextList(GimmickCountersText);
-            List<string> statusResistances = ParseFreeTextList(StatusResistancesText);
 
             bool changed = !string.Equals(Source.Name, name, StringComparison.Ordinal) ||
                            !DeckDataService.NormalizeSearchAliases(Source.SearchAliases)
@@ -795,8 +781,8 @@ public partial class CharacterBulkEditorWindow : Window
                            !DeckDataService.NormalizeGroupNames(Source.IncludedGroups)
                                .OrderBy(group => group, StringComparer.OrdinalIgnoreCase)
                                .SequenceEqual(includedGroups.OrderBy(group => group, StringComparer.OrdinalIgnoreCase), StringComparer.OrdinalIgnoreCase) ||
-                           !(Source.GimmickCounters ?? new List<string>()).SequenceEqual(gimmickCounters, StringComparer.Ordinal) ||
-                           !(Source.StatusResistances ?? new List<string>()).SequenceEqual(statusResistances, StringComparer.Ordinal) ||
+                           !(Source.GimmickCounters ?? new List<string>()).SequenceEqual(GimmickCounters, StringComparer.Ordinal) ||
+                           !(Source.StatusResistances ?? new List<string>()).SequenceEqual(StatusResistances, StringComparer.Ordinal) ||
                            Source.IsFavorite != IsFavorite ||
                            Source.IsBeloved != IsBeloved;
 
@@ -814,8 +800,8 @@ public partial class CharacterBulkEditorWindow : Window
             Source.Species = species;
             Source.GroupName = groupName;
             Source.IncludedGroups = includedGroups;
-            Source.GimmickCounters = gimmickCounters;
-            Source.StatusResistances = statusResistances;
+            Source.GimmickCounters = GimmickCounters;
+            Source.StatusResistances = StatusResistances;
             Source.IsFavorite = IsFavorite;
             Source.IsBeloved = IsBeloved;
             return true;

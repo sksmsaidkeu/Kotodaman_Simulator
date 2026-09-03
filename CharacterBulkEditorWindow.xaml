@@ -540,10 +540,12 @@
                                         Binding="{Binding IncludedGroupsText, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
                     <DataGridTextColumn Header="{DynamicResource Str.CharBulk.ColGimmickCounters}"
                                         Width="180"
-                                        Binding="{Binding GimmickCountersText, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
+                                        IsReadOnly="True"
+                                        Binding="{Binding GimmickCountersText}"/>
                     <DataGridTextColumn Header="{DynamicResource Str.CharBulk.ColStatusResistances}"
                                         Width="160"
-                                        Binding="{Binding StatusResistancesText, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
+                                        IsReadOnly="True"
+                                        Binding="{Binding StatusResistancesText}"/>
                     <DataGridCheckBoxColumn Header="★"
                                             Width="48"
                                             Binding="{Binding IsFavorite, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
