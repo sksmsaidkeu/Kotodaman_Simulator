@@ -74,6 +74,8 @@ public static class CharacterLibraryService
             DeckGroupLetterEffect = CloneDeckGroupLetterEffect(character.DeckGroupLetterEffect),
             OneTimeLetters = (character.OneTimeLetters ?? new List<string>()).ToList(),
             UsedOneTimeLetters = (character.UsedOneTimeLetters ?? new List<string>()).ToList(),
+            GimmickCounters = (character.GimmickCounters ?? new List<string>()).ToList(),
+            StatusResistances = (character.StatusResistances ?? new List<string>()).ToList(),
             ActiveLetterStateId = character.ActiveLetterStateId,
             ActiveFormId = character.ActiveFormId,
             ActiveMiracleGrantedLetters = (character.ActiveMiracleGrantedLetters ?? new List<string>()).ToList(),
