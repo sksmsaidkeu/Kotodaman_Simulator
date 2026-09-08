@@ -82,12 +82,17 @@
   .error {
     color: #e5484d;
   }
+  h2.platform {
+    font-size: 1rem;
+    color: var(--muted);
+    margin: 32px 0 0;
+  }
 </style>
 </head>
 <body>
 <main>
   <h1>코토다망 최장 단어 탐색기</h1>
-  <p class="lead">덱과 손패로 가능한 최장 단어를 탐색하는 Windows 도구</p>
+  <p class="lead">덱과 손패로 가능한 최장 단어를 탐색하는 도구 (Windows / Android)</p>
 
   <div class="card">
     <div class="version" id="version">버전 확인 중...</div>
@@ -98,6 +103,18 @@
     <b>Windows SmartScreen 경고가 뜨나요?</b><br />
     코드 서명 인증서 없이 배포하고 있어 최초 실행 시 "Windows에서 PC를 보호했습니다" 경고가 뜰 수 있습니다.
     <b>추가 정보 → 실행</b>을 누르면 정상 실행됩니다. 이후 자동 업데이트가 받는 새 버전도 같은 경고가 뜰 수 있습니다.
+  </div>
+
+  <h2 class="platform">Android</h2>
+  <div class="card">
+    <div class="version" id="mobileVersion">버전 확인 중...</div>
+    <a class="download-btn" id="mobileDownloadBtn" href="#" aria-disabled="true">다운로드 준비 중</a>
+  </div>
+
+  <div class="notice">
+    <b>"출처를 알 수 없는 앱" 경고가 뜨나요?</b><br />
+    앱스토어를 거치지 않고 APK를 직접 배포하고 있어 설치 시 이 경고가 뜰 수 있습니다.
+    안내에 따라 <b>설치 허용</b>을 눌러 주세요. 앱 내 업데이트 설치 때도 같은 확인창이 한 번 더 뜹니다.
   </div>
 </main>
 
@@ -118,9 +135,23 @@
       btn.href = data.setupUrl;
       btn.removeAttribute("aria-disabled");
       btn.textContent = "Windows용 다운로드 (Setup.exe)";
+
+      const mobile = data.mobile;
+      const mobileVersionEl = document.getElementById("mobileVersion");
+      if (mobile && mobile.version && mobile.apkUrl) {
+        mobileVersionEl.textContent = "최신 버전: v" + mobile.version;
+        const mobileBtn = document.getElementById("mobileDownloadBtn");
+        mobileBtn.href = mobile.apkUrl;
+        mobileBtn.removeAttribute("aria-disabled");
+        mobileBtn.textContent = "Android용 다운로드 (APK)";
+      } else {
+        mobileVersionEl.textContent = "준비 중입니다.";
+      }
     })
     .catch((err) => {
       document.getElementById("version").innerHTML =
+        '<span class="error">버전 정보를 불러오지 못했습니다. 잠시 후 다시 시도해 주세요.</span>';
+      document.getElementById("mobileVersion").innerHTML =
         '<span class="error">버전 정보를 불러오지 못했습니다. 잠시 후 다시 시도해 주세요.</span>';
       console.error(err);
     });

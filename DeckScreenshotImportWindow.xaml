@@ -149,6 +149,11 @@
             <TextBlock Foreground="{StaticResource Text.Secondary}"
                        TextWrapping="Wrap"
                        Text="{DynamicResource Str.Screenshot.Description}"/>
+            <TextBlock Margin="0,4,0,0"
+                       FontSize="11"
+                       Foreground="{StaticResource Text.Secondary}"
+                       TextWrapping="Wrap"
+                       Text="{DynamicResource Str.Screenshot.AccuracyNotice}"/>
         </StackPanel>
 
         <Border Grid.Row="1"

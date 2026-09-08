@@ -292,6 +292,7 @@
     <!-- DeckScreenshotImportWindow -->
     <system:String x:Key="Str.Screenshot.Title">Auto-Import Deck Screenshot</system:String>
     <system:String x:Key="Str.Screenshot.Description">Select a screenshot of the game's deck screen, then mark the 12-slot (6 columns × 2 rows) region. The app compares each slot's picture against the character DB images. Ambiguous slots are left blank automatically, and nothing is applied to the deck until all 12 slots are confirmed and duplicates are resolved.</system:String>
+    <system:String x:Key="Str.Screenshot.AccuracyNotice">Recognition results may not always be accurate. Please review them on the confirmation screen before applying.</system:String>
     <system:String x:Key="Str.Screenshot.SelectScreenshot">Select screenshot</system:String>
     <system:String x:Key="Str.Screenshot.PasteClipboard">Paste from clipboard (Ctrl+V)</system:String>
     <system:String x:Key="Str.Screenshot.PasteClipboardTooltip">Loads immediately if the Windows clipboard has an image or image file.</system:String>

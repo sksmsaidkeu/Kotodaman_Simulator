@@ -298,6 +298,7 @@
     <!-- DeckScreenshotImportWindow -->
     <system:String x:Key="Str.Screenshot.Title">덱 스크린샷 자동 불러오기</system:String>
     <system:String x:Key="Str.Screenshot.Description">게임의 덱 편성 화면 스크린샷을 선택한 뒤 12칸(6열 × 2행) 영역을 지정하세요. 프로그램이 각 슬롯 그림을 캐릭터 DB 이미지와 비교합니다. 애매한 슬롯은 자동으로 비워 두며, 12칸 확인과 중복 해소가 끝나기 전에는 덱에 적용되지 않습니다.</system:String>
+    <system:String x:Key="Str.Screenshot.AccuracyNotice">인식 결과가 정확하지 않을 수 있습니다. 적용 전 확인 화면에서 꼭 검토해 주세요.</system:String>
     <system:String x:Key="Str.Screenshot.SelectScreenshot">스크린샷 선택</system:String>
     <system:String x:Key="Str.Screenshot.PasteClipboard">클립보드 붙여넣기 (Ctrl+V)</system:String>
     <system:String x:Key="Str.Screenshot.PasteClipboardTooltip">Windows 클립보드에 이미지나 이미지 파일이 있으면 바로 불러옵니다.</system:String>

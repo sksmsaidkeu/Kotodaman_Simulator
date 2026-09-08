@@ -292,6 +292,7 @@
     <!-- DeckScreenshotImportWindow -->
     <system:String x:Key="Str.Screenshot.Title">デッキスクリーンショット自動読み込み</system:String>
     <system:String x:Key="Str.Screenshot.Description">ゲームのデッキ編成画面のスクリーンショットを選択し、12マス（6列×2行）の領域を指定してください。プログラムが各スロットの画像をキャラクターDB画像と比較します。曖昧なスロットは自動で空欄にし、12マスの確認と重複解消が終わるまでデッキには適用されません。</system:String>
+    <system:String x:Key="Str.Screenshot.AccuracyNotice">認識結果は正確でない場合があります。適用前に確認画面で必ずチェックしてください。</system:String>
     <system:String x:Key="Str.Screenshot.SelectScreenshot">スクリーンショットを選択</system:String>
     <system:String x:Key="Str.Screenshot.PasteClipboard">クリップボードから貼り付け（Ctrl+V）</system:String>
     <system:String x:Key="Str.Screenshot.PasteClipboardTooltip">Windowsのクリップボードに画像や画像ファイルがあればすぐに読み込みます。</system:String>
