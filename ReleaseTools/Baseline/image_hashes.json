@@ -916,6 +916,10 @@
         "Sha256":  "1F97AC256FDC7B4D55E3DEC6DDDE859DA0C412411A44CDCD88740FF88B9BB339"
     },
     {
+        "FileName":  "character-19adb04511ef496e995e625ccfb5d88e.png",
+        "Sha256":  "D3F91E72B91C178781EA0CF2D9AF6CFA778D1CA4852947D76B5CBCC1DCD57289"
+    },
+    {
         "FileName":  "character-19b81bfac70040eaafc0eb7d30db1cc3.png",
         "Sha256":  "6E7883A42FB5DF7ADE41CE1564503E14C2EC3E4371829166F0BE4EF338C047F3"
     },
@@ -926,6 +930,10 @@
     {
         "FileName":  "character-1a03696f5ea3497fb43ee76eef991a47.png",
         "Sha256":  "2803C465ACE180940D4D1F42D3118D0CDC2196FC62411E654AB767D89776CEC0"
+    },
+    {
+        "FileName":  "character-1a110f049c1a44d0b60de2a653b8560c.png",
+        "Sha256":  "E65651E7433C4F234EDFD2D38E0CEDBA4A82C973CDBF594B8F20C394CD2BCCDF"
     },
     {
         "FileName":  "character-1a1c023c7c8a4a26bd683c37e6d41712.png",
@@ -2298,6 +2306,10 @@
     {
         "FileName":  "character-3ee908f10c0c4490be47c73a76d1f5e1.png",
         "Sha256":  "E231C15FDF4624A36656EC16238834A18BDA87DA5EC2CACDA3C86E4719DEB4C9"
+    },
+    {
+        "FileName":  "character-3f2e24946b9040cfae9e1a64e75ddf32.png",
+        "Sha256":  "FDB96F86777674B7932C05B30772CD0B7CC51586240F60F336909F00AD9DF3E3"
     },
     {
         "FileName":  "character-3f4c598145c449f598419a66a67b4164.png",
@@ -9134,6 +9146,10 @@
     {
         "FileName":  "character-fbf9af3239614fb99978ba206476c0dd.png",
         "Sha256":  "8ED214EBE47F631F8C761E63DFFE72A102B576D67B02BD1106A27533B994AB1C"
+    },
+    {
+        "FileName":  "character-fc26f4fd4a7a4238be36099d2374d68c.png",
+        "Sha256":  "0B3D706170D27F2F0F72C4E0D8A1B31AA195F8E830AD18642614442A469126F3"
     },
     {
         "FileName":  "character-fc2a3b5530374ede97089e0526405799.png",
