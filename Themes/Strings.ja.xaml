@@ -234,6 +234,8 @@
     <system:String x:Key="Str.FilterAllCategory">全ての等級</system:String>
     <system:String x:Key="Str.FilterAllAttribute">全ての属性</system:String>
     <system:String x:Key="Str.FilterAllSpecies">全ての種族</system:String>
+    <system:String x:Key="Str.FilterAllGimmick">全てのギミック</system:String>
+    <system:String x:Key="Str.FilterAllStatusResistance">全ての状態異常</system:String>
 
     <!-- CharacterBulkEditorWindow -->
     <system:String x:Key="Str.CharBulk.Title">登録キャラクター一括修正</system:String>
@@ -544,6 +546,8 @@
     <system:String x:Key="Str.DeckEditor.CategoryFilterTooltip">等級フィルター</system:String>
     <system:String x:Key="Str.DeckEditor.AttributeFilterTooltip">属性フィルター</system:String>
     <system:String x:Key="Str.DeckEditor.SpeciesFilterTooltip">種族フィルター</system:String>
+    <system:String x:Key="Str.DeckEditor.GimmickFilterTooltip">ギミック対策フィルター</system:String>
+    <system:String x:Key="Str.DeckEditor.StatusResistanceFilterTooltip">状態異常耐性フィルター</system:String>
     <system:String x:Key="Str.DeckEditor.StatusFilterTooltip">登録状態・機能別フィルター</system:String>
     <system:String x:Key="Str.DeckEditor.SearchPlaceholder">例：仮面ライダー し ・属性／種族でも検索可能</system:String>
     <system:String x:Key="Str.DeckEditor.SortTooltip">一覧の並び替え</system:String>

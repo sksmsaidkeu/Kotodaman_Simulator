@@ -30,6 +30,8 @@ public sealed class UserSettings
     public string LastDeckEditorCategoryFilter { get; set; } = "전체 등급";
     public string LastDeckEditorAttributeFilter { get; set; } = "전체 속성";
     public string LastDeckEditorSpeciesFilter { get; set; } = "전체 종족";
+    public string LastDeckEditorGimmickFilter { get; set; } = "전체 기믹";
+    public string LastDeckEditorStatusResistanceFilter { get; set; } = "전체 상태이상";
     public int LastDeckEditorStatusFilterIndex { get; set; }
     public int LastDeckEditorSortModeIndex { get; set; }
     public bool LastDeckEditorFavoritesOnly { get; set; }

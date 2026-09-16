@@ -240,6 +240,8 @@
     <system:String x:Key="Str.FilterAllCategory">전체 등급</system:String>
     <system:String x:Key="Str.FilterAllAttribute">전체 속성</system:String>
     <system:String x:Key="Str.FilterAllSpecies">전체 종족</system:String>
+    <system:String x:Key="Str.FilterAllGimmick">전체 기믹</system:String>
+    <system:String x:Key="Str.FilterAllStatusResistance">전체 상태이상</system:String>
 
     <!-- CharacterBulkEditorWindow -->
     <system:String x:Key="Str.CharBulk.Title">등록 캐릭터 일괄 수정</system:String>
@@ -550,6 +552,8 @@
     <system:String x:Key="Str.DeckEditor.CategoryFilterTooltip">등급 필터</system:String>
     <system:String x:Key="Str.DeckEditor.AttributeFilterTooltip">속성 필터</system:String>
     <system:String x:Key="Str.DeckEditor.SpeciesFilterTooltip">종족 필터</system:String>
+    <system:String x:Key="Str.DeckEditor.GimmickFilterTooltip">대응 기믹 필터</system:String>
+    <system:String x:Key="Str.DeckEditor.StatusResistanceFilterTooltip">상태이상 내성 필터</system:String>
     <system:String x:Key="Str.DeckEditor.StatusFilterTooltip">등록 상태와 기능별 필터</system:String>
     <system:String x:Key="Str.DeckEditor.SearchPlaceholder">예: 仮面ライダー し · 속성/종족도 검색 가능</system:String>
     <system:String x:Key="Str.DeckEditor.SortTooltip">목록 정렬</system:String>

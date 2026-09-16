@@ -16,6 +16,8 @@
         TextOptions.TextRenderingMode="ClearType">
     <Window.Resources>
         <conv:GroupNameConverter x:Key="GroupNameConverter"/>
+        <conv:GimmickNameConverter x:Key="GimmickNameConverter"/>
+        <conv:StatusResistanceNameConverter x:Key="StatusResistanceNameConverter"/>
         <Style x:Key="EditorButtonStyle" TargetType="Button">
             <Setter Property="Background" Value="{StaticResource Line.Tan}"/>
             <Setter Property="Foreground" Value="{StaticResource Text.Primary}"/>
@@ -432,6 +434,7 @@
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="1.35*"/>
@@ -495,18 +498,39 @@
                                   SelectionChanged="LibrarySelectionFilter_Changed"
                                   ToolTip="{DynamicResource Str.DeckEditor.StatusFilterTooltip}"/>
 
+                        <ComboBox x:Name="GimmickFilterComboBox"
+                                  Grid.Row="2" Grid.Column="0" Margin="0,7,0,0"
+                                  SelectionChanged="LibrarySelectionFilter_Changed"
+                                  ToolTip="{DynamicResource Str.DeckEditor.GimmickFilterTooltip}">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Converter={StaticResource GimmickNameConverter}}"/>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                        <ComboBox x:Name="StatusResistanceFilterComboBox"
+                                  Grid.Row="2" Grid.Column="2" Margin="0,7,0,0"
+                                  SelectionChanged="LibrarySelectionFilter_Changed"
+                                  ToolTip="{DynamicResource Str.DeckEditor.StatusResistanceFilterTooltip}">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Converter={StaticResource StatusResistanceNameConverter}}"/>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+
                         <TextBlock x:Name="LibrarySearchHintText"
-                                   Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="5"
+                                   Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="5"
                                    Margin="2,7,0,0"
                                    Foreground="{StaticResource Text.Tertiary}"
                                    FontSize="10"
                                    Text="{DynamicResource Str.DeckEditor.SearchPlaceholder}"/>
                         <ComboBox x:Name="SortComboBox"
-                                  Grid.Row="2" Grid.Column="6"
+                                  Grid.Row="3" Grid.Column="6"
                                   Margin="0,7,0,0"
                                   SelectionChanged="LibrarySelectionFilter_Changed"
                                   ToolTip="{DynamicResource Str.DeckEditor.SortTooltip}"/>
-                        <Button Grid.Row="2" Grid.Column="8"
+                        <Button Grid.Row="3" Grid.Column="8"
                                 Content="{DynamicResource Str.DeckEditor.ResetFilters}"
                                 Margin="0,7,0,0"
                                 Padding="10,6"

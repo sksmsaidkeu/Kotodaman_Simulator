@@ -32,6 +32,8 @@ public partial class DeckEditorWindow : Window
     private static string AllCategoryText => Loc.Get("Str.FilterAllCategory");
     private static string AllAttributeText => Loc.Get("Str.FilterAllAttribute");
     private static string AllSpeciesText => Loc.Get("Str.FilterAllSpecies");
+    private static string AllGimmickText => Loc.Get("Str.FilterAllGimmick");
+    private static string AllStatusResistanceText => Loc.Get("Str.FilterAllStatusResistance");
     private static string AllGroupText => Loc.Get("Str.DeckEditor.FilterAllGroup");
     private static string StatusAllText => Loc.Get("Str.DeckEditor.StatusAll");
     private static string StatusInDeckText => Loc.Get("Str.DeckEditor.StatusInDeck");
@@ -170,6 +172,10 @@ public partial class DeckEditorWindow : Window
         SpeciesFilterComboBox.SelectedIndex = 0;
         StatusFilterComboBox.ItemsSource = StatusFilterOptions;
         StatusFilterComboBox.SelectedIndex = 0;
+        GimmickFilterComboBox.ItemsSource = new[] { AllGimmickText }.Concat(CharacterNameLoc.AllGimmicks).ToArray();
+        GimmickFilterComboBox.SelectedIndex = 0;
+        StatusResistanceFilterComboBox.ItemsSource = new[] { AllStatusResistanceText }.Concat(CharacterNameLoc.AllStatuses).ToArray();
+        StatusResistanceFilterComboBox.SelectedIndex = 0;
         SortComboBox.ItemsSource = SortOptions;
         SortComboBox.SelectedIndex = 0;
 
@@ -493,6 +499,8 @@ public partial class DeckEditorWindow : Window
             DecodeAttributeSpeciesFilter(settings.LastDeckEditorSpeciesFilter, UnsetText),
             AllSpeciesText);
         SelectComboBoxValue(GroupFilterComboBox, settings.LastDeckEditorGroupFilter, AllGroupText);
+        SelectComboBoxValue(GimmickFilterComboBox, settings.LastDeckEditorGimmickFilter, AllGimmickText);
+        SelectComboBoxValue(StatusResistanceFilterComboBox, settings.LastDeckEditorStatusResistanceFilter, AllStatusResistanceText);
         SelectComboBoxIndex(StatusFilterComboBox, settings.LastDeckEditorStatusFilterIndex);
         SelectComboBoxIndex(SortComboBox, settings.LastDeckEditorSortModeIndex);
         FavoriteOnlyCheckBox.IsChecked = settings.LastDeckEditorFavoritesOnly;
@@ -544,6 +552,8 @@ public partial class DeckEditorWindow : Window
             string selectedAttribute = AttributeFilterComboBox.SelectedItem as string ?? AllAttributeText;
             string selectedSpecies = SpeciesFilterComboBox.SelectedItem as string ?? AllSpeciesText;
             string selectedGroup = GroupFilterComboBox.SelectedItem as string ?? AllGroupText;
+            string selectedGimmick = GimmickFilterComboBox.SelectedItem as string ?? AllGimmickText;
+            string selectedStatusResistance = StatusResistanceFilterComboBox.SelectedItem as string ?? AllStatusResistanceText;
             string selectedStatus = StatusFilterComboBox.SelectedItem as string ?? StatusAllText;
             string selectedSort = SortComboBox.SelectedItem as string ?? SortDefaultText;
             bool favoritesOnly = FavoriteOnlyCheckBox.IsChecked == true;
@@ -589,6 +599,20 @@ public partial class DeckEditorWindow : Window
                             DeckDataService.NormalizeGroupName(group),
                             DeckDataService.NormalizeGroupName(selectedGroup),
                             StringComparison.OrdinalIgnoreCase)));
+            }
+
+            if (!string.Equals(selectedGimmick, AllGimmickText, StringComparison.Ordinal))
+            {
+                filtered = filtered.Where(character =>
+                    (character.GimmickCounters ?? new List<string>())
+                        .Contains(selectedGimmick, StringComparer.Ordinal));
+            }
+
+            if (!string.Equals(selectedStatusResistance, AllStatusResistanceText, StringComparison.Ordinal))
+            {
+                filtered = filtered.Where(character =>
+                    (character.StatusResistances ?? new List<string>())
+                        .Contains(selectedStatusResistance, StringComparer.Ordinal));
             }
 
             filtered = selectedStatus switch
@@ -959,6 +983,8 @@ public partial class DeckEditorWindow : Window
         AttributeFilterComboBox.SelectedIndex = 0;
         SpeciesFilterComboBox.SelectedIndex = 0;
         GroupFilterComboBox.SelectedIndex = 0;
+        GimmickFilterComboBox.SelectedIndex = 0;
+        StatusResistanceFilterComboBox.SelectedIndex = 0;
         StatusFilterComboBox.SelectedIndex = 0;
         SortComboBox.SelectedIndex = 0;
         FavoriteOnlyCheckBox.IsChecked = false;
@@ -3338,6 +3364,8 @@ public partial class DeckEditorWindow : Window
                 AttributeFilterComboBox.SelectedItem as string ?? AllAttributeText, AllAttributeText, UnsetText);
             string speciesFilter = EncodeAttributeSpeciesFilter(
                 SpeciesFilterComboBox.SelectedItem as string ?? AllSpeciesText, AllSpeciesText, UnsetText);
+            string gimmickFilter = GimmickFilterComboBox.SelectedItem as string ?? AllGimmickText;
+            string statusResistanceFilter = StatusResistanceFilterComboBox.SelectedItem as string ?? AllStatusResistanceText;
             int statusFilterIndex = StatusFilterComboBox.SelectedIndex;
             int sortModeIndex = SortComboBox.SelectedIndex;
             bool favoritesOnly = FavoriteOnlyCheckBox.IsChecked == true;
@@ -3351,6 +3379,8 @@ public partial class DeckEditorWindow : Window
                 settings.LastDeckEditorCategoryFilter = categoryFilter;
                 settings.LastDeckEditorAttributeFilter = attributeFilter;
                 settings.LastDeckEditorSpeciesFilter = speciesFilter;
+                settings.LastDeckEditorGimmickFilter = gimmickFilter;
+                settings.LastDeckEditorStatusResistanceFilter = statusResistanceFilter;
                 settings.LastDeckEditorStatusFilterIndex = statusFilterIndex;
                 settings.LastDeckEditorSortModeIndex = sortModeIndex;
                 settings.LastDeckEditorFavoritesOnly = favoritesOnly;

@@ -234,6 +234,8 @@
     <system:String x:Key="Str.FilterAllCategory">All categories</system:String>
     <system:String x:Key="Str.FilterAllAttribute">All attributes</system:String>
     <system:String x:Key="Str.FilterAllSpecies">All species</system:String>
+    <system:String x:Key="Str.FilterAllGimmick">All gimmicks</system:String>
+    <system:String x:Key="Str.FilterAllStatusResistance">All status ailments</system:String>
 
     <!-- CharacterBulkEditorWindow -->
     <system:String x:Key="Str.CharBulk.Title">Bulk-Edit Registered Characters</system:String>
@@ -544,6 +546,8 @@
     <system:String x:Key="Str.DeckEditor.CategoryFilterTooltip">Category filter</system:String>
     <system:String x:Key="Str.DeckEditor.AttributeFilterTooltip">Attribute filter</system:String>
     <system:String x:Key="Str.DeckEditor.SpeciesFilterTooltip">Species filter</system:String>
+    <system:String x:Key="Str.DeckEditor.GimmickFilterTooltip">Gimmick counter filter</system:String>
+    <system:String x:Key="Str.DeckEditor.StatusResistanceFilterTooltip">Status ailment resistance filter</system:String>
     <system:String x:Key="Str.DeckEditor.StatusFilterTooltip">Filter by registration status and features</system:String>
     <system:String x:Key="Str.DeckEditor.SearchPlaceholder">e.g. 仮面ライダー し · attribute/species can be searched too</system:String>
     <system:String x:Key="Str.DeckEditor.SortTooltip">Sort list</system:String>

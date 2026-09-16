@@ -1,4 +1,5 @@
 using System.IO;
+using System.Linq;
 using System.Text.Json;
 using KotodamanWordFinder.Models;
 
@@ -49,6 +50,10 @@ public static class CharacterNameLoc
         ["変異"] = "변이",
         ["消去"] = "소거",
     };
+
+    // 필터 콤보박스가 원문 태그 목록(정렬/비교 기준값)을 그릴 때 사용한다.
+    public static IReadOnlyList<string> AllGimmicks => GimmickNames.Keys.ToList();
+    public static IReadOnlyList<string> AllStatuses => StatusNames.Keys.ToList();
 
     public static void Load()
     {
