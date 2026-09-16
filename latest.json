@@ -6,11 +6,11 @@
     "setupSha256": "1ef07d59c07e294ffca5040e05592617e479d63819c8e1214521245a7079c6b9",
     "publishedAt": "2026-09-16T08:03:50Z",
     "mobile": {
-        "version": "1.0.2",
-        "releaseTag": "mobile-v1.0.2",
-        "releaseUrl": "https://github.com/sksmsaidkeu/Kotodaman_Simulator/releases/tag/mobile-v1.0.2",
-        "apkUrl": "https://github.com/sksmsaidkeu/Kotodaman_Simulator/releases/download/mobile-v1.0.2/app-release.apk",
-        "apkSha256": "f8d17a4238d77dc946ba547fa9158eed163d684dc2bf9c317e5b9f1d34d63ed0",
-        "publishedAt": "2026-09-10T01:00:35Z"
+        "version": "1.0.3",
+        "releaseTag": "mobile-v1.0.3",
+        "releaseUrl": "https://github.com/sksmsaidkeu/Kotodaman_Simulator/releases/tag/mobile-v1.0.3",
+        "apkUrl": "https://github.com/sksmsaidkeu/Kotodaman_Simulator/releases/download/mobile-v1.0.3/app-release.apk",
+        "apkSha256": "2715d4500b9203ef49bd5e281ed47cd409332939365226f821d6690a80cd5aa7",
+        "publishedAt": "2026-09-16T08:16:59Z"
     }
 }
