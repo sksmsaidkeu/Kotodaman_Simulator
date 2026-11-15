@@ -1,16 +1,16 @@
 {
-    "version": "1.26.7",
-    "releaseTag": "v1.26.7",
-    "releaseUrl": "https://github.com/sksmsaidkeu/Kotodaman_Simulator/releases/tag/v1.26.7",
-    "setupUrl": "https://github.com/sksmsaidkeu/Kotodaman_Simulator/releases/download/v1.26.7/KotoTester-win-Setup.exe",
-    "setupSha256": "dac0bbd08b36216d85159e10cfd3b79c50070077a313b8ced001e38e831fce8c",
-    "publishedAt": "2026-11-01T04:22:34Z",
+    "version": "1.26.8",
+    "releaseTag": "v1.26.8",
+    "releaseUrl": "https://github.com/sksmsaidkeu/Kotodaman_Simulator/releases/tag/v1.26.8",
+    "setupUrl": "https://github.com/sksmsaidkeu/Kotodaman_Simulator/releases/download/v1.26.8/KotoTester-win-Setup.exe",
+    "setupSha256": "42ecd2a7a8c9853b05e7b46cd2b9e195a1030a4ec242a239c1c2892c86f30f58",
+    "publishedAt": "2026-11-15T05:03:41Z",
     "mobile": {
-        "version": "1.0.8",
-        "releaseTag": "mobile-v1.0.8",
-        "releaseUrl": "https://github.com/sksmsaidkeu/Kotodaman_Simulator/releases/tag/mobile-v1.0.8",
-        "apkUrl": "https://github.com/sksmsaidkeu/Kotodaman_Simulator/releases/download/mobile-v1.0.8/app-release.apk",
-        "apkSha256": "45ed99fb4727b818ccedc0d3a8b86f00db1f7d789db04875062ffed798ae54fb",
-        "publishedAt": "2026-11-01T04:29:17Z"
+        "version": "1.0.9",
+        "releaseTag": "mobile-v1.0.9",
+        "releaseUrl": "https://github.com/sksmsaidkeu/Kotodaman_Simulator/releases/tag/mobile-v1.0.9",
+        "apkUrl": "https://github.com/sksmsaidkeu/Kotodaman_Simulator/releases/download/mobile-v1.0.9/app-release.apk",
+        "apkSha256": "1f129a9482863a8c3103e8897ab09758622e83feef29eb67e537fef440774051",
+        "publishedAt": "2026-11-15T04:57:17Z"
     }
 }
